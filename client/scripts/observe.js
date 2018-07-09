@@ -1,4 +1,5 @@
-import {EventObject,GetCookie,SetCookie,DeleteCookie,isWeiXin,parseUrlSearch,getUrlParams,isEmptyObj,getDeviceType} from './api.js';
+import {EventObject,GetCookie,SetCookie,DeleteCookie,isWeiXin,parseUrlSearch,getUrlParams,isEmptyObj,getDeviceType} from './api';
+
 // import * as SandSignika from '../lib/Highstock-6.1.0/code/themes/sand-signika';
 
 $(function(){ 

@@ -12,3 +12,11 @@ gulp.task('scripts', () => {
 return demos.forEach(rollup);  //出错
  });
 ```
+
+## import example
+```
+import * as exp from './export';
+import test from './page';
+test();
+exp.test0();
+```

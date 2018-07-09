@@ -1,4 +1,3 @@
-function a(){
-    console.log('jj');
+ export default function test(){
+    console.log('test');
 }
-a();
