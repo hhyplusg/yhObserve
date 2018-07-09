@@ -1,0 +1,928 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <!-- <meta charset="utf-8"><link rel="icon" href="https://static.jianshukeji.com/highcharts/images/favicon.ico"> -->
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta http-equiv="content-type" content="text/html; charset=utf-8"/>     
+   
+        <script type="text/javascript" src="lib/jquery-1.12.0.min.js"></script> 
+
+        <script src="lib/Highstock-6.1.0/code/highstock.js"></script>
+        <script src="lib/Highstock-6.1.0/code/modules/exporting.js"></script>
+        <!-- <script src="lib/Highstock-6.1.0/code/themes/dark-unica.js"></script> -->
+        
+        <script type="text/javascript" src="lib/echarts.min.js"></script>
+        <script type="text/javascript" src="lib/ecStat.min.js"></script>
+        
+        <script type="text/javascript" src="lib/FileSaver.js"></script>
+        <script type="text/javascript" src="lib/jquerywordexport/jquerywordexport.js"></script>
+
+
+         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/canvg/1.4/rgbcolor.min.js"></script>
+        <script type="text/javascript" src="lib/canvg.js"></script>
+
+        <link inline href="styles/observe.css" type="text/css" rel="stylesheet"/>
+        
+
+
+    </head>
+    <body id="bigDiv">
+    <!-- 系统表头 -->
+    <div class="SystemDIV" >
+        <img  class="img " src="lib/images/navigation.jpg" style="width: 100%;"/>
+    </div>
+    <!-- 周报告大背景div -->
+    <div class="SystemDIV">            
+        <!-- 周报告正文div -->
+        <div class="TitleDIV">
+            <!-- 周报告名称与导出报告 -->
+            <div class="title-container">
+                
+                <span class="title">市场量化指标周度报告</span>     
+                <span class="export">导出报告</span>
+
+            </div> <!-- 周报告名称与导出报告 -->
+            <!-- 目录div -->
+            <div  style="text-align:left; background-color:white;margin-top:0px;">
+
+                <div>      
+                    <p><span style="font-size:15px;margin-left:20px;line-height: 40px;">目录：</span></p>
+                </div>
+
+                
+                <div class="MenuLOne">                   
+                    <p>
+                    <span class="menu-circle"></span>
+                    <input id="menuOneCheck1" type="checkbox" value="checkbox">
+                    <span>A.大势判断</span>
+                    </p>                    
+                </div>
+
+                <div class="MenuLTwo ">
+                    <p>
+                    <span class="menu-circle"></span>
+                    <input id="menuTwoCheck1" type="checkbox" value="checkbox">
+                    <span>A.1.短期_资金类指标</span>
+                    </p>
+                </div>
+                <div class="MenuLThree " id="menuThreeSelected1">
+                    <input id="menuThreeCheck1" type="checkbox" value="checkbox1">
+                    <span>A.1.1.博弈/存量指标</span>
+                </div>
+                <div class="MenuLThree " id="menuThreeSelected2">
+                    <input id="menuThreeCheck2" type="checkbox" value="checkbox1">
+                    <span>A.1.2.融资买入/可用担保价值</span>
+                </div>
+
+                <!-- Unnamed (水平线) -->
+                <div  class="horizon-line"></div>
+
+                <div  class="MenuLTwo">
+                    <p>
+                    <span class="menu-circle"></span>
+                    
+                    <input id="menuTwoCheck2" type="checkbox" value="checkbox">
+                    <span>A.2.短期_情绪类指标</span>
+                    </p>
+                </div>
+                <div  class="MenuLThree " id="menuThreeSelected3">
+                    <input id="menuThreeCheck3" type="checkbox" value="checkbox">
+                    <span>A.2.1.综合性情绪指标</span>
+                </div>
+                <div  class="MenuLThree " id="menuThreeSelected4">
+                    <input id="menuThreeCheck4" type="checkbox" value="checkbox">
+                    <span>A.2.2.指定板块的强势股占比</span>
+                    
+                </div>
+                <div  class="MenuLThree " id="menuThreeSelected5">   
+                    <input id="menuThreeCheck5" type="checkbox" value="checkbox">
+                    <span>A.2.3.分级基金成交显示的风险偏好</span>                
+                </div>
+                <div  class="MenuLThree " id="menuThreeSelected6">      
+                    <input id="menuThreeCheck6"type="checkbox" value="checkbox">
+                    <span>A.2.4.指定板块的历史换手率</span>      
+                </div>
+
+                <!-- Unnamed (水平线) -->
+                <div  class="horizon-line"></div>
+
+
+                <div  class="MenuLTwo ">
+                    <p>
+                    <span class="menu-circle"></span>
+                    <input id="menuTwoCheck3" type="checkbox" value="checkbox">
+                    <span>A.3.长期_个股的估值分布</span>
+                    </p>
+                </div>
+                <div  class="MenuLThree " id="menuThreeSelected7">
+                    
+                    <input id="menuThreeCheck7" type="checkbox" value="checkbox">
+                    <span>A.3.1.指定板块的个股估值分布</span>
+                    
+                </div>
+                <div  class="MenuLThree " id="menuThreeSelected8">
+                    
+                    <input id="menuThreeCheck8" type="checkbox" value="checkbox">
+                    <span>A.3.2.个股估值分布的重要时点比较</span>
+                    
+                </div>
+
+
+                 <div class="MenuLOne">                   
+                    
+                    <span class="menu-circle"></span>
+                    <input id="u4035_input" type="checkbox" value="checkbox">
+                    <span>B.风格/行业选择</span>
+                    <!--</p>                    -->
+                </div>
+
+                <div  class="MenuLTwo ">
+                    
+                    <span class="menu-circle"></span>
+                    <input id="menuTwoCheck4" type="checkbox" value="checkbox">
+                    <span>B.1.短期_风格活跃度观察</span>
+                    
+                </div>
+                <div  class="MenuLThree " id="menuThreeSelected9">
+                    
+                    <!-- <img id="u4019_img" class="img " src="Images/u4019.png"/> -->
+                    <input id="menuThreeCheck9" type="checkbox" value="checkbox">
+                    <span>B.1.1.指定板块相对换手率的历史变化</span>
+                    
+                </div>
+
+                <!-- Unnamed (水平线) -->
+                <div  class="horizon-line"></div>
+
+                <div  class="MenuLTwo ">
+                    
+                    <span class="menu-circle"></span>
+                    <input id="menuTwoCheck5" type="checkbox" value="checkbox">
+                    <span>B.2.短期_换手率观察</span>
+                    
+                </div>
+                <div  class="MenuLThree " id="menuThreeSelected10">
+                    
+                    <input id="menuThreeCheck10" type="checkbox" value="checkbox">
+                    <span>B.2.1.本周换手率变化最大的基准/板块</span>
+                    
+                </div>
+                <div  class="MenuLThree " id="menuThreeSelected11">
+                    
+                    <input id="menuThreeCheck11" type="checkbox" value="checkbox">
+                    <span>B.2.2.本周换手率绝对水平最高的基准/板块</span>
+                    
+                </div>
+                <div  class="MenuLThree " id="menuThreeSelected12">
+                    
+                    <input id="menuThreeCheck12" type="checkbox" value="checkbox">
+                    <span>B.2.3.基准/板块的周换手率</span>
+                    
+                </div>
+                <div  class="MenuLThree " id="menuThreeSelected13">
+                    
+                    <input id="menuThreeCheck13" type="checkbox" value="checkbox">
+                    <span>B.2.4.指定板块周换手率的历史变化</span>
+                    
+                </div>
+
+                <!-- Unnamed (水平线) -->
+                <div  class="horizon-line"></div>
+
+
+                <div  class="MenuLTwo ">
+                    <p>
+                    <span class="menu-circle"></span>
+                    <input id="menuTwoCheck6" type="checkbox" value="checkbox">
+                    <span>B.3.短期_行业循环模型</span>
+                    </p>
+                </div>
+                <div  class="MenuLThree " id="menuThreeSelected14">
+                    <input id="menuThreeCheck14" type="checkbox" value="checkbox">
+                    <span>B.3.1.本周新增“速度/加速度”加强/衰竭的行业</span>
+                </div>
+                <div  class="MenuLThree " id="menuThreeSelected15">
+                    <input id="menuThreeCheck15" type="checkbox" value="checkbox">
+                    <span>B.3.2.所有行业“速度/加速度”的最新分布</span>
+                </div>
+                <div  class="MenuLThree " id="menuThreeSelected16">
+                    <input id="menuThreeCheck16" type="checkbox" value="checkbox">
+                    <span>B.3.3.指定行业“速度/加速度”的历史变化路径</span>
+                </div>
+
+                <!-- Unnamed (水平线) -->
+                <div  class="horizon-line"></div>
+
+                <div  class="MenuLTwo ">
+                    <p>
+                    <span class="menu-circle"></span>
+                    <input id="menuTwoCheck7" type="checkbox" value="checkbox">
+                    <span>B.4.中期_HP滤波后的行业估值</span>
+                    </p>
+                </div>
+                <div  class="MenuLThree " id="menuThreeSelected17">      
+                    <input id="menuThreeCheck17" type="checkbox" value="checkbox">
+                    <span>B.4.1中期_HP滤波后的行业估值</span>
+                </div>
+
+<!-- 
+                <div class="">
+                    <div id="u4020_div" class=""></div>
+
+                    <div  class="text ">
+                        <p>
+                        <img id="u4019_img" class="img " src="Images/u4019.png"/>
+                        <input id="u4035_input" type="checkbox" value="checkbox">
+                        <span>A.1.短期_资金类指标</span>
+                        </p>
+                    </div>
+                </div>
+
+
+                <div id="u4021" class="">
+                    <div id="u4021_div" class=""></div>
+                    <div id="u4021_text" class="text ">
+                        <p><span>A.1.1.博弈/存量指标</span></p>
+                    </div>
+                </div> -->
+                
+            </div><!-- 目录div -->
+
+            <!-- 图表展示表头 -->
+            <div class="DiagramTitleOne">
+                
+                <span class="left-img-one"></span>              
+                <span style="text-align:left;margin-left:20px;">A.大势判断</span>
+                <div class="DiagramTitleOne_arrow">
+                    <span class="right-img-one"></span>
+                </div>                 
+            </div> <!-- 图表展示表头 -->
+
+            <!-- 图表展示二级表头 -->
+            <div class="DiagramTitleTwo">
+                <span class="left-img-two"></span> 
+                <span>A.1.短期_资金类指标</span>                
+            </div> <!-- 图表展示二级表头 -->
+
+            <!-- 图表展示三级表头 -->
+            <div class="DiagramTitleThree" id="diagramThree1" aria-expanded="false">
+                <div class="DiagramTitleThree_img">
+                    <span class="left-img-three"></span>
+                <span>A.1.1.博弈/存量指标</span>
+                <span class="right-img-three"></span> 
+                </div>               
+            </div> <!-- 图表展示三级表头 -->
+
+            <!-- 图表展示div -->         
+            <div class="DiagramBigDiv" id="diagramDiv1" aria-hidden="true">
+                <!-- 图表div -->
+                <div id="showDiagram1" class="DiagramAreaDiv1">
+                </div>   
+                <div class="DiagramAreaDiv2">
+                    <div>
+                        <div class="table-input"><label>开始日期：</label><input type="date" name="" class="input-date"><input type="button" name="查询" value="查询" class="input-btn">  </div>
+                        <div class="table-input"><label>结束日期：</label><input type="date" name="" class="input-date"><input type="button" name="新建" value="新建" class="input-btn"></div>
+                     </div>
+                     <div class="table-container">
+                        <table>
+                            <tr>
+                                <td style="width:100px; background-color: rgba(242, 242, 242, 1);">日期</td>
+                                <td style="width:350px; background-color: rgba(242, 242, 242, 1);">点评</td>
+                            </tr>
+                            <tr>
+                                <td>2018/07/03</td><td>当天点评内容</td>
+                            </tr>
+                            <tr>
+                                <td>2018/07/03</td><td>当天点评内容</td>
+                            </tr>
+                            <tr>
+                                <td>2018/07/03</td><td>当天点评内容</td>
+                            </tr>
+                            <tr>
+                                <td>2018/07/03</td><td>当天点评内容</td>
+                            </tr>                            
+
+                        </table>
+                     </div>
+                        
+    
+                   
+                    <!-- <div></div> -->
+                </div>             
+            </div> <!-- 图表展示div -->
+
+            <!-- 图表展示三级表头 -->
+            <div class="DiagramTitleThree" id="diagramThree2" aria-expanded="false">
+                <div class="DiagramTitleThree_img">
+                    <span class="left-img-three"></span>
+                <span>A.1.2.融资买入/可用担保价值</span>
+                <span class="right-img-three"></span> 
+
+                </div>               
+            </div> <!-- 图表展示三级表头 -->
+
+            <!-- 图表展示div -->         
+            <div class="DiagramBigDiv" id="diagramDiv2" aria-hidden="true" >
+                <!-- 图表div -->
+                <div id="showDiagram2" class="DiagramAreaDiv1">
+                </div>   
+                <div class="DiagramAreaDiv2">
+                    <div>
+                        <div class="table-input"><label>开始日期：</label><input type="date" name="" class="input-date"><input type="button" name="查询" value="查询" class="input-btn">  </div>
+                        <div class="table-input"><label>结束日期：</label><input type="date" name="" class="input-date"><input type="button" name="新建" value="新建" class="input-btn"></div>
+                     </div>
+                     <div class="table-container">
+                        <table>
+                            <tr>
+                                <td style="width:100px; background-color: rgba(242, 242, 242, 1);">日期</td>
+                                <td style="width:350px; background-color: rgba(242, 242, 242, 1);">点评</td>
+                            </tr>
+                            <tr>
+                                <td>2018/07/03</td><td>当天点评内容</td>
+                            </tr>
+                            <tr>
+                                <td>2018/07/03</td><td>当天点评内容</td>
+                            </tr>
+                            <tr>
+                                <td>2018/07/03</td><td>当天点评内容</td>
+                            </tr>
+                            <tr>
+                                <td>2018/07/03</td><td>当天点评内容</td>
+                            </tr>                            
+
+                        </table>
+                     </div>
+                        
+    
+                   
+                    <!-- <div></div> -->
+                </div>             
+            </div> <!-- 图表展示div -->
+
+            <!-- 图表展示二级表头 -->
+            <div class="DiagramTitleTwo">
+                <span class="left-img-two"></span>  
+                <span>A.2.短期_情绪类指标</span>                
+            </div> <!-- 图表展示二级表头 -->
+
+
+            <!-- 图表展示三级表头 -->
+            <div class="DiagramTitleThree" id="diagramThree3" aria-expanded="false">
+                <div class="DiagramTitleThree_img">
+                    <span class="left-img-three"></span>     
+                    <span>A.2.1.综合性情绪指标</span>
+                    <span class="right-img-three"></span>  
+                </div>               
+            </div> <!-- 图表展示三级表头 -->
+
+            <!-- 图表展示div -->         
+            <div class="DiagramBigDiv" id="diagramDiv3" aria-hidden="true" >
+                <!-- 图表div -->
+                <div id="showDiagram3" class="DiagramAreaDiv1">
+                </div>   
+                <div class="DiagramAreaDiv2">
+                    <div>
+                    </div>
+                    <div class="table-container">                       
+                    </div>
+     
+                </div>             
+            </div> <!-- 图表展示div -->
+            <!-- 图表展示三级表头 -->
+            <div class="DiagramTitleThree" id="diagramThree4" aria-expanded="false">
+                <div class="DiagramTitleThree_img">
+                    <span class="left-img-three"></span>
+                    <span>A.2.2.指定板块的强势股占比</span>
+                    <span class="right-img-three"></span> 
+
+                </div>               
+            </div> <!-- 图表展示三级表头 -->
+
+            <!-- 图表展示div -->         
+            <div class="DiagramBigDiv" id="diagramDiv4" aria-hidden="true" >
+                <!-- 图表div -->
+                <div id="showDiagram4" class="DiagramAreaDiv1">
+                </div>   
+                <div class="DiagramAreaDiv2">
+                    <div>
+                    </div>
+                    <div class="table-container">                       
+                    </div>
+     
+                </div>             
+            </div> <!-- 图表展示div -->
+            <!-- 图表展示三级表头 -->
+            <div class="DiagramTitleThree" id="diagramThree5" aria-expanded="false">
+                <div class="DiagramTitleThree_img">
+                    <span class="left-img-three"></span>
+                <span>A.2.3.分级基金成交显示的风险偏好</span>
+                <span class="right-img-three"></span> 
+
+                </div>               
+            </div> <!-- 图表展示三级表头 -->
+
+            <!-- 图表展示div -->         
+            <div class="DiagramBigDiv" id="diagramDiv5" aria-hidden="true" >
+                <!-- 图表div -->
+                <div id="showDiagram5" class="DiagramAreaDiv1">
+                </div>   
+                <div class="DiagramAreaDiv2">
+                    <div>
+                    </div>
+                    <div class="table-container">                       
+                    </div>
+     
+                </div>             
+            </div> <!-- 图表展示div -->
+            <!-- 图表展示三级表头 -->
+            <div class="DiagramTitleThree" aria-expanded="false">
+                <div class="DiagramTitleThree_img">
+                    <span class="left-img-three"></span>
+                <span>A.2.4.指定板块的历史换手率</span>
+                <span class="right-img-three"></span> 
+
+                </div>               
+            </div> <!-- 图表展示三级表头 -->
+
+            <!-- 图表展示div -->         
+            <div class="DiagramBigDiv" id="diagramDiv6" aria-hidden="true" >
+                <!-- 图表div -->
+                <div id="showDiagram6" class="DiagramAreaDiv1">
+                </div>   
+                <div class="DiagramAreaDiv2">
+                    <div>
+                    </div>
+                    <div class="table-container">                       
+                    </div>
+     
+                </div>             
+            </div> <!-- 图表展示div -->
+
+            <!-- 图表展示二级表头 -->
+            <div class="DiagramTitleTwo">
+                <span class="left-img-two"></span> 
+                <span>A.3.长期_个股的估值分布</span>                
+            </div> <!-- 图表展示二级表头 -->
+            <!-- 图表展示三级表头 -->
+            <div class="DiagramTitleThree" aria-expanded="false">
+                <div class="DiagramTitleThree_img" style="">
+                   <span class="left-img-three"></span>
+                <span>A.3.1.指定板块的个股估值分布</span>
+                <span class="right-img-three"></span> 
+
+                </div>               
+            </div> <!-- 图表展示三级表头 -->
+
+            <!-- 图表展示div -->         
+            <div class="DiagramBigDiv" id="diagramDiv7" aria-hidden="true" >
+                <!-- 图表div -->
+                <div id="showDiagram7" class="DiagramAreaDiv1">
+                </div>   
+                <div class="DiagramAreaDiv2">
+                    <div>
+                    </div>
+                    <div class="table-container">                       
+                    </div>
+     
+                </div>             
+            </div> <!-- 图表展示div -->
+
+            <!-- 图表展示三级表头 -->
+            <div class="DiagramTitleThree" aria-expanded="false">
+                <div class="DiagramTitleThree_img" style="">
+                    <span class="left-img-three"></span>
+                <span>A.3.2.个股估值分布的重要时点比较</span>
+                <span class="right-img-three"></span> 
+
+                </div>               
+            </div> <!-- 图表展示三级表头 -->
+
+            <!-- 图表展示div -->         
+            <div class="DiagramBigDiv" id="diagramDiv8" aria-hidden="true" >
+                <!-- 图表div -->
+                <div id="showDiagram8" class="DiagramAreaDiv1">
+                </div>   
+                <div class="DiagramAreaDiv2">
+                    <div>
+                    </div>
+                    <div class="table-container">                       
+                    </div>
+     
+                </div>             
+            </div> <!-- 图表展示div -->
+
+
+            <!-- 图表展示表头 -->
+            <div class="DiagramTitleOne">
+                <span class="left-img-one"></span>               
+                <span style="text-align:left;margin-left:20px;">B.风格/行业选择</span>
+                <div class="DiagramTitleOne_arrow">
+                    <span class="right-img-one"></span>
+                </div>                 
+            </div> <!-- 图表展示表头 -->
+
+            <!-- 图表展示二级表头 -->
+            <div class="DiagramTitleTwo">
+                <span class="left-img-two"></span> 
+                <span>B.1.短期_风格活跃度观察</span>                
+            </div> <!-- 图表展示二级表头 -->
+            <!-- 图表展示三级表头 -->
+            <div class="DiagramTitleThree" aria-expanded="false">
+                <div class="DiagramTitleThree_img">
+                    <span class="left-img-three"></span>
+                    <span>B.1.1.指定板块相对换手率的历史变化</span>
+                    <span class="right-img-three"></span> 
+                </div>               
+            </div> <!-- 图表展示三级表头 -->
+
+            <!-- 图表展示div -->         
+            <div class="DiagramBigDiv" id="diagramDiv9" aria-hidden="true" >
+                <!-- 图表div -->
+                <div id="showDiagram9" class="DiagramAreaDiv1">
+                </div>   
+                <div class="DiagramAreaDiv2">
+                    <div>
+                    </div>
+                    <div class="table-container">                       
+                    </div>
+     
+                </div>             
+            </div> <!-- 图表展示div -->
+
+            <!-- 图表展示二级表头 -->
+            <div class="DiagramTitleTwo">
+                <span class="left-img-two"></span> 
+                <span>B.2.短期_换手率观察</span>                
+            </div> <!-- 图表展示二级表头 -->
+
+            <!-- 图表展示三级表头 -->
+            <div class="DiagramTitleThree" aria-expanded="false">
+                <div class="DiagramTitleThree_img">
+                    <span class="left-img-three"></span>
+                    <span>B.2.1.本周换手率变化最大的基准/板块</span>
+                    <span class="right-img-three"></span> 
+                </div>               
+            </div> <!-- 图表展示三级表头 -->
+
+            <!-- 图表展示div -->         
+            <div class="DiagramBigDiv" id="diagramDiv10" aria-hidden="true">
+                <!-- 图表div -->
+                <div id="showDiagram10" class="DiagramAreaDiv1">
+                </div>   
+                <div class="DiagramAreaDiv2">
+                    <div>
+                        <div class="table-input"><label>开始日期：</label><input type="date" name="" class="input-date"><input type="button" name="查询" value="查询" class="input-btn">  </div>
+                        <div class="table-input"><label>结束日期：</label><input type="date" name="" class="input-date"><input type="button" name="新建" value="新建" class="input-btn"></div>
+                     </div>
+                     <div class="table-container">
+                        <table>
+                            <tr>
+                                <td style="width:100px; background-color: rgba(242, 242, 242, 1);">日期</td>
+                                <td style="width:350px; background-color: rgba(242, 242, 242, 1);">点评</td>
+                            </tr>
+                            <tr>
+                                <td>2018/07/03</td><td>当天点评内容</td>
+                            </tr>
+                            <tr>
+                                <td>2018/07/03</td><td>当天点评内容</td>
+                            </tr>
+                            <tr>
+                                <td>2018/07/03</td><td>当天点评内容</td>
+                            </tr>
+                            <tr>
+                                <td>2018/07/03</td><td>当天点评内容</td>
+                            </tr>                            
+
+                        </table>
+                     </div>                 
+                </div>             
+            </div> <!-- 图表展示div -->
+
+            <!-- 图表展示三级表头 -->
+            <div class="DiagramTitleThree" aria-expanded="false">
+                <div class="DiagramTitleThree_img">
+                    <span class="left-img-three"></span>
+                    <span>B.2.2.本周换手率绝对水平最高的基准/板块</span>
+                    <span class="right-img-three"></span> 
+                </div>               
+            </div> <!-- 图表展示三级表头 -->
+
+            <!-- 图表展示div -->         
+            <div class="DiagramBigDiv" id="diagramDiv11" aria-hidden="true">
+                <!-- 图表div -->
+                <div id="showDiagram11" class="DiagramAreaDiv1">
+                </div>   
+                <div class="DiagramAreaDiv2">
+                    <div>
+                        <div class="table-input"><label>开始日期：</label><input type="date" name="" class="input-date"><input type="button" name="查询" value="查询" class="input-btn">  </div>
+                        <div class="table-input"><label>结束日期：</label><input type="date" name="" class="input-date"><input type="button" name="新建" value="新建" class="input-btn"></div>
+                     </div>
+                     <div class="table-container">
+                        <table>
+                            <tr>
+                                <td style="width:100px; background-color: rgba(242, 242, 242, 1);">日期</td>
+                                <td style="width:350px; background-color: rgba(242, 242, 242, 1);">点评</td>
+                            </tr>
+                            <tr>
+                                <td>2018/07/03</td><td>当天点评内容</td>
+                            </tr>
+                            <tr>
+                                <td>2018/07/03</td><td>当天点评内容</td>
+                            </tr>
+                            <tr>
+                                <td>2018/07/03</td><td>当天点评内容</td>
+                            </tr>
+                            <tr>
+                                <td>2018/07/03</td><td>当天点评内容</td>
+                            </tr>                            
+
+                        </table>
+                     </div>                 
+                </div>             
+            </div> <!-- 图表展示div -->
+
+            <!-- 图表展示三级表头 -->
+            <div class="DiagramTitleThree" aria-expanded="false">
+                <div class="DiagramTitleThree_img">
+                    <span class="left-img-three"></span>
+                    <span>B.2.3.基准/板块的周换手率</span>
+                    <span class="right-img-three"></span> 
+                </div>               
+            </div> <!-- 图表展示三级表头 -->
+
+             <!-- 图表展示div -->         
+            <div class="DiagramBigDiv" id="diagramDiv12" aria-hidden="true">
+                <!-- 图表div -->
+                <div id="showDiagram12" class="DiagramAreaDiv1">
+                </div>   
+                <div class="DiagramAreaDiv2">
+                    <div>
+                        <div class="table-input"><label>开始日期：</label><input type="date" name="" class="input-date"><input type="button" name="查询" value="查询" class="input-btn">  </div>
+                        <div class="table-input"><label>结束日期：</label><input type="date" name="" class="input-date"><input type="button" name="新建" value="新建" class="input-btn"></div>
+                     </div>
+                     <div class="table-container">
+                        <table>
+                            <tr>
+                                <td style="width:100px; background-color: rgba(242, 242, 242, 1);">日期</td>
+                                <td style="width:350px; background-color: rgba(242, 242, 242, 1);">点评</td>
+                            </tr>
+                            <tr>
+                                <td>2018/07/03</td><td>当天点评内容</td>
+                            </tr>
+                            <tr>
+                                <td>2018/07/03</td><td>当天点评内容</td>
+                            </tr>
+                            <tr>
+                                <td>2018/07/03</td><td>当天点评内容</td>
+                            </tr>
+                            <tr>
+                                <td>2018/07/03</td><td>当天点评内容</td>
+                            </tr>                            
+
+                        </table>
+                     </div>                 
+                </div>             
+            </div> <!-- 图表展示div -->
+
+            <!-- 图表展示三级表头 -->
+            <div class="DiagramTitleThree" aria-expanded="false">
+                <div class="DiagramTitleThree_img">
+                    <span class="left-img-three"></span>
+                    <span>B.2.4.指定板块周换手率的历史变化</span>
+                    <span class="right-img-three"></span> 
+                </div>               
+            </div> <!-- 图表展示三级表头 -->
+
+             <!-- 图表展示div -->         
+            <div class="DiagramBigDiv" id="diagramDiv13" aria-hidden="true">
+                <!-- 图表div -->
+                <div id="showDiagram13" class="DiagramAreaDiv1">
+                </div>   
+                <div class="DiagramAreaDiv2">
+                    <div>
+                        <div class="table-input"><label>开始日期：</label><input type="date" name="" class="input-date"><input type="button" name="查询" value="查询" class="input-btn">  </div>
+                        <div class="table-input"><label>结束日期：</label><input type="date" name="" class="input-date"><input type="button" name="新建" value="新建" class="input-btn"></div>
+                     </div>
+                     <div class="table-container">
+                        <table>
+                            <tr>
+                                <td style="width:100px; background-color: rgba(242, 242, 242, 1);">日期</td>
+                                <td style="width:350px; background-color: rgba(242, 242, 242, 1);">点评</td>
+                            </tr>
+                            <tr>
+                                <td>2018/07/03</td><td>当天点评内容</td>
+                            </tr>
+                            <tr>
+                                <td>2018/07/03</td><td>当天点评内容</td>
+                            </tr>
+                            <tr>
+                                <td>2018/07/03</td><td>当天点评内容</td>
+                            </tr>
+                            <tr>
+                                <td>2018/07/03</td><td>当天点评内容</td>
+                            </tr>                            
+
+                        </table>
+                     </div>                 
+                </div>             
+            </div> <!-- 图表展示div -->
+
+            <!-- 图表展示二级表头 -->
+            <div class="DiagramTitleTwo">
+                <span class="left-img-two"></span> 
+                <span>B.3.短期_行业循环模型</span>                
+            </div> <!-- 图表展示二级表头 -->
+
+            <!-- 图表展示三级表头 -->
+            <div class="DiagramTitleThree" aria-expanded="false">
+                <div class="DiagramTitleThree_img">
+                    <span class="left-img-three"></span>
+                    <span>B.3.1.本周新增“速度/加速度”加强/衰竭的行业</span>
+                    <span class="right-img-three"></span> 
+                </div>               
+            </div> <!-- 图表展示三级表头 -->
+
+            <!-- 图表展示div -->         
+            <div class="DiagramBigDiv" id="diagramDiv14" aria-hidden="true">
+                <!-- 图表div -->
+                <div id="showDiagram14" class="DiagramAreaDiv1">
+                </div>   
+                <div class="DiagramAreaDiv2">
+                    <div>
+                        <div class="table-input"><label>开始日期：</label><input type="date" name="" class="input-date"><input type="button" name="查询" value="查询" class="input-btn">  </div>
+                        <div class="table-input"><label>结束日期：</label><input type="date" name="" class="input-date"><input type="button" name="新建" value="新建" class="input-btn"></div>
+                     </div>
+                     <div class="table-container">
+                        <table>
+                            <tr>
+                                <td style="width:100px; background-color: rgba(242, 242, 242, 1);">日期</td>
+                                <td style="width:350px; background-color: rgba(242, 242, 242, 1);">点评</td>
+                            </tr>
+                            <tr>
+                                <td>2018/07/03</td><td>当天点评内容</td>
+                            </tr>
+                            <tr>
+                                <td>2018/07/03</td><td>当天点评内容</td>
+                            </tr>
+                            <tr>
+                                <td>2018/07/03</td><td>当天点评内容</td>
+                            </tr>
+                            <tr>
+                                <td>2018/07/03</td><td>当天点评内容</td>
+                            </tr>                            
+
+                        </table>
+                     </div>                 
+                </div>             
+            </div> <!-- 图表展示div -->
+
+            <!-- 图表展示三级表头 -->
+            <div class="DiagramTitleThree" aria-expanded="false">
+                <div class="DiagramTitleThree_img">
+                    <span class="left-img-three"></span>
+                    <span>B.3.2.所有行业“速度/加速度”的最新分布</span>
+                    <span class="right-img-three"></span> 
+                </div>               
+            </div> <!-- 图表展示三级表头 -->
+
+            <!-- 图表展示div -->         
+            <div class="DiagramBigDiv" id="diagramDiv15" aria-hidden="true">
+                <!-- 图表div -->
+                <div id="showDiagram15" class="DiagramAreaDiv1">
+                </div>   
+                <div class="DiagramAreaDiv2">
+                    <div>
+                        <div class="table-input"><label>开始日期：</label><input type="date" name="" class="input-date"><input type="button" name="查询" value="查询" class="input-btn">  </div>
+                        <div class="table-input"><label>结束日期：</label><input type="date" name="" class="input-date"><input type="button" name="新建" value="新建" class="input-btn"></div>
+                     </div>
+                     <div class="table-container">
+                        <table>
+                            <tr>
+                                <td style="width:100px; background-color: rgba(242, 242, 242, 1);">日期</td>
+                                <td style="width:350px; background-color: rgba(242, 242, 242, 1);">点评</td>
+                            </tr>
+                            <tr>
+                                <td>2018/07/03</td><td>当天点评内容</td>
+                            </tr>
+                            <tr>
+                                <td>2018/07/03</td><td>当天点评内容</td>
+                            </tr>
+                            <tr>
+                                <td>2018/07/03</td><td>当天点评内容</td>
+                            </tr>
+                            <tr>
+                                <td>2018/07/03</td><td>当天点评内容</td>
+                            </tr>                            
+
+                        </table>
+                     </div>                 
+                </div>             
+            </div> <!-- 图表展示div -->
+
+            <!-- 图表展示三级表头 -->
+            <div class="DiagramTitleThree" aria-expanded="false">
+                <div class="DiagramTitleThree_img">
+                    <span class="left-img-three"></span>
+                    <span>B.3.3.指定行业“速度/加速度”的历史变化路径</span>
+                    <span class="right-img-three"></span> 
+                </div>               
+            </div> <!-- 图表展示三级表头 -->
+
+             <!-- 图表展示div -->         
+            <div class="DiagramBigDiv" id="diagramDiv16" aria-hidden="true">
+                <!-- 图表div -->
+                <div id="showDiagram16" class="DiagramAreaDiv1">
+                </div>   
+                <div class="DiagramAreaDiv2">
+                    <div>
+                        <div class="table-input"><label>开始日期：</label><input type="date" name="" class="input-date"><input type="button" name="查询" value="查询" class="input-btn">  </div>
+                        <div class="table-input"><label>结束日期：</label><input type="date" name="" class="input-date"><input type="button" name="新建" value="新建" class="input-btn"></div>
+                     </div>
+                     <div class="table-container">
+                        <table>
+                            <tr>
+                                <td style="width:100px; background-color: rgba(242, 242, 242, 1);">日期</td>
+                                <td style="width:350px; background-color: rgba(242, 242, 242, 1);">点评</td>
+                            </tr>
+                            <tr>
+                                <td>2018/07/03</td><td>当天点评内容</td>
+                            </tr>
+                            <tr>
+                                <td>2018/07/03</td><td>当天点评内容</td>
+                            </tr>
+                            <tr>
+                                <td>2018/07/03</td><td>当天点评内容</td>
+                            </tr>
+                            <tr>
+                                <td>2018/07/03</td><td>当天点评内容</td>
+                            </tr>                            
+
+                        </table>
+                     </div>                 
+                </div>             
+            </div> <!-- 图表展示div -->
+
+            <!-- 图表展示二级表头 -->
+            <div class="DiagramTitleTwo">
+                <span class="left-img-two"></span> 
+                <span>B.4.中期_HP滤波后的行业估值</span>                
+            </div> <!-- 图表展示二级表头 -->
+
+            <!-- 图表展示三级表头 -->
+            <div class="DiagramTitleThree" aria-expanded="false">
+                <div class="DiagramTitleThree_img">
+                    <span class="left-img-three"></span>
+                    <span>B.4.1中期_HP滤波后的行业估值</span>
+                    <span class="right-img-three"></span> 
+                </div>               
+            </div> <!-- 图表展示三级表头 -->
+
+            <!-- 图表展示div -->         
+            <div class="DiagramBigDiv" id="diagramDiv17" aria-hidden="true">
+                <!-- 图表div -->
+                <div id="showDiagram17" class="DiagramAreaDiv1">
+                </div>   
+                <div class="DiagramAreaDiv2">
+                    <div>
+                        <div class="table-input"><label>开始日期：</label><input type="date" name="" class="input-date"><input type="button" name="查询" value="查询" class="input-btn">  </div>
+                        <div class="table-input"><label>结束日期：</label><input type="date" name="" class="input-date"><input type="button" name="新建" value="新建" class="input-btn"></div>
+                     </div>
+                     <div class="table-container">
+                        <table>
+                            <tr>
+                                <td style="width:100px; background-color: rgba(242, 242, 242, 1);">日期</td>
+                                <td style="width:350px; background-color: rgba(242, 242, 242, 1);">点评</td>
+                            </tr>
+                            <tr>
+                                <td>2018/07/03</td><td>当天点评内容</td>
+                            </tr>
+                            <tr>
+                                <td>2018/07/03</td><td>当天点评内容</td>
+                            </tr>
+                            <tr>
+                                <td>2018/07/03</td><td>当天点评内容</td>
+                            </tr>
+                            <tr>
+                                <td>2018/07/03</td><td>当天点评内容</td>
+                            </tr>                            
+
+                        </table>
+                     </div>                 
+                </div>             
+            </div> <!-- 图表展示div -->
+
+
+
+
+
+
+
+
+        </div><!-- 周报告正文div -->
+    </div>
+
+
+	<script  inline type="text/javascript" src="scripts/observe.js"></script>
+
+    </body>
+</html>

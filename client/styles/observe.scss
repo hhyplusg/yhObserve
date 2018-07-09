@@ -1,0 +1,304 @@
+@import "layout/base.scss";
+$diagram-title-background-color:rgba(242, 242, 242, 1);
+$left-img-background-color: rgba(215, 215, 215, 1);
+$right-one-background-color: white;
+.title-container{
+    background-color: rgba(242, 242, 242, 1); 
+    text-align:left;
+    line-height: 50px;
+    font-size:15px;
+    margin-bottom:0px;
+    .title{
+        text-align:left;
+        margin-left:20px;
+    }
+    .export{
+        position: absolute;
+        right: 10%;
+        width:70px;
+        font-size:14px;
+        font-family: '微软雅黑 Regular', '微软雅黑';
+        text-align:center;
+        line-height: 25px;
+        margin-top:12px;
+        border: 1px solid #CCCCCC;
+    }
+}
+
+.SystemDIV{
+    width:87%;margin-left:auto;margin-right:auto;
+    text-align:center;vertical-align: middle;
+    background-color: rgba(242, 242, 242, 0.4);
+}
+.TitleDIV{
+    width:94%;
+    margin-left:auto;margin-right:auto;
+    /*text-align:center;*/
+    vertical-align: middle;
+}
+.menu-circle{
+    display:inline-block;
+    border:1px solid $left-img-background-color;
+    border-radius:50%;
+    width: 8px;
+    height: 8px;
+    background: white;
+    // margin-left: 40px;
+}
+.MenuLOne{
+    margin-left:20px;
+    margin-top:15px;
+    margin-bottom:10px;
+    /*font-family: '微软雅黑 Bold', '微软雅黑 Regular', '微软雅黑';*/
+    font-weight: 700;
+    font-style: normal;
+    font-size: 12px;
+}
+.MenuLTwo{
+    margin-left:40px;
+    margin-bottom:5px;
+    /*font-family: '微软雅黑 Bold', '微软雅黑 Regular', '微软雅黑';*/
+    font-weight: 700;
+    font-style: normal;
+    font-size: 12px;
+    
+}
+.MenuLThree{
+    margin-left:80px;
+    margin-bottom:5px;
+    font-family: '微软雅黑';
+    font-weight: 100;
+    font-style: normal;
+    font-size: 10px;
+    color: #5A7FB5;
+}
+.MenuLThree input,span{
+        vertical-align: middle;
+}
+.img{
+    vertical-align: middle;
+}
+.DiagramTitleOne{
+    background-color: $diagram-title-background-color; 
+    text-align:left;
+    line-height: 50px;
+    font-size:15px;
+    /*margin-bottom:0px;*/
+    border: 1px solid rgba(215, 215, 215, 1);
+    .left-img-one{
+        display:inline-block;
+        width: 3px;
+        height: 30px;
+        background-color: $right-one-background-color;
+        margin-left: 20px;
+    }
+}
+.DiagramTitleTwo{
+    background-color:white; 
+    text-align:left;
+    line-height: 50px;
+    font-size:15px;
+    border: 1px solid rgba(215, 215, 215, 1);
+    .left-img-two{
+        display:inline-block;
+        width: 3px;
+        height: 30px;
+        background-color: $left-img-background-color;
+        margin-left: 40px;
+    }
+}
+
+.DiagramTitleTwo span{
+    text-align:left;margin-left:20px;
+}
+.DiagramTitleTwo img{
+    margin-left:20px;
+}
+
+.DiagramTitleThree{
+    background-color:white; 
+    text-align:left;
+    line-height: 50px;
+    font-size:15px;
+    border: 1px solid rgba(215, 215, 215, 1);
+}
+.DiagramTitleOne_arrow{
+    background-color: rgba(215, 215, 215, 1); 
+    width:25px;
+    height:25px;
+    // display: inline-block;
+    margin-top:12px;
+    margin-right:20px;
+    vertical-align: middle;
+    float: right;
+    text-align: center;
+    line-height: 25px;
+    .right-img-one{
+        display:inline-block;
+        width: 0px;
+        height: 0px;
+        border-left: 7px solid transparent;
+        border-right: 7px solid transparent;
+        border-top: 10px solid $right-one-background-color;
+    }
+}
+.DiagramTitleThree_arrow{
+    width:30px;
+    height:30px;
+    margin-top:10px;
+    margin-right:20px;
+    vertical-align: middle;
+    float: right;
+    text-align: center;
+    line-height: 25px;
+}
+
+@keyframes arrowRotateDown
+{
+  from {transform:rotate(0deg);}
+  to {transform:rotate(180deg);}
+}
+
+@-webkit-keyframes arrowRotateDown {
+    0% {
+      transform:rotate(0deg);
+    }
+    100% {
+      transform:rotate(180deg);
+    }
+}
+@keyframes arrowRotateUp
+{
+  from {transform:rotate(180deg);}
+  to {transform:rotate(0deg);}
+}
+
+@-webkit-keyframes arrowRotateUp {
+    0% {
+      transform:rotate(180deg);
+    }
+    100% {
+      transform:rotate(0deg);
+    }
+}
+
+.DiagramTitleThree_img{
+    background-color:rgba(242, 242, 242, 1); 
+    text-align:left;
+    line-height: 50px;
+    margin: 10px;
+    position:relative;
+    DiagramTitleThree_arrow1{
+
+    }
+    .left-img-three{
+        display:inline-block;
+        border:10px;
+        border-radius:50%;
+        width: 10px;
+        height: 10px;
+        background: $left-img-background-color;
+        margin-left: 40px;
+    }
+    .right-img-three{
+        display:inline-block;
+        width: 0px;
+        height: 0px;
+        border-left: 7px solid transparent;
+        border-right: 7px solid transparent;
+        border-top: 10px solid $left-img-background-color;
+        position: absolute;
+        right: 20px;
+        top: 40%;
+
+    }
+}
+.DiagramBigDiv{
+    /*width: 100%;*/
+    height: 500px;
+    background-color:white; 
+    overflow: hidden;
+    max-height: 0;
+
+/*                display:table-cell;
+    vertical-align:middle;*/
+    /*text-align: center;*/
+}
+.DiagramAreaDiv1{
+    width: 58%;height: 500px;
+    box-sizing:border-box;
+    /*background-color:green;                  */
+    float: left;
+    padding: 30px;
+}
+.DiagramAreaDiv2{
+    width:38%;height: 500px;
+    box-sizing:border-box;
+    /*background-color:blue;                */
+    
+    float: left;
+    padding: 30px;
+}
+.table-input{
+    padding:5px 10px 0px 0px;
+    font-family: 'Arial Normal', 'Arial';
+    font-weight: 400;
+    font-style: normal;
+    font-size: 13px;
+}
+.table-input label{
+    vertical-align: middle;
+}
+.input-date{
+    border:1px solid rgba(215, 215, 215, 1);
+    height: 30px;
+    margin:0px 10px;
+    vertical-align: middle;
+}
+.input-btn{
+    border:1px solid rgba(215, 215, 215, 1);
+    height: 30px;
+    padding: 0px 10px;
+    vertical-align: middle;
+}
+.table-container{
+    margin-top: 20px;
+    text-align: center;
+    font-family: 'Arial Normal', 'Arial';
+    font-weight: 400;
+    font-style: normal;
+    font-size: 13px;
+}
+.table-container table{
+    margin:auto;
+}
+.table-container table,table tr th, table tr td{
+    border: 1px solid rgba(215, 215, 215, 1);
+    border-collapse: collapse;
+    text-align: center;
+}
+
+.edit-label{
+    text-align: left;margin-bottom: 10px;
+    font-family: 'Arial Normal', 'Arial';
+    font-weight: 400;
+    font-style: normal;
+}
+.edit-textarea{
+    text-align: left; 
+    // textarea{  //为什么写在里面顶用
+    //     width: 400px;height: 200px;color: rgb(153, 153, 153);
+    // }   
+}
+.edit-textarea textarea{  //为什么写在里面顶用
+    width: 500px; height:200px;color: rgb(153, 153, 153);
+}
+.edit-btn{
+    text-align: left;
+}
+
+.horizon-line{
+    height: 0px;
+    border: 1px solid $diagram-title-background-color;
+    margin: 5px 0px;
+}
