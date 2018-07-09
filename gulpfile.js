@@ -133,24 +133,10 @@ gulp.task('jshint', function () {
     .pipe($.jshint.reporter('fail'));
 });
 
-// gulp.task('scripts', () => {
-//   const details =  fs.readAsync('views/data/path-detail.json','json');
-//   const demos = details.demos;
-//   function rollup(demo){
-//     gulp.src(`client/scripts/${demo.js}`)
-//     .pipe($.plumber())  //自动处理全部错误信息防止因为错误而导致 watch 不正常工作
-//     .pipe($.sourcemaps.init({loadMaps:true})) 
-//     .pipe($.babel())
-//     .pipe(webpack(webpackConfig))
-//     .pipe($.sourcemaps.write('./'))
-//     .pipe(gulp.dest(`.tmp/scripts/${demo.js}`))
-//     .pipe(browserSync.reload({stream: true}));
-//   }
-//   return demos.forEach(rollup);    
-// });
+
 
 gulp.task('scripts', () => {
-  return gulp.src('client/scripts/observe.js')
+  return gulp.src('client/scripts/*.js')
     .pipe($.plumber())  //自动处理全部错误信息防止因为错误而导致 watch 不正常工作
     .pipe($.sourcemaps.init({loadMaps:true})) 
     .pipe($.babel())
@@ -159,33 +145,6 @@ gulp.task('scripts', () => {
     .pipe(gulp.dest('.tmp/scripts/'))
     .pipe(browserSync.reload({stream: true}));
 });
-
-// gulp.task('scripts', async () => {
-//   const details = await fs.readAsync('views/data/path-detail.json','json');
-//   const demos = details.demos;
-//   async function rollupOneJs(demo) {
-//     const bundle = await rollup({
-//       input:`client/scripts/${demo.js}`,
-//       plugins:[
-//         babel({
-//           exclude:'node_modules/**'
-//         }),
-//         nodeResolve({
-//           jsnext:true,
-//         })
-//       ]
-//     });
-
-//     await bundle.write({
-//         file: `.tmp/scripts/${demo.js}`,
-//         format: 'iife',
-//         sourcemap: true
-//     });
-//   }
-
-//   await demos.forEach(rollupOneJs);
-//   browserSync.reload();
-// });
 
 
 

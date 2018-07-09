@@ -1,7 +1,5 @@
 var webpack = require('webpack');
 var path = require('path');
-var HtmlWebpackPlugin = require('html-webpack-plugin');
-
 
 // https://blog.csdn.net/maomaolaoshi/article/details/78741007
 // 打包思路：可以把库文件打包在一个文件中；把公共不变文件打包到一个文件中
@@ -9,25 +7,23 @@ var HtmlWebpackPlugin = require('html-webpack-plugin');
 // webpack在gulpfile中引用，则读取不到插件
 module.exports = {
     // mode: "development", 
-    devtool: 'eval-source-map',
+    devtool: 'cheap-module-eval-source-map',
     entry:
     {
         'observe':['./client/scripts/observe.js'],
+        'page':['./client/scripts/page.js']
     },
    
     output: {
         path: path.join(__dirname, '.tmp/'),  //这儿好像没起作用
         filename: '[name].js', //输出文件名，[name].js默认是main.js。如果指定则是指定名
-        publicPath: '.tmp/',
+        publicPath: '/tmp/',
         chunkFilename: "[chunkhash].js"
     },
     module: {
         rules:[
              {
-                test: /\.jsx?$/,
-                include: [
-                    path.resolve(__dirname, "app")
-                ],
+                test: /\.js|\.jsx$/,
                 exclude: [
                     path.resolve(__dirname, "node_modules")
                 ],
@@ -38,27 +34,47 @@ module.exports = {
              },
              {
                 test: /\.css$/,
-                loader: "style!css"
+                exclude: [
+                    path.resolve(__dirname, "node_modules")
+                ],
+                loader: 'style-loader!css-loader?modules&importLoaders&localIdentName=[name]__[local]__[hash:base64:5]!sass-loader?sourceMap=true&sourceMapContents=true',            
              },
              {
                 test: /\.json?$/,
                 loader: 'json'
              },
              {
-                test: /\.less/,
-                loader: 'style-loader!css-loader!less-loader'
-             }
-            //  {
-            //     test: /\.html$/,
-            //     use: [
-            //         "htmllint-loader",
-            //         {
-            //             loader: "html-loader",
-            //             options: {
-            //             }
-            //         }
-            //     ]
-            // },
+                test:  /\.scss$/,  
+                exclude: [
+                    path.resolve(__dirname, "node_modules")
+                ],
+                use: [
+                    {  
+                        loader: 'style-loader'   // 将 JS 字符串生成为 style 节点
+                    },
+                    {
+                        loader: 'css-loader',  // 将 CSS 转化成 CommonJS 模块
+                    },
+                    {
+                        loader: 'sass-loader',  // 将 Sass 编译成 CSS
+                        options: { 
+                            sourceMap:true  ,
+                            sourceMapContents:true
+                        }
+                    }
+                ]
+            },
+             {
+                test: /\.html$/,
+                use: [
+                    "htmllint-loader",
+                    {
+                        loader: "html-loader",
+                        options: {
+                        }
+                    }
+                ]
+            }
         ]      
     },
      resolve: {
@@ -67,7 +83,6 @@ module.exports = {
         extensions: [".js", ".json", ".jsx", ".css"],
     },
     plugins: [
-
 
     ],
     // watch: true
