@@ -177,8 +177,8 @@ function drawChart(){
 	// 	console.log(res);
 	// });	
 
-
-	$.getJSON('https://data.jianshukeji.com/jsonp?filename=json/usdeur.json&callback=?', function (data) {
+	$.getJSON('../lib/data1.json',function (data) {
+	// $.getJSON('https://data.jianshukeji.com/jsonp?filename=json/usdeur.json&callback=?', function (data) {
 		var startDate = new Date(data[data.length - 1][0]), // Get year of last data point
 				minRate = 1,
 				maxRate = 0,
@@ -517,8 +517,8 @@ function drawChart2(){
 		});
 	};
 	$.each(names, function (i, name) {
-	
-			$.getJSON('https://data.jianshukeji.com/jsonp?filename=json/' + name.toLowerCase() + '-c.json&callback=?',    function (data) {
+			$.getJSON('../lib/data2.json',    function (data) {
+			// $.getJSON('https://data.jianshukeji.com/jsonp?filename=json/' + name.toLowerCase() + '-c.json&callback=?',    function (data) {
 				
 					seriesOptions[i] = {
 							name: name,
@@ -539,7 +539,8 @@ function drawChart2(){
  //基础表实现双轴
 function drawChart3(){
 	console.log("开始drawChart-3-");
-	$.getJSON('https://data.jianshukeji.com/jsonp?filename=json/usdeur.json&callback=?', function (data) {
+	$.getJSON('../lib/data3.json', function (data) {
+	// $.getJSON('https://data.jianshukeji.com/jsonp?filename=json/usdeur.json&callback=?', function (data) {
 		var startDate = new Date(data[data.length - 1][0]), // Get year of last data point
 				minRate = 1,
 				maxRate = 0,
