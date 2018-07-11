@@ -230,18 +230,22 @@ $background-color: white;
     box-sizing:border-box;
     /*background-color:green;                  */
     float: left;
-    padding: 30px;
+    padding: 20px;
 }
 .DiagramAreaDiv2{
-    width:38%;height: 500px;
+    width:42%;
+    height: 500px;
     box-sizing:border-box;
     /*background-color:blue;                */
     
     float: left;
-    padding: 30px;
+    padding: 20px 20px 20px 0px;
 }
 .table-input{
-    padding:5px 10px 0px 0px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding:5px 0px 0px 0px;
     font-family: 'Arial Normal', 'Arial';
     font-weight: 400;
     font-style: normal;
@@ -253,8 +257,9 @@ $background-color: white;
 .input-date{
     border:1px solid rgba(215, 215, 215, 1);
     height: 30px;
-    margin:0px 10px;
+    // margin:0px 10px;
     vertical-align: middle;
+    width: 120px
 }
 .input-btn{
     border:1px solid rgba(215, 215, 215, 1);
@@ -306,6 +311,42 @@ $background-color: white;
 
 #create-comment-container{
     display: none;
+    .comment-box{
+        .title{
+            border-bottom:1px solid $left-img-background-color; 
+            padding: 10px;
+            height: 15%;
+        }
+        .input{
+            padding: 10px 30px;
+            height: 70%;
+            textarea{
+                border-radius: 10px; 
+                width: 100%;
+                height: 80%;
+                border:1px solid $left-img-background-color;
+            }
+        }
+        .button{
+            text-align: right;
+            position: absolute;
+            bottom: 0px;
+            right: 0px;
+            padding: 10px 30px 10px 10px;
+            width: 100%;
+            border-top:1px solid $left-img-background-color;
+            height: 15%;
+
+            button{
+                padding: 0px 10px;
+            }
+            .confirm{
+                color: white;
+                background-color: $left-img-background-color;
+            }
+        }
+
+    }
 }
 
 .comment-overlay-shadow {
@@ -325,8 +366,8 @@ $background-color: white;
     z-index: 60;
     font-size: 15px;
     opacity: 1;
-    height: 40%;
-    bottom: 30%;
+    height: 50%;
+    bottom: 25%;
     width: 50%;
     left: 25%;
     background: $background-color;
