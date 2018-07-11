@@ -36,7 +36,7 @@ $(function(){
 
 //基础表单轴
 function drawChart(){
-	console.log("开始drawChart-1111");
+	console.log("开始drawChart-1113");
 	//获取数据
 	// $.get('http://172.16.6.26:9001/ds/yhapi?service=yhig.StrategicObserv&method=IndicatorQuery&p={appid:"6F8411ADF7E20006E053AC10521FB31A",indicator_id:"0001",start_date:"20180101",end_date:"20180622"}',function(res){
 	// 	console.log('读取到的数据为----：\n');
@@ -44,40 +44,54 @@ function drawChart(){
 	// });	
 
 	// $.getJSON('../lib/data1.json',function (data) {
-	$.getJSON('https://data.jianshukeji.com/jsonp?filename=json/usdeur.json&callback=?', function (data) {
+		// $.getJSON('https://data.jianshukeji.com/jsonp?filename=json/usdeur.json&callback=?',function (data) {
+	$.getJSON('dataForOne.json',function (dataYH) {
+		// console.log("图1的读取数据为：\n");
+		// console.log(dataYH);
+		var data=dataYH['obj'];
+		console.log("图1的data为：\n");
 		console.log(data);
-		var startDate = new Date(data[data.length - 1][0]), // Get year of last data point
-				minRate = 1,
-				maxRate = 0,
-				startPeriod,
-				date,
-				rate,
-				index;
-		startDate.setMonth(startDate.getMonth() - 3); // a quarter of a year before last data point
-		startPeriod = Date.UTC(startDate.getFullYear(), startDate.getMonth(), startDate.getDate());
-		for (index = data.length - 1; index >= 0; index = index - 1) {
-				date = data[index][0]; // data[i][0] is date
-				rate = data[index][1]; // data[i][1] is exchange rate
-				if (date < startPeriod) {
-						break; // stop measuring highs and lows
-				}
-				if (rate > maxRate) {
-						maxRate = rate;
-				}
-				if (rate < minRate) {
-						minRate = rate;
-				}
+
+		for (var index = 0;index <= data.length - 1;  index = index + 1) {
+			var a=data[index][0]*1000;
+			data[index][0]=a;
 		}
+
+		console.log("图1的data转换后为：\n");
+		console.log(data);
+
 		// Create the chart
+		Highcharts.setOptions({
+		    global: {
+		        useUTC: false
+		    },
+		    lang:{
+				contextButtonTitle:"图表导出菜单",
+				decimalPoint:".",
+				downloadJPEG:"下载JPEG图片",
+				downloadPDF:"下载PDF文件",
+				downloadPNG:"下载PNG文件",
+				downloadSVG:"下载SVG文件",
+				drillUpText:"返回 {series.name}",
+				loading:"加载中",
+				months:["一月","二月","三月","四月","五月","六月","七月","八月","九月","十月","十一月","十二月"],
+				noData:"没有数据",
+				numericSymbols: [ "千" , "兆" , "G" , "T" , "P" , "E"],
+				printChart:"打印图表",
+				resetZoom:"恢复缩放",
+				resetZoomTitle:"恢复图表",
+				shortMonths: [ "Jan" , "Feb" , "Mar" , "Apr" , "May" , "Jun" , "Jul" , "Aug" , "Sep" , "Oct" , "Nov" , "Dec"],
+				thousandsSep:",",
+				weekdays: ["星期一", "星期二", "星期三", "星期三", "星期四", "星期五", "星期六","星期天"]
+		}
+
+		});
 		var mychart =Highcharts.stockChart('showDiagram1', {
 			credits: {
 				enabled: false
 			},
 			scrollbar: {
-		        enabled: false
-		    },
-		    navigator: {
-		        enabled: false
+		        enabled: true
 		    },
 		    legend: {
 		        enabled: true,
@@ -95,8 +109,40 @@ function drawChart(){
 		        // maxHeight:10
 		    },
 			rangeSelector: {
-				enabled: false,
+				enabled: true,
 				selected: 1,
+				buttonTheme: { // styles for the buttons
+		            fill: 'none',
+		            stroke: 'none',
+		            'stroke-width': 0,
+		            r: 20,
+		            style: {
+		                color: 'red',
+		                fontWeight: 'bold'
+		            },
+		            states: {
+		                hover: {
+		                },
+		                select: {
+		                    fill: '#039',
+		                    style: {
+		                        color: 'white'
+		                    }
+		                }
+		                // disabled: { ... }
+		            }
+		        },
+		        inputBoxBorderColor: 'gray',
+		        inputBoxWidth: 120,
+		        inputBoxHeight: 18,
+		        inputStyle: {
+		            color: '#039',
+		            fontWeight: 'bold'
+		        },
+		        labelStyle: {
+		            color: 'silver',
+		            fontWeight: 'bold'
+		        },
 			},
 			exporting: {
 			    enabled: false
@@ -119,7 +165,6 @@ function drawChart(){
 		                    //     'Control: ' + event.ctrlKey + '\n' +
 		                    //       'Shift: ' + event.shiftKey + '\n');
 		                    console.log('zhixingle点击函数，看看土包更新');
-		                    // drawChart2();
 		                    let cdiv=document.getElementById('ChildDiv');
 		                    if(cdiv!=null){  
 						        let p = cdiv.parentNode;  
@@ -234,12 +279,57 @@ function drawChart(){
 		            }
 		        }
 		    },
+		    tooltip: {
+				split: false,
+				dateTimeLabelFormats: {
+						millisecond: '%H:%M:%S.%L',
+						second: '%H:%M:%S',
+						minute: '%H:%M',
+						hour: '%H:%M',
+						day: '%m-%d',
+						year: '%Y-%m-%d',
+				},
+				headerFormat: '{point.x:%Y-%m-%d}<br>'
+			},
+			navigator: {
+				enabled: true,
+				xAxis: {
+					dateTimeLabelFormats: {
+							millisecond: '%H:%M:%S.%L',
+							second: '%H:%M:%S',
+							minute: '%H:%M',
+							hour: '%H:%M',
+							day: '%m-%d',
+							week: '%Y-%m-%d',
+				            month: '%Y-%m',
+				            year: '%Y'
+					}
+				}
+			},
 
 		    xAxis: {				
 		        title: {
 		            enabled: true,
 		            // text: '2本周换手率历史分位'
 		        },
+		        type: 'datetime',
+		        // tickInterval: 24*3600*1000,
+				dateTimeLabelFormats: {
+					millisecond: '%H:%M:%S.%L',
+					second: '%H:%M:%S',
+					minute: '%H:%M',
+					hour: '%H:%M',
+					day: '%Y-%M-%D',
+		            week: '%Y-%m-%d',
+		            month: '%Y-%m',
+		            year: '%Y'
+				},
+				// crosshair: {
+				// 	label: {
+				// 			format: '%Y-%m-%d'
+				// 	}
+				// }
+
 		        // labels: {
 		        // 	formatter: function() {
 		        //      	return Math.round(this.value*100) + '%';
@@ -257,7 +347,7 @@ function drawChart(){
 					// text: '这个是Y轴'
 				},
 				plotLines: [{
-						value: minRate,
+						value: 0.25,
 						color: 'gray',
 						dashStyle: 'shortdash',
 						width: 2,
@@ -265,7 +355,7 @@ function drawChart(){
 								text: '0.25'
 						}
 				}, {
-						value: maxRate,
+						value: 0.4,
 						color: 'red',
 						dashStyle: 'shortdash',
 						width: 2,
