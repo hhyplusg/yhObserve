@@ -1,6 +1,3 @@
-//  export default function test(){
-//     console.log('test');
-// }
 
 import {EventObject,getUrlParams,isEmptyObj} from './api';
 
@@ -96,8 +93,10 @@ import {EventObject,getUrlParams,isEmptyObj} from './api';
 			// }
 	// 	});
 	// });
+    let diagramTitleThreeTength = expanders.length;
+    
 
-	for(let i=1;i<6;i++){
+	for(let i=1;i<=diagramTitleThreeTength;i++){
 		$("#menuThreeSelected"+i).click(function() {
 			let menuThreeCheck = $("#menuThreeCheck"+i);
 			let currentState = menuThreeCheck.attr('checked');
@@ -110,6 +109,7 @@ import {EventObject,getUrlParams,isEmptyObj} from './api';
 			$("html, body").animate({
 				scrollTop: $("#diagramThree"+i).offset().top 
 			}, {duration: 500,easing: "swing"});
+            // console.log($("#diagramThree"+i).offset().top );
 
 			let diagramThree = $("#diagramThree"+i);
 			let img = diagramThree.find('.right-img-three').get(0);
