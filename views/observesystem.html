@@ -281,7 +281,8 @@
                 <div class="DiagramAreaDiv2">
                     <div>
                         <div class="table-input"><label>开始日期：</label><input type="date" name="" class="input-date"><input type="button" name="查询" value="查询" class="input-btn">  </div>
-                        <div class="table-input"><label>结束日期：</label><input type="date" name="" class="input-date"><input type="button" name="新建" value="新建" class="input-btn"></div>
+
+                        <div class="table-input"><label>结束日期：</label><input type="date" name="" class="input-date"><input type="button" name="新建" value="新建" class="input-btn create-comment-btn"></div>
                      </div>
                      <div class="table-container">
                         <table>
@@ -910,16 +911,30 @@
                      </div>                 
                 </div>             
             </div> <!-- 图表展示div -->
-
-
-
-
-
-
-
-
         </div><!-- 周报告正文div -->
+
+        <div id="create-comment-container">
+            <div class="comment-overlay-shadow" id="comment-overlay-shadow">
+            </div>
+
+            <div id="comment-box" class="comment-box">  
+                <div>
+                    <h3><span>新建点评</span><span><label>x</label><label>x</label></span></h3> 
+                </div>
+                <div>
+                    <h4>点评备注：</h4>
+                    <textarea placeholder="点评输入备注内容..."></textarea>
+                </div>
+                <div>
+                    <button id="comment-cancel" class="comment-page-btn">取消</button>
+                    <button id="comment-confirm" class="comment-page-btn">确定</button>
+                </div>
+            </div>
+        </div>
+
     </div>
+
+
 
     <script  inline type="text/javascript" src="scripts/page.js"></script>
 	<script  inline type="text/javascript" src="scripts/observe.js"></script>

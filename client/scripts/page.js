@@ -83,6 +83,14 @@ import {EventObject,getUrlParams,isEmptyObj} from './api';
 		});
 	}
 
+    $(".comment-page-btn").click(function(){
+        $("#create-comment-container").css('display','none');
+    });
+    $(".create-comment-btn").click(function(){
+        $("#create-comment-container").css('display','block');
+    });
+    
+   
 
 	//checkbox对应图标展开操作
 	// $("input[id^='menuTwoCheck']").each(function(){

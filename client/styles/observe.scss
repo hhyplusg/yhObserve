@@ -2,6 +2,7 @@
 $diagram-title-background-color:rgba(242, 242, 242, 1);
 $left-img-background-color: rgba(215, 215, 215, 1);
 $right-one-background-color: white;
+$background-color: white;
 .title-container{
     background-color: rgba(242, 242, 242, 1); 
     text-align:left;
@@ -301,4 +302,33 @@ $right-one-background-color: white;
     height: 0px;
     border: 1px solid $diagram-title-background-color;
     margin: 5px 0px;
+}
+
+#create-comment-container{
+    display: none;
+}
+
+.comment-overlay-shadow {
+    position: fixed;
+    z-index: 1;
+    opacity: 1;
+    transition: opacity .3s ease-in-out;
+    background: rgba(0,0,0,.7);
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+}
+
+.comment-box {
+    position: fixed;
+    z-index: 60;
+    font-size: 15px;
+    opacity: 1;
+    height: 40%;
+    bottom: 30%;
+    width: 50%;
+    left: 25%;
+    background: $background-color;
+    overflow: visible;
 }
