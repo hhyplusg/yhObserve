@@ -25,6 +25,10 @@ $background-color: white;
         border: 1px solid #CCCCCC;
     }
 }
+// .svg{
+//     font-size:130px;
+//     color: red;
+// }
 
 .SystemDIV{
     width:87%;margin-left:auto;margin-right:auto;
@@ -221,19 +225,34 @@ $background-color: white;
     overflow: hidden;
     max-height: 0;
 
+    .spanExportButton{
+        position:relative;
+        text-align:left; 
+        display:block;
+        top:75px;
+        left:65px; 
+        font-family: 'Arial Normal', 'Arial';
+        font-weight: 400;
+        font-style: normal;
+        font-size: 10px;
+        z-index:99999;
+        color: gray;
+        cursor:pointer; 
+    }
+
 /*                display:table-cell;
     vertical-align:middle;*/
     /*text-align: center;*/
 }
 .DiagramAreaDiv1{
-    width: 58%;height: 500px;
+    width: 60%;height: 500px;
     box-sizing:border-box;
     /*background-color:green;                  */
     float: left;
     padding: 20px;
 }
 .DiagramAreaDiv2{
-    width:42%;
+    width:40%;
     height: 500px;
     box-sizing:border-box;
     /*background-color:blue;                */

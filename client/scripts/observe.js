@@ -36,7 +36,7 @@ $(function(){
 
 //基础表单轴
 function drawChart(){
-	console.log("开始drawChart-1113");
+	console.log("开始drawChart-1");
 	//获取数据
 	// $.get('http://172.16.6.26:9001/ds/yhapi?service=yhig.StrategicObserv&method=IndicatorQuery&p={appid:"6F8411ADF7E20006E053AC10521FB31A",indicator_id:"0001",start_date:"20180101",end_date:"20180622"}',function(res){
 	// 	console.log('读取到的数据为----：\n');
@@ -44,21 +44,21 @@ function drawChart(){
 	// });	
 
 	// $.getJSON('../lib/data1.json',function (data) {
-		// $.getJSON('https://data.jianshukeji.com/jsonp?filename=json/usdeur.json&callback=?',function (data) {
+		// $.getJSON('https://data.jianshukeji.com/jsonp?filename=json/usdeur.json&callback=?',function (dataYH) {
 	$.getJSON('dataForOne.json',function (dataYH) {
 		// console.log("图1的读取数据为：\n");
 		// console.log(dataYH);
 		var data=dataYH['obj'];
-		console.log("图1的data为：\n");
-		console.log(data);
+		// console.log("图1的data为：\n");
+		if (!data) {data=dataYH;}
+		// console.log(data);
 
 		for (var index = 0;index <= data.length - 1;  index = index + 1) {
 			var a=data[index][0]*1000;
 			data[index][0]=a;
 		}
-
-		console.log("图1的data转换后为：\n");
-		console.log(data);
+		// console.log("图1的data转换后为：\n");
+		// console.log(data);
 
 		// Create the chart
 		Highcharts.setOptions({
@@ -99,60 +99,75 @@ function drawChart(){
 		        // backgroundColor: '#FCFFC5',
 		        // borderColor: 'black',
 		        // borderWidth: 2,
+		        color: 'gray',
 		        layout: 'vertical',
 		        verticalAlign: 'top',
-		        x: -10,
-				y: 10,
-				floating: true
+		        x: 10,
+				y: 20,
+				floating: true,
+				itemStyle:{
+					"color": "black", 
+					"cursor": "pointer", 
+					"fontSize": "12px", 
+					// "fontWeight": "bold"
+				}
 		        // shadow: true,
 		        // itemWidth: 80,
 		        // maxHeight:10
 		    },
 			rangeSelector: {
 				enabled: true,
-				selected: 1,
-				buttonTheme: { // styles for the buttons
-		            fill: 'none',
-		            stroke: 'none',
-		            'stroke-width': 0,
-		            r: 20,
-		            style: {
-		                color: 'red',
-		                fontWeight: 'bold'
-		            },
-		            states: {
-		                hover: {
-		                },
-		                select: {
-		                    fill: '#039',
-		                    style: {
-		                        color: 'white'
-		                    }
-		                }
-		                // disabled: { ... }
-		            }
-		        },
+				selected: 5,
+				// buttonTheme: { // styles for the buttons
+		  //           fill: 'none',
+		  //           stroke: 'none',
+		  //           'stroke-width': 0,
+		  //           // r: 20,
+		  //           width: 22,
+    //     			// height: 20,
+		  //           style: {
+		  //               color: 'gray',
+		  //               fontWeight: 'bold',
+		  //               fontSize:12,
+		          
+		  //           },
+		  //           states: {
+		  //               hover: {
+		  //               },
+		  //               select: {
+		  //                   fill: '#039',
+		  //                   style: {
+		  //                       color: 'white'
+		  //                   }
+		  //               }
+		  //               // disabled: { ... }
+		  //           }
+		  //       },
 		        inputBoxBorderColor: 'gray',
-		        inputBoxWidth: 120,
+		        inputBoxWidth: 90,
 		        inputBoxHeight: 18,
 		        inputStyle: {
-		            color: '#039',
-		            fontWeight: 'bold'
+		            color: 'black',
+		            // fontWeight: 'bold'
 		        },
 		        labelStyle: {
-		            color: 'silver',
-		            fontWeight: 'bold'
+		            color: 'gray',
+		            fontWeight: 'bold',
+		            fontSize:10
 		        },
 			},
 			exporting: {
-			    enabled: false
+			    enabled: false,
+			    scale: 1,
+			    sourceWidth: 700,
+        		sourceHeight: 500
 			},
 			title: {
 				text: '博弈/存量指标',
 				style: {
 							color: 'black',
 							fontWeight: 'bold',
-							fontSize: 20
+							fontSize: '18px'
 						},
 				margin: 30
 			},
@@ -238,8 +253,8 @@ function drawChart(){
 									pointFormat: 'PE频率: <b>{point.y:.1f} 百万</b>'
 							},
 							series: [{
-									name: 'PE频率',
-									data: [
+										name: 'PE频率',
+										data: [
 											['0', 24.25],
 											['15', 23.50],
 											['30', 21.51],
@@ -260,21 +275,17 @@ function drawChart(){
 											['255', 9.73],
 											['270', 9.27],
 											['290', 8.87]
-									],
-									dataLabels: {
+										],
+										dataLabels: {
 											enabled: true,
 											rotation: -90,
 											color: '#FFFFFF',
 											align: 'right',
 											format: '{point.y:.1f}', // :.1f 为保留 1 位小数
 											y: 10
-									}
-							}]
-					});
-
-
-
-
+										}
+									}]
+							});
 		                }
 		            }
 		        }
@@ -319,7 +330,7 @@ function drawChart(){
 					second: '%H:%M:%S',
 					minute: '%H:%M',
 					hour: '%H:%M',
-					day: '%Y-%M-%D',
+					day: '%Y-%m-%d',
 		            week: '%Y-%m-%d',
 		            month: '%Y-%m',
 		            year: '%Y'
@@ -330,12 +341,13 @@ function drawChart(){
 				// 	}
 				// }
 
-		        // labels: {
+		        labels: {
+		        	// rotation: -10
 		        // 	formatter: function() {
 		        //      	return Math.round(this.value*100) + '%';
 		        //      	// return Highcharts.numberFormat(this.value.percentage,2)+ '%';
 		        //  	}
-		        // },
+		        },
 		        // startOnTick: true,
 		        // endOnTick: true,
 		        // showLastLabel: true
@@ -347,14 +359,16 @@ function drawChart(){
 					// text: '这个是Y轴'
 				},
 				plotLines: [{
+						zIndex: 999,
 						value: 0.25,
-						color: 'gray',
+						color: 'red',
 						dashStyle: 'shortdash',
 						width: 2,
 						label: {
 								text: '0.25'
 						}
 				}, {
+						zIndex: 999,
 						value: 0.4,
 						color: 'red',
 						dashStyle: 'shortdash',
@@ -374,8 +388,17 @@ function drawChart(){
 			}]
 		});
 
-		// //图标转换成图片
-		// var svg = mychart.getSVG()
+	});
+	$("#testExport").click(function(event){
+		console.log("点击了导出图片！");
+		var chart = $('#showDiagram1').highcharts();
+		$('#showDiagram1').find('.svg').css("color","red");
+		chart.exportChart({
+			exportFormat : 'PNG'
+		});
+
+		//图标转换成图片
+		// var svg = chart.getSVG()
 		// 		.replace(/</g, '\n<') // make it slightly more readable
 		// 		.replace(/>/g, '>');
 				
@@ -383,13 +406,8 @@ function drawChart(){
 
 		// $("#showDiagram1").html(svg);
 
-		// canvg();
-
-		// var imgSrc = $("#showDiagram1").children("canvas")[0].toDataURL("image/png");
-		// console.log(imgSrc);
-		// $("#showDiagram1").html('<img src='+imgSrc+' />');
-
 	});
+
 }
 
 

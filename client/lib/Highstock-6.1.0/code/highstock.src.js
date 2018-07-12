@@ -4433,7 +4433,7 @@
 
 		            fontFamily: '"Lucida Grande", "Lucida Sans Unicode", ' +
 		                'Arial, Helvetica, sans-serif',
-		            fontSize: '12px'
+		            fontSize: '30px'
 
 		        }, style);
 		        return this.style;
