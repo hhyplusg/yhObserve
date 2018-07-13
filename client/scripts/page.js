@@ -90,7 +90,17 @@ import {EventObject,getUrlParams,isEmptyObj} from './api';
         $("#create-comment-container").css('display','block');
     });
     
-   
+   $(".menuOneCheck,.menuTwoCheck").click(function(){
+	    let menuLOne = $(this).parent().parent();
+	    let currentState = $(this).attr('checked');
+		if (currentState) {			
+			menuLOne.find('input').attr('checked',false);
+			menuLOne.find('input').removeAttr("checked");
+		}else{
+			menuLOne.find('input').attr('checked',true);
+			menuLOne.find('input').prop("checked","checked");
+		}
+    });
 
 	//checkbox对应图标展开操作
 	// $("input[id^='menuTwoCheck']").each(function(){
