@@ -1811,24 +1811,23 @@ function drawChart_B22(){
 
 function drawChart_B23(){
 	console.log("开始drawChart-B23-");
-	// <table width="698" border="0" cellpadding="0" cellspacing="0" id="tabProduct">  
-	// 			    <tr><td width="30" height="30" align="center" bgcolor="#EFEFEF"  EditType="TextBox" style="font-weight:bold;"></td></tr></table>
 
-	var contentSet=['基准指数','本周涨跌幅','上周涨跌幅','本周年化换手率','上周年化换手率','本周换手率分位','上周换手率分位'];
+	var contentSet=['上证综指','-0.32%','0.6%','1.17','1.35','31.83%','44.17%'];
+	// var contentSet=['基准指数','本周涨跌幅','上周涨跌幅','本周年化换手率','上周年化换手率','本周换手率分位','上周换手率分位'];
 	var row_obj=$("<tr></tr>");
-	var col_td=$("<td align='center' bgcolor='#FFFFFF' style='width:80px'></td>");
+	var col_td=$("<td style='width:80px;font-Weight:bold'></td>");
 	col_td.html('基准指数');row_obj.append(col_td);
-	col_td=$("<td align='center' bgcolor='#FFFFFF' style='width:80px'></td>");
+	col_td=$("<td style='width:80px;font-Weight:bold'></td>");
 	col_td.html('本周涨跌幅');row_obj.append(col_td);
-	col_td=$("<td align='center' bgcolor='#FFFFFF' style='width:80px'></td>");
+	col_td=$("<td style='width:80px;font-Weight:bold'></td>");
 	col_td.html('上周涨跌幅');row_obj.append(col_td);
-	col_td=$("<td align='center' bgcolor='#FFFFFF' style='width:100px'></td>");
+	col_td=$("<td style='width:120px;font-Weight:bold'></td>");
 	col_td.html('本周年化换手率');row_obj.append(col_td);
-	col_td=$("<td align='center' bgcolor='#FFFFFF' style='width:100px'></td>");
+	col_td=$("<td style='width:120px;font-Weight:bold'></td>");
 	col_td.html('上周年化换手率');row_obj.append(col_td);
-	col_td=$("<td align='center' bgcolor='#FFFFFF' style='width:100px'></td>");
+	col_td=$("<td style='width:120px;font-Weight:bold'></td>");
 	col_td.html('本周换手率分位');row_obj.append(col_td);
-	col_td=$("<td align='center' bgcolor='#FFFFFF' style='width:100px'></td>");
+	col_td=$("<td style='width:120px;font-Weight:bold'></td>");
 	col_td.html('上周换手率分位');row_obj.append(col_td);
 
 	var row_obj2=$("<tr></tr>");
@@ -1837,9 +1836,9 @@ function drawChart_B23(){
 		col_td.html(contentSet[i]);
 		row_obj2.append(col_td);
 	}
-	
-	$('#showDiagram12').append(row_obj);
-	$('#showDiagram12').append(row_obj2);
+
+	$('#showTable').append(row_obj);
+	$('#showTable').append(row_obj2);
 
 
 

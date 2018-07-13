@@ -25,6 +25,8 @@ $background-color: white;
         border: 1px solid #CCCCCC;
     }
 }
+
+
 // .svg{
 //     font-size:130px;
 //     color: red;
@@ -265,26 +267,16 @@ $background-color: white;
     box-sizing:border-box;
     /*background-color:green;                  */
     float: left;
-    padding: 20px;
-
-    table{  
-        border-collapse:collapse;
-        border-spacing:0; 
-        border: 2px solid #CCCCCC; 
-
-    }
-    tr{
-        border-collapse:collapse;
-        border-spacing:0;
-    }
-    td{
-        // border-collapse:collapse;
-        // border-spacing:0; 
-        // border-bottom: 1px solid #CCCCCC;  
-        // border-top: 1px solid #CCCCCC;
-        // width:120px; 
+    padding: 20px;    
+}
+.diagramTable{
+    border-collapse:collapse; 
+    tr td{
+        border-bottom: 1px solid #CCCCCC;  
+        border-top: 1px solid #CCCCCC;        
         color:blue;
         font-size:14px;
+        text-align: center;
     }
 }
 .DiagramAreaDiv2{
@@ -330,14 +322,24 @@ $background-color: white;
     font-style: normal;
     font-size: 13px;
 }
-.table-container table{
-    margin:auto;
+.table-container {
+    table{
+        margin:auto;
+        border-collapse: collapse;
+    }
+    table tr{
+        border: 1px solid rgba(215, 215, 215, 1);
+        // border-collapse: collapse;
+        text-align: center;
+    }
+    table tr td{
+        border: 1px solid rgba(215, 215, 215, 1);
+        // border-collapse: collapse;
+        text-align: center;
+    }
+    
 }
-.table-container table,table tr th, table tr td{
-    border: 1px solid rgba(215, 215, 215, 1);
-    border-collapse: collapse;
-    text-align: center;
-}
+
 
 .edit-label{
     text-align: left;margin-bottom: 10px;
