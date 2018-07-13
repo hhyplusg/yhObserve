@@ -1,6 +1,6 @@
 @import "layout/base.scss";
 $diagram-title-background-color:rgba(242, 242, 242, 1);
-$left-img-background-color: rgba(215, 215, 215, 1);
+$left-img-background-color: #d7d7d7;
 $right-one-background-color: white;
 $background-color: white;
 .title-container{
@@ -55,17 +55,24 @@ $background-color: white;
     margin-top:15px;
     margin-bottom:10px;
     /*font-family: '微软雅黑 Bold', '微软雅黑 Regular', '微软雅黑';*/
-    font-weight: 700;
+    font-weight: 600;
     font-style: normal;
     font-size: 12px;
+    
 }
+.MenuLOne > p .menu-circle{
+        background-color: $left-img-background-color;
+    }
 .MenuLTwo{
     margin-left:20px;
     margin-bottom:5px;
     /*font-family: '微软雅黑 Bold', '微软雅黑 Regular', '微软雅黑';*/
-    font-weight: 700;
+    font-weight: 500;
     font-style: normal;
     font-size: 12px;
+    p{
+        margin: 5px 0px;
+    }
     
 }
 .MenuLThree{
@@ -76,6 +83,12 @@ $background-color: white;
     font-style: normal;
     font-size: 10px;
     color: #5A7FB5;
+    span{
+            cursor: pointer;
+    }
+    span:hover{
+            text-decoration-line: underline;
+    }
 }
 .MenuLThree input,span{
         vertical-align: middle;
