@@ -224,13 +224,14 @@ $background-color: white;
     background-color:white; 
     overflow: hidden;
     max-height: 0;
+    position:relative;
 
     .spanExportButton{
-        position:relative;
+        position:absolute;
         text-align:left; 
         display:block;
-        top:75px;
-        left:65px; 
+        top:48px;
+        left:55%; 
         font-family: 'Arial Normal', 'Arial';
         font-weight: 400;
         font-style: normal;

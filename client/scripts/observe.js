@@ -36,29 +36,21 @@ $(function(){
 
 //基础表单轴
 function drawChart(){
-	console.log("开始drawChart-1");
+	console.log("开始drawChart-123");
 	//获取数据
-	// $.get('http://172.16.6.26:9001/ds/yhapi?service=yhig.StrategicObserv&method=IndicatorQuery&p={appid:"6F8411ADF7E20006E053AC10521FB31A",indicator_id:"0001",start_date:"20180101",end_date:"20180622"}',function(res){
-	// 	console.log('读取到的数据为----：\n');
-	// 	console.log(res);
-	// });	
-
-	// $.getJSON('../lib/data1.json',function (data) {
-		// $.getJSON('https://data.jianshukeji.com/jsonp?filename=json/usdeur.json&callback=?',function (dataYH) {
-	$.getJSON('dataForOne.json',function (dataYH) {
-		// console.log("图1的读取数据为：\n");
-		// console.log(dataYH);
-		var data=dataYH['obj'];
-		// console.log("图1的data为：\n");
-		if (!data) {data=dataYH;}
-		// console.log(data);
-
+	$.getJSON('../lib/dataForOne.json',function (dataYH) {
+		var data=dataYH.obj;
 		for (var index = 0;index <= data.length - 1;  index = index + 1) {
 			var a=data[index][0]*1000;
 			data[index][0]=a;
-		}
-		// console.log("图1的data转换后为：\n");
-		// console.log(data);
+		} 
+
+	// $.getJSON('http://localhost/weekly/IndicatorQuery?indicatorId=0001',function (dataYH) {	
+	// var jsonObject =$.parseJSON(dataYH);
+	// var data=jsonObject.obj;
+	// console.log("图1的obj数据为：\n");
+	console.log(data);
+
 
 		// Create the chart
 		Highcharts.setOptions({
@@ -102,8 +94,8 @@ function drawChart(){
 		        color: 'gray',
 		        layout: 'vertical',
 		        verticalAlign: 'top',
-		        x: 10,
-				y: 20,
+		        x: -40,
+				y: 15,
 				floating: true,
 				itemStyle:{
 					"color": "black", 
@@ -118,19 +110,19 @@ function drawChart(){
 			rangeSelector: {
 				enabled: true,
 				selected: 5,
-				// buttonTheme: { // styles for the buttons
+				buttonTheme: { // styles for the buttons
 		  //           fill: 'none',
 		  //           stroke: 'none',
 		  //           'stroke-width': 0,
 		  //           // r: 20,
 		  //           width: 22,
     //     			// height: 20,
-		  //           style: {
-		  //               color: 'gray',
-		  //               fontWeight: 'bold',
-		  //               fontSize:12,
+		            style: {
+		                // color: 'gray',
+		                // fontWeight: 'bold',
+		                fontSize:13,
 		          
-		  //           },
+		            },
 		  //           states: {
 		  //               hover: {
 		  //               },
@@ -142,18 +134,19 @@ function drawChart(){
 		  //               }
 		  //               // disabled: { ... }
 		  //           }
-		  //       },
+		        },
 		        inputBoxBorderColor: 'gray',
 		        inputBoxWidth: 90,
 		        inputBoxHeight: 18,
 		        inputStyle: {
 		            color: 'black',
 		            // fontWeight: 'bold'
+		            fontSize:13
 		        },
 		        labelStyle: {
 		            color: 'gray',
 		            fontWeight: 'bold',
-		            fontSize:10
+		            fontSize:13
 		        },
 			},
 			exporting: {
@@ -361,7 +354,7 @@ function drawChart(){
 				plotLines: [{
 						zIndex: 999,
 						value: 0.25,
-						color: 'red',
+						color: 'blue',
 						dashStyle: 'shortdash',
 						width: 2,
 						label: {
