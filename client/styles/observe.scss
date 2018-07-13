@@ -96,6 +96,8 @@ $background-color: white;
 .img{
     vertical-align: middle;
 }
+
+
 .DiagramTitleOne{
     background-color: $diagram-title-background-color; 
     text-align:left;
@@ -264,6 +266,26 @@ $background-color: white;
     /*background-color:green;                  */
     float: left;
     padding: 20px;
+
+    table{  
+        border-collapse:collapse;
+        border-spacing:0; 
+        border: 2px solid #CCCCCC; 
+
+    }
+    tr{
+        border-collapse:collapse;
+        border-spacing:0;
+    }
+    td{
+        // border-collapse:collapse;
+        // border-spacing:0; 
+        // border-bottom: 1px solid #CCCCCC;  
+        // border-top: 1px solid #CCCCCC;
+        // width:120px; 
+        color:blue;
+        font-size:14px;
+    }
 }
 .DiagramAreaDiv2{
     width:40%;

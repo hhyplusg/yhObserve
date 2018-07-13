@@ -1706,7 +1706,15 @@ function drawChart_B21(){
         series: [{
         	barWidth:'50%',
 	        data: [5, 4, 4, 3, 2],
-	        type: 'bar'
+	        type: 'bar',
+	        itemStyle: {
+                    normal:{  
+                    color: function (params){
+                        var colorList = ['#ff4844','#9ac3e5','#66ac52','#ffc032','#549bd3','#f47e39'];
+                        return colorList[params.dataIndex];
+                    }
+                },
+            },
 	    }]
     };
     // //set searchedData into option
@@ -1781,7 +1789,15 @@ function drawChart_B22(){
         series: [{
         	barWidth:'50%',
 	        data: [5, 4, 4, 3, 2],
-	        type: 'bar'
+	        type: 'bar',
+	        itemStyle: {
+                    normal:{  
+                    color: function (params){
+                        var colorList = ['#ff4844','#9ac3e5','#66ac52','#ffc032','#549bd3','#f47e39'];
+                        return colorList[params.dataIndex];
+                    }
+                },
+            },
 	    }]
     };
     // //set searchedData into option
@@ -1794,9 +1810,45 @@ function drawChart_B22(){
 }
 
 function drawChart_B23(){
-
+	console.log("开始drawChart-B23-");
 	// <table width="698" border="0" cellpadding="0" cellspacing="0" id="tabProduct">  
 	// 			    <tr><td width="30" height="30" align="center" bgcolor="#EFEFEF"  EditType="TextBox" style="font-weight:bold;"></td></tr></table>
+
+	var contentSet=['基准指数','本周涨跌幅','上周涨跌幅','本周年化换手率','上周年化换手率','本周换手率分位','上周换手率分位'];
+	var row_obj=$("<tr></tr>");
+	var col_td=$("<td align='center' bgcolor='#FFFFFF' style='width:80px'></td>");
+	col_td.html('基准指数');row_obj.append(col_td);
+	col_td=$("<td align='center' bgcolor='#FFFFFF' style='width:80px'></td>");
+	col_td.html('本周涨跌幅');row_obj.append(col_td);
+	col_td=$("<td align='center' bgcolor='#FFFFFF' style='width:80px'></td>");
+	col_td.html('上周涨跌幅');row_obj.append(col_td);
+	col_td=$("<td align='center' bgcolor='#FFFFFF' style='width:100px'></td>");
+	col_td.html('本周年化换手率');row_obj.append(col_td);
+	col_td=$("<td align='center' bgcolor='#FFFFFF' style='width:100px'></td>");
+	col_td.html('上周年化换手率');row_obj.append(col_td);
+	col_td=$("<td align='center' bgcolor='#FFFFFF' style='width:100px'></td>");
+	col_td.html('本周换手率分位');row_obj.append(col_td);
+	col_td=$("<td align='center' bgcolor='#FFFFFF' style='width:100px'></td>");
+	col_td.html('上周换手率分位');row_obj.append(col_td);
+
+	var row_obj2=$("<tr></tr>");
+	for (let i = 0; i < contentSet.length; i++) {		
+		col_td=$("<td align='center' bgcolor='#FFFFFF'></td>");
+		col_td.html(contentSet[i]);
+		row_obj2.append(col_td);
+	}
+	
+	$('#showDiagram12').append(row_obj);
+	$('#showDiagram12').append(row_obj2);
+
+
+
+                // <table width="800" border="0" cellpadding="0" cellspacing="0" class="showTable0">  
+                //     <tr>  
+                //       <td height='30' class="showTable" style="font-weight:bold;"></td>  
+                       
+                //     </tr>          
+                // </table>
 
 }
 
