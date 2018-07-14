@@ -41,7 +41,8 @@ import {EventObject,getUrlParams,isEmptyObj} from './api';
     
 
 	for(let i=1;i<=diagramTitleThreeTength;i++){
-		$("#menuThreeSelected"+i).click(function() {
+		$("#menuThreeSelected"+i).click(function(e) {
+			// e.stopPropagation();
 			let menuThreeCheck = $("#menuThreeCheck"+i);
 			let currentState = menuThreeCheck.attr('checked');
 			if (currentState) {
@@ -101,85 +102,35 @@ import {EventObject,getUrlParams,isEmptyObj} from './api';
 			menuLOne.find('input').prop("checked","checked");
 		}
     });
-	let isFadeOut = false;
-	$(".DiagramTitleOne").click(function(){
-	    let DiagramTitleOne = $(this).find('.right-img-one');
-		// console.log(DiagramTitleOne);
-		// $(this).children().css('background-color','red');
-		// if (isFadeOut) {
-		// 	isFadeOut = false;			
-		// 	$(this).find('.DiagramTitleTwo').fadeIn(500);
-		// }else{
-		// 	isFadeOut = true;
-		// 	$(this).find('.DiagramTitleTwo').fadeOut(500);
-		// }
+	let isExpanded = false;
+	$(".DiagramTitleOne").click(function(e){
+		e.stopPropagation();
+		let img = $(this).find('.right-img-one').get(0);
+		if (img){
+			if (isExpanded == false){
+				isExpanded = true;
+				img.style.animation = "arrowRotateDown 0.25s 1 forwards ease-in";
+			}else{
+				isExpanded = false;
+				img.style.animation = "arrowRotateUp 0.25s forwards ease-out";
+			}
+		}
+		$(this).find('.DiagramTitleTwo').slideToggle(500);
+		// console.log('.DiagramTitleOne');
+		return false
     });
 
-	$(".DiagramTitleTwo").click(function(){
-		// if (isFadeOut) {
-		// 	isFadeOut = false;			
-		// 	$(this).find('.DiagramTitleThree').fadeIn(500);
-		// }else{
-		// 	isFadeOut = true;
-		// 	$(this).find('.DiagramTitleThree').fadeOut(500);
-		// }
+	$(".DiagramTitleTwo").click(function(e){
+		e.stopPropagation();
+		$(this).find('.DiagramTitleThree').slideToggle(500);
+		return false
     });
-	
+	$(".DiagramTitleThree").click(function(e){
+		e.stopPropagation();
+		return false
+    });
 
 	//checkbox对应图标展开操作
 	// $("input[id^='menuTwoCheck']").each(function(){
-	//       $(this).click(function(){
-	//      	var currentID=$(this).attr('id');
-	// 		var idNUM=currentID.substring(12,currentID.length);
-	// 		//找到对应要操作的图标div
-	// 		//设置图标的展开状态
-	// 	});
-	// });
 
-	// $("input[id^='menuThreeCheck']").each(function(){
-	// 	$(this).click(function(){
-	// 		var currentID=$(this).attr('id');
-	// 		var idNUM=currentID.substring(14,currentID.length);
-	// 		var currentState=$(this).attr('checked');
-	// 		if (currentState) {
-	// 			console.log("转换check状态为————1——");
-	// 			$(this).attr('checked',false); 
-	// 		}else{
-	// 			console.log("转换check状态为————2——");
-	// 			$(this).attr('checked',true); 
-
-				//设置图标的展开状态
-				// var setDivShow=document.getElementById("diagramDiv1");
-				// let ariaExpanded= setDivShow.getAttribute('aria-expanded');
-				// // let priviousDiv= setDivShow.previousElementSibling;
-				// let priviousDiv=$("#diagramDiv1").prev();
-				// let img=priviousDiv.find('.right-img-three').get(0);
-		        // // let img = $("#diagramDiv1").find('.right-img-three').get(0);
-		        // console.log("---=\n");
-		        // console.log(img);
-		        // let nextSbl = setDivShow;
-		        // if (img){
-		        //     if (ariaExpanded == 'false'){ console.log("进入img判断");
-		        //         setDivShow.setAttribute('aria-expanded','true'); 
-		        //         img.style.animation = "arrowRotateDown 0.25s 1 forwards ease-in";
-		        //     }else{console.log("进入img判断2222");
-		        //         setDivShow.setAttribute('aria-expanded','false');
-		        //         img.style.animation = "arrowRotateUp 0.25s forwards ease-out";
-		        //     }
-		        // }
-		        // if (nextSbl){
-		        // 	let ariaHidden = nextSbl.getAttribute('aria-hidden');
-		        //     if (ariaHidden == 'true'){       
-		        //         nextSbl.setAttribute('aria-hidden','false'); 
-		        //         nextSbl.style.maxHeight = '715px';
-		        //         nextSbl.style.transition = "max-height 0.25s ease";
-		        //     }else{
-		        //         nextSbl.setAttribute('aria-hidden','true');
-		        //         nextSbl.style.maxHeight = '0px';
-		        //         nextSbl.style.transition = "max-height 0.25s ease";
-
-		        //     }
-		        // }
-			// }
-	// 	});
 	// });
