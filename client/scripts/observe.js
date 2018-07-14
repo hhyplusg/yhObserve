@@ -999,7 +999,7 @@ function drawChart34(){
 			    enabled: false
 			},
 			title: {
-				text: '指定版块的个股估值分布',
+				// text: '指定版块的个股估值分布',
 				style: {
 							color: 'black',
 							fontWeight: 'bold',
@@ -1646,167 +1646,152 @@ function drawChart_B11(){
 }
 
 function drawChart_B21(){
-	// 基于准备好的dom，初始化echarts实例
-    var myChart = echarts.init(document.getElementById('showDiagram10'));
-    // 指定图表的配置项和数据
-    var option = {
-        title: {
-            text: '换手率最大的版块',
-            left:'center',
-            textStyle:{fontFamily: '宋体',	fontSize: 18,fontWeight: 'bolder',	color: '#000000'} 
-        },
-        tooltip: {},
-        toolbox: {
-        	show:false, left:'8%', top:'4%',itemSize:10,
-        	feature:{
-        		saveAsImage:{show:true},
-        		dataView:{show:true},
-        		restore:{show:true},
-        		magicType:{type: ['line', 'bar']}
-        	}
-        },
-        legend: {
-            // data:['数量'],
-            // left:'80%',
-            // top:'10%',
-            // textStyle:{fontSize:12}
-        },
-        xAxis: {
-        	type: 'category',
-        	data: ['乐风', '瑞纳', '腾翼C30', '悦翔', '比亚迪F3']
-        },
-        yAxis: { 
-        	// axisLine: {show: false},
-        	minInterval: 1,
-        	splitLine:{ 
-                show:false 
-            }
-        },
-        grid: {  
-		    left: '8%',  
-		    right: '8%',  
-		    bottom: '8%',  
-		    containLabel: true  
-		},
-      //   series: [{
-      //       name: '数量',
-      //       type: 'bar',
-      //       barWidth:'50%',
-      //       data: [],
-	     //    itemStyle: {
-		    //     normal:{
-		    //     	color:'#2914E5',
-	     //         	label:{
-		    //         	show:true,
-		    //         	// formatter: '{b} : {c} \n ({d}%)',  position:'outer'
-		    //         	textStyle:{fontFamily: '宋体',fontSize: 15} 
-		    //         },
-		    //         // labelLine:{show:true}
-		    //     }
-		    // }
-      //   }]
-        series: [{
-        	barWidth:'50%',
-	        data: [5, 4, 4, 3, 2],
-	        type: 'bar',
-	        itemStyle: {
-                    normal:{  
-                    color: function (params){
-                        var colorList = ['#ff4844','#9ac3e5','#66ac52','#ffc032','#549bd3','#f47e39'];
-                        return colorList[params.dataIndex];
-                    }
-                },
-            },
-	    }]
-    };
+	let myChartLeft = echarts.init(document.getElementById('showDiagramLeft10'));
+	let myChartRight = echarts.init(document.getElementById('showDiagramRight10'));
+	let xAxisDataLeft = ['乐风', '瑞纳', '腾翼C30'];
+	let xAxisDataRight = ['乐风', '瑞纳', '腾翼C30', '悦翔', '比亚迪F3'];
+	let seriesData = {'left':[5, 4, 4],'right':[5, 4, 4, 3, 2]}
+	function setOption(title,xAxisData,seriesData){
+		// 指定图表的配置项和数据
+		var option = {
+			title: {
+				text: title,
+				left:'center',
+				textStyle:{fontFamily: '宋体',fontSize: 18,fontWeight: 'bolder',	color: '#000000'} 
+			},
+			tooltip: {},
+			toolbox: {
+				show:false, left:'8%', top:'4%',itemSize:10,
+				feature:{
+					saveAsImage:{show:true},
+					dataView:{show:true},
+					restore:{show:true},
+					magicType:{type: ['line', 'bar']}
+				}
+			},
+			legend: {
+				// data:['数量'],
+			},
+			xAxis: {
+				type: 'category',
+				data: xAxisData
+			},
+			yAxis: { 
+				// axisLine: {show: false},
+				minInterval: 1,
+				splitLine:{ 
+					show:false 
+				}
+			},
+			grid: {  
+				left: '8%',  
+				right: '8%',  
+				bottom: '8%',  
+				containLabel: true  
+			},
+			series: [{
+				barWidth:'50%',
+				data: seriesData,
+				type: 'bar',
+				itemStyle: {
+					normal: {
+					// 随机显示
+					//color:function(d){return "#"+Math.floor(Math.random()*(256*256*256-1)).toString(16);}
+				
+						// 定制显示（按顺序）
+						color: function (params){
+							var colorList = ['#ff4844','#9ac3e5','#66ac52','#ffc032','#549bd3','#f47e39'];
+							return colorList[params.dataIndex];
+						}
+					}
+
+				}
+			}]
+		};
+		return option;
+	}
+    
     // //set searchedData into option
     // option.xAxis.data=histogramChartData1;
     // option.series[0].data=histogramChartData2;  
     // 使用刚指定的配置项和数据显示图表。
-    myChart.setOption(option);
-
-
+    myChartLeft.setOption(setOption('基准',xAxisDataLeft,seriesData.left));
+	myChartRight.setOption(setOption('板块',xAxisDataRight,seriesData.right));
 }
 
 function drawChart_B22(){
 	// 基于准备好的dom，初始化echarts实例
-    var myChart = echarts.init(document.getElementById('showDiagram11'));
-    // 指定图表的配置项和数据
-    var option = {
-        title: {
-            text: '换手率绝对水平最高的基准/版块',
-            left:'center',
-            textStyle:{fontFamily: '宋体',	fontSize: 18,fontWeight: 'bolder',	color: '#000000'} 
-        },
-        tooltip: {},
-        toolbox: {
-        	show:false, left:'8%', top:'4%',itemSize:10,
-        	feature:{
-        		saveAsImage:{show:true},
-        		dataView:{show:true},
-        		restore:{show:true},
-        		magicType:{type: ['line', 'bar']}
-        	}
-        },
-        legend: {
-            // data:['数量'],
-            // left:'80%',
-            // top:'10%',
-            // textStyle:{fontSize:12}
-        },
-        xAxis: {
-        	type: 'category',
-        	data: ['乐风', '瑞纳', '腾翼C30', '悦翔', '比亚迪F3']
-        },
-        yAxis: { 
-        	// axisLine: {show: false},
-        	minInterval: 1,
-        	splitLine:{ 
-                show:false 
-            }
-        },
-        grid: {  
-		    left: '8%',  
-		    right: '8%',  
-		    bottom: '8%',  
-		    containLabel: true  
-		},
-      //   series: [{
-      //       name: '数量',
-      //       type: 'bar',
-      //       barWidth:'50%',
-      //       data: [],
-	     //    itemStyle: {
-		    //     normal:{
-		    //     	color:'#2914E5',
-	     //         	label:{
-		    //         	show:true,
-		    //         	// formatter: '{b} : {c} \n ({d}%)',  position:'outer'
-		    //         	textStyle:{fontFamily: '宋体',fontSize: 15} 
-		    //         },
-		    //         // labelLine:{show:true}
-		    //     }
-		    // }
-      //   }]
-        series: [{
-        	barWidth:'50%',
-	        data: [5, 4, 4, 3, 2],
-	        type: 'bar',
-	        itemStyle: {
-                    normal:{  
-                    color: function (params){
-                        var colorList = ['#ff4844','#9ac3e5','#66ac52','#ffc032','#549bd3','#f47e39'];
-                        return colorList[params.dataIndex];
-                    }
-                },
-            },
-	    }]
-    };
+    let myChartLeft = echarts.init(document.getElementById('showDiagramLeft11'));
+	let myChartRight = echarts.init(document.getElementById('showDiagramRight11'));
+	let xAxisDataLeft = ['乐风', '瑞纳', '腾翼C30'];
+	let xAxisDataRight = ['乐风', '瑞纳', '腾翼C30', '悦翔', '比亚迪F3'];
+	let seriesData = {'left':[5, 4, 4],'right':[5, 4, 4, 3, 2]}
+	function setOption(title,xAxisData,seriesData){
+		// 指定图表的配置项和数据
+		var option = {
+			title: {
+				text: title,
+				left:'center',
+				textStyle:{fontFamily: '宋体',fontSize: 18,fontWeight: 'bolder',	color: '#000000'} 
+			},
+			tooltip: {},
+			toolbox: {
+				show:false, left:'8%', top:'4%',itemSize:10,
+				feature:{
+					saveAsImage:{show:true},
+					dataView:{show:true},
+					restore:{show:true},
+					magicType:{type: ['line', 'bar']}
+				}
+			},
+			legend: {
+				// data:['数量'],
+			},
+			xAxis: {
+				type: 'category',
+				data: xAxisData
+			},
+			yAxis: { 
+				// axisLine: {show: false},
+				minInterval: 1,
+				splitLine:{ 
+					show:false 
+				}
+			},
+			grid: {  
+				left: '8%',  
+				right: '8%',  
+				bottom: '8%',  
+				containLabel: true  
+			},
+			series: [{
+				barWidth:'50%',
+				data: seriesData,
+				type: 'bar',
+				itemStyle: {
+					normal: {
+					// 随机显示
+					//color:function(d){return "#"+Math.floor(Math.random()*(256*256*256-1)).toString(16);}
+              
+					// 定制显示（按顺序）
+					color: function(params) { 
+								var colorList = ['#C33531','#EFE42A','#64BD3D','#EE9201','#29AAE3', '#B74AE5','#0AAF9F','#E89589','#16A085','#4A235A','#C39BD3 ','#F9E79F','#BA4A00','#ECF0F1','#616A6B','#EAF2F8','#4A235A','#3498DB' ]; 
+								return colorList[params.dataIndex] 
+							}
+					}
+
+				}
+			}]
+		};
+		return option;
+	}
+    
     // //set searchedData into option
     // option.xAxis.data=histogramChartData1;
     // option.series[0].data=histogramChartData2;  
     // 使用刚指定的配置项和数据显示图表。
-    myChart.setOption(option);
+    myChartLeft.setOption(setOption('基准',xAxisDataLeft,seriesData.left));
+	myChartRight.setOption(setOption('板块',xAxisDataRight,seriesData.right));
 
 
 }
@@ -1950,76 +1935,94 @@ function drawChart_B24(){
 
 function drawChart_B31(){
 	// 基于准备好的dom，初始化echarts实例
-    var myChart = echarts.init(document.getElementById('showDiagram14'));
-    // 指定图表的配置项和数据
-    var option = {
-        title: {
-            text: '本周新增“速度/加速度”加强/衰竭的行业',
-            left:'center',
-            textStyle:{fontFamily: '宋体',	fontSize: 18,fontWeight: 'bolder',	color: '#000000'} 
-        },
-        tooltip: {},
-        toolbox: {
-        	show:false, left:'8%', top:'4%',itemSize:10,
-        	feature:{
-        		saveAsImage:{show:true},
-        		dataView:{show:true},
-        		restore:{show:true},
-        		magicType:{type: ['line', 'bar']}
-        	}
-        },
-        legend: {
-            // data:['数量'],
-            // left:'80%',
-            // top:'10%',
-            // textStyle:{fontSize:12}
-        },
-        xAxis: {
-        	type: 'category',
-        	data: ['乐风', '瑞纳', '腾翼C30', '悦翔', '比亚迪F3']
-        },
-        yAxis: { 
-        	// axisLine: {show: false},
-        	minInterval: 1,
-        	splitLine:{ 
-                show:false 
-            }
-        },
-        grid: {  
-		    left: '8%',  
-		    right: '8%',  
-		    bottom: '8%',  
-		    containLabel: true  
-		},
-      //   series: [{
-      //       name: '数量',
-      //       type: 'bar',
-      //       barWidth:'50%',
-      //       data: [],
-	     //    itemStyle: {
-		    //     normal:{
-		    //     	color:'#2914E5',
-	     //         	label:{
-		    //         	show:true,
-		    //         	// formatter: '{b} : {c} \n ({d}%)',  position:'outer'
-		    //         	textStyle:{fontFamily: '宋体',fontSize: 15} 
-		    //         },
-		    //         // labelLine:{show:true}
-		    //     }
-		    // }
-      //   }]
-        series: [{
-        	barWidth:'50%',
-	        data: [5, 4, 4, 3, 2],
-	        type: 'bar'
-	    }]
-    };
+    let myChartLeft = echarts.init(document.getElementById('showDiagramLeft14'));
+	let myChartRight = echarts.init(document.getElementById('showDiagramRight14'));
+	let xAxisDataLeft = ['乐风', '瑞纳', '腾翼C30'];
+	let xAxisDataRight = ['乐风', '瑞纳', '腾翼C30', '悦翔', '比亚迪F3'];
+	let seriesData = {'left':[5, 4, 4],'right':[5, 4, 4, 3, 2]}
+	function setOption(title,xAxisData,seriesData){
+		// 指定图表的配置项和数据
+		var option = {
+			title: {
+				text: title,
+				left:'center',
+				textStyle:{fontFamily: '宋体',fontSize: 18,fontWeight: 'bolder',	color: '#000000'} 
+			},
+			tooltip: {},
+			toolbox: {
+				show:false, left:'8%', top:'4%',itemSize:10,
+				feature:{
+					saveAsImage:{show:true},
+					dataView:{show:true},
+					restore:{show:true},
+					magicType:{type: ['line', 'bar']}
+				}
+			},
+			legend: {
+				// data:['数量'],
+			},
+			xAxis: {
+				type: 'category',
+				data: xAxisData
+			},
+			yAxis: { 
+				// axisLine: {show: false},
+				minInterval: 1,
+				splitLine:{ 
+					show:false 
+				}
+			},
+			grid: {  
+				left: '8%',  
+				right: '8%',  
+				bottom: '8%',  
+				containLabel: true  
+			},
+		//   series: [{
+		//       name: '数量',
+		//       type: 'bar',
+		//       barWidth:'50%',
+		//       data: [],
+			//    itemStyle: {
+				//     normal:{
+				//     	color:'#2914E5',
+			//         	label:{
+				//         	show:true,
+				//         	// formatter: '{b} : {c} \n ({d}%)',  position:'outer'
+				//         	textStyle:{fontFamily: '宋体',fontSize: 15} 
+				//         },
+				//         // labelLine:{show:true}
+				//     }
+				// }
+		//   }]
+			series: [{
+				barWidth:'50%',
+				data: seriesData,
+				type: 'bar',
+				itemStyle: {
+					normal: {
+					// 随机显示
+					//color:function(d){return "#"+Math.floor(Math.random()*(256*256*256-1)).toString(16);}
+              
+					// 定制显示（按顺序）
+					color: function(params) { 
+								var colorList = ['#C33531','#EFE42A','#64BD3D','#EE9201','#29AAE3', '#B74AE5','#0AAF9F','#E89589','#16A085','#4A235A','#C39BD3 ','#F9E79F','#BA4A00','#ECF0F1','#616A6B','#EAF2F8','#4A235A','#3498DB' ]; 
+								return colorList[params.dataIndex] 
+							}
+					}
+
+				}
+			}]
+		};
+		return option;
+	}
+    
     // //set searchedData into option
     // option.xAxis.data=histogramChartData1;
     // option.series[0].data=histogramChartData2;  
     // 使用刚指定的配置项和数据显示图表。
-    myChart.setOption(option);
-
+    myChartLeft.setOption(setOption('加强',xAxisDataLeft,seriesData.left));
+	myChartRight.setOption(setOption('衰竭',xAxisDataRight,seriesData.right));
 
 }
 

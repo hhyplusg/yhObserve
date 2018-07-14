@@ -279,11 +279,11 @@ $background-color: white;
             margin: 0px 10px;
         }
         select{
-            height: 30px;
+            height: 25px;
             width: 100px;
         }
     }
-    #showDiagram4{
+    #showDiagram4,#showDiagram7,#showDiagram9,#showDiagram12,#showDiagram13,#showDiagram16,#showDiagram17{
         margin-top: 30px;
     }
 }
@@ -294,6 +294,16 @@ $background-color: white;
     /*background-color:green;                  */
     float: left;
     padding: 10px;    
+}
+.showDiagramLeft{
+    float: left;
+    width: 50%;
+    height: 450px;
+}
+.showDiagramRight{
+    float: right;
+    width: 50%;
+    height: 450px;
 }
 .diagramTable{
     border-collapse:collapse; 
