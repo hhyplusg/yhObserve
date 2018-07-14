@@ -3,6 +3,21 @@ $diagram-title-background-color:rgba(242, 242, 242, 1);
 $left-img-background-color: #d7d7d7;
 $right-one-background-color: white;
 $background-color: white;
+.returnToTop{
+    position: fixed;
+    z-index: 100;
+    bottom: 10%;
+    right: 10%;
+    border: 1px solid $left-img-background-color;
+    font-size: 10px;
+    div{
+        text-align: center;
+    }
+    img{
+        width: 40px;
+    }
+       
+}
 .title-container{
     background-color: rgba(242, 242, 242, 1); 
     text-align:left;

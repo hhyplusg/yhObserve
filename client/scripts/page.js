@@ -160,6 +160,10 @@ import {EventObject,getUrlParams,isEmptyObj} from './api';
 		return false
     });
 
+	$('.returnToTop').click(function(){
+		$('html,body').animate({scrollTop:0},'slow');
+	});
+
 	//checkbox对应图标展开操作
 	// $("input[id^='menuTwoCheck']").each(function(){
 
