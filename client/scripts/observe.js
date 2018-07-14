@@ -631,9 +631,10 @@ function drawChart31(){
 			        enabled: false
 			    },
 			    legend: {
-			        enabled: false,
+			        enabled: true,
 			        align: 'center',
 					verticalAlign: 'bottom',
+					
 				    // layout: 'vertical',
 			     //    y: 100,
 			        // shadow: true,
@@ -641,7 +642,7 @@ function drawChart31(){
 			        // maxHeight:10
 			    },
 				title: {
-					text: '指定版块强势股占比',
+					text: '',
 					style: {
 								color: 'black',
 								fontWeight: 'bold',
@@ -695,12 +696,13 @@ function drawChart31(){
 				series: seriesOptions
 		});
 	};
+	var seriesOptionsName = ['全部A股MA60强势股数占比','泸深300（右轴）'];
 	$.each(names, function (i, name) {
 	
 			$.getJSON('https://data.jianshukeji.com/jsonp?filename=json/' + name.toLowerCase() + '-c.json&callback=?',    function (data) {
 				
 					seriesOptions[i] = {
-							name: name,
+							name: seriesOptionsName[i],
 							data: data,
 							yAxis: i
 					};
