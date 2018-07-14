@@ -164,7 +164,168 @@ import {EventObject,getUrlParams,isEmptyObj} from './api';
 		$('html,body').animate({scrollTop:0},'slow');
 	});
 
+	// $('#diagramDiv17').click(function(e){
+	// 	e.stopPropagation();
+	// 	console.log('dsfdsgf');
+	// 	$("#ChildDiv").css('display','none');
+	// 	return false
+	// });
+
+
+	
+
 	//checkbox对应图标展开操作
 	// $("input[id^='menuTwoCheck']").each(function(){
 
 	// });
+$(function(){
+// 反转图
+function drawChart6(){
+	console.log("开始drawChart-6-");
+
+
+		// (function(H) {
+  //   H.wrap(H.Series.prototype, 'drawGraph', function(proceed) {
+
+  //     // Now apply the original function with the original arguments, 
+  //     // which are sliced off this function's arguments
+  //     proceed.apply(this, Array.prototype.slice.call(arguments, 1));
+
+  //     var arrowLength = 20,
+  //       arrowWidth = 10,
+  //       series = this,
+  //       data = series.data,
+  //       len = data.length,
+  //       segments = data,
+  //       lastSeg = segments[segments.length - 1],
+  //       path = [];
+
+  //       console.log("lastSeg----\n");
+  //       console.log(lastSeg);
+
+
+  //     var lastPoint = null;
+  //     var nextLastPoint = null;
+    
+  //     if (lastSeg.y === 0) {
+  //       lastPoint = segments[segments.length - 2];
+  //       nextLastPoint = segments[segments.length - 1];
+  //     } else {
+  //       lastPoint = segments[segments.length - 1];
+  //       nextLastPoint = segments[segments.length - 2];
+  //     }
+
+  //     var angle = Math.atan((lastPoint.plotX - nextLastPoint.plotX) /
+  //       (lastPoint.plotY - nextLastPoint.plotY));
+
+  //     if (angle < 0) angle = Math.PI + angle;
+
+  //     path.push('M', lastPoint.plotX, lastPoint.plotY);
+
+  //     if (lastPoint.plotX > nextLastPoint.plotX) {
+  //       path.push(
+  //         'L',
+  //         lastPoint.plotX + arrowWidth * Math.cos(angle),
+  //         lastPoint.plotY - arrowWidth * Math.sin(angle)
+  //       );
+  //       path.push(
+  //         lastPoint.plotX + arrowLength * Math.sin(angle),
+  //         lastPoint.plotY + arrowLength * Math.cos(angle)
+  //       );
+  //       path.push(
+  //         lastPoint.plotX - arrowWidth * Math.cos(angle),
+  //         lastPoint.plotY + arrowWidth * Math.sin(angle),
+  //         'Z'
+  //       );
+  //     } else {
+  //       path.push(
+  //         'L',
+  //         lastPoint.plotX - arrowWidth * Math.cos(angle),
+  //         lastPoint.plotY + arrowWidth * Math.sin(angle)
+  //       );
+  //       path.push(
+  //         lastPoint.plotX - arrowLength * Math.sin(angle),
+  //         lastPoint.plotY - arrowLength * Math.cos(angle)
+  //       );
+  //       path.push(
+  //         lastPoint.plotX + arrowWidth * Math.cos(angle),
+  //         lastPoint.plotY - arrowWidth * Math.sin(angle),
+  //         'Z'
+  //       );
+  //     }
+
+  //     series.chart.renderer.path(path)
+  //       .attr({
+  //         fill: series.color
+  //       })
+  //       .add(series.group);
+
+  //   });
+  // }(Highcharts));
+	
+
+
+	var chart = Highcharts.chart('showDiagram16', {
+	    chart: {
+	        type: 'spline',
+	        inverted: false,
+	    },
+	    credits: {
+			enabled: false
+		},
+	    title: {
+	        text: '指定行业“速度/加速度”的历史变化路径'
+	    },
+	    subtitle: {
+	        // text: '根据标准大气模型绘制'
+	    },
+	    xAxis: {
+	        reversed: false,
+	        title: {
+	            enabled: true,
+	            // text: '海拔高度'
+	        },
+	        labels: {
+	            formatter: function () {
+	                return this.value;
+	            }
+	        },
+	        maxPadding: 0.05,
+	        showLastLabel: true
+	    },
+	    yAxis: {
+	        title: {
+	            // text: '温度'
+	        },
+	        labels: {
+	            formatter: function () {
+	                return this.value + '°';
+	            }
+	        },
+	        lineWidth: 2,
+	    },
+	    legend: {
+	        enabled: false
+	    },
+	    tooltip: {
+	        headerFormat: '<b>速度/加速度</b><br/>',
+	        pointFormat: '{point.x} : {point.y}'
+	    },
+	    plotOptions: {
+	        spline: {
+	            marker: {
+	                enable: false
+	            }
+	        }
+	    },
+	    series: [{
+	        name: '温度',
+	        data: [[0, 15], [10, -50], [20, -56.5], [30, -46.5], [40, -22.1],[50, -2.5], [60, -27.7], [70, -55.7], [80, -76.5],[-60, -27.7], [-70, -55.7], [-20, -76.5]]
+	    }]
+	});
+
+
+}
+
+drawChart6(); // 反转图 
+});

@@ -3,6 +3,7 @@ import {EventObject,GetCookie,SetCookie,DeleteCookie,isWeiXin,parseUrlSearch,get
 // import * as SandSignika from '../lib/Highstock-6.1.0/code/themes/sand-signika';
 
 $(function(){ 
+	var  isClick = false;
 	console.log("开始画图--");
 	drawChart();  //<!-- 博弈/存量指标 -->
 	drawChart2(); //百分比图方法实现双轴</li>     <!-- 融资买入/可用担保价值 -->
@@ -20,8 +21,9 @@ $(function(){
 	drawChart_B23();   //表格   基准/版块的周换手率
 	drawChart_B24();
 	drawChart_B31();   //柱状图
-	drawChart6(); // 反转图 
-	drawChart7(); // 象限图
+	drawChart_B32();   //象限图
+	// drawChart6(); // 反转图 
+	// drawChart7(); // 象限图
 	drawChart_B41();
 	// export
 	$("#exportButton").click(function(event){
@@ -379,7 +381,7 @@ function drawChart(){
 				tooltip: {
 						valueDecimals: 4
 				},
-				dashStyle:'Dot'
+				// dashStyle:'Dot'
 			}]
 		});
 
@@ -2026,6 +2028,59 @@ function drawChart_B31(){
 
 }
 
+// 象限图 
+function drawChart_B32(){
+	console.log("开始drawChart-b32-");
+	var data = [[3.275154, 2.957587, '外国1'],[-3.344465, 2.603513, '外国'],[0.355083, -3.376585, '外国3'],[1.852435, 3.547351, '外国'],[-2.078973, 2.552013, '外国'],[-0.993756, -0.884433, '外国2'],[2.682252, 4.007573, '外国'],[-3.087776, 2.878713, '外国'],[-1.565978, -1.256985, '外国7'],[2.441611, 0.444826, '外国'],[-0.659487, 3.111284, '外国'],[-0.459601, -2.618005, '外国4'], [2.17768, 2.387793, '外国'],[-2.920969, 2.917485, '外国6'],[-0.028814, -4.168078, '外国8'],[3.625746, 2.119041, '外国'],[-3.912363, 1.325108, '外国5'],[-0.551694, -2.814223, '外国0'], [2.855808, 3.483301, '外国'],[-3.594448, 2.856651, '外国'],[0.421993, -2.372646, '外国'],[1.650821, 3.407572, '外国'],[-2.082902, 3.384412, '外国9']];
+	// ,[-0.718809, -2.492514],[4.513623, 3.841029],[-4.822011, 4.607049],   [-0.656297, -1.449872],[1.919901, 4.439368], [-3.287749, 3.918836],[-1.576936, -2.977622],[3.598143, 1.97597],[-3.977329, 4.900932],[-1.79108, -2.184517],[3.914654, 3.559303],[-1.910108, 4.166946],[-1.226597, -3.317889], [1.148946, 3.345138],[-2.113864, 3.548172],[0.845762, -3.589788],[2.629062, 3.535831],[-1.640717, 2.990517],[-1.881012, -2.485405],[4.606999, 3.510312], [-4.366462, 4.023316],[0.765015, -3.00127], [3.121904, 2.173988], [-4.025139, 4.65231],[-0.559558, -3.840539],[4.376754, 4.863579], [-1.874308, 4.032237],[-0.089337, -3.026809],[3.997787, 2.518662],[-3.082978, 2.884822], [0.845235, -3.454465],[1.327224, 3.358778],[-2.889949, 3.596178],[-0.966018, -2.839827],[2.960769, 3.079555],[-3.275518, 1.577068],[0.639276, -3.41284]];
+
+	// 基于准备好的dom，初始化echarts实例
+	var myChart = echarts.init(document.getElementById('showDiagram15'));
+
+	var option = {
+	    xAxis: {},
+	    yAxis: {
+	    	axisLine:{
+	    		// onZero:false,
+	    	}
+	    },
+	    series: [{
+	    	symbol:'diamond', 
+	    	//circle rectangle triangle diamond emptyCircle  emptyRectangle emptyTriangle emptyDiamond
+	        symbolSize: 15,
+	        itemStyle: {
+	        	normal: {
+	        		label:{
+					    show: true,
+					    position:'outer',
+					    textStyle:{
+					    	color:'black'
+					    }
+					}, 
+					color: 'blue'
+	        	}	        	
+	        },
+	        encode: {                    //可以定义 data 的哪个维度被编码成什么
+		        x: 0,             // 表示维度 3、1、5 映射到 x 轴。
+		        y: 1,                     // 表示维度 2 映射到 y 轴。
+		        // tooltip: [3, 2, 4],      // 表示维度 3、2、4 会在 tooltip 中显示。
+		        label: 2                 // 表示 label 使用维度 3。
+		    },			        
+	        data: [
+	            [ 10.0, 8.04, '外国'],
+	            [ 5.0, 5.68, '中国']
+	        ],
+	        type: 'scatter',
+	        
+	    }]
+	};
+
+	option.series[0].data=data;
+    // 使用刚指定的配置项和数据显示图表。
+    myChart.setOption(option);
+	
+}
+
 //基础表实现双轴（自己造数据）
 function drawChart4(){
 
@@ -2245,69 +2300,7 @@ function drawChart5(){
 	    }]
 	});
 }
-// 反转图
-function drawChart6(){
-	console.log("开始drawChart-6-");
-	var chart = Highcharts.chart('showDiagram16', {
-	    chart: {
-	        type: 'spline',
-	        inverted: true
-	    },
-	    credits: {
-			enabled: false
-		},
-	    title: {
-	        text: '指定行业“速度/加速度”的历史变化路径'
-	    },
-	    subtitle: {
-	        // text: '根据标准大气模型绘制'
-	    },
-	    xAxis: {
-	        reversed: false,
-	        title: {
-	            enabled: true,
-	            // text: '海拔高度'
-	        },
-	        labels: {
-	            formatter: function () {
-	                return this.value;
-	            }
-	        },
-	        maxPadding: 0.05,
-	        showLastLabel: true
-	    },
-	    yAxis: {
-	        title: {
-	            // text: '温度'
-	        },
-	        labels: {
-	            formatter: function () {
-	                return this.value + '°';
-	            }
-	        },
-	        lineWidth: 2,
-	    },
-	    legend: {
-	        enabled: false
-	    },
-	    tooltip: {
-	        headerFormat: '<b>速度/加速度</b><br/>',
-	        pointFormat: '{point.x} : {point.y}'
-	    },
-	    plotOptions: {
-	        spline: {
-	            marker: {
-	                enable: false
-	            }
-	        }
-	    },
-	    series: [{
-	        name: '温度',
-	        data: [[0, 15], [10, -50], [20, -56.5], [30, -46.5], [40, -22.1],[50, -2.5], [60, -27.7], [70, -55.7], [80, -76.5],[-60, -27.7], [-70, -55.7], [-20, -76.5]]
-	    }]
-	});
 
-}
 // 象限图 
 function drawChart7(){
 	console.log("开始drawChart-7-");
@@ -2466,7 +2459,7 @@ function drawChart7(){
 }
 
 function drawChart_B41(){
-	console.log("开始drawChart-1111");
+	console.log("开始drawChart-B41");
 	//获取数据
 	// $.get('http://172.16.6.26:9001/ds/yhapi?service=yhig.StrategicObserv&method=IndicatorQuery&p={appid:"6F8411ADF7E20006E053AC10521FB31A",indicator_id:"0001",start_date:"20180101",end_date:"20180622"}',function(res){
 	// 	console.log('读取到的数据为----：\n');
@@ -2541,6 +2534,7 @@ function drawChart_B41(){
 			},
 			plotOptions: {
 		        series: {
+		        	allowPointSelect:true,
 		            events: {
 		                click: function (event) {
 		                    // alert(this.name + ' clicked\n' +
@@ -2654,14 +2648,142 @@ function drawChart_B41(){
 											y: 10
 									}
 							}]
-					});
+							});
+							// this.isClick = false;
+							// function aa(){console.log("---zhixing aa");this.isClick = true;console.log(this.isClick);}
+							// setTimeout(aa,2000);
+		            	},
+			            mouseOut: function (event) {
+			            	// console.log(this.isClick);
+			            	//  if(!this.isClick) {console.log("---鼠标移除");	}
+			            	//  else{console.log("---鼠标移除22");}		            	
+			            }
+		            },
+        // 	        point:{
+			     //    	events:{
+			     //            click: function (event) {
+			     //                // alert(this.name + ' clicked\n' +
+			     //                //     'Alt: ' + event.altKey + '\n' +
+			     //                //     'Control: ' + event.ctrlKey + '\n' +
+			     //                //       'Shift: ' + event.shiftKey + '\n');
+			     //                console.log('zhixingle点击函数，看看土包更新');
+			     //                // drawChart2();
+			     //                let cdiv=document.getElementById('ChildDiv');
+			     //                if(cdiv!=null){  
+							 //        let p = cdiv.parentNode;  
+							 //        p.removeChild(cdiv);  
+							 //    }  
 
+			     //                var mouseX;//记录鼠标点击位置。  
+								// var mouseY;//记录鼠标点击位置
 
+			     //                var ev = ev||event;   
+							 //    if(ev.pageX || ev.pageY){   
+							 //        mouseX = ev.pageX+'px';   
+							 //        mouseY = ev.pageY+'px';  
+							 //    }else{//兼容ie   
+							 //        mouseX = ev.clientX+document.body.scrollLeft - document.body.clientLeft+'px';  
+							 //      mouseY = ev.clientY+document.documentElement.scrollTop+'px';  
+							 //    } 
+							 //    var my = document.createElement("ChildDiv");   //创建一个div    
+							 //    document.body.appendChild(my);   //添加到页面     
+							 //    my.style.position="absolute";    //通过样式指定该div的位置方式,  
+							 //    my.style.top= mouseY;   //通过样式指定y坐标  
+							 //    my.style.left= mouseX;   //通过样式指定x坐标  
+							 //    my.style.border='1px solid #FF0000'; // 设置边框  
+							 //    my.style.width='300px';  
+								// my.style.height='200px';//通过样式指定宽度、高度    
+								// //通过样式指定背景颜色,,若是背景图片 例为my.style.backgroundImage="url(img/3.jpg)"     
+								// my.style.backgroundColor="#ffffcc";   //设置样式透明  
+								// var alpha = 80;  
+								// my.style.filter='alpha(opacity:'+alpha+')';//IE   
+								// my.style.opacity=alpha/100;//IE之外其他浏览器  
+								// my.id = "ChildDiv";//设置ID 
 
+								// //给div加一个点击后隐藏的函数 
+								// my.onclick = function(){
+								//    if(  (cdiv=document.getElementById('ChildDiv'))!=null){  
+								//         p = cdiv.parentNode;  
+								//         p.removeChild(cdiv);  
+								//     } 
+								//  };
 
-		                }
-		            }
+								// //在div中创建图表
+								// var chart = Highcharts.chart('ChildDiv', {
+								// chart: {
+								// 		type: 'column'
+								// },
+								// credits: {
+								// 	enabled: false
+								// },
+								// title: {
+								// 		text: 'PE频率'
+								// },
+								// subtitle: {
+								// 		text: '数据截止 2017-03'
+								// },
+								// xAxis: {
+								// 		type: 'category',
+								// 		labels: {
+								// 				rotation: -45  // 设置轴标签旋转角度
+								// 		}
+								// },
+								// yAxis: {
+								// 		min: 0,
+								// 		title: {
+								// 				// text: '人口 (百万)'
+								// 		}
+								// },
+								// legend: {
+								// 		enabled: false
+								// },
+								// tooltip: {
+								// 		pointFormat: 'PE频率: <b>{point.y:.1f} 百万</b>'
+								// },
+								// series: [{
+								// 		name: 'PE频率',
+								// 		data: [
+								// 				['0', 24.25],
+								// 				['15', 23.50],
+								// 				['30', 21.51],
+								// 				['45', 16.78],
+								// 				['60', 16.06],
+								// 				['75', 15.20],
+								// 				['90', 14.16],
+								// 				['105', 13.51],
+								// 				['120', 13.08],
+								// 				['135', 12.44],
+								// 				['150', 12.19],
+								// 				['165', 12.03],
+								// 				['180', 10.46],
+								// 				['195', 10.07],
+								// 				['210', 10.05],
+								// 				['225', 9.99],
+								// 				['240', 9.78],
+								// 				['255', 9.73],
+								// 				['270', 9.27],
+								// 				['290', 8.87]
+								// 		],
+								// 		dataLabels: {
+								// 				enabled: true,
+								// 				rotation: -90,
+								// 				color: '#FFFFFF',
+								// 				align: 'right',
+								// 				format: '{point.y:.1f}', // :.1f 为保留 1 位小数
+								// 				y: 10
+								// 		}
+								// }]
+								// });
+								
+			     //        	},
+			     //        	mouseOut: function (event) {
+			     //        	 console.log("---鼠标移除22");	            	
+			     //        	}
+			     //        }
+		      //   	}
 		        }
+	
+
 		    },
 
 		    xAxis: {				
@@ -2762,6 +2884,10 @@ function getCurrentTime(){
 	var currentTime=year+month+day+hour+minute+second;
 	return currentTime;
 }
+
+
+
+
 
 
 

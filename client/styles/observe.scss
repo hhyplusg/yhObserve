@@ -321,11 +321,12 @@ $background-color: white;
     height: 450px;
 }
 .diagramTable{
+    margin:15px 0px 0px 30px ;
     border-collapse:collapse; 
     tr td{
         border-bottom: 1px solid #CCCCCC;  
         border-top: 1px solid #CCCCCC;        
-        color:blue;
+        color:black;
         font-size:14px;
         text-align: center;
     }
