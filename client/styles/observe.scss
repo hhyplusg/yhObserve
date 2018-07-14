@@ -33,8 +33,10 @@ $background-color: white;
 // }
 
 .SystemDIV{
-    width:87%;margin-left:auto;margin-right:auto;
-    text-align:center;vertical-align: middle;
+    width:93%;
+    margin:0px auto 10px;
+    text-align:center;
+    vertical-align: middle;
     background-color: rgba(242, 242, 242, 0.4);
 }
 .TitleDIV{
@@ -51,6 +53,16 @@ $background-color: white;
     height: 8px;
     background: white;
     // margin-left: 40px;
+}
+.menu-container{
+    background-color:white;
+    .menu{
+        span{
+            font-size:15px;
+            margin-left:20px;
+            line-height: 40px;
+        }
+    }
 }
 .MenuLOne{
     margin-left:20px;
@@ -78,7 +90,7 @@ $background-color: white;
     
 }
 .MenuLThree{
-    margin-left:40px;
+    margin-left:30px;
     margin-bottom:5px;
     font-family: '微软雅黑';
     font-weight: 100;
@@ -105,8 +117,7 @@ $background-color: white;
     text-align:left;
     line-height: 50px;
     font-size:15px;
-    /*margin-bottom:0px;*/
-    border: 1px solid rgba(215, 215, 215, 1);
+    border: 1px solid $left-img-background-color;;
     .left-img-one{
         display:inline-block;
         width: 3px;
@@ -120,7 +131,9 @@ $background-color: white;
     text-align:left;
     line-height: 50px;
     font-size:15px;
-    border: 1px solid rgba(215, 215, 215, 1);
+    border-top: 1px solid $left-img-background-color;;
+    border-left:none;
+    border-right:none;
     .left-img-two{
         display:inline-block;
         width: 3px;
@@ -131,7 +144,7 @@ $background-color: white;
 }
 
 .DiagramTitleTwo span{
-    text-align:left;margin-left:20px;
+    text-align:left;
 }
 .DiagramTitleTwo img{
     margin-left:20px;
@@ -142,10 +155,12 @@ $background-color: white;
     text-align:left;
     line-height: 50px;
     font-size:15px;
-    border: 1px solid rgba(215, 215, 215, 1);
+    border-top: 1px solid $left-img-background-color;
+    border-left:none;
+    border-right:none;
 }
 .DiagramTitleOne_arrow{
-    background-color: rgba(215, 215, 215, 1); 
+    background-color: $left-img-background-color; 
     width:25px;
     height:25px;
     // display: inline-block;
@@ -210,9 +225,7 @@ $background-color: white;
     line-height: 50px;
     margin: 10px;
     position:relative;
-    DiagramTitleThree_arrow1{
 
-    }
     .left-img-three{
         display:inline-block;
         border:10px;
@@ -247,7 +260,7 @@ $background-color: white;
         position:absolute;
         text-align:left; 
         display:block;
-        top:48px;
+        top:38px;
         left:55%; 
         font-family: 'Arial Normal', 'Arial';
         font-weight: 400;
@@ -267,7 +280,7 @@ $background-color: white;
     box-sizing:border-box;
     /*background-color:green;                  */
     float: left;
-    padding: 20px;    
+    padding: 10px;    
 }
 .diagramTable{
     border-collapse:collapse; 
@@ -286,7 +299,7 @@ $background-color: white;
     /*background-color:blue;                */
     
     float: left;
-    padding: 20px 20px 20px 0px;
+    padding: 10px 10px 10px 10px;
 }
 .table-input{
     display: flex;

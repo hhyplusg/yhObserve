@@ -50,7 +50,7 @@ function drawChart(){
 	// var jsonObject =$.parseJSON(dataYH);
 	// var data=jsonObject.obj;
 	// console.log("图1的obj数据为：\n");
-	console.log(data);
+	// console.log(data);
 
 
 		// Create the chart
