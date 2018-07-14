@@ -101,6 +101,30 @@ import {EventObject,getUrlParams,isEmptyObj} from './api';
 			menuLOne.find('input').prop("checked","checked");
 		}
     });
+	let isFadeOut = false;
+	$(".DiagramTitleOne").click(function(){
+	    let DiagramTitleOne = $(this).find('.right-img-one');
+		// console.log(DiagramTitleOne);
+		// $(this).children().css('background-color','red');
+		// if (isFadeOut) {
+		// 	isFadeOut = false;			
+		// 	$(this).find('.DiagramTitleTwo').fadeIn(500);
+		// }else{
+		// 	isFadeOut = true;
+		// 	$(this).find('.DiagramTitleTwo').fadeOut(500);
+		// }
+    });
+
+	$(".DiagramTitleTwo").click(function(){
+		// if (isFadeOut) {
+		// 	isFadeOut = false;			
+		// 	$(this).find('.DiagramTitleThree').fadeIn(500);
+		// }else{
+		// 	isFadeOut = true;
+		// 	$(this).find('.DiagramTitleThree').fadeOut(500);
+		// }
+    });
+	
 
 	//checkbox对应图标展开操作
 	// $("input[id^='menuTwoCheck']").each(function(){
