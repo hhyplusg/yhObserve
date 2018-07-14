@@ -13,6 +13,7 @@ $(function(){
 	drawChart34();  //指定版块的个股估值分布
 	// drawChart4(); // 基础表实现双轴（自己造数据）</li>     <!-- 强势股占比 -->
 	// drawChart5(); // 散点图</li>          <!--  指数换手率分布图（散点图）-->
+	drawChart_A32();
 	drawChart_B11();  //指定版块的相对换手率历史变化
 	drawChart_B21();   //柱状图  换手率变化最大的基准
 	drawChart_B22();   //柱状图  换手率绝对水平最高的基准
@@ -377,7 +378,8 @@ function drawChart(){
 				data: data,
 				tooltip: {
 						valueDecimals: 4
-				}
+				},
+				dashStyle:'Dot'
 			}]
 		});
 
@@ -386,17 +388,20 @@ function drawChart(){
 		console.log("点击了导出图片！");
 		var chart = $('#showDiagram1').highcharts();
 		$('#showDiagram1').find('.svg').css("color","red");
+
+		var curTime=getCurrentTime();
+		// console.log('获取的时间是：---\n');console.log(curTime);
+
 		chart.exportChart({
-			exportFormat : 'PNG'
+			exportFormat : 'PNG',
+			filename: '博弈_存量指标'+curTime
 		});
 
 		//图标转换成图片
 		// var svg = chart.getSVG()
 		// 		.replace(/</g, '\n<') // make it slightly more readable
-		// 		.replace(/>/g, '>');
-				
+		// 		.replace(/>/g, '>');				
 		// console.log('svg---');
-
 		// $("#showDiagram1").html(svg);
 
 	});
@@ -1186,6 +1191,358 @@ function drawChart34(){
 	});
 }
 
+function drawChart_A32(){
+	console.log("开始drawChart-A32");
+	//获取数据
+	$.getJSON('../lib/dataForOne.json',function (dataYH) {
+		var data=dataYH.obj;
+		for (var index = 0;index <= data.length - 1;  index = index + 1) {
+			var a=data[index][0]*1000;
+			data[index][0]=a;
+		} 
+
+	// $.getJSON('http://localhost/weekly/IndicatorQuery?indicatorId=0001',function (dataYH) {	
+	// var jsonObject =$.parseJSON(dataYH);
+	// var data=jsonObject.obj;
+	// console.log("图1的obj数据为：\n");
+	console.log(data);
+
+
+		// Create the chart
+		Highcharts.setOptions({
+		    global: {
+		        useUTC: false
+		    },
+		    lang:{
+				contextButtonTitle:"图表导出菜单",
+				decimalPoint:".",
+				downloadJPEG:"下载JPEG图片",
+				downloadPDF:"下载PDF文件",
+				downloadPNG:"下载PNG文件",
+				downloadSVG:"下载SVG文件",
+				drillUpText:"返回 {series.name}",
+				loading:"加载中",
+				months:["一月","二月","三月","四月","五月","六月","七月","八月","九月","十月","十一月","十二月"],
+				noData:"没有数据",
+				numericSymbols: [ "千" , "兆" , "G" , "T" , "P" , "E"],
+				printChart:"打印图表",
+				resetZoom:"恢复缩放",
+				resetZoomTitle:"恢复图表",
+				shortMonths: [ "Jan" , "Feb" , "Mar" , "Apr" , "May" , "Jun" , "Jul" , "Aug" , "Sep" , "Oct" , "Nov" , "Dec"],
+				thousandsSep:",",
+				weekdays: ["星期一", "星期二", "星期三", "星期三", "星期四", "星期五", "星期六","星期天"]
+		}
+
+		});
+		var mychart =Highcharts.stockChart('showDiagram8', {
+			credits: {
+				enabled: false
+			},
+			scrollbar: {
+		        enabled: true
+		    },
+		    legend: {
+		        enabled: true,
+		        align: 'right',
+		        // backgroundColor: '#FCFFC5',
+		        // borderColor: 'black',
+		        // borderWidth: 2,
+		        color: 'gray',
+		        layout: 'vertical',
+		        verticalAlign: 'top',
+		        x: -40,
+				y: 15,
+				floating: true,
+				itemStyle:{
+					"color": "black", 
+					"cursor": "pointer", 
+					"fontSize": "12px", 
+					// "fontWeight": "bold"
+				}
+		        // shadow: true,
+		        // itemWidth: 80,
+		        // maxHeight:10
+		    },
+			rangeSelector: {
+				enabled: true,
+				selected: 5,
+				buttonTheme: { // styles for the buttons
+		  //           fill: 'none',
+		  //           stroke: 'none',
+		  //           'stroke-width': 0,
+		  //           // r: 20,
+		  //           width: 22,
+    //     			// height: 20,
+		            style: {
+		                // color: 'gray',
+		                // fontWeight: 'bold',
+		                fontSize:13,
+		          
+		            },
+		  //           states: {
+		  //               hover: {
+		  //               },
+		  //               select: {
+		  //                   fill: '#039',
+		  //                   style: {
+		  //                       color: 'white'
+		  //                   }
+		  //               }
+		  //               // disabled: { ... }
+		  //           }
+		        },
+		        inputBoxBorderColor: 'gray',
+		        inputBoxWidth: 90,
+		        inputBoxHeight: 18,
+		        inputStyle: {
+		            color: 'black',
+		            // fontWeight: 'bold'
+		            fontSize:13
+		        },
+		        labelStyle: {
+		            color: 'gray',
+		            fontWeight: 'bold',
+		            fontSize:13
+		        },
+			},
+			exporting: {
+			    enabled: false,
+			    scale: 1,
+			    sourceWidth: 700,
+        		sourceHeight: 500
+			},
+			title: {
+				text: '个股估值分布的重要时点比较',
+				style: {
+							color: 'black',
+							fontWeight: 'bold',
+							fontSize: '18px'
+						},
+				margin: 30
+			},
+			plotOptions: {
+		        series: {
+		            events: {
+		                click: function (event) {
+		                    // alert(this.name + ' clicked\n' +
+		                    //     'Alt: ' + event.altKey + '\n' +
+		                    //     'Control: ' + event.ctrlKey + '\n' +
+		                    //       'Shift: ' + event.shiftKey + '\n');
+		                    console.log('zhixingle点击函数，看看土包更新');
+		                    let cdiv=document.getElementById('ChildDiv');
+		                    if(cdiv!=null){  
+						        let p = cdiv.parentNode;  
+						        p.removeChild(cdiv);  
+						    }  
+
+		                    var mouseX;//记录鼠标点击位置。  
+							var mouseY;//记录鼠标点击位置
+
+		                    var ev = ev||event;   
+						    if(ev.pageX || ev.pageY){   
+						        mouseX = ev.pageX+'px';   
+						        mouseY = ev.pageY+'px';  
+						    }else{//兼容ie   
+						        mouseX = ev.clientX+document.body.scrollLeft - document.body.clientLeft+'px';  
+						      mouseY = ev.clientY+document.documentElement.scrollTop+'px';  
+						    } 
+						    var my = document.createElement("ChildDiv");   //创建一个div    
+						    document.body.appendChild(my);   //添加到页面     
+						    my.style.position="absolute";    //通过样式指定该div的位置方式,  
+						    my.style.top= mouseY;   //通过样式指定y坐标  
+						    my.style.left= mouseX;   //通过样式指定x坐标  
+						    my.style.border='1px solid #FF0000'; // 设置边框  
+						    my.style.width='300px';  
+							my.style.height='200px';//通过样式指定宽度、高度    
+							//通过样式指定背景颜色,,若是背景图片 例为my.style.backgroundImage="url(img/3.jpg)"     
+							my.style.backgroundColor="#ffffcc";   //设置样式透明  
+							var alpha = 80;  
+							my.style.filter='alpha(opacity:'+alpha+')';//IE   
+							my.style.opacity=alpha/100;//IE之外其他浏览器  
+							my.id = "ChildDiv";//设置ID 
+
+							//给div加一个点击后隐藏的函数 
+							my.onclick = function(){
+							   if(  (cdiv=document.getElementById('ChildDiv'))!=null){  
+							        p = cdiv.parentNode;  
+							        p.removeChild(cdiv);  
+							    } 
+							 };
+
+							//在div中创建图表
+							var chart = Highcharts.chart('ChildDiv', {
+							chart: {
+									type: 'column'
+							},
+							credits: {
+								enabled: false
+							},
+							title: {
+									text: 'PE频率'
+							},
+							subtitle: {
+									text: '数据截止 2017-03'
+							},
+							xAxis: {
+									type: 'category',
+									labels: {
+											rotation: -45  // 设置轴标签旋转角度
+									}
+							},
+							yAxis: {
+									min: 0,
+									title: {
+											// text: '人口 (百万)'
+									}
+							},
+							legend: {
+									enabled: false
+							},
+							tooltip: {
+									pointFormat: 'PE频率: <b>{point.y:.1f} 百万</b>'
+							},
+							series: [{
+										name: 'PE频率',
+										data: [
+											['0', 24.25],
+											['15', 23.50],
+											['30', 21.51],
+											['45', 16.78],
+											['60', 16.06],
+											['75', 15.20],
+											['90', 14.16],
+											['105', 13.51],
+											['120', 13.08],
+											['135', 12.44],
+											['150', 12.19],
+											['165', 12.03],
+											['180', 10.46],
+											['195', 10.07],
+											['210', 10.05],
+											['225', 9.99],
+											['240', 9.78],
+											['255', 9.73],
+											['270', 9.27],
+											['290', 8.87]
+										],
+										dataLabels: {
+											enabled: true,
+											rotation: -90,
+											color: '#FFFFFF',
+											align: 'right',
+											format: '{point.y:.1f}', // :.1f 为保留 1 位小数
+											y: 10
+										}
+									}]
+							});
+		                }
+		            }
+		        }
+		    },
+		    tooltip: {
+				split: false,
+				dateTimeLabelFormats: {
+						millisecond: '%H:%M:%S.%L',
+						second: '%H:%M:%S',
+						minute: '%H:%M',
+						hour: '%H:%M',
+						day: '%m-%d',
+						year: '%Y-%m-%d',
+				},
+				headerFormat: '{point.x:%Y-%m-%d}<br>'
+			},
+			navigator: {
+				enabled: true,
+				xAxis: {
+					dateTimeLabelFormats: {
+							millisecond: '%H:%M:%S.%L',
+							second: '%H:%M:%S',
+							minute: '%H:%M',
+							hour: '%H:%M',
+							day: '%m-%d',
+							week: '%Y-%m-%d',
+				            month: '%Y-%m',
+				            year: '%Y'
+					}
+				}
+			},
+
+		    xAxis: {				
+		        title: {
+		            enabled: true,
+		            // text: '2本周换手率历史分位'
+		        },
+		        type: 'datetime',
+		        // tickInterval: 24*3600*1000,
+				dateTimeLabelFormats: {
+					millisecond: '%H:%M:%S.%L',
+					second: '%H:%M:%S',
+					minute: '%H:%M',
+					hour: '%H:%M',
+					day: '%Y-%m-%d',
+		            week: '%Y-%m-%d',
+		            month: '%Y-%m',
+		            year: '%Y'
+				},
+				// crosshair: {
+				// 	label: {
+				// 			format: '%Y-%m-%d'
+				// 	}
+				// }
+
+		        labels: {
+		        	// rotation: -10
+		        // 	formatter: function() {
+		        //      	return Math.round(this.value*100) + '%';
+		        //      	// return Highcharts.numberFormat(this.value.percentage,2)+ '%';
+		        //  	}
+		        },
+		        // startOnTick: true,
+		        // endOnTick: true,
+		        // showLastLabel: true
+		    },
+			yAxis: {
+				opposite: false,
+				lineWidth:1,
+				title: {
+					// text: '这个是Y轴'
+				},
+			},
+			series: [{
+				name: '2018年6月1日',
+				data: data,
+				tooltip: {
+						valueDecimals: 4
+				},
+				dashStyle:'Dot'
+			}]
+		});
+
+	});
+	$("#testExport").click(function(event){
+		console.log("点击了导出图片！");
+		var chart = $('#showDiagram1').highcharts();
+		$('#showDiagram1').find('.svg').css("color","red");
+
+		var curTime=getCurrentTime();
+		// console.log('获取的时间是：---\n');console.log(curTime);
+
+		chart.exportChart({
+			exportFormat : 'PNG',
+			filename: '博弈_存量指标'+curTime
+		});
+
+		//图标转换成图片
+		// var svg = chart.getSVG()
+		// 		.replace(/</g, '\n<') // make it slightly more readable
+		// 		.replace(/>/g, '>');				
+		// console.log('svg---');
+		// $("#showDiagram1").html(svg);
+
+	});
+
+}
+
 function drawChart_B11(){   
 	console.log("开始drawChart-2-");
 	var seriesOptions = [],
@@ -1349,7 +1706,15 @@ function drawChart_B21(){
         series: [{
         	barWidth:'50%',
 	        data: [5, 4, 4, 3, 2],
-	        type: 'bar'
+	        type: 'bar',
+	        itemStyle: {
+                    normal:{  
+                    color: function (params){
+                        var colorList = ['#ff4844','#9ac3e5','#66ac52','#ffc032','#549bd3','#f47e39'];
+                        return colorList[params.dataIndex];
+                    }
+                },
+            },
 	    }]
     };
     // //set searchedData into option
@@ -1424,7 +1789,15 @@ function drawChart_B22(){
         series: [{
         	barWidth:'50%',
 	        data: [5, 4, 4, 3, 2],
-	        type: 'bar'
+	        type: 'bar',
+	        itemStyle: {
+                    normal:{  
+                    color: function (params){
+                        var colorList = ['#ff4844','#9ac3e5','#66ac52','#ffc032','#549bd3','#f47e39'];
+                        return colorList[params.dataIndex];
+                    }
+                },
+            },
 	    }]
     };
     // //set searchedData into option
@@ -1437,9 +1810,44 @@ function drawChart_B22(){
 }
 
 function drawChart_B23(){
+	console.log("开始drawChart-B23-");
 
-	// <table width="698" border="0" cellpadding="0" cellspacing="0" id="tabProduct">  
-	// 			    <tr><td width="30" height="30" align="center" bgcolor="#EFEFEF"  EditType="TextBox" style="font-weight:bold;"></td></tr></table>
+	var contentSet=['上证综指','-0.32%','0.6%','1.17','1.35','31.83%','44.17%'];
+	// var contentSet=['基准指数','本周涨跌幅','上周涨跌幅','本周年化换手率','上周年化换手率','本周换手率分位','上周换手率分位'];
+	var row_obj=$("<tr></tr>");
+	var col_td=$("<td style='width:80px;font-Weight:bold'></td>");
+	col_td.html('基准指数');row_obj.append(col_td);
+	col_td=$("<td style='width:80px;font-Weight:bold'></td>");
+	col_td.html('本周涨跌幅');row_obj.append(col_td);
+	col_td=$("<td style='width:80px;font-Weight:bold'></td>");
+	col_td.html('上周涨跌幅');row_obj.append(col_td);
+	col_td=$("<td style='width:120px;font-Weight:bold'></td>");
+	col_td.html('本周年化换手率');row_obj.append(col_td);
+	col_td=$("<td style='width:120px;font-Weight:bold'></td>");
+	col_td.html('上周年化换手率');row_obj.append(col_td);
+	col_td=$("<td style='width:120px;font-Weight:bold'></td>");
+	col_td.html('本周换手率分位');row_obj.append(col_td);
+	col_td=$("<td style='width:120px;font-Weight:bold'></td>");
+	col_td.html('上周换手率分位');row_obj.append(col_td);
+
+	var row_obj2=$("<tr></tr>");
+	for (let i = 0; i < contentSet.length; i++) {		
+		col_td=$("<td align='center' bgcolor='#FFFFFF'></td>");
+		col_td.html(contentSet[i]);
+		row_obj2.append(col_td);
+	}
+
+	$('#showTable').append(row_obj);
+	$('#showTable').append(row_obj2);
+
+
+
+                // <table width="800" border="0" cellpadding="0" cellspacing="0" class="showTable0">  
+                //     <tr>  
+                //       <td height='30' class="showTable" style="font-weight:bold;"></td>  
+                       
+                //     </tr>          
+                // </table>
 
 }
 
@@ -2333,6 +2741,21 @@ function drawChart_B41(){
 		// $("#showDiagram1").html('<img src='+imgSrc+' />');
 
 	});
+}
+
+function getCurrentTime(){
+	//获取当前时间
+	var date = new Date();
+	var year = date.getFullYear();
+	var month = date.getMonth()+1;
+	if (month<10) {month='0'+month;}
+	var day = date.getDate();
+	if (day<10) {day='0'+day;}
+	var hour = date.getHours();
+	var minute = date.getMinutes();
+	var second = date.getSeconds();
+	var currentTime=year+month+day+hour+minute+second;
+	return currentTime;
 }
 
 

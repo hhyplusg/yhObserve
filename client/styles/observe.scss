@@ -25,6 +25,8 @@ $background-color: white;
         border: 1px solid #CCCCCC;
     }
 }
+
+
 // .svg{
 //     font-size:130px;
 //     color: red;
@@ -96,6 +98,8 @@ $background-color: white;
 .img{
     vertical-align: middle;
 }
+
+
 .DiagramTitleOne{
     background-color: $diagram-title-background-color; 
     text-align:left;
@@ -263,7 +267,17 @@ $background-color: white;
     box-sizing:border-box;
     /*background-color:green;                  */
     float: left;
-    padding: 20px;
+    padding: 20px;    
+}
+.diagramTable{
+    border-collapse:collapse; 
+    tr td{
+        border-bottom: 1px solid #CCCCCC;  
+        border-top: 1px solid #CCCCCC;        
+        color:blue;
+        font-size:14px;
+        text-align: center;
+    }
 }
 .DiagramAreaDiv2{
     width:40%;
@@ -308,14 +322,24 @@ $background-color: white;
     font-style: normal;
     font-size: 13px;
 }
-.table-container table{
-    margin:auto;
+.table-container {
+    table{
+        margin:auto;
+        border-collapse: collapse;
+    }
+    table tr{
+        border: 1px solid rgba(215, 215, 215, 1);
+        // border-collapse: collapse;
+        text-align: center;
+    }
+    table tr td{
+        border: 1px solid rgba(215, 215, 215, 1);
+        // border-collapse: collapse;
+        text-align: center;
+    }
+    
 }
-.table-container table,table tr th, table tr td{
-    border: 1px solid rgba(215, 215, 215, 1);
-    border-collapse: collapse;
-    text-align: center;
-}
+
 
 .edit-label{
     text-align: left;margin-bottom: 10px;
