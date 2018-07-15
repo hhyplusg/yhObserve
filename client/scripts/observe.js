@@ -1013,6 +1013,12 @@ function drawChart34(){
 		        series: {
 		            events: {
 		                click: function (event) {
+		                    // alert(this.name + ' clicked\n' +
+		                    //     'Alt: ' + event.altKey + '\n' +
+		                    //     'Control: ' + event.ctrlKey + '\n' +
+		                    //       'Shift: ' + event.shiftKey + '\n');
+		                    console.log('zhixingle点击函数，看看土包更新');
+		                    // drawChart2();
 		                    let cdiv=document.getElementById('ChildDiv');
 		                    if(cdiv!=null){  
 						        let p = cdiv.parentNode;  
@@ -1118,12 +1124,25 @@ function drawChart34(){
 											y: 10
 									}
 							}]
-					});
-
-
-
-
-		                }
+							});
+							// this.isClick = false;
+							// function aa(){console.log("---zhixing aa");this.isClick = true;console.log(this.isClick);}
+							// setTimeout(aa,2000);
+							this.isClick=true;
+		            	},
+			            mouseOut: function (event) {
+			            	 if(this.isClick) {
+			            	 	this.isClick=false;	}
+			            	 else{
+			            	 	// console.log("---鼠标移除22");
+			            	 	var cdiv=document.getElementById('ChildDiv');
+			            	 	if(cdiv!=null){  
+							        var p = cdiv.parentNode;  
+							        p.removeChild(cdiv);  
+							    }
+			            	}		            	
+			            }
+		                
 		            }
 		        }
 		    },
@@ -2652,138 +2671,22 @@ function drawChart_B41(){
 							// this.isClick = false;
 							// function aa(){console.log("---zhixing aa");this.isClick = true;console.log(this.isClick);}
 							// setTimeout(aa,2000);
+							this.isClick=true;
 		            	},
 			            mouseOut: function (event) {
-			            	// console.log(this.isClick);
-			            	//  if(!this.isClick) {console.log("---鼠标移除");	}
-			            	//  else{console.log("---鼠标移除22");}		            	
+			            	 if(this.isClick) {
+			            	 	this.isClick=false;	}
+			            	 else{
+			            	 	// console.log("---鼠标移除22");
+			            	 	var cdiv=document.getElementById('ChildDiv');
+			            	 	if(cdiv!=null){  
+							        var p = cdiv.parentNode;  
+							        p.removeChild(cdiv);  
+							    }
+			            	}		            	
 			            }
-		            },
-        // 	        point:{
-			     //    	events:{
-			     //            click: function (event) {
-			     //                // alert(this.name + ' clicked\n' +
-			     //                //     'Alt: ' + event.altKey + '\n' +
-			     //                //     'Control: ' + event.ctrlKey + '\n' +
-			     //                //       'Shift: ' + event.shiftKey + '\n');
-			     //                console.log('zhixingle点击函数，看看土包更新');
-			     //                // drawChart2();
-			     //                let cdiv=document.getElementById('ChildDiv');
-			     //                if(cdiv!=null){  
-							 //        let p = cdiv.parentNode;  
-							 //        p.removeChild(cdiv);  
-							 //    }  
-
-			     //                var mouseX;//记录鼠标点击位置。  
-								// var mouseY;//记录鼠标点击位置
-
-			     //                var ev = ev||event;   
-							 //    if(ev.pageX || ev.pageY){   
-							 //        mouseX = ev.pageX+'px';   
-							 //        mouseY = ev.pageY+'px';  
-							 //    }else{//兼容ie   
-							 //        mouseX = ev.clientX+document.body.scrollLeft - document.body.clientLeft+'px';  
-							 //      mouseY = ev.clientY+document.documentElement.scrollTop+'px';  
-							 //    } 
-							 //    var my = document.createElement("ChildDiv");   //创建一个div    
-							 //    document.body.appendChild(my);   //添加到页面     
-							 //    my.style.position="absolute";    //通过样式指定该div的位置方式,  
-							 //    my.style.top= mouseY;   //通过样式指定y坐标  
-							 //    my.style.left= mouseX;   //通过样式指定x坐标  
-							 //    my.style.border='1px solid #FF0000'; // 设置边框  
-							 //    my.style.width='300px';  
-								// my.style.height='200px';//通过样式指定宽度、高度    
-								// //通过样式指定背景颜色,,若是背景图片 例为my.style.backgroundImage="url(img/3.jpg)"     
-								// my.style.backgroundColor="#ffffcc";   //设置样式透明  
-								// var alpha = 80;  
-								// my.style.filter='alpha(opacity:'+alpha+')';//IE   
-								// my.style.opacity=alpha/100;//IE之外其他浏览器  
-								// my.id = "ChildDiv";//设置ID 
-
-								// //给div加一个点击后隐藏的函数 
-								// my.onclick = function(){
-								//    if(  (cdiv=document.getElementById('ChildDiv'))!=null){  
-								//         p = cdiv.parentNode;  
-								//         p.removeChild(cdiv);  
-								//     } 
-								//  };
-
-								// //在div中创建图表
-								// var chart = Highcharts.chart('ChildDiv', {
-								// chart: {
-								// 		type: 'column'
-								// },
-								// credits: {
-								// 	enabled: false
-								// },
-								// title: {
-								// 		text: 'PE频率'
-								// },
-								// subtitle: {
-								// 		text: '数据截止 2017-03'
-								// },
-								// xAxis: {
-								// 		type: 'category',
-								// 		labels: {
-								// 				rotation: -45  // 设置轴标签旋转角度
-								// 		}
-								// },
-								// yAxis: {
-								// 		min: 0,
-								// 		title: {
-								// 				// text: '人口 (百万)'
-								// 		}
-								// },
-								// legend: {
-								// 		enabled: false
-								// },
-								// tooltip: {
-								// 		pointFormat: 'PE频率: <b>{point.y:.1f} 百万</b>'
-								// },
-								// series: [{
-								// 		name: 'PE频率',
-								// 		data: [
-								// 				['0', 24.25],
-								// 				['15', 23.50],
-								// 				['30', 21.51],
-								// 				['45', 16.78],
-								// 				['60', 16.06],
-								// 				['75', 15.20],
-								// 				['90', 14.16],
-								// 				['105', 13.51],
-								// 				['120', 13.08],
-								// 				['135', 12.44],
-								// 				['150', 12.19],
-								// 				['165', 12.03],
-								// 				['180', 10.46],
-								// 				['195', 10.07],
-								// 				['210', 10.05],
-								// 				['225', 9.99],
-								// 				['240', 9.78],
-								// 				['255', 9.73],
-								// 				['270', 9.27],
-								// 				['290', 8.87]
-								// 		],
-								// 		dataLabels: {
-								// 				enabled: true,
-								// 				rotation: -90,
-								// 				color: '#FFFFFF',
-								// 				align: 'right',
-								// 				format: '{point.y:.1f}', // :.1f 为保留 1 位小数
-								// 				y: 10
-								// 		}
-								// }]
-								// });
-								
-			     //        	},
-			     //        	mouseOut: function (event) {
-			     //        	 console.log("---鼠标移除22");	            	
-			     //        	}
-			     //        }
-		      //   	}
+		            }       
 		        }
-	
-
 		    },
 
 		    xAxis: {				

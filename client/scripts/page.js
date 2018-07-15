@@ -184,84 +184,91 @@ function drawChart6(){
 	console.log("开始drawChart-6-");
 
 
-		// (function(H) {
-  //   H.wrap(H.Series.prototype, 'drawGraph', function(proceed) {
+	(function(H) {
 
-  //     // Now apply the original function with the original arguments, 
-  //     // which are sliced off this function's arguments
-  //     proceed.apply(this, Array.prototype.slice.call(arguments, 1));
+    H.wrap(H.Series.prototype, 'drawGraph', function(proceed) {
 
-  //     var arrowLength = 20,
-  //       arrowWidth = 10,
-  //       series = this,
-  //       data = series.data,
-  //       len = data.length,
-  //       segments = data,
-  //       lastSeg = segments[segments.length - 1],
-  //       path = [];
+      // Now apply the original function with the original arguments, 
+      // which are sliced off this function's arguments
+      proceed.apply(this, Array.prototype.slice.call(arguments, 1));
 
-  //       console.log("lastSeg----\n");
-  //       console.log(lastSeg);
+      var arrowLength = 20,
+        arrowWidth = 10,
+        series = this,
+        data = series.data,
+        len = data.length,
+        segments = data,
+        lastSeg = segments[segments.length - 1],
+        path = [];
+
+        console.log(this);
+        console.log(lastSeg);
 
 
-  //     var lastPoint = null;
-  //     var nextLastPoint = null;
+	      var lastPoint = null;
+	      var nextLastPoint = null;
+
+      if (lastSeg) {
+      if (lastSeg.y === 0) {
+        lastPoint = segments[segments.length - 2];
+        nextLastPoint = segments[segments.length - 1];
+      } else {
+        lastPoint = segments[segments.length - 1];
+        nextLastPoint = segments[segments.length - 2];
+      }
+
+      var angle = Math.atan((lastPoint.plotX - nextLastPoint.plotX) /
+        (lastPoint.plotY - nextLastPoint.plotY));
+
+      if (angle < 0) angle = Math.PI + angle;
+
+      path.push('M', lastPoint.plotX, lastPoint.plotY);
+
+      if (lastPoint.plotX > nextLastPoint.plotX) {
+        path.push(
+          'L',
+          lastPoint.plotX + arrowWidth * Math.cos(angle),
+          lastPoint.plotY - arrowWidth * Math.sin(angle)
+        );
+        path.push(
+          lastPoint.plotX + arrowLength * Math.sin(angle),
+          lastPoint.plotY + arrowLength * Math.cos(angle)
+        );
+        path.push(
+          lastPoint.plotX - arrowWidth * Math.cos(angle),
+          lastPoint.plotY + arrowWidth * Math.sin(angle),
+          'Z'
+        );
+      } else {
+        path.push(
+          'L',
+          lastPoint.plotX - arrowWidth * Math.cos(angle),
+          lastPoint.plotY + arrowWidth * Math.sin(angle)
+        );
+        path.push(
+          lastPoint.plotX - arrowLength * Math.sin(angle),
+          lastPoint.plotY - arrowLength * Math.cos(angle)
+        );
+        path.push(
+          lastPoint.plotX + arrowWidth * Math.cos(angle),
+          lastPoint.plotY - arrowWidth * Math.sin(angle),
+          'Z'
+        );
+      }
+
+      series.chart.renderer.path(path)
+        .attr({
+          fill: series.color
+        })
+        .add(series.group);
+
+
+      }
     
-  //     if (lastSeg.y === 0) {
-  //       lastPoint = segments[segments.length - 2];
-  //       nextLastPoint = segments[segments.length - 1];
-  //     } else {
-  //       lastPoint = segments[segments.length - 1];
-  //       nextLastPoint = segments[segments.length - 2];
-  //     }
 
-  //     var angle = Math.atan((lastPoint.plotX - nextLastPoint.plotX) /
-  //       (lastPoint.plotY - nextLastPoint.plotY));
 
-  //     if (angle < 0) angle = Math.PI + angle;
-
-  //     path.push('M', lastPoint.plotX, lastPoint.plotY);
-
-  //     if (lastPoint.plotX > nextLastPoint.plotX) {
-  //       path.push(
-  //         'L',
-  //         lastPoint.plotX + arrowWidth * Math.cos(angle),
-  //         lastPoint.plotY - arrowWidth * Math.sin(angle)
-  //       );
-  //       path.push(
-  //         lastPoint.plotX + arrowLength * Math.sin(angle),
-  //         lastPoint.plotY + arrowLength * Math.cos(angle)
-  //       );
-  //       path.push(
-  //         lastPoint.plotX - arrowWidth * Math.cos(angle),
-  //         lastPoint.plotY + arrowWidth * Math.sin(angle),
-  //         'Z'
-  //       );
-  //     } else {
-  //       path.push(
-  //         'L',
-  //         lastPoint.plotX - arrowWidth * Math.cos(angle),
-  //         lastPoint.plotY + arrowWidth * Math.sin(angle)
-  //       );
-  //       path.push(
-  //         lastPoint.plotX - arrowLength * Math.sin(angle),
-  //         lastPoint.plotY - arrowLength * Math.cos(angle)
-  //       );
-  //       path.push(
-  //         lastPoint.plotX + arrowWidth * Math.cos(angle),
-  //         lastPoint.plotY - arrowWidth * Math.sin(angle),
-  //         'Z'
-  //       );
-  //     }
-
-  //     series.chart.renderer.path(path)
-  //       .attr({
-  //         fill: series.color
-  //       })
-  //       .add(series.group);
-
-  //   });
-  // }(Highcharts));
+    });
+  }(Highcharts));
 	
 
 
