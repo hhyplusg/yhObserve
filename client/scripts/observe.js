@@ -4,26 +4,27 @@ import {EventObject,GetCookie,SetCookie,DeleteCookie,isWeiXin,parseUrlSearch,get
 
 $(function(){
 	console.log("开始画图--");
-	drawChart_A11();  //<!-- 博弈/存量指标 -->
-	drawChart_A12(); //百分比图方法实现双轴</li>     <!-- 融资买入/可用担保价值 -->
-	drawChart_A21(); // 基础表实现双轴</li>           <!-- 综合性情绪指标 -->
-	drawChart_A22();  //百分比图方法实现双轴</li>     <!-- 融资买入/可用担保价值 -->
-	drawChart_A23(); 
-	drawChart_A24();  //换手率
-	drawChart_A31();  //指定版块的个股估值分布
-	// drawChart4(); // 基础表实现双轴（自己造数据）</li>     <!-- 强势股占比 -->
-	// drawChart5(); // 散点图</li>          <!--  指数换手率分布图（散点图）-->
-	drawChart_A32();
-	drawChart_B11();  //指定版块的相对换手率历史变化
-	drawChart_B21();   //柱状图  换手率变化最大的基准
-	drawChart_B22();   //柱状图  换手率绝对水平最高的基准
-	drawChart_B23();   //表格   基准/版块的周换手率
-	drawChart_B24();
-	drawChart_B31();   //柱状图
-	drawChart_B32();   //象限图
-	drawChart_B33();  // 反转图 
-	// drawChart7(); // 象限图
-	drawChart_B41();
+	// drawChart_A11();  //<!-- 博弈/存量指标 -->
+	// drawChart_A12(); //百分比图方法实现双轴</li>     <!-- 融资买入/可用担保价值 -->
+	// drawChart_A21(); // 基础表实现双轴</li>           <!-- 综合性情绪指标 -->
+	// drawChart_A22();  //百分比图方法实现双轴</li>     <!-- 融资买入/可用担保价值 -->
+	// drawChart_A23(); 
+	// drawChart_A24();  //换手率
+	// drawChart_A31();  //指定版块的个股估值分布
+	// // drawChart4(); // 基础表实现双轴（自己造数据）</li>     <!-- 强势股占比 -->
+	// // drawChart5(); // 散点图</li>          <!--  指数换手率分布图（散点图）-->
+	// drawChart_A32();
+	// drawChart_B11();  //指定版块的相对换手率历史变化
+	// drawChart_B21();   //柱状图  换手率变化最大的基准
+	// drawChart_B22();   //柱状图  换手率绝对水平最高的基准
+	// drawChart_B23();   //表格   基准/版块的周换手率
+	// drawChart_B24();
+	// drawChart_B31();   //柱状图
+	// drawChart_B32();   //象限图
+	drawHistogram();
+	// drawChart_B33();  // 反转图 
+	// // drawChart7(); // 象限图
+	// drawChart_B41();
 	// export
 	$("#exportButton").click(function(event){
 		console.log("zhixinle导出函数！");
@@ -810,14 +811,14 @@ function drawChart_A23(){
 				{
 					name: '成交额：分级B/A',
 					data: dataObj.data,
-					yAxis:1,
+					yAxis:0,
 					color:'#1E90FF',
 					lineWidth:1
 				},
 				{
 					name: '成交额：分级B/A(MA10)',
 					data: dataObj.data_MA10,	
-					yAxis:1,
+					yAxis:0,
 					color:'#B22222',
 					lineWidth:1
 					// line:{
@@ -827,7 +828,7 @@ function drawChart_A23(){
 				{
 					name: '中证500(右轴/对数)',
 					data: dataObj.index_data,	
-					yAxis:0,
+					yAxis:1,
 					color:'gray',
 					lineWidth:1
 					// line:{
@@ -1941,6 +1942,28 @@ function drawChart_B24(){
 			rangeSelector: {
 				selected: 5
 			},
+			legend: {
+		        enabled: true,
+		        align: 'right',
+		        // backgroundColor: '#FCFFC5',
+		        // borderColor: 'black',
+		        // borderWidth: 2,
+		        color: 'gray',
+		        // layout: 'vertical',
+		        verticalAlign: 'top',
+		        x: -40,
+				y: 15,
+				floating: true,
+				itemStyle:{
+					"color": "black", 
+					"cursor": "pointer", 
+					"fontSize": "12px", 
+					// "fontWeight": "bold"
+				}
+		        // shadow: true,
+		        // itemWidth: 80,
+		        // maxHeight:10
+		    },
 			title: {
 				text: '指定版块周换手率的历史变化',  //基础表实现双轴（网络数据）
 				style: {
@@ -2073,16 +2096,18 @@ function drawChart_B31(){
 	myChartRight.setOption(setOption('衰竭',xAxisDataRight,seriesData.right));
 }
 
-//象限图 
+// 象限图 
 function drawChart_B32(){
-	console.log("开始drawChart-b32-");
 
-		// $.getJSON('../lib/data15B32.json',function (dataYH) {
-		// var dataObj=dataYH.obj;
+	console.log("开始drawChart-B32-");
+
+	$.getJSON('../lib/data15B32.json',function (dataYH) {
+		var dataObj=dataYH.obj;
+		var dataSet=dataObj.ret;
 		// console.log("obj--data15B32-\n");console.log(dataObj);
 		// console.log("dataObj.data--data15B32-\n");console.log(dataObj.data);
 		// console.log("dataObj.index_data--data15B32-\n");console.log(dataObj.index_data);
-		// var dataSet=dataObj.ret;
+		
 
 	// $.getJSON('weekly/IndicatorQuery?indicatorId=0004&windCode=881001.WI&smooth=MA5',function (dataYH) {	
 	// 	var jsonObject =$.parseJSON(dataYH);
@@ -2090,60 +2115,189 @@ function drawChart_B32(){
 	// 	console.log("图1的obj数据为：\n");
 	// 	console.log(dataObj);
 
-	var data = [[3.275154, 2.957587, '外国1'],[-3.344465, 2.603513, '外国'],[0.355083, -3.376585, '外国3'],[1.852435, 3.547351, '外国'],[-2.078973, 2.552013, '外国'],[-0.993756, -0.884433, '外国2'],[2.682252, 4.007573, '外国'],[-3.087776, 2.878713, '外国'],[-1.565978, -1.256985, '外国7'],[2.441611, 0.444826, '外国'],[-0.659487, 3.111284, '外国'],[-0.459601, -2.618005, '外国4'], [2.17768, 2.387793, '外国'],[-2.920969, 2.917485, '外国6'],[-0.028814, -4.168078, '外国8'],[3.625746, 2.119041, '外国'],[-3.912363, 1.325108, '外国5'],[-0.551694, -2.814223, '外国0'], [2.855808, 3.483301, '外国'],[-3.594448, 2.856651, '外国'],[0.421993, -2.372646, '外国'],[1.650821, 3.407572, '外国'],[-2.082902, 3.384412, '外国9']];
-	// ,[-0.718809, -2.492514],[4.513623, 3.841029],[-4.822011, 4.607049],   [-0.656297, -1.449872],[1.919901, 4.439368], [-3.287749, 3.918836],[-1.576936, -2.977622],[3.598143, 1.97597],[-3.977329, 4.900932],[-1.79108, -2.184517],[3.914654, 3.559303],[-1.910108, 4.166946],[-1.226597, -3.317889], [1.148946, 3.345138],[-2.113864, 3.548172],[0.845762, -3.589788],[2.629062, 3.535831],[-1.640717, 2.990517],[-1.881012, -2.485405],[4.606999, 3.510312], [-4.366462, 4.023316],[0.765015, -3.00127], [3.121904, 2.173988], [-4.025139, 4.65231],[-0.559558, -3.840539],[4.376754, 4.863579], [-1.874308, 4.032237],[-0.089337, -3.026809],[3.997787, 2.518662],[-3.082978, 2.884822], [0.845235, -3.454465],[1.327224, 3.358778],[-2.889949, 3.596178],[-0.966018, -2.839827],[2.960769, 3.079555],[-3.275518, 1.577068],[0.639276, -3.41284]];
+		//dataSet数组转化为json对象
+		var dataJsonArray=[];
+		// console.log("转化前dataJson为：\n");console.log(dataJsonArray);
+		for (let i = 0; i < dataSet.length; i++) {
+			let tempJson={name: dataSet[i][0],x: dataSet[i][1], y: dataSet[i][2]};
+			dataJsonArray.push(tempJson);
+		}
+		// console.log("转化后后后dataJson为：\n");console.log(dataJsonArray);
 
-	// 基于准备好的dom，初始化echarts实例
-	var myChart = echarts.init(document.getElementById('showDiagram15'));
+		var data1 = [["点1",5, 11],["点2",6, 22]];
+		var data2 = [[5, 11,"点11"],[6, 22,"jj"]];
+		var data3 =[{ x: 2, y: 3, name: 'BE' ,renyi:"12131"},{ x: 4, y: 6, name: 'Bddd' ,renyi:"333"}];
+		// // 基于准备好的dom，初始化echarts实例
+		// var myChart = echarts.init(document.getElementById('showDiagram15'));
 
-	var option = {
-	    xAxis: {
-	    	axisLine:{
-	    		// onZero:false
-	    	}
-	    },
-	    yAxis: {
-	    	axisLine:{
-	    		// onZero:false
-	    	}
-	    },
-	    series: [{
-	    	symbol:'diamond', 
-	    	//circle rectangle triangle diamond emptyCircle  emptyRectangle emptyTriangle emptyDiamond
-	        symbolSize: 15,
-	        itemStyle: {
-	        	normal: {
-	        		label:{
-					    show: true,
-					    position:'outer',
-					    textStyle:{
-					    	color:'black'
-					    }
-					}, 
-					color: 'blue'
-	        	}	        	
-	        },
-	        encode: {                    //可以定义 data 的哪个维度被编码成什么
-		        x: 0,             // 表示维度 3、1、5 映射到 x 轴。
-		        y: 1,                     // 表示维度 2 映射到 y 轴。
-		        // tooltip: [3, 2, 4],      // 表示维度 3、2、4 会在 tooltip 中显示。
-		        label: 2                 // 表示 label 使用维度 3。
-		    },			        
-	        data: [
-	            [ 10.0, 8.04, '外国'],
-	            [ 5.0, 5.68, '中国']
-	        ],
-	        type: 'scatter',
-	        
-	    }]
-	};
+		// var option = {
+		//     xAxis: {
+		//     	axisLine:{
+		//     		// onZero:false
+		//     	}
+		//     },
+		//     yAxis: {
+		//     	axisLine:{
+		//     		// onZero:false
+		//     	}
+		//     },
+		//     series: [{
+		//     	symbol:'diamond', 
+		//     	//circle rectangle triangle diamond emptyCircle  emptyRectangle emptyTriangle emptyDiamond
+		//         symbolSize: 15,
+		//         itemStyle: {
+		//         	normal: {
+		//         		label:{
+		// 				    show: true,
+		// 				    position:'outer',
+		// 				    textStyle:{
+		// 				    	color:'black'
+		// 				    }
+		// 				}, 
+		// 				color: 'blue'
+		//         	}	        	
+		//         },
+		//         encode: {                    //可以定义 data 的哪个维度被编码成什么
+		// 	        x: 1,             // 表示维度 3、1、5 映射到 x 轴。
+		// 	        y: 2,                     // 表示维度 2 映射到 y 轴。
+		// 	        // tooltip: [3, 2, 4],      // 表示维度 3、2、4 会在 tooltip 中显示。
+		// 	        label: 0                 // 表示 label 使用维度 3。
+		// 	    },			        
+		//         data: [
+		//             [ 10.0, 8.04, '点'],
+		//             [ 5.0, 5.68, '中国']
+		//         ],
+		//         type: 'scatter',
+		        
+		//     }]
+		// };
 
-	option.series[0].data=data;
-    // 使用刚指定的配置项和数据显示图表。
-    myChart.setOption(option);
+		// option.series[0].data=dataSet;
+	 //    // 使用刚指定的配置项和数据显示图表。
+	 //    myChart.setOption(option);
 
-    // });	
+	 var chart = Highcharts.chart('showDiagram15', {
+		chart: {
+				type: 'scatter',
+				zoomType: 'xy'
+		},
+		credits: {
+			enabled: false
+		},
+		title: {
+			text: '所有行业的速度/加速度最新分布'
+		},
+		xAxis: {
+			lineWidth:1,
+			gridLineWidth:1,
+			tickLength:0,
+			title: {
+					enabled: false,
+					// text: '身高 (cm)'
+			},
+			startOnTick: true,
+			endOnTick: true,
+			showLastLabel: true,
+			plotLines: [{
+					zIndex: 99,
+					value: 1,
+					color: 'red',
+					dashStyle: 'solid',
+					width: 1,
+					// label: {
+					// 		text: '0.25'
+					// }
+			}]
+		},
+		yAxis: {
+			lineWidth:1,
+			gridLineWidth:1,
+			// lineColor:'red',
+			title: {
+				enabled: false,
+			// 		// text: '体重 (kg)'
+			},
+			plotLines: [{
+				zIndex: 99,
+				value: 1,
+				color: 'red',
+				dashStyle: 'solid',
+				width: 1,
+			}]
+		},
+		legend: {
+			// enabled: false,
+			layout: 'vertical',
+			align: 'left',
+			verticalAlign: 'top',
+			x: 70,
+			y: 50,
+			floating: true,
+			backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF',
+			borderWidth: 1
+		},
+		tooltip: {
+			style: {
+				// color: "red",  //在这里设置颜色才顶用
+			}
+		},
+		plotOptions: {
+			scatter: {
+				marker: {
+					symbol: 'diamond',
+					fillColor:'blue',
+					radius: 5,
+					states: {
+						hover: {
+							enabled: true,
+							lineColor: 'red'
+						}
+					}
+				},
+				tooltip: {
+					headerFormat: '',
+					pointFormat: '<b>{point.name}</b><br>{point.x}, {point.y}',				
+				},
+				dataLabels: {
+	                enabled: true,
+	                format: '{point.name}',
+	                style: {
+						// color: "red",  
+						fontWeight: 'normal'
+					},
+					zIndex: -10,   //设置文本在点标下方
+	            }
+			}
+		},
+		series: [{
+			name: '速度/加速度',
+			// color: 'rgba(223, 83, 83, .5)',
+			data: dataJsonArray,
+			zIndex: 1000,
+		}]
+	}, function(chart){
+		//用于坐标轴的偏移
+		// var yZero = chart.yAxis[0].toPixels(5);
+		// var yMin = chart.yAxis[0].toPixels(chart.yAxis[0].min);
+		// console.log('yMinyMinyMinyMinyMin-----'+yMin);
+
+		// chart.xAxis[0].update({
+		// 		// offset:  yZero
+		// });
+		//方法2
+		// var yAxis = chart.yAxis[0],
+		// 	xAxis = chart.xAxis[0];
+		// xAxis.update({
+		// 		offset: -yAxis.toPixels(1) + xAxis.top
+		// });
+		// yAxis.update({
+		// 		offset: -xAxis.toPixels(1) + yAxis.top
+		// });
+		});
+
+    });	
 }
+
 
 //反转图
 function drawChart_B33(){
@@ -2334,13 +2488,7 @@ function drawChart_B41(){
 			credits: {
 				enabled: false
 			},
-			// scrollbar: {
-		 //        enabled: false
-		 //    },
-		 //    navigator: {
-		 //        enabled: false
-		 //    },
-		    legend: {
+		    legend:{
 		        // enabled: false,
 		        align: 'right',
 		        // backgroundColor: '#FCFFC5',
@@ -2348,8 +2496,8 @@ function drawChart_B41(){
 		        // borderWidth: 2,
 		        layout: 'vertical',
 		        verticalAlign: 'top',
-		        x: -10,
-				y: 10,
+		  //       x: -10,
+				// y: 10,
 				floating: true
 		        // shadow: true,
 		        // itemWidth: 80,
@@ -2567,7 +2715,7 @@ function drawChart_B41(){
 			},
 
 			series: [{
-				name: '博弈/存量资金',
+				name: '中期_HP滤波后的行业估值',
 				data: data,
 				tooltip: {
 						valueDecimals: 4
@@ -2971,6 +3119,81 @@ function drawChart7(){
 }
 
 
+
+// 象限图（旧版，echart方法） 
+function drawChart_B32_old(){
+	console.log("开始drawChart-b32-");
+
+		// $.getJSON('../lib/data15B32.json',function (dataYH) {
+		// var dataObj=dataYH.obj;
+		// console.log("obj--data15B32-\n");console.log(dataObj);
+		// console.log("dataObj.data--data15B32-\n");console.log(dataObj.data);
+		// console.log("dataObj.index_data--data15B32-\n");console.log(dataObj.index_data);
+		// var dataSet=dataObj.ret;
+
+	// $.getJSON('weekly/IndicatorQuery?indicatorId=0004&windCode=881001.WI&smooth=MA5',function (dataYH) {	
+	// 	var jsonObject =$.parseJSON(dataYH);
+	// 	var dataObj=jsonObject.obj;
+	// 	console.log("图1的obj数据为：\n");
+	// 	console.log(dataObj);
+
+	var data = [['点1',3.275154, 2.957587],[ '点1',-3.344465, 2.603513, ],['点13',0.355083, -3.376585],['点22',1.852435, 3.547351],['点11',-2.078973, 2.552013],['点14',-0.993756, -0.884433],['点23',2.682252, 4.007573],['点16',-3.087776, 2.878713],['点15',-1.565978, -1.256985],['点21',2.441611, 0.444826],['点1',-0.659487, 3.111284],['点16',-0.459601, -2.618005], ['点3',2.17768, 2.387793],['点17',-2.920969, 2.917485],['点17',-0.028814, -4.168078],['点4',3.625746, 2.119041],['点1',-3.912363, 1.325108],['点18',-0.551694, -2.814223], ['点5',2.855808, 3.483301],['点18',-3.594448, 2.856651],['点19',0.421993, -2.372646],['点9',1.650821, 3.407572],['点28',-2.082902, 3.384412]];
+	// ,[-0.718809, -2.492514],[4.513623, 3.841029],[-4.822011, 4.607049],   [-0.656297, -1.449872],[1.919901, 4.439368], [-3.287749, 3.918836],[-1.576936, -2.977622],[3.598143, 1.97597],[-3.977329, 4.900932],[-1.79108, -2.184517],[3.914654, 3.559303],[-1.910108, 4.166946],[-1.226597, -3.317889], [1.148946, 3.345138],[-2.113864, 3.548172],[0.845762, -3.589788],[2.629062, 3.535831],[-1.640717, 2.990517],[-1.881012, -2.485405],[4.606999, 3.510312], [-4.366462, 4.023316],[0.765015, -3.00127], [3.121904, 2.173988], [-4.025139, 4.65231],[-0.559558, -3.840539],[4.376754, 4.863579], [-1.874308, 4.032237],[-0.089337, -3.026809],[3.997787, 2.518662],[-3.082978, 2.884822], [0.845235, -3.454465],[1.327224, 3.358778],[-2.889949, 3.596178],[-0.966018, -2.839827],[2.960769, 3.079555],[-3.275518, 1.577068],[0.639276, -3.41284]];
+
+	// 基于准备好的dom，初始化echarts实例
+	var myChart = echarts.init(document.getElementById('showDiagram15'));
+
+	var option = {
+	    xAxis: {
+	    	axisLine:{
+	    		// onZero:false
+	    	}
+	    },
+	    yAxis: {
+	    	axisLine:{
+	    		// onZero:false
+	    	}
+	    },
+	    series: [{
+	    	symbol:'diamond', 
+	    	//circle rectangle triangle diamond emptyCircle  emptyRectangle emptyTriangle emptyDiamond
+	        symbolSize: 15,
+	        itemStyle: {
+	        	normal: {
+	        		label:{
+					    show: true,
+					    position:'outer',
+					    textStyle:{
+					    	color:'black'
+					    }
+					}, 
+					color: 'blue'
+	        	}	        	
+	        },
+	        encode: {                    //可以定义 data 的哪个维度被编码成什么
+		        x: 0,             // 表示维度 3、1、5 映射到 x 轴。
+		        y: 1,                     // 表示维度 2 映射到 y 轴。
+		        // tooltip: [3, 2, 4],      // 表示维度 3、2、4 会在 tooltip 中显示。
+		        label: 2                 // 表示 label 使用维度 3。
+		    },			        
+	        data: [
+	            [ 10.0, 8.04, '点'],
+	            [ 5.0, 5.68, '中国']
+	        ],
+	        type: 'scatter',
+	        
+	    }]
+	};
+
+	option.series[0].data=data;
+    // 使用刚指定的配置项和数据显示图表。
+    myChart.setOption(option);
+
+    // });	
+}
+
+
+
 function getCurrentTime(){
 	//获取当前时间
 	var date = new Date();
@@ -2984,6 +3207,53 @@ function getCurrentTime(){
 	var second = date.getSeconds();
 	var currentTime=year+month+day+hour+minute+second;
 	return currentTime;
+}
+
+function drawHistogram(){
+	var chart = Highcharts.chart('showDiagram16',{
+	    chart: {
+	        type: 'column'
+	    },
+	    title: {
+	        text: '月平均降雨量'
+	    },
+	    subtitle: {
+	        text: '数据来源: WorldClimate.com'
+	    },
+	    xAxis: {
+	        categories: [
+	            '一月','二月','三月','四月','五月','六月','七月','八月','九月','十月','十一月','十二月'
+	        ],
+	        // colors:['red','green','red','green','red','green'],
+	        crosshair: true
+	    },
+	    yAxis: {
+	        min: 0,
+	        title: {
+	            text: '降雨量 (mm)'
+	        }
+	    },
+	    tooltip: {
+	        // head + 每个 point + footer 拼接成完整的 table
+	        headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+	        pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+	        '<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
+	        footerFormat: '</table>',
+	        shared: true,
+	        useHTML: true
+	    },
+	    plotOptions: {
+	        column: {
+	            borderWidth: 0,
+	            colorByPoint:true
+	        }
+	    },
+	    series: [{
+	        name: '东京',
+	        data: [49.9, 71.5, 106.4, 129.2, 135.6,],
+	        colors: ['#7cb5ec', 'red', '#90ed7d', '#f7a35c', '#8085e9', '#f15c80', '#e4d354', '#2b908f', '#f45b5b', '#91e8e1']
+	    }]
+	});
 }
 
 
