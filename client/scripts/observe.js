@@ -1,31 +1,34 @@
 import {EventObject,GetCookie,SetCookie,DeleteCookie,isWeiXin,parseUrlSearch,getUrlParams,isEmptyObj,getDeviceType} from './api';
 
 // import * as SandSignika from '../lib/Highstock-6.1.0/code/themes/sand-signika';
-var globleColorRed='red';
-var globleColorBlue='blue';
-var globleColorGray='gray';
+var globalColorRed='red';
+var globalColorBlue='blue';
+var globalColorGray='gray';
+var onlineOrLocal=false;  //false=online, true=local
+if (window.location.href=='http://localhost:3000/observesystem.html') {onlineOrLocal=true;}
+var globalDataURL='';
 
 $(function(){
 	console.log("开始画图--");
 	drawChart_A11();  //<!-- 博弈/存量指标 -->
 	drawChart_A12(); //百分比图方法实现双轴</li>     <!-- 融资买入/可用担保价值 -->
-	// drawChart_A21(); // 基础表实现双轴</li>           <!-- 综合性情绪指标 -->
-	// drawChart_A22();  //百分比图方法实现双轴</li>     <!-- 融资买入/可用担保价值 -->
-	// drawChart_A23(); 
-	// drawChart_A24();  //换手率
-	// drawChart_A31();  //指定版块的个股估值分布
-	// drawChart_A32();
-	// drawChart_B11();  //指定版块的相对换手率历史变化
-	// drawChart_B21();   //柱状图  换手率变化最大的基准
-	// drawChart_B22();   //柱状图  换手率绝对水平最高的基准
-	// drawChart_B23();   //表格   基准/版块的周换手率
-	// drawChart_B24();
-	// drawChart_B31();   //柱状图
+	drawChart_A21(); // 基础表实现双轴</li>           <!-- 综合性情绪指标 -->
+	drawChart_A22();  //百分比图方法实现双轴</li>     <!-- 融资买入/可用担保价值 -->
+	drawChart_A23(); 
+	drawChart_A24();  //换手率
+	drawChart_A31();  //指定版块的个股估值分布
+	drawChart_A32();
+	drawChart_B11();  //指定版块的相对换手率历史变化
+	drawChart_B21();   //柱状图  换手率变化最大的基准
+	drawChart_B22();   //柱状图  换手率绝对水平最高的基准
+	drawChart_B23();   //表格   基准/版块的周换手率
+	drawChart_B24();   //双轴  指定板块周换手率的历史变化
+	drawChart_B31();   //柱状图
 	drawChart_B32();   //象限图
-	drawHistogram();
-	// drawChart_B33();  // 反转图 
-	// // drawChart7(); // 象限图
-	// drawChart_B41();
+	drawChart_B33();  // 反转图 	
+	drawChart_B41();
+	// drawHistogram();
+	// drawChart7(); // 象限图
 	// export
 	$("#exportButton").click(function(event){
 		console.log("zhixinle导出函数！");
@@ -41,20 +44,40 @@ $(function(){
 //基础表单轴
 function drawChart_A11(){
 	console.log("开始drawChart-_A11-");
+	if (onlineOrLocal) {
+		globalDataURL='../lib/dataForOne.json';
+	}else{
+		globalDataURL='weekly/IndicatorQuery?indicatorId=0001';
+	}
 	//获取数据
-	$.getJSON('../lib/dataForOne.json',function (dataYH) {
-		console.log(data);
-		var data=dataYH.obj;
-		for (var index = 0;index <= data.length - 1;  index = index + 1) {
-			var a=data[index][0]*1000;
-			data[index][0]=a;
-		} 
+	$.getJSON(globalDataURL,function (dataYH) {	
+		if (onlineOrLocal) {
+			var dataObj=dataYH.obj;
+			for (var index = 0;index <= dataObj.length - 1;  index = index + 1) {
+				var a=dataObj[index][0]*1000;
+				dataObj[index][0]=a;
+			} 
+		}else{
+			var jsonObject =$.parseJSON(dataYH);
+			var dataObj=jsonObject.obj;			
+		}
+		console.log("图1A11的obj数据为：\n");
+		console.log(dataObj);
+
+
+	// $.getJSON(globalDataURL,function (dataYH) {
+	// 	console.log(data);
+	// 	var data=dataYH.obj;
+	// 	for (var index = 0;index <= data.length - 1;  index = index + 1) {
+	// 		var a=data[index][0]*1000;
+	// 		data[index][0]=a;
+	// 	} 
 
 	// $.getJSON('weekly/IndicatorQuery?indicatorId=0001',function (dataYH) {	
 	// 	var jsonObject =$.parseJSON(dataYH);
 	// 	var data=jsonObject.obj;
 	// 	console.log("图1的obj数据为：\n");
-		console.log(data);
+		
 
 
 		// Create the chart
@@ -273,13 +296,13 @@ function drawChart_A11(){
 
 			series: [{
 				name: '博弈/存量资金',
-				data: data,
+				data: dataObj,
 				tooltip: {
 						valueDecimals: 4
 				},
 				// dashStyle:'Dot'
 				lineWidth:2,
-				color:globleColorBlue
+				color:globalColorBlue
 			}]
 		});
 
@@ -324,13 +347,28 @@ function drawChart_A11(){
 // 百分比图方法实现双轴
 function drawChart_A12(){   
 	console.log("开始drawChart-_A12-");
+	if (onlineOrLocal) {
+		globalDataURL='../lib/data2.json';
+	}else{
+		globalDataURL='weekly/IndicatorQuery?indicatorId=0002';
+	}
+	//获取数据
+	$.getJSON(globalDataURL,function (dataYH) {	
+		if (onlineOrLocal) {
+			var dataObj=dataYH.obj; 
+		}else{
+			var jsonObject =$.parseJSON(dataYH);
+			var dataObj=jsonObject.obj;			
+		}
+		console.log("图2A12的obj数据为：\n");
+		console.log(dataObj);
 	
 	// 获取数据
-	$.getJSON('../lib/data2.json',function (dataYH) {
-		var dataObj=dataYH.obj;
-		console.log("obj--A12-\n");console.log(dataObj);
-		console.log("dataObj.data--A12-\n");console.log(dataObj.data);
-		console.log("dataObj.index_data--A12-\n");console.log(dataObj.index_data);
+	// $.getJSON('../lib/data2.json',function (dataYH) {
+	// 	var dataObj=dataYH.obj;
+	// 	console.log("obj--A12-\n");console.log(dataObj);
+	// 	console.log("dataObj.data--A12-\n");console.log(dataObj.data);
+	// 	console.log("dataObj.index_data--A12-\n");console.log(dataObj.index_data);
 
 	// $.getJSON('weekly/IndicatorQuery?indicatorId=0002',function (dataYH) {	
 	// var jsonObject =$.parseJSON(dataYH);
@@ -347,7 +385,7 @@ function drawChart_A12(){
 				enabled: false
 			},
 			rangeSelector: {
-				selected: 5,
+				selected: 3,
 				// enabled: false,
 			},
 			// exporting: {
@@ -464,6 +502,22 @@ function drawChart_A12(){
 //基础表实现双轴
 function drawChart_A21(){
 	console.log("开始drawChart-_A21-");
+	if (onlineOrLocal) {
+		globalDataURL='../lib/data3.json';
+	}else{
+		globalDataURL='weekly/IndicatorQuery?indicatorId=0003';
+	}
+	//获取数据
+	$.getJSON(globalDataURL,function (dataYH) {	
+		if (onlineOrLocal) {
+			var dataObj=dataYH.obj; 
+		}else{
+			var jsonObject =$.parseJSON(dataYH);
+			var dataObj=jsonObject.obj;			
+		}
+		console.log("图3A21的obj数据为：\n");
+		console.log(dataObj);
+
 	//获取数据
 	// $.getJSON('../lib/data3.json',function (dataYH) {
 	// 	var dataObj=dataYH.obj;
@@ -471,11 +525,11 @@ function drawChart_A21(){
 	// 	console.log("dataObj.data--A21-\n");console.log(dataObj.data);
 	// 	console.log("dataObj.index_data--A21-\n");console.log(dataObj.index_data);
 
-	$.getJSON('weekly/IndicatorQuery?indicatorId=0003',function (dataYH) {	
-		var jsonObject =$.parseJSON(dataYH);
-		var dataObj=jsonObject.obj;
-		console.log("图1的obj数据为：\n");
-		console.log(dataObj);
+	// $.getJSON('weekly/IndicatorQuery?indicatorId=0003',function (dataYH) {	
+	// 	var jsonObject =$.parseJSON(dataYH);
+	// 	var dataObj=jsonObject.obj;
+	// 	console.log("图1的obj数据为：\n");
+	// 	console.log(dataObj);
 
 
 		// Create the chart
@@ -484,7 +538,7 @@ function drawChart_A21(){
 				enabled: false
 			},
 			rangeSelector: {
-				selected: 5
+				selected: 3
 			},
 			title: {
 				text: '市场情绪指数',  //基础表实现双轴（网络数据）
@@ -558,6 +612,22 @@ function drawChart_A21(){
 
 function drawChart_A22(){   
 	console.log("开始drawChart-_A22");
+	if (onlineOrLocal) {
+		globalDataURL='../lib/data4A22.json';
+	}else{
+		globalDataURL='weekly/IndicatorQuery?indicatorId=0004&windCode=881001.WI&smooth=MA5';
+	}
+	//获取数据
+	$.getJSON(globalDataURL,function (dataYH) {	
+		if (onlineOrLocal) {
+			var dataObj=dataYH.obj; 
+		}else{
+			var jsonObject =$.parseJSON(dataYH);
+			var dataObj=jsonObject.obj;			
+		}
+		console.log("图4A22的obj数据为：\n");
+		console.log(dataObj);
+
 	// //获取数据
 	// $.getJSON('../lib/data4A22.json',function (dataYH) {
 	// 	var dataObj=dataYH.obj;
@@ -565,11 +635,11 @@ function drawChart_A22(){
 	// 	console.log("dataObj.data--4A22-\n");console.log(dataObj.data);
 	// 	console.log("dataObj.index_data--4A22-\n");console.log(dataObj.index_data);
 
-	$.getJSON('weekly/IndicatorQuery?indicatorId=0004&windCode=881001.WI&smooth=MA5',function (dataYH) {	
-		var jsonObject =$.parseJSON(dataYH);
-		var dataObj=jsonObject.obj;
-		console.log("图1的obj数据为：\n");
-		console.log(dataObj);
+	// $.getJSON('weekly/IndicatorQuery?indicatorId=0004&windCode=881001.WI&smooth=MA5',function (dataYH) {	
+	// 	var jsonObject =$.parseJSON(dataYH);
+	// 	var dataObj=jsonObject.obj;
+	// 	console.log("图1的obj数据为：\n");
+	// 	console.log(dataObj);
 
 
 		// Create the chart
@@ -578,7 +648,7 @@ function drawChart_A22(){
 				enabled: false
 			},
 			rangeSelector: {
-				selected: 5
+				selected: 3
 			},
 			title: {
 				text: '指定板块的强势股占比',  //基础表实现双轴（网络数据）
@@ -653,6 +723,23 @@ function drawChart_A22(){
 }
 function drawChart_A23(){  
 	console.log("开始drawChart-_5A23");
+	if (onlineOrLocal) {
+		globalDataURL='../lib/data5A23.json';
+	}else{
+		globalDataURL='weekly/IndicatorQuery?indicatorId=0009&smooth=MA5';
+	}
+	//获取数据
+	$.getJSON(globalDataURL,function (dataYH) {	
+		if (onlineOrLocal) {
+			var dataObj=dataYH.obj; 
+		}else{
+			var jsonObject =$.parseJSON(dataYH);
+			var dataObj=jsonObject.obj;			
+		}
+		console.log("图5A23的obj数据为：\n");
+		console.log(dataObj);
+
+
 	// //获取数据
 	// $.getJSON('../lib/data5A23.json',function (dataYH) {
 	// 	var dataObj=dataYH.obj;
@@ -660,11 +747,11 @@ function drawChart_A23(){
 	// 	console.log("dataObj.data--5A23-\n");console.log(dataObj.data);
 	// 	console.log("dataObj.index_data--5A23-\n");console.log(dataObj.index_data);
 
-	$.getJSON('weekly/IndicatorQuery?indicatorId=0009&smooth=MA5',function (dataYH) {	
-		var jsonObject =$.parseJSON(dataYH);
-		var dataObj=jsonObject.obj;
-		console.log("图1的obj数据为：\n");
-		console.log(dataObj);
+	// $.getJSON('weekly/IndicatorQuery?indicatorId=0009&smooth=MA5',function (dataYH) {	
+	// 	var jsonObject =$.parseJSON(dataYH);
+	// 	var dataObj=jsonObject.obj;
+	// 	console.log("图1的obj数据为：\n");
+	// 	console.log(dataObj);
 
 
 		// Create the chart
@@ -673,7 +760,7 @@ function drawChart_A23(){
 				enabled: false
 			},
 			rangeSelector: {
-				selected: 5
+				selected: 3
 			},
 			title: {
 				text: '分级基金成交显示的风险偏好',  //基础表实现双轴（网络数据）
@@ -760,6 +847,22 @@ function drawChart_A23(){
 }
 function drawChart_A24(){   
 	console.log("开始drawChart-_A24-");
+	if (onlineOrLocal) {
+		globalDataURL='../lib/data6A24.json';
+	}else{
+		globalDataURL='weekly/IndicatorQuery?indicatorId=0018&windCode=000001.SH&smooth=MA5';
+	}
+	//获取数据
+	$.getJSON(globalDataURL,function (dataYH) {	
+		if (onlineOrLocal) {
+			var dataObj=dataYH.obj; 
+		}else{
+			var jsonObject =$.parseJSON(dataYH);
+			var dataObj=jsonObject.obj;			
+		}
+		console.log("图6A24的obj数据为：\n");
+		console.log(dataObj);
+
 	// 获取数据
 	// $.getJSON('../lib/data6A24.json',function (dataYH) {
 	// 	var dataObj=dataYH.obj;
@@ -767,11 +870,11 @@ function drawChart_A24(){
 	// 	console.log("dataObj.data--6A24-\n");console.log(dataObj.data);
 	// 	console.log("dataObj.index_data--6A24-\n");console.log(dataObj.data_MA20);
 
-	$.getJSON('weekly/IndicatorQuery?indicatorId=0018&windCode=000001.SH&smooth=MA5 ',function (dataYH) {	
-		var jsonObject =$.parseJSON(dataYH);
-		var dataObj=jsonObject.obj;
-		console.log("图1的obj数据为：\n");
-		console.log(dataObj);
+	// $.getJSON('weekly/IndicatorQuery?indicatorId=0018&windCode=000001.SH&smooth=MA5 ',function (dataYH) {	
+	// 	var jsonObject =$.parseJSON(dataYH);
+	// 	var dataObj=jsonObject.obj;
+	// 	console.log("图1的obj数据为：\n");
+	// 	console.log(dataObj);
 
 
 		// Create the chart
@@ -780,7 +883,7 @@ function drawChart_A24(){
 				enabled: false
 			},
 			rangeSelector: {
-				selected: 5
+				selected: 3
 			},
 			title: {
 				text: '指定版块的历史换手率',  //基础表实现双轴（网络数据）
@@ -857,35 +960,31 @@ function drawChart_A24(){
 //大图带小图
 function drawChart_A31(){
 	console.log("开始drawChart-_A31-");
-	// $.getJSON('https://data.jianshukeji.com/jsonp?filename=json/usdeur.json&callback=?', function (data) {
-	// 	var startDate = new Date(data[data.length - 1][0]), // Get year of last data point
-	// 			minRate = 1,
-	// 			maxRate = 0,
-	// 			startPeriod,
-	// 			date,
-	// 			rate,
-	// 			index;
-	// 	startDate.setMonth(startDate.getMonth() - 3); // a quarter of a year before last data point
-	// 	startPeriod = Date.UTC(startDate.getFullYear(), startDate.getMonth(), startDate.getDate());
-	// 	for (index = data.length - 1; index >= 0; index = index - 1) {
-	// 			date = data[index][0]; // data[i][0] is date
-	// 			rate = data[index][1]; // data[i][1] is exchange rate
-	// 			if (date < startPeriod) {
-	// 					break; // stop measuring highs and lows
-	// 			}
-	// 			if (rate > maxRate) {
-	// 					maxRate = rate;
-	// 			}
-	// 			if (rate < minRate) {
-	// 					minRate = rate;
-	// 			}
-	// 	}
+	if (onlineOrLocal) {
+		globalDataURL='../lib/data6A24.json';
+	}else{
+		globalDataURL='weekly/IndicatorQuery?indicatorId=2000&windCode=000300.SH';
+	}
+	//获取数据
+	$.getJSON(globalDataURL,function (dataYH) {	
+		if (onlineOrLocal) {
+			var dataObj=dataYH.obj;
 
-	$.getJSON('weekly/IndicatorQuery?indicatorId=2000&windCode=000300.SH',function (dataYH) {	
-		var jsonObject =$.parseJSON(dataYH);
-		var data=jsonObject.obj;
-		console.log("图7的obj数据为：\n");
-		console.log(data);
+		}else{
+			var jsonObject =$.parseJSON(dataYH);
+			var dataObj=jsonObject.obj;			
+		}
+		var dataObjData=dataObj.data;
+		console.log("图7A31的obj数据为：\n");
+		console.log(dataObjData);
+
+
+
+	// $.getJSON('weekly/IndicatorQuery?indicatorId=2000&windCode=000300.SH',function (dataYH) {	
+	// 	var jsonObject =$.parseJSON(dataYH);
+	// 	var dataObj=jsonObject.obj;
+	// 	console.log("图7的obj数据为：\n");
+	// 	console.log(dataObj);
 
 		// Create the chart
 		var mychart =Highcharts.stockChart('showDiagram7', {
@@ -915,7 +1014,7 @@ function drawChart_A31(){
 		    },
 			rangeSelector: {
 				// enabled: false,
-				selected: 1,
+				selected: 3,
 			},
 			exporting: {
 			    // enabled: false
@@ -1109,7 +1208,7 @@ function drawChart_A31(){
 
 			series: [{
 				name: '博弈/存量资金',
-				data: data,
+				data: dataObjData,
 				tooltip: {
 						valueDecimals: 4
 				}
@@ -1137,19 +1236,40 @@ function drawChart_A31(){
 function drawChart_A32(){
 
 	console.log("开始drawChart-A32");
+	if (onlineOrLocal) {
+		globalDataURL='../lib/dataForOne.json';
+	}else{
+		globalDataURL='weekly/IndicatorQuery?indicatorId=2000&windCode=000300.SH';
+	}
 	//获取数据
-	$.getJSON('../lib/dataForOne.json',function (dataYH) {
-		var data=dataYH.obj;
-		for (var index = 0;index <= data.length - 1;  index = index + 1) {
-			var a=data[index][0]*1000;
-			data[index][0]=a;
+	$.getJSON(globalDataURL,function (dataYH) {	
+		if (onlineOrLocal) {
+			var dataObj=dataYH.obj; 
+			for (var index = 0;index <= dataObj.length - 1;  index = index + 1) {
+			var a=dataObj[index][0]*1000;
+			dataObj[index][0]=a;
 		} 
+		}else{
+			var jsonObject =$.parseJSON(dataYH);
+			var dataObj=jsonObject.obj;			
+		}
+		console.log("图8A32的obj数据为：\n");
+		console.log(dataObj);
+
+
+	// //获取数据
+	// $.getJSON('../lib/dataForOne.json',function (dataYH) {
+	// 	var data=dataYH.obj;
+	// 	for (var index = 0;index <= data.length - 1;  index = index + 1) {
+	// 		var a=data[index][0]*1000;
+	// 		data[index][0]=a;
+	// 	} 
 
 	// $.getJSON('weekly/IndicatorQuery?indicatorId=0001',function (dataYH) {	
 	// var jsonObject =$.parseJSON(dataYH);
 	// var data=jsonObject.obj;
 	// console.log("图1的obj数据为：\n");
-	console.log(data);
+	// console.log(dataObj);
 
 
 		// Create the chart
@@ -1209,7 +1329,7 @@ function drawChart_A32(){
 		    },
 			rangeSelector: {
 				enabled: true,
-				selected: 5,
+				selected: 3,
 				buttonTheme: { // styles for the buttons
 		  //           fill: 'none',
 		  //           stroke: 'none',
@@ -1454,7 +1574,7 @@ function drawChart_A32(){
 			},
 			series: [{
 				name: '2018年6月1日',
-				data: data,
+				data: dataObj,
 				tooltip: {
 						valueDecimals: 4
 				},
@@ -1486,258 +1606,486 @@ function drawChart_A32(){
 	});
 
 }
-//双轴双线
-function drawChart_B11(){   
-	console.log("开始drawChart-2-");
-	var seriesOptions = [],
-	seriesCounter = 0,
-	names = ['MSFT', 'GOOG'],
-	// create the chart when all data is loaded
-	createChart = function () {
-		Highcharts.stockChart('showDiagram9', {
-				credits: {
-					enabled: false
-				},
-				rangeSelector: {
-					selected: 5,
-					// enabled: false,
-				},
-				// exporting: {
-			 //        enabled: false
-			 //    },
-			 //    navigator: {
-			 //        enabled: false
-			 //    },
-			 //    scrollbar: {
-			 //        enabled: false
-			 //    },
-				title: {
-					text: '指定版块相对换手率的历史变化',
-					style: {
-								color: 'black',
-								fontWeight: 'bold',
-								fontSize: 20
-						},
-					margin: 30
-				},
-				yAxis: [
-				{
-						title: {
-							// text: '融资买入/可用担保价值',
-						},
-						lineWidth:1,
-						opposite: false
-				},
-				{
-						title: {
-							// text: '沪深300',
-						},
-						lineWidth:1,
-						plotLines: [{
-								value: 350,
-								width: 2,
-								color: 'gray',
-								dashStyle: 'shortdash',
-						},
-						{
-								value: 700,
-								width: 2,
-								color: 'gray',
-								dashStyle: 'shortdash',
-						}
-						],
-						labels: {
-								// formatter: function () {
-								// 		return (this.value > 0 ? ' + ' : '') + this.value + '%';
-								// }
-						},
-						
-				}				
-				],
-				// plotOptions: {
-				// 		series: {
-				// 				compare: 'percent'
-				// 		}
-				// },
-				tooltip: {
-						pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y}</b> ({point.change}%)<br/>',
-						valueDecimals: 2
-				},
-				series: seriesOptions
-		});
-	};
-	$.each(names, function (i, name) {
+//双轴双线 
+function drawChart_B11(){  
+	console.log("开始drawChart-_B11-");
+	if (onlineOrLocal) {
+		globalDataURL='../lib/data9B11.json';
+	}else{
+		globalDataURL='weekly/IndicatorQuery?indicatorId=0019&windCode=000300.SH,399006.SZ&smooth=MA5 ';
+	}
+	//获取数据
+	$.getJSON(globalDataURL,function (dataYH) {	
+		if (onlineOrLocal) {
+			var dataObj=dataYH.obj; 
+		}else{
+			var jsonObject =$.parseJSON(dataYH);
+			var dataObj=jsonObject.obj;			
+		}
+		console.log("图9B11的obj数据为：\n");
+		console.log(dataObj);
 	
-			$.getJSON('https://data.jianshukeji.com/jsonp?filename=json/' + name.toLowerCase() + '-c.json&callback=?',    function (data) {
-				
-					seriesOptions[i] = {
-							name: name,
-							data: data,
-							yAxis: i
-					};
-					seriesCounter += 1;
-					if (seriesCounter === names.length) {
-							createChart();
-					}
-				
-					
-			});
+	
+		var myChart=Highcharts.stockChart('showDiagram9', {
+			credits: {
+				enabled: false
+			},
+			rangeSelector: {
+				selected: 3,
+				// enabled: false,
+			},
+			// exporting: {
+		 //        enabled: false
+		 //    },
+		    // navigator: {
+		    //     enabled: false
+		    // },
+		    // scrollbar: {
+		    //     enabled: false
+		    // },
+		    legend: {
+		        enabled: true,
+		        align: 'right',
+		        // backgroundColor: '#FCFFC5',
+		        // borderColor: 'black',
+		        // borderWidth: 2,
+		        color: 'gray',
+		        // layout: 'vertical',
+		        verticalAlign: 'top',
+		        x: -40,
+				y: 15,
+				floating: true,
+				itemStyle:{
+					"color": "black", 
+					"cursor": "pointer", 
+					"fontSize": "12px", 
+					// "fontWeight": "bold"
+				}
+		        // shadow: true,
+		        // itemWidth: 80,
+		        // maxHeight:10
+		    },
 
+
+
+			title: {
+				// text: '指定板块相对换手率的历史变化',
+				style: {
+							color: 'black',
+							fontWeight: 'bold',
+							fontSize: 20
+					},
+				margin: 30
+			},
+			yAxis: [
+			{
+					title: {
+						// text: '融资买入/可用担保价值',
+					},
+					lineWidth:1,
+					opposite: false
+			},
+			{
+					title: {
+						// text: '沪深300',
+					},
+					lineWidth:1,
+					// plotLines: [{
+					// 		value: 350,
+					// 		width: 2,
+					// 		color: 'gray',
+					// 		dashStyle: 'shortdash',
+					// },
+					// {
+					// 		value: 700,
+					// 		width: 2,
+					// 		color: 'gray',
+					// 		dashStyle: 'shortdash',
+					// }],
+					labels: {
+							// formatter: function () {
+							// 		return (this.value > 0 ? ' + ' : '') + this.value + '%';
+							// }
+					},
+					
+			}				
+			],
+			// plotOptions: {
+			// 		series: {
+			// 				compare: 'percent'
+			// 		}
+			// },
+			tooltip: {
+					pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y}</b>',
+					valueDecimals: 3
+			},
+			series: [
+				{
+					name: '换手率：上证50/中证500(MA20)',
+					data: dataObj.data,
+					yAxis:0,
+					color:'#1E90FF',
+					lineWidth:1
+				},
+				{
+					name: '上证50/中证500(右轴)',
+					data: dataObj.index_data,	
+					yAxis:1,
+					color:'#FF4500',
+					lineWidth:1
+					// line:{
+					// 	color:'red'
+					// }			
+				}
+			]
+		});
 	});
+
+	
 
 }
 //柱状图
 function drawChart_B21(){
-	let myChartLeft = echarts.init(document.getElementById('showDiagramLeft10'));
-	let myChartRight = echarts.init(document.getElementById('showDiagramRight10'));
-	let xAxisDataLeft = ['乐风', '瑞纳', '腾翼C30'];
-	let xAxisDataRight = ['乐风', '瑞纳', '腾翼C30', '悦翔', '比亚迪F3'];
-	let seriesData = {'left':[5, 4, 4],'right':[5, 4, 4, 3, 2]}
-	function setOption(title,xAxisData,seriesData){
-		// 指定图表的配置项和数据
-		var option = {
-			title: {
-				text: title,
-				left:'center',
-				textStyle:{fontFamily: '宋体',fontSize: 18,fontWeight: 'bolder',	color: '#000000'} 
-			},
-			tooltip: {},
-			toolbox: {
-				show:false, left:'8%', top:'4%',itemSize:10,
-				feature:{
-					saveAsImage:{show:true},
-					dataView:{show:true},
-					restore:{show:true},
-					magicType:{type: ['line', 'bar']}
-				}
-			},
-			legend: {
-				// data:['数量'],
-			},
-			xAxis: {
-				type: 'category',
-				data: xAxisData
-			},
-			yAxis: { 
-				// axisLine: {show: false},
-				minInterval: 1,
-				splitLine:{ 
-					show:false 
-				}
-			},
-			grid: {  
-				left: '8%',  
-				right: '8%',  
-				bottom: '8%',  
-				containLabel: true  
-			},
-			series: [{
-				barWidth:'50%',
-				data: seriesData,
-				type: 'bar',
-				itemStyle: {
-					normal: {
-					// 随机显示
-					//color:function(d){return "#"+Math.floor(Math.random()*(256*256*256-1)).toString(16);}
-				
-						// 定制显示（按顺序）
-						color: function (params){
-							var colorList = ['#ff4844','#9ac3e5','#66ac52','#ffc032','#549bd3','#f47e39'];
-							return colorList[params.dataIndex];
-						}
-					}
 
-				}
-			}]
-		};
-		return option;
+	if (onlineOrLocal) {
+		globalDataURL='../lib/data10B21.json';
+	}else{
+		globalDataURL='weekly/IndicatorQuery?indicatorId=1018';
 	}
+	//获取数据
+	$.getJSON(globalDataURL,function (dataYH) {	
+		if (onlineOrLocal) {
+			var dataObj=dataYH.obj;
+		}else{
+			var jsonObject =$.parseJSON(dataYH);
+			var dataObj=jsonObject.obj;
+		}
+		console.log("图10B21的obj数据为：\n");
+		console.log(dataObj);
+
+
+		// 基于准备好的dom，初始化echarts实例
+	    let myChartLeft = echarts.init(document.getElementById('showDiagramLeft10'));
+		let myChartRight = echarts.init(document.getElementById('showDiagramRight10'));
+	
+		let xAxisDataLeft = dataObj.data_base[0];
+		let xAxisDataRight = dataObj.data_index[0];
+		// let xAxisDataLeft = ['乐风', '瑞纳', '腾翼C30'];
+		// let xAxisDataRight = ['乐风', '瑞纳', '腾翼C30', '悦翔', '比亚迪F3'];
+		let seriesData = {'left':dataObj.data_base[1],'right':dataObj.data_index[1]};
+		function setOption(title,xAxisData,seriesData){
+			// 指定图表的配置项和数据
+			var option = {
+				title: {
+					text: title,
+					left:'center',
+					textStyle:{fontFamily: '宋体',fontSize: 18,fontWeight: 'bolder',	color: '#000000'} 
+				},
+				tooltip: {},
+				toolbox: {
+					show:false, left:'8%', top:'4%',itemSize:10,
+					feature:{
+						saveAsImage:{show:true},
+						dataView:{show:true},
+						restore:{show:true},
+						magicType:{type: ['line', 'bar']}
+					}
+				},
+				legend: {
+					// data:['数量'],
+				},
+				xAxis: {
+					type: 'category',
+					data: xAxisData,
+					axisLabel:{
+		            	interval:0,
+		            	formatter : function(params){
+		                   var newParamsName = "";// 最终拼接成的字符串
+		                            var paramsNameNumber = params.length;// 实际标签的个数
+		                            var provideNumber = 4;// 每行能显示的字的个数
+		                            var rowNumber = Math.ceil(paramsNameNumber / provideNumber);// 换行的话，需要显示几行，向上取整
+		                            /**
+		                             * 判断标签的个数是否大于规定的个数， 如果大于，则进行换行处理 如果不大于，即等于或小于，就返回原标签
+		                             */
+		                            // 条件等同于rowNumber>1
+		                            if (paramsNameNumber > provideNumber) {
+		                                /** 循环每一行,p表示行 */
+		                                for (var p = 0; p < rowNumber; p++) {
+		                                    var tempStr = "";// 表示每一次截取的字符串
+		                                    var start = p * provideNumber;// 开始截取的位置
+		                                    var end = start + provideNumber;// 结束截取的位置
+		                                    // 此处特殊处理最后一行的索引值
+		                                    if (p == rowNumber - 1) {
+		                                        // 最后一次不换行
+		                                        tempStr = params.substring(start, paramsNameNumber);
+		                                    } else {
+		                                        // 每一次拼接字符串并换行
+		                                        tempStr = params.substring(start, end) + "\n";
+		                                    }
+		                                    newParamsName += tempStr;// 最终拼成的字符串
+		                                }
+
+		                            } else {
+		                                // 将旧标签的值赋给新标签
+		                                newParamsName = params;
+		                            }
+		                            //将最终的字符串返回
+		                            return newParamsName
+		                }
+		            }
+				},
+				yAxis: { 
+					// axisLine: {show: false},
+					minInterval: 1,
+					splitLine:{ 
+						show:false 
+					}
+				},
+
+				grid: {  
+					left: '8%',  
+					right: '8%',  
+					bottom: '8%',  
+					containLabel: true  
+				},
+			//   series: [{
+			//       name: '数量',
+			//       type: 'bar',
+			//       barWidth:'50%',
+			//       data: [],
+				//    itemStyle: {
+					//     normal:{
+					//     	color:'#2914E5',
+				//         	label:{
+					//         	show:true,
+					//         	// formatter: '{b} : {c} \n ({d}%)',  position:'outer'
+					//         	textStyle:{fontFamily: '宋体',fontSize: 15} 
+					//         },
+					//         // labelLine:{show:true}
+					//     }
+					// }
+			//   }]
+				series: [{
+					barWidth:'50%',
+					data: seriesData,
+					type: 'bar',
+					itemStyle: {
+						normal: {
+						// 随机显示
+						//color:function(d){return "#"+Math.floor(Math.random()*(256*256*256-1)).toString(16);}
+	              
+						// 定制显示（按顺序）
+						color: function(params) { 
+									var colorList = ['#446FA4','#4877AF','#4C7DB8','#38AC1','#849FCA']; 
+									return colorList[params.dataIndex] 
+								},
+						
+		             	label:{
+			            	show:true,
+			            	// formatter: '{b} : {c} \n ({d}%)',  position:'outer'
+			            	textStyle:{fontFamily: '宋体',fontSize: 10} 
+			            }
+					 
+						}
+
+					}
+				}]
+			};
+			return option;
+		}
+	    
+	    // //set searchedData into option
+	    // option.xAxis.data=histogramChartData1;
+	    // option.series[0].data=histogramChartData2;  
+	    // 使用刚指定的配置项和数据显示图表。
+	    myChartLeft.setOption(setOption('基准',xAxisDataLeft,seriesData.left));
+		myChartRight.setOption(setOption('板块',xAxisDataRight,seriesData.right));
+	});
+
+
+
     
-    // //set searchedData into option
-    // option.xAxis.data=histogramChartData1;
-    // option.series[0].data=histogramChartData2;  
-    // 使用刚指定的配置项和数据显示图表。
-    myChartLeft.setOption(setOption('基准',xAxisDataLeft,seriesData.left));
-	myChartRight.setOption(setOption('板块',xAxisDataRight,seriesData.right));
 }
 //柱状图
 function drawChart_B22(){
-	// 基于准备好的dom，初始化echarts实例
-    let myChartLeft = echarts.init(document.getElementById('showDiagramLeft11'));
-	let myChartRight = echarts.init(document.getElementById('showDiagramRight11'));
-	let xAxisDataLeft = ['乐风', '瑞纳', '腾翼C30'];
-	let xAxisDataRight = ['乐风', '瑞纳', '腾翼C30', '悦翔', '比亚迪F3'];
-	let seriesData = {'left':[5, 4, 4],'right':[5, 4, 4, 3, 2]}
-	function setOption(title,xAxisData,seriesData){
-		// 指定图表的配置项和数据
-		var option = {
-			title: {
-				text: title,
-				left:'center',
-				textStyle:{fontFamily: '宋体',fontSize: 18,fontWeight: 'bolder',	color: '#000000'} 
-			},
-			tooltip: {},
-			toolbox: {
-				show:false, left:'8%', top:'4%',itemSize:10,
-				feature:{
-					saveAsImage:{show:true},
-					dataView:{show:true},
-					restore:{show:true},
-					magicType:{type: ['line', 'bar']}
-				}
-			},
-			legend: {
-				// data:['数量'],
-			},
-			xAxis: {
-				type: 'category',
-				data: xAxisData
-			},
-			yAxis: { 
-				// axisLine: {show: false},
-				minInterval: 1,
-				splitLine:{ 
-					show:false 
-				}
-			},
-			grid: {  
-				left: '8%',  
-				right: '8%',  
-				bottom: '8%',  
-				containLabel: true  
-			},
-			series: [{
-				barWidth:'50%',
-				data: seriesData,
-				type: 'bar',
-				itemStyle: {
-					normal: {
-					// 随机显示
-					//color:function(d){return "#"+Math.floor(Math.random()*(256*256*256-1)).toString(16);}
-              
-					// 定制显示（按顺序）
-					color: function(params) { 
-								var colorList = ['#C33531','#EFE42A','#64BD3D','#EE9201','#29AAE3', '#B74AE5','#0AAF9F','#E89589','#16A085','#4A235A','#C39BD3 ','#F9E79F','#BA4A00','#ECF0F1','#616A6B','#EAF2F8','#4A235A','#3498DB' ]; 
-								return colorList[params.dataIndex] 
-							}
-					}
 
-				}
-			}]
-		};
-		return option;
+	if (onlineOrLocal) {
+		globalDataURL='../lib/data11B22.json';
+	}else{
+		globalDataURL='weekly/IndicatorQuery?indicatorId=1019';
 	}
-    
-    // //set searchedData into option
-    // option.xAxis.data=histogramChartData1;
-    // option.series[0].data=histogramChartData2;  
-    // 使用刚指定的配置项和数据显示图表。
-    myChartLeft.setOption(setOption('基准',xAxisDataLeft,seriesData.left));
-	myChartRight.setOption(setOption('板块',xAxisDataRight,seriesData.right));
+	//获取数据
+	$.getJSON(globalDataURL,function (dataYH) {	
+		if (onlineOrLocal) {
+			var dataObj=dataYH.obj;
+		}else{
+			var jsonObject =$.parseJSON(dataYH);
+			var dataObj=jsonObject.obj;
+		}
+		console.log("图11B22的obj数据为：\n");
+		console.log(dataObj);
+
+
+		// 基于准备好的dom，初始化echarts实例
+	    let myChartLeft = echarts.init(document.getElementById('showDiagramLeft11'));
+		let myChartRight = echarts.init(document.getElementById('showDiagramRight11'));
+	
+		let xAxisDataLeft = dataObj.data_base[0];
+		let xAxisDataRight = dataObj.data_index[0];
+		// let xAxisDataLeft = ['乐风', '瑞纳', '腾翼C30'];
+		// let xAxisDataRight = ['乐风', '瑞纳', '腾翼C30', '悦翔', '比亚迪F3'];
+		let seriesData = {'left':dataObj.data_base[1],'right':dataObj.data_index[1]};
+		function setOption(title,xAxisData,seriesData){
+			// 指定图表的配置项和数据
+			var option = {
+				title: {
+					text: title,
+					left:'center',
+					textStyle:{fontFamily: '宋体',fontSize: 18,fontWeight: 'bolder',	color: '#000000'} 
+				},
+				tooltip: {},
+				toolbox: {
+					show:false, left:'8%', top:'4%',itemSize:10,
+					feature:{
+						saveAsImage:{show:true},
+						dataView:{show:true},
+						restore:{show:true},
+						magicType:{type: ['line', 'bar']}
+					}
+				},
+				legend: {
+					// data:['数量'],
+				},
+				xAxis: {
+					type: 'category',
+					data: xAxisData,
+					axisLabel:{
+		            	interval:0,
+		            	formatter : function(params){
+		                   var newParamsName = "";// 最终拼接成的字符串
+		                            var paramsNameNumber = params.length;// 实际标签的个数
+		                            var provideNumber = 4;// 每行能显示的字的个数
+		                            var rowNumber = Math.ceil(paramsNameNumber / provideNumber);// 换行的话，需要显示几行，向上取整
+		                            /**
+		                             * 判断标签的个数是否大于规定的个数， 如果大于，则进行换行处理 如果不大于，即等于或小于，就返回原标签
+		                             */
+		                            // 条件等同于rowNumber>1
+		                            if (paramsNameNumber > provideNumber) {
+		                                /** 循环每一行,p表示行 */
+		                                for (var p = 0; p < rowNumber; p++) {
+		                                    var tempStr = "";// 表示每一次截取的字符串
+		                                    var start = p * provideNumber;// 开始截取的位置
+		                                    var end = start + provideNumber;// 结束截取的位置
+		                                    // 此处特殊处理最后一行的索引值
+		                                    if (p == rowNumber - 1) {
+		                                        // 最后一次不换行
+		                                        tempStr = params.substring(start, paramsNameNumber);
+		                                    } else {
+		                                        // 每一次拼接字符串并换行
+		                                        tempStr = params.substring(start, end) + "\n";
+		                                    }
+		                                    newParamsName += tempStr;// 最终拼成的字符串
+		                                }
+
+		                            } else {
+		                                // 将旧标签的值赋给新标签
+		                                newParamsName = params;
+		                            }
+		                            //将最终的字符串返回
+		                            return newParamsName
+		                }
+		            }
+				},
+				yAxis: { 
+					// axisLine: {show: false},
+					minInterval: 1,
+					splitLine:{ 
+						show:false 
+					}
+				},
+
+				grid: {  
+					left: '8%',  
+					right: '8%',  
+					bottom: '8%',  
+					containLabel: true  
+				},
+			//   series: [{
+			//       name: '数量',
+			//       type: 'bar',
+			//       barWidth:'50%',
+			//       data: [],
+				//    itemStyle: {
+					//     normal:{
+					//     	color:'#2914E5',
+				//         	label:{
+					//         	show:true,
+					//         	// formatter: '{b} : {c} \n ({d}%)',  position:'outer'
+					//         	textStyle:{fontFamily: '宋体',fontSize: 15} 
+					//         },
+					//         // labelLine:{show:true}
+					//     }
+					// }
+			//   }]
+				series: [{
+					barWidth:'50%',
+					data: seriesData,
+					type: 'bar',
+					itemStyle: {
+						normal: {
+						// 随机显示
+						//color:function(d){return "#"+Math.floor(Math.random()*(256*256*256-1)).toString(16);}
+	              
+						// 定制显示（按顺序）
+						color: function(params) { 
+									var colorList = ['#446FA4','#4877AF','#4C7DB8','#38AC1','#849FCA']; 
+									return colorList[params.dataIndex] 
+								},
+						
+		             	label:{
+			            	show:true,
+			            	// formatter: '{b} : {c} \n ({d}%)',  position:'outer'
+			            	textStyle:{fontFamily: '宋体',fontSize: 10} 
+			            }
+					 
+						}
+
+					}
+				}]
+			};
+			return option;
+		}
+	    
+	    // //set searchedData into option
+	    // option.xAxis.data=histogramChartData1;
+	    // option.series[0].data=histogramChartData2;  
+	    // 使用刚指定的配置项和数据显示图表。
+	    myChartLeft.setOption(setOption('基准',xAxisDataLeft,seriesData.left));
+		myChartRight.setOption(setOption('板块',xAxisDataRight,seriesData.right));
+	});
+
 }
 //表格
 function drawChart_B23(){
 	console.log("开始drawChart-B23-");
+	if (onlineOrLocal) {
+		globalDataURL='../lib/data12B23.json';
+	}else{
+		globalDataURL='weekly/IndicatorQuery?indicatorId=1022';
+	}
+	//获取数据
+	$.getJSON(globalDataURL,function (dataYH) {	
+		if (onlineOrLocal) {
+			var dataObj=dataYH.obj;
+			var dataBase=dataObj.data_base; 
+		}else{
+			var jsonObject =$.parseJSON(dataYH);
+			var dataObj=jsonObject.obj;	
+			var dataBase=dataObj.data_base;		
+		}
+		console.log("图12B23的obj数据为：\n");
+		console.log(dataObj);
+
 
 	// 	//获取数据
 	// $.getJSON('../lib/data12B23.json',function (dataYH) {
@@ -1749,12 +2097,12 @@ function drawChart_B23(){
 
 	// 	console.log("dataBase-----长度-\n");console.log(dataBase.length);
 
-	$.getJSON('weekly/IndicatorQuery?indicatorId=1022',function (dataYH) {	
-		var jsonObject =$.parseJSON(dataYH);
-		var dataObj=jsonObject.obj;
-		console.log("图12的obj数据为：\n");
-		console.log(dataObj);
-		var dataBase=dataObj.data_base;
+	// $.getJSON('weekly/IndicatorQuery?indicatorId=1022',function (dataYH) {	
+	// 	var jsonObject =$.parseJSON(dataYH);
+	// 	var dataObj=jsonObject.obj;
+	// 	console.log("图12的obj数据为：\n");
+	// 	console.log(dataObj);
+	// 	var dataBase=dataObj.data_base;
 
 		// var contentSet=['上证综指','-0.32%','0.6%','1.17','1.35','31.83%','44.17%'];
 		// var contentSet=['基准指数','本周涨跌幅','上周涨跌幅','本周年化换手率','上周年化换手率','本周换手率分位','上周换手率分位'];
@@ -1802,61 +2150,43 @@ function drawChart_B23(){
 }
 //双轴双线
 function drawChart_B24(){
-	console.log("开始drawChart-3-");
-	$.getJSON('https://data.jianshukeji.com/jsonp?filename=json/usdeur.json&callback=?', function (data) {
-		var startDate = new Date(data[data.length - 1][0]), // Get year of last data point
-				minRate = 1,
-				maxRate = 0,
-				startPeriod,
-				date,
-				rate,
-				index;
-		var Xdata=new Array();
-		var ydata1=new Array();
-		var ydata2=new Array();
-		var copydata=new Array();
 
-		startDate.setMonth(startDate.getMonth() - 3); // a quarter of a year before last data point
-		startPeriod = Date.UTC(startDate.getFullYear(), startDate.getMonth(), startDate.getDate());
-		for (index = data.length - 1; index >= 0; index = index - 1) {
-				date = data[index][0]; // data[i][0] is date
-				rate = data[index][1]; // data[i][1] is exchange rate
-				if (date < startPeriod) {
-						break; // stop measuring highs and lows
-				}
-				if (rate > maxRate) {
-						maxRate = rate;
-				}
-				if (rate < minRate) {
-						minRate = rate;
-				}
-
+	console.log("开始drawChart-_B24-");
+	if (onlineOrLocal) {
+		globalDataURL='../lib/data2.json';
+	}else{
+		globalDataURL='weekly/IndicatorQuery?indicatorId=0022&windCode=000300.SH';
+	}
+	//获取数据
+	$.getJSON(globalDataURL,function (dataYH) {	
+		if (onlineOrLocal) {
+			var dataObj=dataYH.obj; 
+		}else{
+			var jsonObject =$.parseJSON(dataYH);
+			var dataObj=jsonObject.obj;			
 		}
-
-		for (var m = 0; m <=data.length - 1; m = m + 1) {
-				Xdata[m]=data[m][0];
-				ydata1[m]=data[m][1];
-				ydata2[m]=data[m][1];
-
-				copydata[m]=new Array(2);
-				copydata[m][0]=data[m][0];
-				copydata[m][1]=data[m][1]+2*Math.random();
-
-				// copydata.push(data[m]);
-		}
-
-		// console.log(data);
-		// console.log(copydata);
-		// console.log(copydata.length);
-		// Create the chart
-		Highcharts.stockChart('showDiagram13', {
+		console.log("图13B24的obj数据为：\n");
+		console.log(dataObj);
+	
+	
+		var myChart=Highcharts.stockChart('showDiagram13', {
 			credits: {
 				enabled: false
 			},
 			rangeSelector: {
-				selected: 5
+				selected: 3,
+				// enabled: false,
 			},
-			legend: {
+			// exporting: {
+		 //        enabled: false
+		 //    },
+		    // navigator: {
+		    //     enabled: false
+		    // },
+		    // scrollbar: {
+		    //     enabled: false
+		    // },
+		    legend: {
 		        enabled: true,
 		        align: 'right',
 		        // backgroundColor: '#FCFFC5',
@@ -1878,146 +2208,267 @@ function drawChart_B24(){
 		        // itemWidth: 80,
 		        // maxHeight:10
 		    },
+
+
+
 			title: {
-				text: '指定版块周换手率的历史变化',  //基础表实现双轴（网络数据）
+				text: '指定板块周换手率的历史变化',
 				style: {
 							color: 'black',
 							fontWeight: 'bold',
 							fontSize: 20
-						},
+					},
 				margin: 30
 			},
-
-			yAxis:[
-				{
-					opposite: false,
+			yAxis: [
+			{
 					title: {
-							// text: 'Y轴1'
+						// text: '融资买入/可用担保价值',
 					},
-				},
-				{
+					lineWidth:1,
+					opposite: false
+			},
+			{
 					title: {
-							// text: 'Y轴2'
+						// text: '沪深300',
 					},
-				}
-			], 
+					lineWidth:1,
+					plotLines: [{
+							value: 350,
+							width: 2,
+							color: 'gray',
+							dashStyle: 'shortdash',
+					},
+					{
+							value: 700,
+							width: 2,
+							color: 'gray',
+							dashStyle: 'shortdash',
+					}
+					],
+					labels: {
+							// formatter: function () {
+							// 		return (this.value > 0 ? ' + ' : '') + this.value + '%';
+							// }
+					},
+					
+			}				
+			],
+			// plotOptions: {
+			// 		series: {
+			// 				compare: 'percent'
+			// 		}
+			// },
+			tooltip: {
+					pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y}</b>',
+					valueDecimals: 3
+			},
 			series: [
 				{
-					name: ' 类别1',
-					data: data,
-					yAxis:1	
+					name: '换手率分位(MA5)',
+					data: dataObj.data,
+					yAxis:0,
+					color:'#1E90FF',
+					lineWidth:1
 				},
 				{
-					name: ' 类别2',
-					data: copydata,					
+					name: '收盘价',
+					data: dataObj.index_data,	
+					yAxis:1,
+					color:'#FF4500',
+					lineWidth:1
+					// line:{
+					// 	color:'red'
+					// }			
 				}
 			]
 		});
-
-		// SandSignika(Highcharts);
 	});
+
+
 }
 //柱状图
 function drawChart_B31(){
-	// 基于准备好的dom，初始化echarts实例
-    let myChartLeft = echarts.init(document.getElementById('showDiagramLeft14'));
-	let myChartRight = echarts.init(document.getElementById('showDiagramRight14'));
-	let xAxisDataLeft = ['乐风', '瑞纳', '腾翼C30'];
-	let xAxisDataRight = ['乐风', '瑞纳', '腾翼C30', '悦翔', '比亚迪F3'];
-	let seriesData = {'left':[5, 4, 4],'right':[5, 4, 4, 3, 2]}
-	function setOption(title,xAxisData,seriesData){
-		// 指定图表的配置项和数据
-		var option = {
-			title: {
-				text: title,
-				left:'center',
-				textStyle:{fontFamily: '宋体',fontSize: 18,fontWeight: 'bolder',	color: '#000000'} 
-			},
-			tooltip: {},
-			toolbox: {
-				show:false, left:'8%', top:'4%',itemSize:10,
-				feature:{
-					saveAsImage:{show:true},
-					dataView:{show:true},
-					restore:{show:true},
-					magicType:{type: ['line', 'bar']}
-				}
-			},
-			legend: {
-				// data:['数量'],
-			},
-			xAxis: {
-				type: 'category',
-				data: xAxisData
-			},
-			yAxis: { 
-				// axisLine: {show: false},
-				minInterval: 1,
-				splitLine:{ 
-					show:false 
-				}
-			},
-			grid: {  
-				left: '8%',  
-				right: '8%',  
-				bottom: '8%',  
-				containLabel: true  
-			},
-		//   series: [{
-		//       name: '数量',
-		//       type: 'bar',
-		//       barWidth:'50%',
-		//       data: [],
-			//    itemStyle: {
-				//     normal:{
-				//     	color:'#2914E5',
-			//         	label:{
-				//         	show:true,
-				//         	// formatter: '{b} : {c} \n ({d}%)',  position:'outer'
-				//         	textStyle:{fontFamily: '宋体',fontSize: 15} 
-				//         },
-				//         // labelLine:{show:true}
-				//     }
-				// }
-		//   }]
-			series: [{
-				barWidth:'50%',
-				data: seriesData,
-				type: 'bar',
-				itemStyle: {
-					normal: {
-					// 随机显示
-					//color:function(d){return "#"+Math.floor(Math.random()*(256*256*256-1)).toString(16);}
-              
-					// 定制显示（按顺序）
-					color: function(params) { 
-								var colorList = ['#C33531','#EFE42A','#64BD3D','#EE9201','#29AAE3', '#B74AE5','#0AAF9F','#E89589','#16A085','#4A235A','#C39BD3 ','#F9E79F','#BA4A00','#ECF0F1','#616A6B','#EAF2F8','#4A235A','#3498DB' ]; 
-								return colorList[params.dataIndex] 
-							}
-					}
-
-				}
-			}]
-		};
-		return option;
+	if (onlineOrLocal) {
+		globalDataURL='../lib/data14B31.json';
+	}else{
+		globalDataURL='weekly/IndicatorQuery?indicatorId=1017';
 	}
-    
-    // //set searchedData into option
-    // option.xAxis.data=histogramChartData1;
-    // option.series[0].data=histogramChartData2;  
-    // 使用刚指定的配置项和数据显示图表。
-    myChartLeft.setOption(setOption('加强',xAxisDataLeft,seriesData.left));
-	myChartRight.setOption(setOption('衰竭',xAxisDataRight,seriesData.right));
+	//获取数据
+	$.getJSON(globalDataURL,function (dataYH) {	
+		if (onlineOrLocal) {
+			var dataObj=dataYH.obj;
+		}else{
+			var jsonObject =$.parseJSON(dataYH);
+			var dataObj=jsonObject.obj;
+		}
+		console.log("图14B31的obj数据为：\n");
+		console.log(dataObj);
+
+
+		// 基于准备好的dom，初始化echarts实例
+	    let myChartLeft = echarts.init(document.getElementById('showDiagramLeft14'));
+		let myChartRight = echarts.init(document.getElementById('showDiagramRight14'));
+		let xAxisDataLeft = dataObj.data_decay[0];
+		let xAxisDataRight = dataObj.data_grow[0];
+		// let xAxisDataLeft = ['乐风', '瑞纳', '腾翼C30'];
+		// let xAxisDataRight = ['乐风', '瑞纳', '腾翼C30', '悦翔', '比亚迪F3'];
+		let seriesData = {'left':dataObj.data_decay[1],'right':dataObj.data_grow[1]};
+		function setOption(title,xAxisData,seriesData){
+			// 指定图表的配置项和数据
+			var option = {
+				title: {
+					text: title,
+					left:'center',
+					textStyle:{fontFamily: '宋体',fontSize: 18,fontWeight: 'bolder',	color: '#000000'} 
+				},
+				tooltip: {},
+				toolbox: {
+					show:false, left:'8%', top:'4%',itemSize:10,
+					feature:{
+						saveAsImage:{show:true},
+						dataView:{show:true},
+						restore:{show:true},
+						magicType:{type: ['line', 'bar']}
+					}
+				},
+				legend: {
+					// data:['数量'],
+				},
+				xAxis: {
+					type: 'category',
+					data: xAxisData,
+					axisLabel:{
+		            	interval:0,
+		            	formatter : function(params){
+		                   var newParamsName = "";// 最终拼接成的字符串
+		                            var paramsNameNumber = params.length;// 实际标签的个数
+		                            var provideNumber = 5;// 每行能显示的字的个数
+		                            var rowNumber = Math.ceil(paramsNameNumber / provideNumber);// 换行的话，需要显示几行，向上取整
+		                            /**
+		                             * 判断标签的个数是否大于规定的个数， 如果大于，则进行换行处理 如果不大于，即等于或小于，就返回原标签
+		                             */
+		                            // 条件等同于rowNumber>1
+		                            if (paramsNameNumber > provideNumber) {
+		                                /** 循环每一行,p表示行 */
+		                                for (var p = 0; p < rowNumber; p++) {
+		                                    var tempStr = "";// 表示每一次截取的字符串
+		                                    var start = p * provideNumber;// 开始截取的位置
+		                                    var end = start + provideNumber;// 结束截取的位置
+		                                    // 此处特殊处理最后一行的索引值
+		                                    if (p == rowNumber - 1) {
+		                                        // 最后一次不换行
+		                                        tempStr = params.substring(start, paramsNameNumber);
+		                                    } else {
+		                                        // 每一次拼接字符串并换行
+		                                        tempStr = params.substring(start, end) + "\n";
+		                                    }
+		                                    newParamsName += tempStr;// 最终拼成的字符串
+		                                }
+
+		                            } else {
+		                                // 将旧标签的值赋给新标签
+		                                newParamsName = params;
+		                            }
+		                            //将最终的字符串返回
+		                            return newParamsName
+		                }
+		            }
+				},
+				yAxis: { 
+					// axisLine: {show: false},
+					minInterval: 1,
+					splitLine:{ 
+						show:false 
+					}
+				},
+
+				grid: {  
+					left: '8%',  
+					right: '8%',  
+					bottom: '8%',  
+					containLabel: true  
+				},
+			//   series: [{
+			//       name: '数量',
+			//       type: 'bar',
+			//       barWidth:'50%',
+			//       data: [],
+				//    itemStyle: {
+					//     normal:{
+					//     	color:'#2914E5',
+				//         	label:{
+					//         	show:true,
+					//         	// formatter: '{b} : {c} \n ({d}%)',  position:'outer'
+					//         	textStyle:{fontFamily: '宋体',fontSize: 15} 
+					//         },
+					//         // labelLine:{show:true}
+					//     }
+					// }
+			//   }]
+				series: [{
+					barWidth:'50%',
+					data: seriesData,
+					type: 'bar',
+					itemStyle: {
+						normal: {
+						// 随机显示
+						//color:function(d){return "#"+Math.floor(Math.random()*(256*256*256-1)).toString(16);}
+	              
+						// 定制显示（按顺序）
+						color: function(params) { 
+									var colorList = ['#446FA4','#4877AF','#4C7DB8','#38AC1','#849FCA']; 
+									return colorList[params.dataIndex] 
+								},
+						
+		             	label:{
+			            	show:true,
+			            	// formatter: '{b} : {c} \n ({d}%)',  position:'outer'
+			            	textStyle:{fontFamily: '宋体',fontSize: 15} 
+			            }
+					 
+						}
+
+					}
+				}]
+			};
+			return option;
+		}
+	    
+	    // //set searchedData into option
+	    // option.xAxis.data=histogramChartData1;
+	    // option.series[0].data=histogramChartData2;  
+	    // 使用刚指定的配置项和数据显示图表。
+	    myChartLeft.setOption(setOption('加强',xAxisDataLeft,seriesData.left));
+		myChartRight.setOption(setOption('衰竭',xAxisDataRight,seriesData.right));
+	});
 }
 
 // 象限图 
 function drawChart_B32(){
-
 	console.log("开始drawChart-B32-");
+	if (onlineOrLocal) {
+		globalDataURL='../lib/data15B32.json';
+	}else{
+		globalDataURL='weekly/IndicatorQuery?indicatorId=0016&startDate=20180611&endDate=20180611';
+	}
+	//获取数据
+	$.getJSON(globalDataURL,function (dataYH) {	
+		if (onlineOrLocal) {
+			var dataObj=dataYH.obj;
+			var dataSet=dataObj.ret; 
+		}else{
+			var jsonObject =$.parseJSON(dataYH);
+			var dataObj=jsonObject.obj;
+			var dataSet=dataObj.ret;			
+		}
+		console.log("图d15B32的obj数据为：\n");
+		console.log(dataObj);
 
-	$.getJSON('../lib/data15B32.json',function (dataYH) {
-		var dataObj=dataYH.obj;
-		var dataSet=dataObj.ret;
+
+	// $.getJSON('../lib/data15B32.json',function (dataYH) {
+	// 	var dataObj=dataYH.obj;
+	// 	var dataSet=dataObj.ret;
 		// console.log("obj--data15B32-\n");console.log(dataObj);
 		// console.log("dataObj.data--data15B32-\n");console.log(dataObj.data);
 		// console.log("dataObj.index_data--data15B32-\n");console.log(dataObj.index_data);
@@ -2159,7 +2610,7 @@ function drawChart_B32(){
 		plotOptions: {
 			scatter: {
 				marker: {
-					symbol: 'diamond',
+					symbol: 'circle',
 					fillColor:'blue',
 					radius: 5,
 					states: {
@@ -2217,8 +2668,6 @@ function drawChart_B32(){
 //反转图
 function drawChart_B33(){
 	console.log("开始drawChart-B33-");
-
-
 	// (function(H) {
 
  //    H.wrap(H.Series.prototype, 'drawGraph', function(proceed) {
@@ -2303,101 +2752,145 @@ function drawChart_B33(){
 
  //    });
  //  }(Highcharts));
+
+
+ 	if (onlineOrLocal) {
+		globalDataURL='../lib/data16B33.json';
+	}else{
+		globalDataURL='weekly/IndicatorQuery?indicatorId=1016&windCode=CI005001.WI';
+	}
+	// console.log("图16B33的URL数据为：\n"+globalDataURL);
+	//获取数据
+	$.getJSON(globalDataURL,function (dataYH) {	
+		if (onlineOrLocal) {
+			var dataObj=dataYH.obj; 
+		}else{
+			var jsonObject =$.parseJSON(dataYH);
+			var dataObj=jsonObject.obj;			
+		}
+		console.log("图16B33的obj数据为：\n");
+		console.log(dataObj);
+
+		//dataSet数组转化为json对象
+		var dataSet=dataObj.data;
+		var dataJsonArray=[];
+		// console.log("转化前dataJson为：\n");console.log(dataJsonArray);
+		for (let i = 0; i < dataSet.length; i++) {
+			// let tempJson={x: dataSet[i][1], y: dataSet[i][2]};
+			let tempJson={name: dataSet[i][0],x: dataSet[i][1], y: dataSet[i][2]};
+			dataJsonArray.push(tempJson);
+		}
 	
 
 
-	var chart = Highcharts.chart('showDiagram16', {
-	    chart: {
-	        type: 'spline',
-	        inverted: false,
-	    },
-	    credits: {
-			enabled: false
-		},
-	    title: {
-	        text: '指定行业“速度/加速度”的历史变化路径'
-	    },
-	    subtitle: {
-	        // text: '根据标准大气模型绘制'
-	    },
-	    xAxis: {
-	        reversed: false,
-	        title: {
-	            enabled: true,
-	            // text: '海拔高度'
-	        },
-	        labels: {
-	            formatter: function () {
-	                return this.value;
-	            }
-	        },
-	        maxPadding: 0.05,
-	        showLastLabel: true
-	    },
-	    yAxis: {
-	        title: {
-	            // text: '温度'
-	        },
-	        labels: {
-	            formatter: function () {
-	                return this.value + '°';
-	            }
-	        },
-	        lineWidth: 2,
-	    },
-	    legend: {
-	        enabled: false
-	    },
-	    tooltip: {
-	        headerFormat: '<b>速度/加速度</b><br/>',
-	        pointFormat: '{point.x} : {point.y}'
-	    },
-	    plotOptions: {
-	        spline: {
-	            marker: {
-	                enable: false
-	            }
-	        }
-	    },
-	    series: [{
-	        name: '温度',
-	        data: [[0, 15], [10, -50], [20, -56.5], [30, -46.5], [40, -22.1],[50, -2.5], [60, -27.7], [70, -55.7], [80, -76.5],[-60, -27.7], [-70, -55.7], [-20, -76.5]]
-	    }]
+		var chart = Highcharts.chart('showDiagram16', {
+		    chart: {
+		        type: 'spline',
+		        inverted: false,
+		    },
+		    credits: {
+				enabled: false
+			},
+		    title: {
+		        text: '指定行业“速度/加速度”的历史变化路径'
+		    },
+		    subtitle: {
+		        // text: '根据标准大气模型绘制'
+		    },
+		    xAxis: {
+		        reversed: false,
+		        title: {
+		            enabled: true,
+		            // text: '海拔高度'
+		        },
+		        labels: {
+		            formatter: function () {
+		                return this.value;
+		            }
+		        },
+		        maxPadding: 0.05,
+		        showLastLabel: true
+		    },
+		    yAxis: {
+		        title: {
+		            // text: '温度'
+		        },
+		        labels: {
+		            formatter: function () {
+		                return this.value + '°';
+		            }
+		        },
+		        lineWidth: 2,
+		    },
+		    legend: {
+		        enabled: false
+		    },
+		    tooltip: {
+		        headerFormat: '<b>速度/加速度</b><br/>',
+		        pointFormat: '<b>{point.name}</b><br>{point.x}, {point.y}'
+		    },
+		    plotOptions: {
+		        spline: {
+		            marker: {
+		                enable: false
+		            }
+		        }
+		    },
+		    series: [{
+		        name: '速度/加速度',
+		        data: dataJsonArray
+		    }]
+		});
 	});
 }
 
 function drawChart_B41(){
 	console.log("开始drawChart-B41");
 	//获取数据
-	// $.get('http://172.16.6.26:9001/ds/yhapi?service=yhig.StrategicObserv&method=IndicatorQuery&p={appid:"6F8411ADF7E20006E053AC10521FB31A",indicator_id:"0001",start_date:"20180101",end_date:"20180622"}',function(res){
-	// 	console.log('读取到的数据为----：\n');
-	// 	console.log(res);
-	// });	
-
-
-	$.getJSON('https://data.jianshukeji.com/jsonp?filename=json/usdeur.json&callback=?', function (data) {
-		var startDate = new Date(data[data.length - 1][0]), // Get year of last data point
-				minRate = 1,
-				maxRate = 0,
-				startPeriod,
-				date,
-				rate,
-				index;
-		startDate.setMonth(startDate.getMonth() - 3); // a quarter of a year before last data point
-		startPeriod = Date.UTC(startDate.getFullYear(), startDate.getMonth(), startDate.getDate());
-		for (index = data.length - 1; index >= 0; index = index - 1) {
-				date = data[index][0]; // data[i][0] is date
-				rate = data[index][1]; // data[i][1] is exchange rate
-				if (date < startPeriod) {
-						break; // stop measuring highs and lows
-				}
-				if (rate > maxRate) {
-						maxRate = rate;
-				}
-				if (rate < minRate) {
-						minRate = rate;
-				}
+	if (onlineOrLocal) {
+		globalDataURL='../lib/data17B41.json';
+	}else{
+		globalDataURL='weekly/IndicatorQuery?indicatorId=0014&windCode=000300.SH';
+	}
+	//获取数据
+	$.getJSON(globalDataURL,function (dataYH) {	
+		if (onlineOrLocal) {
+			var dataObj=dataYH.obj;
+			var dataObjData=dataObj.data;
+			var dataObjDataY=dataObj.data_y;   
+		}else{
+			var jsonObject =$.parseJSON(dataYH);
+			var dataObj=jsonObject.obj;
+			var dataObjData=dataObj.data;
+			var dataObjDataY=dataObj.data_y; 			
 		}
+		console.log("图17B41的dataObjDataY数据为：\n");
+		console.log(dataObjDataY);
+
+
+	// $.getJSON('https://data.jianshukeji.com/jsonp?filename=json/usdeur.json&callback=?', function (data) {
+	// 	var startDate = new Date(data[data.length - 1][0]), // Get year of last data point
+	// 			minRate = 1,
+	// 			maxRate = 0,
+	// 			startPeriod,
+	// 			date,
+	// 			rate,
+	// 			index;
+	// 	startDate.setMonth(startDate.getMonth() - 3); // a quarter of a year before last data point
+	// 	startPeriod = Date.UTC(startDate.getFullYear(), startDate.getMonth(), startDate.getDate());
+	// 	for (index = data.length - 1; index >= 0; index = index - 1) {
+	// 			date = data[index][0]; // data[i][0] is date
+	// 			rate = data[index][1]; // data[i][1] is exchange rate
+	// 			if (date < startPeriod) {
+	// 					break; // stop measuring highs and lows
+	// 			}
+	// 			if (rate > maxRate) {
+	// 					maxRate = rate;
+	// 			}
+	// 			if (rate < minRate) {
+	// 					minRate = rate;
+	// 			}
+	// 	}
 		// Create the chart
 		var mychart =Highcharts.stockChart('showDiagram17', {
 			credits: {
@@ -2420,7 +2913,7 @@ function drawChart_B41(){
 		    },
 			rangeSelector: {
 				// enabled: false,
-				selected: 1,
+				selected: 3,
 			},
 			// exporting: {
 			//     enabled: false
@@ -2594,7 +3087,7 @@ function drawChart_B41(){
 					// text: '这个是Y轴'
 				},
 				plotLines: [{
-						value: minRate,
+						value: dataObjDataY[0],
 						color: 'blue',
 						dashStyle: 'shortdash',
 						width: 2,
@@ -2602,7 +3095,7 @@ function drawChart_B41(){
 								text: '1 X Sigma'
 						}
 				}, {
-						value: 0.96,
+						value: dataObjDataY[1],
 						color: 'red',
 						dashStyle: 'shortdash',
 						width: 2,
@@ -2611,7 +3104,7 @@ function drawChart_B41(){
 						}
 				},
 				{
-						value: 0.82,
+						value: -dataObjDataY[0],
 						color: 'blue',
 						dashStyle: 'shortdash',
 						width: 2,
@@ -2619,7 +3112,7 @@ function drawChart_B41(){
 								text: '1 X Sigma'
 						}
 				}, {
-						value: 0.72,
+						value: -dataObjDataY[1],
 						color: 'red',
 						dashStyle: 'shortdash',
 						width: 2,
@@ -2631,7 +3124,7 @@ function drawChart_B41(){
 
 			series: [{
 				name: '中期_HP滤波后的行业估值',
-				data: data,
+				data: dataObjData,
 				tooltip: {
 						valueDecimals: 4
 				}
@@ -2737,7 +3230,7 @@ function drawChart4(){
 				enabled: false
 			},
 			rangeSelector: {
-				selected: 5
+				selected: 3
 			},
 			title: {
 				text: '基础表实现双轴（自己造数据）',
