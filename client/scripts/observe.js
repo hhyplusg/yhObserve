@@ -1,18 +1,19 @@
 import {EventObject,GetCookie,SetCookie,DeleteCookie,isWeiXin,parseUrlSearch,getUrlParams,isEmptyObj,getDeviceType} from './api';
 
 // import * as SandSignika from '../lib/Highstock-6.1.0/code/themes/sand-signika';
+var globleColorRed='red';
+var globleColorBlue='blue';
+var globleColorGray='gray';
 
 $(function(){
 	console.log("开始画图--");
-	// drawChart_A11();  //<!-- 博弈/存量指标 -->
-	// drawChart_A12(); //百分比图方法实现双轴</li>     <!-- 融资买入/可用担保价值 -->
+	drawChart_A11();  //<!-- 博弈/存量指标 -->
+	drawChart_A12(); //百分比图方法实现双轴</li>     <!-- 融资买入/可用担保价值 -->
 	// drawChart_A21(); // 基础表实现双轴</li>           <!-- 综合性情绪指标 -->
 	// drawChart_A22();  //百分比图方法实现双轴</li>     <!-- 融资买入/可用担保价值 -->
 	// drawChart_A23(); 
 	// drawChart_A24();  //换手率
 	// drawChart_A31();  //指定版块的个股估值分布
-	// // drawChart4(); // 基础表实现双轴（自己造数据）</li>     <!-- 强势股占比 -->
-	// // drawChart5(); // 散点图</li>          <!--  指数换手率分布图（散点图）-->
 	// drawChart_A32();
 	// drawChart_B11();  //指定版块的相对换手率历史变化
 	// drawChart_B21();   //柱状图  换手率变化最大的基准
@@ -20,7 +21,7 @@ $(function(){
 	// drawChart_B23();   //表格   基准/版块的周换手率
 	// drawChart_B24();
 	// drawChart_B31();   //柱状图
-	// drawChart_B32();   //象限图
+	drawChart_B32();   //象限图
 	drawHistogram();
 	// drawChart_B33();  // 反转图 
 	// // drawChart7(); // 象限图
@@ -40,18 +41,19 @@ $(function(){
 //基础表单轴
 function drawChart_A11(){
 	console.log("开始drawChart-_A11-");
-	// //获取数据
-	// $.getJSON('../lib/dataForOne.json',function (dataYH) {
-	// 	var data=dataYH.obj;
-	// 	for (var index = 0;index <= data.length - 1;  index = index + 1) {
-	// 		var a=data[index][0]*1000;
-	// 		data[index][0]=a;
-	// 	} 
+	//获取数据
+	$.getJSON('../lib/dataForOne.json',function (dataYH) {
+		console.log(data);
+		var data=dataYH.obj;
+		for (var index = 0;index <= data.length - 1;  index = index + 1) {
+			var a=data[index][0]*1000;
+			data[index][0]=a;
+		} 
 
-	$.getJSON('weekly/IndicatorQuery?indicatorId=0001',function (dataYH) {	
-		var jsonObject =$.parseJSON(dataYH);
-		var data=jsonObject.obj;
-		console.log("图1的obj数据为：\n");
+	// $.getJSON('weekly/IndicatorQuery?indicatorId=0001',function (dataYH) {	
+	// 	var jsonObject =$.parseJSON(dataYH);
+	// 	var data=jsonObject.obj;
+	// 	console.log("图1的obj数据为：\n");
 		console.log(data);
 
 
@@ -112,14 +114,15 @@ function drawChart_A11(){
 		    },
 			rangeSelector: {
 				enabled: true,
-				selected: 5,
-				buttonTheme: { // styles for the buttons
+				selected: 3,
+				buttonTheme: { 
 		  //           fill: 'none',
 		  //           stroke: 'none',
 		  //           'stroke-width': 0,
 		  //           // r: 20,
 		  //           width: 22,
-    //     			// height: 20,
+        			// height: 70,
+        			margin:150,
 		            style: {
 		                // color: 'gray',
 		                // fontWeight: 'bold',
@@ -159,7 +162,7 @@ function drawChart_A11(){
         		sourceHeight: 500
 			},
 			title: {
-				text: '博弈/存量指标',
+				// text: '博弈/存量指标',
 				style: {
 							color: 'black',
 							fontWeight: 'bold',
@@ -167,125 +170,6 @@ function drawChart_A11(){
 						},
 				margin: 30
 			},
-			plotOptions: {
-		        series: {
-		            events: {
-		                click: function (event) {
-		                    // alert(this.name + ' clicked\n' +
-		                    //     'Alt: ' + event.altKey + '\n' +
-		                    //     'Control: ' + event.ctrlKey + '\n' +
-		                    //       'Shift: ' + event.shiftKey + '\n');
-		                    console.log('zhixingle点击函数，看看土包更新');
-		                    let cdiv=document.getElementById('ChildDiv');
-		                    if(cdiv!=null){  
-						        let p = cdiv.parentNode;  
-						        p.removeChild(cdiv);  
-						    }  
-
-		                    var mouseX;//记录鼠标点击位置。  
-							var mouseY;//记录鼠标点击位置
-
-		                    var ev = ev||event;   
-						    if(ev.pageX || ev.pageY){   
-						        mouseX = ev.pageX+'px';   
-						        mouseY = ev.pageY+'px';  
-						    }else{//兼容ie   
-						        mouseX = ev.clientX+document.body.scrollLeft - document.body.clientLeft+'px';  
-						      mouseY = ev.clientY+document.documentElement.scrollTop+'px';  
-						    } 
-						    var my = document.createElement("ChildDiv");   //创建一个div    
-						    document.body.appendChild(my);   //添加到页面     
-						    my.style.position="absolute";    //通过样式指定该div的位置方式,  
-						    my.style.top= mouseY;   //通过样式指定y坐标  
-						    my.style.left= mouseX;   //通过样式指定x坐标  
-						    my.style.border='1px solid #FF0000'; // 设置边框  
-						    my.style.width='300px';  
-							my.style.height='200px';//通过样式指定宽度、高度    
-							//通过样式指定背景颜色,,若是背景图片 例为my.style.backgroundImage="url(img/3.jpg)"     
-							my.style.backgroundColor="#ffffcc";   //设置样式透明  
-							var alpha = 80;  
-							my.style.filter='alpha(opacity:'+alpha+')';//IE   
-							my.style.opacity=alpha/100;//IE之外其他浏览器  
-							my.id = "ChildDiv";//设置ID 
-
-							//给div加一个点击后隐藏的函数 
-							my.onclick = function(){
-							   if(  (cdiv=document.getElementById('ChildDiv'))!=null){  
-							        p = cdiv.parentNode;  
-							        p.removeChild(cdiv);  
-							    } 
-							 };
-
-							//在div中创建图表
-							var chart = Highcharts.chart('ChildDiv', {
-							chart: {
-									type: 'column'
-							},
-							credits: {
-								enabled: false
-							},
-							title: {
-									text: 'PE频率'
-							},
-							subtitle: {
-									text: '数据截止 2017-03'
-							},
-							xAxis: {
-									type: 'category',
-									labels: {
-											rotation: -45  // 设置轴标签旋转角度
-									}
-							},
-							yAxis: {
-									min: 0,
-									title: {
-											// text: '人口 (百万)'
-									}
-							},
-							legend: {
-									enabled: false
-							},
-							tooltip: {
-									pointFormat: 'PE频率: <b>{point.y:.1f} 百万</b>'
-							},
-							series: [{
-										name: 'PE频率',
-										data: [
-											['0', 24.25],
-											['15', 23.50],
-											['30', 21.51],
-											['45', 16.78],
-											['60', 16.06],
-											['75', 15.20],
-											['90', 14.16],
-											['105', 13.51],
-											['120', 13.08],
-											['135', 12.44],
-											['150', 12.19],
-											['165', 12.03],
-											['180', 10.46],
-											['195', 10.07],
-											['210', 10.05],
-											['225', 9.99],
-											['240', 9.78],
-											['255', 9.73],
-											['270', 9.27],
-											['290', 8.87]
-										],
-										dataLabels: {
-											enabled: true,
-											rotation: -90,
-											color: '#FFFFFF',
-											align: 'right',
-											format: '{point.y:.1f}', // :.1f 为保留 1 位小数
-											y: 10
-										}
-									}]
-							});
-		                }
-		            }
-		        }
-		    },
 		    tooltip: {
 				split: false,
 				dateTimeLabelFormats: {
@@ -311,6 +195,18 @@ function drawChart_A11(){
 				            month: '%Y-%m',
 				            year: '%Y'
 					}
+				},
+				series: {
+					type: 'line',
+					color: 'gray',
+					// fillOpacity: 0.05,
+					// dataGrouping: {
+					// 	smoothed: true
+					// },
+					// lineWidth: 1,
+					// marker: {
+					// 	enabled: false
+					// }
 				}
 			},
 
@@ -382,6 +278,8 @@ function drawChart_A11(){
 						valueDecimals: 4
 				},
 				// dashStyle:'Dot'
+				lineWidth:2,
+				color:globleColorBlue
 			}]
 		});
 
@@ -389,22 +287,36 @@ function drawChart_A11(){
 	$("#testExport").click(function(event){
 		console.log("点击了导出图片！");
 		var chart = $('#showDiagram1').highcharts();
-		$('#showDiagram1').find('.svg').css("color","red");
 
 		var curTime=getCurrentTime();
-		// console.log('获取的时间是：---\n');console.log(curTime);
+		// // console.log('获取的时间是：---\n');console.log(curTime);	
 
-		chart.exportChart({
-			exportFormat : 'PNG',
-			filename: '博弈_存量指标'+curTime
-		});
+		// chart.exportChart({
+		// 	exportFormat : 'PNG',
+		// 	filename: '博弈_存量指标'+curTime
+		// });
+
+		//设置出图时带标题
+		chart.title.update({ text: '博弈/存量指标'});
+
 
 		//图标转换成图片
-		// var svg = chart.getSVG()
-		// 		.replace(/</g, '\n<') // make it slightly more readable
-		// 		.replace(/>/g, '>');				
-		// console.log('svg---');
+		var svg = chart.getSVG()
+				.replace(/</g, '\n<') // make it slightly more readable
+				.replace(/>/g, '>');				
 		// $("#showDiagram1").html(svg);
+		
+		var pngName='博弈_存量指标'+curTime;
+		svgToPng(svg,800,500,pngName);
+
+		// var url=svgToPng(svg,800,500,pngName);
+		// var a = document.createElement("a");  
+		//       a.download = pngName+".png";  
+		//       a.href = url;  
+		//       a.click();
+
+		//出图完设置无标题
+		chart.title.update({ text: ''});
 
 	});
 }
@@ -413,18 +325,18 @@ function drawChart_A11(){
 function drawChart_A12(){   
 	console.log("开始drawChart-_A12-");
 	
-	// // 获取数据
-	// $.getJSON('../lib/data2.json',function (dataYH) {
-	// 	var dataObj=dataYH.obj;
-	// 	console.log("obj--A12-\n");console.log(dataObj);
-	// 	console.log("dataObj.data--A12-\n");console.log(dataObj.data);
-	// 	console.log("dataObj.index_data--A12-\n");console.log(dataObj.index_data);
+	// 获取数据
+	$.getJSON('../lib/data2.json',function (dataYH) {
+		var dataObj=dataYH.obj;
+		console.log("obj--A12-\n");console.log(dataObj);
+		console.log("dataObj.data--A12-\n");console.log(dataObj.data);
+		console.log("dataObj.index_data--A12-\n");console.log(dataObj.index_data);
 
-	$.getJSON('weekly/IndicatorQuery?indicatorId=0002',function (dataYH) {	
-	var jsonObject =$.parseJSON(dataYH);
-	var dataObj=jsonObject.obj;
-	console.log("图1的obj数据为：\n");
-	console.log(dataObj);
+	// $.getJSON('weekly/IndicatorQuery?indicatorId=0002',function (dataYH) {	
+	// var jsonObject =$.parseJSON(dataYH);
+	// var dataObj=jsonObject.obj;
+	// console.log("图1的obj数据为：\n");
+	// console.log(dataObj);
 
 		// var seriesOptions = [];
 		// seriesOptions[0] = {name: '融资买入',data: dataObj.index_data,yAxis: 1};
@@ -547,7 +459,9 @@ function drawChart_A12(){
 	});
 
 }
- //基础表实现双轴
+
+
+//基础表实现双轴
 function drawChart_A21(){
 	console.log("开始drawChart-_A21-");
 	//获取数据
@@ -720,7 +634,7 @@ function drawChart_A22(){
 					lineWidth:1
 				},
 				{
-					name: '泸深300（右轴）',
+					name: '沪深300（右轴）',
 					data: dataObj.index_data,	
 					yAxis:1,
 					color:'#B22222',
@@ -826,7 +740,7 @@ function drawChart_A23(){
 					// }			
 				},
 				{
-					name: '中证500(右轴/对数)',
+					name: '中证500(右轴)',
 					data: dataObj.index_data,	
 					yAxis:1,
 					color:'gray',
@@ -2112,6 +2026,7 @@ function drawChart_B32(){
 	// $.getJSON('weekly/IndicatorQuery?indicatorId=0004&windCode=881001.WI&smooth=MA5',function (dataYH) {	
 	// 	var jsonObject =$.parseJSON(dataYH);
 	// 	var dataObj=jsonObject.obj;
+	// var dataSet=dataObj.ret;
 	// 	console.log("图1的obj数据为：\n");
 	// 	console.log(dataObj);
 
@@ -3256,6 +3171,38 @@ function drawHistogram(){
 	});
 }
 
+function svgToPng(svg,pngWidth,pngHeight,pngName){
+ 	// var serializer = new XMLSerializer();  
+  //    var source = '<?xml version="1.0" standalone="no"?>\r\n'+serializer.serializeToString(svg.node());  
+  //    var image = new Image;  
+  //    	image.src = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(source);  
+  //    var canvas = document.createElement("canvas");  
+  //        canvas.width = pngWidth;  
+  //        canvas.height = pngHeight; 
+  //    var context = canvas.getContext("2d");  
+  //    	context.fillStyle = '#fff';//设置保存后的PNG 是白色的
+  //    	context.fillRect(0,0,10000,10000);
+  //    	context.drawImage(image, 0, 0);  
+  //    return canvas.toDataURL("image/png");  
+
+     // var svgXml = $('svg').html();
+ 
+	var image = new Image();
+	image.src = 'data:image/svg+xml;base64,' + window.btoa(unescape(encodeURIComponent(svg))); //给图片对象写入base64编码的svg流
+	 
+	var canvas = document.createElement('canvas');  //准备空画布
+	canvas.width = pngWidth;  
+    canvas.height = pngHeight; 
+	 
+	var context = canvas.getContext('2d');  //取得画布的2d绘图上下文
+	context.drawImage(image, 0, 0);
+	var a = document.createElement("a"); 
+	a.href = canvas.toDataURL('image/png'); //将画布内的信息导出为png图片数据
+	a.download = pngName+".png";  //设定下载名称
+	// a.href = url;  
+	a.click(); //点击触发下载
+
+}
 
 
 
