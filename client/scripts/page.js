@@ -8,11 +8,22 @@ import {EventObject,getUrlParams,isEmptyObj} from './api';
 		let ariaExpanded= this.getAttribute('aria-expanded');
 		let img = $(this).find('.right-img-three').get(0);
 		let nextSbl = this.nextElementSibling;
+		let id= this.getAttribute('id').replace('diagramThree','');	
+		console.log(id);
 		if (img){
 			if (ariaExpanded == 'false'){
-				this.setAttribute('aria-expanded','true'); 
+				let menuThreeCheck = $("#menuThreeCheck"+id);
+				menuThreeCheck.attr('checked',true);
+				menuThreeCheck.prop("checked","checked");
+
+				this.setAttribute('aria-expanded','true'); 		
 				img.style.animation = "arrowRotateDown 0.25s 1 forwards ease-in";
 			}else{
+
+				let menuThreeCheck = $("#menuThreeCheck"+id);
+				menuThreeCheck.attr('checked',false);
+				menuThreeCheck.removeAttr("checked");
+
 				this.setAttribute('aria-expanded','false');
 				img.style.animation = "arrowRotateUp 0.25s forwards ease-out";
 			}
@@ -39,15 +50,23 @@ import {EventObject,getUrlParams,isEmptyObj} from './api';
 	}
 
 	function expand(ele){
-		if(ele){				
+		if(ele){
+					
 			let ariaExpanded= ele.getAttribute('aria-expanded');
 	        let img = ele.children[0].children[2];
 	        let nextSbl = ele.nextElementSibling;
 	        if (img){
 	            if (ariaExpanded == 'true'){
+					let id= ele.getAttribute('id').replace('diagramThree','');	
+					let menuThreeCheck = $("#menuThreeCheck"+id);
+					menuThreeCheck.attr('checked',true);
+					// menuThreeCheck.prop("checked","checked");
 	                ele.setAttribute('aria-expanded','true'); 
 	                img.style.animation = "arrowRotateDown 0.25s 1 forwards ease-in";
 	            }else{
+					let id= ele.getAttribute('id').replace('diagramThree','');	
+					let menuThreeCheck = $("#menuThreeCheck"+id);
+					menuThreeCheck.attr('checked',false);
 	                ele.setAttribute('aria-expanded','false');
 	                img.style.animation = "arrowRotateUp 0.25s forwards ease-out";
 	            }
@@ -67,13 +86,23 @@ import {EventObject,getUrlParams,isEmptyObj} from './api';
 		}
 	}
 
+	function defaultSelected(){
+
+	}
+
 
     let diagramTitleThreeTength = expanders.length;
     
 
 	for(let i=1;i<=diagramTitleThreeTength;i++){
 		$("#menuThreeSelected"+i).click(function(e) {
-			let menuThreeCheck = $("#menuThreeCheck"+i);
+			$("html, body").animate({
+				scrollTop: $("#diagramThree"+i).offset().top 
+			}, {duration: 500,easing: "swing"});
+            // console.log($("#diagramThree"+i).offset().top );	
+		});
+		$("#menuThreeCheck"+i).click(function(e) {
+			let menuThreeCheck = $(this);
 			let currentState = menuThreeCheck.attr('checked');
 			if (currentState) {
 				menuThreeCheck.attr('checked',false); 
@@ -81,10 +110,6 @@ import {EventObject,getUrlParams,isEmptyObj} from './api';
 				menuThreeCheck.attr('checked',true);
 			}
 
-			$("html, body").animate({
-				scrollTop: $("#diagramThree"+i).offset().top 
-			}, {duration: 500,easing: "swing"});
-            // console.log($("#diagramThree"+i).offset().top );
 
 			let diagramThree = $("#diagramThree"+i);
 			let img = diagramThree.find('.right-img-three').get(0);
@@ -115,10 +140,12 @@ import {EventObject,getUrlParams,isEmptyObj} from './api';
 	}
 
     $(".comment-page-btn").click(function(){
-        $("#create-comment-container").css('display','none');
+        // $(".create-comment-container").css('display','none');
+		$(this).parent().parent().parent().css('display','none');
     });
     $(".create-comment-btn").click(function(){
-        $("#create-comment-container").css('display','block');
+		$(this).parent().parent().parent().find('.create-comment-container').css('display','block');
+        // $(".create-comment-container").css('display','block');
     });
     
    $(".menuOneCheck,.menuTwoCheck").click(function(){
@@ -166,7 +193,7 @@ import {EventObject,getUrlParams,isEmptyObj} from './api';
 
 	$('#comment-confirm').click(function(){		
 		var key = $(this).parents().find('.DiagramAreaDiv2').attr('key');
-		var commentWord = $(this).parentsUntil('comment-box').find('.comment-word').val();
+		var commentWord = $(this).parentsUntil('.comment-box').find('.comment-word').val();
 		var time = getFormatTime();
 		console.log(time);
 		var data = {
