@@ -147,22 +147,92 @@ import {EventObject,getUrlParams,isEmptyObj} from './api';
 		}
 		$(this).find('.DiagramTitleTwo').slideToggle(500);
 		// console.log('.DiagramTitleOne');
-		return false
+		// return false
     });
 
 	$(".DiagramTitleTwo").click(function(e){
 		e.stopPropagation();
 		$(this).find('.DiagramTitleThree').slideToggle(500);
-		return false
+		// return false
     });
 	$(".DiagramTitleThree,.DiagramBigDiv").click(function(e){
 		e.stopPropagation();
-		return false
+		// return false
     });
 
 	$('.returnToTop').click(function(){
 		$('html,body').animate({scrollTop:0},'slow');
 	});
+
+	$('#comment-confirm').click(function(){		
+		var key = $(this).parents().find('.DiagramAreaDiv2').attr('key');
+		var commentWord = $(this).parentsUntil('comment-box').find('.comment-word').val();
+		var time = getFormatTime();
+		console.log(time);
+		var data = {
+			'time':time,
+			'commentWord':commentWord
+		}
+		$.ajax({
+			method: "POST",
+			url: '/weekly/saveReview?indicatorId='+key+'&content=test',
+			data: data
+		})
+		.done(function( msg ) {
+			console.log( "Data " + msg );
+		})
+		.fail(function( jqXHR, textStatus ) {
+			console.log( "Request failed: " + textStatus );
+		});
+	});
+	$('.comment-inquery').click(function(){
+		
+		var startDate = $(this).parent().find('.start-date').val();
+		var endDate = $(this).parent().find('.end-date').val();
+		
+		startDate = startDate.replace(/-/g,'');
+		endDate = endDate.replace(/-/g,'');
+
+		if(!startDate || !endDate){
+			startDate = getFormatTime();
+			endDate = getFormatTime();
+		}
+		
+		console.log(':'+startDate);
+		console.log(':'+endDate);
+		var data = {
+			'startDate':startDate,
+			'endDate':endDate
+		}
+
+		$.ajax({
+			method: "POST",
+			url: '/weekly/review?indicatorId=0001&startDate='+startDate+'&endDate='+endDate,
+			data: data
+		})
+		.done(function( msg ) {
+			console.log( "Data " + msg );
+		})
+		.fail(function( jqXHR, textStatus ) {
+			console.log( "Request failed: " + textStatus );
+		});
+	});
+
+	
+
+function getFormatTime(){
+	var myDate = new Date();
+	var year = myDate.getFullYear();
+	var month = myDate.getMonth()<9 ? '0'+(myDate.getMonth()+1):(myDate.getMonth()+1);
+	var date = myDate.getDate()<10 ? '0'+(myDate.getDate()):(myDate.getDate());
+
+	var time = ''+year+month+date;
+	// console.log(year+'-'+month+'-'+date);
+	return time
+}
+
+	// 查询点评数据：http://localhost/weekly/review?indicatorId=0001
+	// 提交（post）点评数据：http://localhost/weekly/saveReview?indicatorId=0001&content=test
 
 	// $('#diagramDiv17').click(function(e){
 	// 	e.stopPropagation();

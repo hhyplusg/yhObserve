@@ -356,7 +356,6 @@ $background-color: white;
 .input-date{
     border:1px solid rgba(215, 215, 215, 1);
     height: 30px;
-    // margin:0px 10px;
     vertical-align: middle;
     width: 120px;
 }
@@ -375,21 +374,54 @@ $background-color: white;
     font-size: 13px;
 }
 .table-container {
+    height: 100%;
     table{
-        margin:auto;
+        // margin:auto;
+        width: 100%;
         border-collapse: collapse;
+        overflow: scroll;
+        table-layout: fixed;
     }
     table tr{
         border: 1px solid rgba(215, 215, 215, 1);
         // border-collapse: collapse;
         text-align: center;
+        height: 25px;
     }
-    table tr td{
+    tr th{
+        background-color: rgba(242, 242, 242, 1);
+    }
+    table tr td,tr th{
         border: 1px solid rgba(215, 215, 215, 1);
         // border-collapse: collapse;
         text-align: center;
+        
     }
+  
     
+    table tr td:first-child,table tr th:first-child{
+        width:100px;
+    }
+
+    table tr td:nth-child(2), table tr th:nth-child(2) {
+        // color:red;
+        // width:350px;
+        text-overflow: ellipsis;
+         white-space: nowrap;
+        overflow: hidden; 
+    }
+  
+    table tr td:nth-child(3),table tr th:nth-child(3) {
+        width:100px;
+    }
+    td{
+        
+    }
+    td:nth-child(2):hover{
+        white-space: inherit;
+        text-overflow: inherit;
+        overflow: inherit;
+    }
 }
 
 
