@@ -298,7 +298,7 @@ $background-color: white;
             width: 100px;
         }
     }
-    #showDiagram4,#showDiagram7,#showDiagram9,#showDiagram12,#showDiagram13,#showDiagram16,#showDiagram17{
+    #showDiagram4,#showDiagram5,#showDiagram6,#showDiagram7,#showDiagram8,#showDiagram9,#showDiagram12,#showDiagram13,#showDiagram16,#showDiagram17{
         margin-top: 30px;
     }
 }
@@ -374,8 +374,8 @@ $background-color: white;
     font-size: 13px;
 }
 .table-container {
-    height: 100%;
-    overflow: scroll;
+    // height: 100%;
+    overflow-y: scroll;
     table{
         // margin:auto;
         width: 100%;
