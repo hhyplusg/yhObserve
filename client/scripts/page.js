@@ -329,6 +329,8 @@ function getCommentTable(key){
 		}
 	});
 }
+
+
 	
 getCommentTable(keys.A11);
 getCommentTable(keys.A12);
@@ -336,6 +338,21 @@ getCommentTable(keys.A21);
 getCommentTable(keys.A22);
 getCommentTable(keys.A23);
 getCommentTable(keys.A24);
+
+getCommentTable(keys.A31);
+getCommentTable(keys.A32);
+
+getCommentTable(keys.B11);
+getCommentTable(keys.B21);
+getCommentTable(keys.B22);
+getCommentTable(keys.B23);
+getCommentTable(keys.B24);
+
+getCommentTable(keys.B31);
+getCommentTable(keys.B32);
+getCommentTable(keys.B33);
+getCommentTable(keys.B41);
+
 	//checkbox对应图标展开操作
 	// $("input[id^='menuTwoCheck']").each(function(){
 
