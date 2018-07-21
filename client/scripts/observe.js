@@ -7,6 +7,7 @@ var globalColorGray='gray';
 var onlineOrLocal=false;  //false=online, true=local
 if (window.location.href=='http://localhost:3000/observesystem.html') {onlineOrLocal=true;}
 var globalDataURL='';
+var globalClicked=false;
 
 $(function(){
 	console.log("开始画图--");
@@ -1046,114 +1047,243 @@ function drawChart_A31(){
 		        series: {
 		            events: {
 		                click: function (event) {
-		                    // alert(this.name + ' clicked\n' +
-		                    //     'Alt: ' + event.altKey + '\n' +
-		                    //     'Control: ' + event.ctrlKey + '\n' +
-		                    //       'Shift: ' + event.shiftKey + '\n');
-		                    console.log('zhixingle点击函数，看看土包更新');
-		                    // drawChart2();
-		                    let cdiv=document.getElementById('ChildDiv');
-		                    if(cdiv!=null){  
-						        let p = cdiv.parentNode;  
-						        p.removeChild(cdiv);  
-						    }  
+		                    console.log('zhixingle点击函数--');
+		                    console.log(event.point.x+'----'+event.point.y);
+		                    //获取点击数据的时间
+		                    var dateSeconds=new Date(event.point.x);
+		                    var month = dateSeconds.getMonth()+1;
+							if (month<10) {month='0'+month;}
+							var day = dateSeconds.getDate();
+							if (day<10) {day='0'+day;}
+		                    var dateYMD=dateSeconds.getFullYear() + "-" + month + "-" + day;
+		                    console.log(dateYMD);
+		                    //传递点击数据，获取小图数据
+		                    var data = {
+								'startDate':dateYMD,'endDate':dateYMD
+							}
+							$.ajax({
+								method: "POST",
+								url: '/weekly/IndicatorQuery?indicatorId=0011&windCode=000300.SH&startDate='+dateYMD+'&endDate='+dateYMD,
+								data: data
+							})
+							.done(function( msg ) {
+								console.log( "Data " + msg );
+								if (onlineOrLocal) {
+									globalDataURL='../lib/data7A31小图.json';
+									//获取数据
+									$.getJSON(globalDataURL,function (dataYH) {	
+										var dataObj=dataYH.obj;
+										console.log("图7A31小图的obj数据为：\n");
+										console.log(dataObj);
 
-		                    var mouseX;//记录鼠标点击位置。  
-							var mouseY;//记录鼠标点击位置
+										var finalResult=CalculateQuantity(dataObj);
+										//画小图
+										let cdiv=document.getElementById('ChildDiv');
+					                    if(cdiv!=null){  
+									        let p = cdiv.parentNode;  
+									        p.removeChild(cdiv);  
+									    }  
 
-		                    var ev = ev||event;   
-						    if(ev.pageX || ev.pageY){   
-						        mouseX = ev.pageX+'px';   
-						        mouseY = ev.pageY+'px';  
-						    }else{//兼容ie   
-						        mouseX = ev.clientX+document.body.scrollLeft - document.body.clientLeft+'px';  
-						      mouseY = ev.clientY+document.documentElement.scrollTop+'px';  
-						    } 
-						    var my = document.createElement("ChildDiv");   //创建一个div    
-						    document.body.appendChild(my);   //添加到页面     
-						    my.style.position="absolute";    //通过样式指定该div的位置方式,  
-						    my.style.top= mouseY;   //通过样式指定y坐标  
-						    my.style.left= mouseX;   //通过样式指定x坐标  
-						    my.style.border='1px solid #FF0000'; // 设置边框  
-						    my.style.width='300px';  
-							my.style.height='200px';//通过样式指定宽度、高度    
-							//通过样式指定背景颜色,,若是背景图片 例为my.style.backgroundImage="url(img/3.jpg)"     
-							my.style.backgroundColor="#ffffcc";   //设置样式透明  
-							var alpha = 80;  
-							my.style.filter='alpha(opacity:'+alpha+')';//IE   
-							my.style.opacity=alpha/100;//IE之外其他浏览器  
-							my.id = "ChildDiv";//设置ID 
+					                    var mouseX;//记录鼠标点击位置。  
+										var mouseY;//记录鼠标点击位置
 
-							//给div加一个点击后隐藏的函数 
-							my.onclick = function(){
-							   if(  (cdiv=document.getElementById('ChildDiv'))!=null){  
-							        p = cdiv.parentNode;  
-							        p.removeChild(cdiv);  
-							    } 
-							 };
+					                    var ev = ev||event;   
+									    if(ev.pageX || ev.pageY){   
+									        mouseX = ev.pageX+'px';   
+									        mouseY = ev.pageY+'px';  
+									    }else{//兼容ie   
+									        mouseX = ev.clientX+document.body.scrollLeft - document.body.clientLeft+'px';  
+									      mouseY = ev.clientY+document.documentElement.scrollTop+'px';  
+									    } 
+									    var my = document.createElement("ChildDiv");   //创建一个div    
+									    document.body.appendChild(my);   //添加到页面     
+									    my.style.position="absolute";    //通过样式指定该div的位置方式,  
+									    my.style.top= mouseY;   //通过样式指定y坐标  
+									    my.style.left= mouseX;   //通过样式指定x坐标  
+									    my.style.border='1px solid #FF0000'; // 设置边框  
+									    my.style.width='300px';  
+										my.style.height='200px';//通过样式指定宽度、高度    
+										//通过样式指定背景颜色,,若是背景图片 例为my.style.backgroundImage="url(img/3.jpg)"     
+										my.style.backgroundColor="#ffffcc";   //设置样式透明  
+										var alpha = 80;  
+										my.style.filter='alpha(opacity:'+alpha+')';//IE   
+										my.style.opacity=alpha/100;//IE之外其他浏览器  
+										my.id = "ChildDiv";//设置ID 
 
-							//在div中创建图表
-							var chart = Highcharts.chart('ChildDiv', {
-							chart: {
-									type: 'column'
-							},
-							credits: {
-								enabled: false
-							},
-							title: {
-									text: 'PE频率'
-							},
-							subtitle: {
-									text: '数据截止 2017-03'
-							},
-							xAxis: {
-									type: 'category',
-									labels: {
-											rotation: -45  // 设置轴标签旋转角度
-									}
-							},
-							yAxis: {
-									min: 0,
-									title: {
-											// text: '人口 (百万)'
-									}
-							},
-							legend: {
-									enabled: false
-							},
-							tooltip: {
-									pointFormat: 'PE频率: <b>{point.y:.1f} 百万</b>'
-							},
-							series: [{
-									name: 'PE频率',
-									data: [
-											['0', 24.25],
-											['15', 23.50],
-											['30', 21.51],
-											['45', 16.78],
-											['60', 16.06],
-											['75', 15.20],
-											['270', 9.27],
-											['290', 8.87]
-									],
-									dataLabels: {
-											enabled: true,
-											rotation: -90,
-											color: '#FFFFFF',
-											align: 'right',
-											format: '{point.y:.1f}', // :.1f 为保留 1 位小数
-											y: 10
-									}
-							}]
+										//给div加一个点击后隐藏的函数 
+										my.onclick = function(){
+										   if(  (cdiv=document.getElementById('ChildDiv'))!=null){  
+										        p = cdiv.parentNode;  
+										        p.removeChild(cdiv);  
+										    } 
+										 };
+
+										//在div中创建图表
+										var chart = Highcharts.chart('ChildDiv', {
+										chart: {
+												type: 'column'
+										},
+										credits: {
+											enabled: false
+										},
+										title: {
+												text: 'PE频率'
+										},
+										subtitle: {
+												// text: '数据截止 2017-03'
+										},
+										xAxis: {
+												type: 'category',
+												labels: {
+														rotation: -45  // 设置轴标签旋转角度
+												}
+										},
+										yAxis: {
+												min: 0,
+												title: {
+														// text: '人口 (百万)'
+												}
+										},
+										legend: {
+												enabled: false
+										},
+										tooltip: {
+												pointFormat: 'PE频率: <b>{point.y:.1f}</b>'
+										},
+										series: [{
+												name: 'PE频率',
+												data: finalResult,
+												dataLabels: {
+														enabled: true,
+														rotation: -90,
+														color: '#FFFFFF',
+														align: 'right',
+														format: '{point.y:.1f}', // :.1f 为保留 1 位小数
+														y: 10
+												}
+										}]
+										});
+										globalClicked=true;
+
+									});
+								}
+
+
+
+
+
+
+							})
+							.fail(function( jqXHR, textStatus ) {
+								console.log( "Request failed: " + textStatus );
+
+								if (onlineOrLocal) {
+									globalDataURL='../lib/data7A31小图.json';
+									//获取数据
+									$.getJSON(globalDataURL,function (dataYH) {	
+										var dataObj=dataYH.obj;
+										console.log("图7A31小图的obj数据为：\n");
+										console.log(dataObj);
+
+										var finalResult=CalculateQuantity(dataObj);
+										//画小图
+										let cdiv=document.getElementById('ChildDiv');
+					                    if(cdiv!=null){  
+									        let p = cdiv.parentNode;  
+									        p.removeChild(cdiv);  
+									    }  
+
+					                    var mouseX;//记录鼠标点击位置。  
+										var mouseY;//记录鼠标点击位置
+
+					                    var ev = ev||event;   
+									    if(ev.pageX || ev.pageY){   
+									        mouseX = ev.pageX+'px';   
+									        mouseY = ev.pageY+'px';  
+									    }else{//兼容ie   
+									        mouseX = ev.clientX+document.body.scrollLeft - document.body.clientLeft+'px';  
+									      mouseY = ev.clientY+document.documentElement.scrollTop+'px';  
+									    } 
+									    var my = document.createElement("ChildDiv");   //创建一个div    
+									    document.body.appendChild(my);   //添加到页面     
+									    my.style.position="absolute";    //通过样式指定该div的位置方式,  
+									    my.style.top= mouseY;   //通过样式指定y坐标  
+									    my.style.left= mouseX;   //通过样式指定x坐标  
+									    my.style.border='1px solid #FF0000'; // 设置边框  
+									    my.style.width='300px';  
+										my.style.height='200px';//通过样式指定宽度、高度    
+										//通过样式指定背景颜色,,若是背景图片 例为my.style.backgroundImage="url(img/3.jpg)"     
+										my.style.backgroundColor="#ffffcc";   //设置样式透明  
+										var alpha = 80;  
+										my.style.filter='alpha(opacity:'+alpha+')';//IE   
+										my.style.opacity=alpha/100;//IE之外其他浏览器  
+										my.id = "ChildDiv";//设置ID 
+
+										//给div加一个点击后隐藏的函数 
+										my.onclick = function(){
+										   if(  (cdiv=document.getElementById('ChildDiv'))!=null){  
+										        p = cdiv.parentNode;  
+										        p.removeChild(cdiv);  
+										    } 
+										 };
+
+										//在div中创建图表
+										var chart = Highcharts.chart('ChildDiv', {
+										chart: {
+												type: 'column'
+										},
+										credits: {
+											enabled: false
+										},
+										title: {
+												text: 'PE频率'
+										},
+										subtitle: {
+												// text: '数据截止 2017-03'
+										},
+										xAxis: {
+												type: 'category',
+												labels: {
+														rotation: -45  // 设置轴标签旋转角度
+												}
+										},
+										yAxis: {
+												min: 0,
+												title: {
+														// text: '人口 (百万)'
+												}
+										},
+										legend: {
+												enabled: false
+										},
+										tooltip: {
+												pointFormat: 'PE频率: <b>{point.y:.1f}</b>'
+										},
+										series: [{
+												name: 'PE频率',
+												data: finalResult,
+												dataLabels: {
+														enabled: true,
+														rotation: -90,
+														color: '#FFFFFF',
+														align: 'right',
+														format: '{point.y:.1f}', // :.1f 为保留 1 位小数
+														y: 10
+												}
+										}]
+										});
+										globalClicked=true;
+
+									});
+								}
 							});
-							// this.isClick = false;
-							// function aa(){console.log("---zhixing aa");this.isClick = true;console.log(this.isClick);}
-							// setTimeout(aa,2000);
-							this.isClick=true;
+
+
+		                    
 		            	},
 			            mouseOut: function (event) {
-			            	 if(this.isClick) {
-			            	 	this.isClick=false;	}
+			            	 if(globalClicked) {
+			            	 	globalClicked=false;	}
 			            	 else{
 			            	 	// console.log("---鼠标移除22");
 			            	 	var cdiv=document.getElementById('ChildDiv');
@@ -1212,7 +1342,7 @@ function drawChart_A31(){
 				name: '指定板块的个股估值分布',
 				data: dataObj,
 				tooltip: {
-						valueDecimals: 4
+						// valueDecimals: 4
 				}
 			}]
 		});
@@ -3016,23 +3146,6 @@ function drawChart_B41(){
 									name: 'PE频率',
 									data: [
 											['0', 24.25],
-											['15', 23.50],
-											['30', 21.51],
-											['45', 16.78],
-											['60', 16.06],
-											['75', 15.20],
-											['90', 14.16],
-											['105', 13.51],
-											['120', 13.08],
-											['135', 12.44],
-											['150', 12.19],
-											['165', 12.03],
-											['180', 10.46],
-											['195', 10.07],
-											['210', 10.05],
-											['225', 9.99],
-											['240', 9.78],
-											['255', 9.73],
 											['270', 9.27],
 											['290', 8.87]
 									],
@@ -3046,14 +3159,11 @@ function drawChart_B41(){
 									}
 							}]
 							});
-							// this.isClick = false;
-							// function aa(){console.log("---zhixing aa");this.isClick = true;console.log(this.isClick);}
-							// setTimeout(aa,2000);
-							this.isClick=true;
+							globalClicked=true;
 		            	},
 			            mouseOut: function (event) {
-			            	 if(this.isClick) {
-			            	 	this.isClick=false;	}
+			            	 if(globalClicked) {
+			            	 	globalClicked=false;	}
 			            	 else{
 			            	 	// console.log("---鼠标移除22");
 			            	 	var cdiv=document.getElementById('ChildDiv');
@@ -3697,6 +3807,59 @@ function svgToPng(svg,pngWidth,pngHeight,pngName){
 	// a.href = url;  
 	a.click(); //点击触发下载
 
+}
+
+function CalculateQuantity(row_items){
+	//柱状图数据收集---------------------------------------------------
+		var ProblemStatistic=new Array();
+		if (row_items.length>0) {
+			ProblemStatistic[0]=row_items[0];
+			var ProblemNumStatistic=new Array();
+			ProblemNumStatistic[0]=1;		
+			for(var i=1;i<row_items.length;i++){
+				// 统计问题种类和数量
+				for (var j =0,a=ProblemStatistic.length; j<a; j++) {
+					if (row_items[i]==ProblemStatistic[j]) {
+						ProblemNumStatistic[j]++;
+						break;
+					}else if(j==ProblemStatistic.length-1){
+						ProblemStatistic[j+1]=row_items[i];
+						ProblemNumStatistic[j+1]=1;
+					}
+				}						
+			}
+		}
+		else{
+			console.log('数据库没有数据!');return;
+		}
+
+		
+		//排序
+		var i = 0, len = ProblemStatistic.length, j, d; 
+		for(i=0; i<len-1; i++){ 
+			for(j=0; j<len-i-1; j++){ 
+				if(ProblemStatistic[j] > ProblemStatistic[j+1]){ 
+					d = ProblemStatistic[j]; 
+					ProblemStatistic[j] = ProblemStatistic[j+1]; 
+					ProblemStatistic[j+1] = d; 
+					d = ProblemNumStatistic[j]; 
+					ProblemNumStatistic[j] = ProblemNumStatistic[j+1]; 
+					ProblemNumStatistic[j+1] = d;
+				} 
+			} 
+		}
+
+		var caculateResult=new Array();
+		for (var m = 0; m < ProblemStatistic.length; m++) {
+			console.log('统计结果为：'+ProblemStatistic[m]+'共'+ProblemNumStatistic[m]+'\n');
+			var temp=new Array();
+			temp[0]=ProblemStatistic[m];
+			temp[1]=Math.round(ProblemNumStatistic[m]*1000/row_items.length)/1000;
+			// temp[1]=ProblemNumStatistic[m]/row_items.length;
+			caculateResult.push(temp);
+			console.log('统计结果为：'+temp[0]+'共'+temp[1]+'\n');
+		}
+		return caculateResult;
 }
 
 
