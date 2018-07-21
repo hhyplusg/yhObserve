@@ -110,34 +110,40 @@ function drawChart_A11(){
 			credits: {
 				enabled: false
 			},
+			chart: {
+				marginTop: 20
+			},
 			scrollbar: {
 		        enabled: true
 		    },
 		    legend: {
 		        enabled: true,
-		        align: 'right',
+		        align: 'center',
 		        // backgroundColor: '#FCFFC5',
 		        // borderColor: 'black',
 		        // borderWidth: 2,
 		        color: 'gray',
 		        layout: 'vertical',
 		        verticalAlign: 'top',
-		        x: -40,
-				y: 15,
-				floating: true,
+		        x: 280,
+				y: 5,
+				floating: false,
 				itemStyle:{
 					"color": "black", 
 					"cursor": "pointer", 
 					"fontSize": "12px", 
 					// "fontWeight": "bold"
-				}
+				},
 		        // shadow: true,
 		        // itemWidth: 80,
-		        // maxHeight:10
+		        // maxHeight:20,
+		        margin:0,
+		        // padding:0
 		    },
 			rangeSelector: {
 				enabled: true,
 				selected: 3,
+				// margin:50,
 				buttonTheme: { 
 		  //           fill: 'none',
 		  //           stroke: 'none',
@@ -145,7 +151,7 @@ function drawChart_A11(){
 		  //           // r: 20,
 		  //           width: 22,
         			// height: 70,
-        			margin:150,
+        			// margin:550,
 		            style: {
 		                // color: 'gray',
 		                // fontWeight: 'bold',
@@ -292,6 +298,15 @@ function drawChart_A11(){
 								 text: '0.4'
 						}
 				}]
+			},
+			plotOptions:{
+				line:{
+					states:{
+						hover:{
+							lineWidthPlus:0
+						}
+					}
+				}
 			},
 
 			series: [{
@@ -961,7 +976,7 @@ function drawChart_A24(){
 function drawChart_A31(){
 	console.log("开始drawChart-_A31-");
 	if (onlineOrLocal) {
-		globalDataURL='../lib/data6A24.json';
+		globalDataURL='../lib/data7A31大图.json';
 	}else{
 		globalDataURL='weekly/IndicatorQuery?indicatorId=2000&windCode=000300.SH';
 	}
@@ -974,9 +989,8 @@ function drawChart_A31(){
 			var jsonObject =$.parseJSON(dataYH);
 			var dataObj=jsonObject.obj;			
 		}
-		var dataObjData=dataObj.data;
 		console.log("图7A31的obj数据为：\n");
-		console.log(dataObjData);
+		console.log(dataObj);
 
 
 
@@ -1119,18 +1133,6 @@ function drawChart_A31(){
 											['45', 16.78],
 											['60', 16.06],
 											['75', 15.20],
-											['90', 14.16],
-											['105', 13.51],
-											['120', 13.08],
-											['135', 12.44],
-											['150', 12.19],
-											['165', 12.03],
-											['180', 10.46],
-											['195', 10.07],
-											['210', 10.05],
-											['225', 9.99],
-											['240', 9.78],
-											['255', 9.73],
 											['270', 9.27],
 											['290', 8.87]
 									],
@@ -1207,8 +1209,8 @@ function drawChart_A31(){
 			},
 
 			series: [{
-				name: '博弈/存量资金',
-				data: dataObjData,
+				name: '指定板块的个股估值分布',
+				data: dataObj,
 				tooltip: {
 						valueDecimals: 4
 				}
@@ -2456,11 +2458,11 @@ function drawChart_B32(){
 	$.getJSON(globalDataURL,function (dataYH) {	
 		if (onlineOrLocal) {
 			var dataObj=dataYH.obj;
-			var dataSet=dataObj.ret; 
+			var dataSet=dataObj.data; 
 		}else{
 			var jsonObject =$.parseJSON(dataYH);
 			var dataObj=jsonObject.obj;
-			var dataSet=dataObj.ret;			
+			var dataSet=dataObj.data;			
 		}
 		console.log("图d15B32的obj数据为：\n");
 		console.log(dataObj);

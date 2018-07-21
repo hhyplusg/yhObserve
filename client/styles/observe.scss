@@ -275,7 +275,7 @@ $background-color: white;
         position:absolute;
         text-align:left; 
         display:block;
-        top:38px;
+        top:58px;
         left:55%; 
         font-family: 'Arial Normal', 'Arial';
         font-weight: 400;
@@ -375,6 +375,7 @@ $background-color: white;
 }
 .table-container {
     height: 100%;
+    overflow: scroll;
     table{
         // margin:auto;
         width: 100%;
