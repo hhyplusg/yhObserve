@@ -1,6 +1,30 @@
 
 import {EventObject,getUrlParams,isEmptyObj} from './api';
 
+const keys = {
+	"A11":"0001",
+	"A12":"0002",
+	"A21":"0003",
+	"A22":"0004",
+	"A23":"0009",
+	"A24":"0018",
+	"A31":"2000",
+	"A32":"1011",
+	"B11":"0019",
+	"B21":"1018",
+	"B22":"1019",
+	"B23":"1022",
+	"B24":"0022",
+	"B31":"1017",
+	"B32":"0016",
+	"B33":"1016",
+	"B41":"0014"
+};
+// "A11":{"indicatorId":"0001","windCode":[],"smooth":[] },
+
+let onlineOrLocal=false;  
+if (window.location.href=='http://localhost:3000/observesystem.html') {onlineOrLocal=true;}
+
 	let expanders = document.querySelectorAll('.DiagramTitleThree');
 	
 
@@ -258,19 +282,60 @@ function getFormatTime(){
 	return time
 }
 
-	// 查询点评数据：http://localhost/weekly/review?indicatorId=0001
+
+/**
+ * 点评数据显示
+ * {"ret":[[20180719,"testabc","admin"],[20180719,"test1","admin"],[20180719,"test","admin"]]}
+ * 获取key值，传入url和id中，点评跟winCode和smooth没关系
+ * // 查询点评数据：http://localhost/weekly/review?indicatorId=0001
 	// 提交（post）点评数据：http://localhost/weekly/saveReview?indicatorId=0001&content=test
+ */
 
-	// $('#diagramDiv17').click(function(e){
-	// 	e.stopPropagation();
-	// 	console.log('dsfdsgf');
-	// 	$("#ChildDiv").css('display','none');
-	// 	return false
-	// });
-
-
+function getCommentTable(key){
+	let globalDataURL = '';
+	if (onlineOrLocal) {
+		globalDataURL='../lib/commentA11.json';
+	}else{
+		globalDataURL='/weekly/review?indicatorId='+key;
+	}
 	
+	$.getJSON(globalDataURL,function (data) {	
+		let dataObj = [];
+		if (onlineOrLocal) {
+			dataObj=data.ret; 
+		}else{
+			let jsonObject =$.parseJSON(data);
+			dataObj=jsonObject.ret;			
+		}
+		console.log($('.comment-table'));
 
+		var row_obj=$("<tr></tr>");
+		var col_td=$("<th></th>");
+		col_td.html('日期');row_obj.append(col_td);
+		col_td=$("<th></th>");
+		col_td.html('点评');row_obj.append(col_td);
+		col_td=$("<th></th>");
+		col_td.html('点评人');row_obj.append(col_td);
+
+		$('#comment-table'+key).append(row_obj);	
+		for (let m = 0; m < dataObj.length; m++) {
+			var row_obj2=$("<tr></tr>");
+			for (let i = 0; i < dataObj[m].length; i++) {		
+				col_td=$("<td align='center' bgcolor='#FFFFFF'></td>");
+				col_td.html(dataObj[m][i]);
+				row_obj2.append(col_td);				
+			}
+			$('#comment-table'+key).append(row_obj2);
+		}
+	});
+}
+	
+getCommentTable(keys.A11);
+getCommentTable(keys.A12);
+getCommentTable(keys.A21);
+getCommentTable(keys.A22);
+getCommentTable(keys.A23);
+getCommentTable(keys.A24);
 	//checkbox对应图标展开操作
 	// $("input[id^='menuTwoCheck']").each(function(){
 
