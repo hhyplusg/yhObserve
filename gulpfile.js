@@ -40,6 +40,28 @@ gulp.task('build-page', () => {
   
   const destDir = '.tmp';
   const pathDetail = loadJsonFile('views/data/path-detail.json');
+  const chartKey = loadJsonFile('views/data/chart-key.json');
+  const keys = {
+	"A11":"0001",
+	"A12":"0002",
+	"A21":"0003",
+	"A22":"0004",
+	"A23":"0009",
+	"A24":"0018",
+	"A31":"2000",
+	"A32":"1011",
+	"B11":"0019",
+	"B21":"1018",
+	"B22":"1019",
+	"B23":"1022",
+	"B24":"0022",
+	"B31":"1017",
+	"B32":"0016",
+	"B33":"1016",
+	"B41":"0014"
+};
+
+  
   // detail返回promise
   return pathDetail.then(data => {
     const demos = data.demos;
@@ -76,7 +98,8 @@ gulp.task('build-page', () => {
           });
         }else{
           return render(template, {
-            env
+              keys:keys,
+              env
           });
         }
         

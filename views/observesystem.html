@@ -265,9 +265,13 @@
                         <div id="showDiagram1" class="DiagramAreaDiv1">
                         </div>  
                          
-                        <div class="DiagramAreaDiv2" key='0001'>
+                        <div class="DiagramAreaDiv2" key='{keys.A11}}'>
                             {% include "comment.html" %} 
                             {% include "table.html" %}
+                            <div class="table-container">
+                                <table class="comment-table" id="comment-table{{keys.A11}}">
+                                </table>
+                            </div>
                         </div>             
                     </div> <!-- 图表展示div -->
 
@@ -286,13 +290,13 @@
                         <!-- 图表div -->
                         <div id="showDiagram2" class="DiagramAreaDiv1">
                         </div>   
-                        <div class="DiagramAreaDiv2" key='0002'>
+                        <div class="DiagramAreaDiv2" key="{{keys.A12}}">
                             {% include "comment.html" %} 
                             {% include "table.html" %}
-                                
-            
-                        
-                            <!-- <div></div> -->
+                            <div class="table-container">
+                                <table class="comment-table" id="comment-table{{keys.A12}}">
+                                </table>
+                            </div>
                         </div>             
                     </div> <!-- 图表展示div -->
 
@@ -316,12 +320,13 @@
                         <!-- 图表div -->
                         <div id="showDiagram3" class="DiagramAreaDiv1">
                         </div>   
-                        <div class="DiagramAreaDiv2">
-                            <div>
+                        <div class="DiagramAreaDiv2" key="{{keys.A21}}">
+                            {% include "comment.html" %} 
+                            {% include "table.html" %}
+                            <div class="table-container">
+                                <table class="comment-table" id="comment-table{{keys.A21}}">
+                                </table>
                             </div>
-                            <div class="table-container">                       
-                            </div>
-            
                         </div>             
                     </div> <!-- 图表展示div -->
                     <!-- 图表展示三级表头 -->
@@ -365,13 +370,14 @@
                         <!-- 图表div -->
                         <div id="showDiagram4" class="DiagramAreaDiv1">
                         </div>   
-                        <div class="DiagramAreaDiv2">
-                            <div>
+                        <div class="DiagramAreaDiv2" key="{{keys.A22}}">
+                            {% include "comment.html" %} 
+                            {% include "table.html" %}
+                            <div class="table-container">
+                                <table class="comment-table" id="comment-table{{keys.A22}}">
+                                </table>
                             </div>
-                            <div class="table-container">                       
-                            </div>
-            
-                        </div>             
+                        </div>              
                     </div> <!-- 图表展示div -->
                     <!-- 图表展示三级表头 -->
                     <div class="DiagramTitleThree" id="diagramThree5" aria-expanded="false">
@@ -388,12 +394,13 @@
                         <!-- 图表div -->
                         <div id="showDiagram5" class="DiagramAreaDiv1">
                         </div>   
-                        <div class="DiagramAreaDiv2">
-                            <div>
+                        <div class="DiagramAreaDiv2" key="{{keys.A23}}">
+                            {% include "comment.html" %} 
+                            {% include "table.html" %}
+                            <div class="table-container">
+                                <table class="comment-table" id="comment-table{{keys.A23}}">
+                                </table>
                             </div>
-                            <div class="table-container">                       
-                            </div>
-            
                         </div>             
                     </div> <!-- 图表展示div -->
                     <!-- 图表展示三级表头 -->
@@ -411,13 +418,14 @@
                         <!-- 图表div -->
                         <div id="showDiagram6" class="DiagramAreaDiv1">
                         </div>   
-                        <div class="DiagramAreaDiv2">
-                            <div>
+                        <div class="DiagramAreaDiv2" key="{{keys.A24}}">
+                            {% include "comment.html" %} 
+                            {% include "table.html" %}
+                            <div class="table-container">
+                                <table class="comment-table" id="comment-table{{keys.A24}}">
+                                </table>
                             </div>
-                            <div class="table-container">                       
-                            </div>
-            
-                        </div>             
+                        </div>              
                     </div> <!-- 图表展示div -->
                 </div> <!-- DiagramTitleTwo图表展示二级表头 -->
 
@@ -1047,7 +1055,7 @@
         <div>返回顶部</div>
     </div>
 
-    Date: <input type="date" name="user_date" />
+
 
     <script  type="text/javascript" src="scripts/page.js"></script>
 	<script  type="text/javascript" src="scripts/observe.js"></script>
