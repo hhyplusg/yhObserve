@@ -9,6 +9,8 @@ if (window.location.href=='http://localhost:3000/observesystem.html') {onlineOrL
 var globalDataURL='';
 var globalClicked=false;
 
+var legendStyle="enabled: true,\nalign: 'center',\n		       color: 'gray',\nlayout: 'vertical',	        verticalAlign: 'top',\nx: 280,\ny: 5,			floating: false,			itemStyle:{					'color': 'black', 				'cursor': 'pointer', 					'fontSize': '12px', 	},			        margin:0";
+
 $(function(){
 	console.log("开始画图--");
 	drawChart_A11();  //<!-- 博弈/存量指标 -->
@@ -112,12 +114,13 @@ function drawChart_A11(){
 				enabled: false
 			},
 			chart: {
-				marginTop: 20
+				// marginTop: 20
 			},
 			scrollbar: {
 		        enabled: true
 		    },
 		    legend: {
+		    	// legendStyle
 		        enabled: true,
 		        align: 'center',
 		        // backgroundColor: '#FCFFC5',
@@ -435,9 +438,6 @@ function drawChart_A12(){
 		        // itemWidth: 80,
 		        // maxHeight:10
 		    },
-
-
-
 			title: {
 				text: '融资买入/可用担保价值',
 				style: {
@@ -993,39 +993,18 @@ function drawChart_A31(){
 		console.log("图7A31的obj数据为：\n");
 		console.log(dataObj);
 
-
-
-	// $.getJSON('weekly/IndicatorQuery?indicatorId=2000&windCode=000300.SH',function (dataYH) {	
-	// 	var jsonObject =$.parseJSON(dataYH);
-	// 	var dataObj=jsonObject.obj;
-	// 	console.log("图7的obj数据为：\n");
-	// 	console.log(dataObj);
-
 		// Create the chart
 		var mychart =Highcharts.stockChart('showDiagram7', {
 			credits: {
 				enabled: false
 			},
-			// scrollbar: {
-		 //        // enabled: false
-		 //    },
-		    // navigator: {
-		    //     // enabled: false
-		    // },
 		    legend: {
-		        // enabled: false,
 		        align: 'right',
-		        // backgroundColor: '#FCFFC5',
-		        // borderColor: 'black',
-		        // borderWidth: 2,
 		        layout: 'vertical',
 		        verticalAlign: 'top',
 		        x: -10,
 				y: 10,
 				floating: true
-		        // shadow: true,
-		        // itemWidth: 80,
-		        // maxHeight:10
 		    },
 			rangeSelector: {
 				// enabled: false,
@@ -1055,19 +1034,15 @@ function drawChart_A31(){
 							if (month<10) {month='0'+month;}
 							var day = dateSeconds.getDate();
 							if (day<10) {day='0'+day;}
-		                    var dateYMD=dateSeconds.getFullYear() + "-" + month + "-" + day;
+		                    var dateYMD=dateSeconds.getFullYear()+ month+ day;
 		                    console.log(dateYMD);
 		                    //传递点击数据，获取小图数据
-		                    var data = {
-								'startDate':dateYMD,'endDate':dateYMD
-							}
 							$.ajax({
-								method: "POST",
-								url: '/weekly/IndicatorQuery?indicatorId=0011&windCode=000300.SH&startDate='+dateYMD+'&endDate='+dateYMD,
-								data: data
+								method: "GET",
+								url: '/weekly/IndicatorQuery?indicatorId=0011&windCode=000300.SH&startDate='+dateYMD+'&endDate='+dateYMD,							
 							})
 							.done(function( msg ) {
-								console.log( "Data " + msg );
+								console.log( "返回的Data " + msg );
 								if (onlineOrLocal) {
 									globalDataURL='../lib/data7A31小图.json';
 									//获取数据
@@ -1076,7 +1051,7 @@ function drawChart_A31(){
 										console.log("图7A31小图的obj数据为：\n");
 										console.log(dataObj);
 
-										var finalResult=CalculateQuantity(dataObj);
+										var finalResult=calculateQuantity(dataObj);
 										//画小图
 										let cdiv=document.getElementById('ChildDiv');
 					                    if(cdiv!=null){  
@@ -1167,6 +1142,99 @@ function drawChart_A31(){
 
 									});
 								}
+								else{   //不是本地出小图
+									console.log( "进入在线画小图：-" + msg );
+									var finalResult=calculateQuantity(msg);
+										//画小图
+										let cdiv=document.getElementById('ChildDiv');
+					                    if(cdiv!=null){  
+									        let p = cdiv.parentNode;  
+									        p.removeChild(cdiv);  
+									    }  
+
+					                    var mouseX;//记录鼠标点击位置。  
+										var mouseY;//记录鼠标点击位置
+
+					                    var ev = ev||event;   
+									    if(ev.pageX || ev.pageY){   
+									        mouseX = ev.pageX+'px';   
+									        mouseY = ev.pageY+'px';  
+									    }else{//兼容ie   
+									        mouseX = ev.clientX+document.body.scrollLeft - document.body.clientLeft+'px';  
+									      mouseY = ev.clientY+document.documentElement.scrollTop+'px';  
+									    } 
+									    var my = document.createElement("ChildDiv");   //创建一个div    
+									    document.body.appendChild(my);   //添加到页面     
+									    my.style.position="absolute";    //通过样式指定该div的位置方式,  
+									    my.style.top= mouseY;   //通过样式指定y坐标  
+									    my.style.left= mouseX;   //通过样式指定x坐标  
+									    my.style.border='1px solid #FF0000'; // 设置边框  
+									    my.style.width='300px';  
+										my.style.height='200px';//通过样式指定宽度、高度    
+										//通过样式指定背景颜色,,若是背景图片 例为my.style.backgroundImage="url(img/3.jpg)"     
+										my.style.backgroundColor="#ffffcc";   //设置样式透明  
+										var alpha = 80;  
+										my.style.filter='alpha(opacity:'+alpha+')';//IE   
+										my.style.opacity=alpha/100;//IE之外其他浏览器  
+										my.id = "ChildDiv";//设置ID 
+
+										//给div加一个点击后隐藏的函数 
+										my.onclick = function(){
+										   if(  (cdiv=document.getElementById('ChildDiv'))!=null){  
+										        p = cdiv.parentNode;  
+										        p.removeChild(cdiv);  
+										    } 
+										 };
+
+										//在div中创建图表
+										var chart = Highcharts.chart('ChildDiv', {
+										chart: {
+												type: 'column'
+										},
+										credits: {
+											enabled: false
+										},
+										title: {
+												text: 'PE频率'
+										},
+										subtitle: {
+												// text: '数据截止 2017-03'
+										},
+										xAxis: {
+												type: 'category',
+												labels: {
+														rotation: -45  // 设置轴标签旋转角度
+												}
+										},
+										yAxis: {
+												min: 0,
+												title: {
+														// text: '人口 (百万)'
+												}
+										},
+										legend: {
+												enabled: false
+										},
+										tooltip: {
+												pointFormat: 'PE频率: <b>{point.y:.1f}</b>'
+										},
+										series: [{
+												name: 'PE频率',
+												data: finalResult,
+												dataLabels: {
+														enabled: true,
+														rotation: -90,
+														color: '#FFFFFF',
+														align: 'right',
+														format: '{point.y:.1f}', // :.1f 为保留 1 位小数
+														y: 10
+												}
+										}]
+										});
+										globalClicked=true;
+
+
+								}
 
 
 
@@ -1185,7 +1253,7 @@ function drawChart_A31(){
 										console.log("图7A31小图的obj数据为：\n");
 										console.log(dataObj);
 
-										var finalResult=CalculateQuantity(dataObj);
+										var finalResult=calculateQuantity(dataObj);
 										//画小图
 										let cdiv=document.getElementById('ChildDiv');
 					                    if(cdiv!=null){  
@@ -1319,23 +1387,6 @@ function drawChart_A31(){
 				title: {
 					// text: '这个是Y轴'
 				},
-				// plotLines: [{
-				// 		value: minRate,
-				// 		color: 'gray',
-				// 		dashStyle: 'shortdash',
-				// 		width: 2,
-				// 		label: {
-				// 				text: '0.25'
-				// 		}
-				// }, {
-				// 		value: maxRate,
-				// 		color: 'red',
-				// 		dashStyle: 'shortdash',
-				// 		width: 2,
-				// 		label: {
-				// 				 text: '0.4'
-				// 		}
-				// }]
 			},
 
 			series: [{
@@ -1347,21 +1398,6 @@ function drawChart_A31(){
 			}]
 		});
 
-		// //图标转换成图片
-		// var svg = mychart.getSVG()
-		// 		.replace(/</g, '\n<') // make it slightly more readable
-		// 		.replace(/>/g, '>');
-				
-		// console.log('svg---');
-
-		// $("#showDiagram1").html(svg);
-
-		// canvg();
-
-		// var imgSrc = $("#showDiagram1").children("canvas")[0].toDataURL("image/png");
-		// console.log(imgSrc);
-		// $("#showDiagram1").html('<img src='+imgSrc+' />');
-
 	});
 }
 // 点线
@@ -1369,40 +1405,27 @@ function drawChart_A32(){
 
 	console.log("开始drawChart-A32");
 	if (onlineOrLocal) {
-		globalDataURL='../lib/dataForOne.json';
+		globalDataURL='../lib/data8A32.json';
 	}else{
-		globalDataURL='weekly/IndicatorQuery?indicatorId=2000&windCode=000300.SH';
+		globalDataURL='weekly/IndicatorQuery?indicatorId=1011&windCode=000300.SH&startDate=20180611&endDate=20180611';
 	}
 	//获取数据
 	$.getJSON(globalDataURL,function (dataYH) {	
 		if (onlineOrLocal) {
 			var dataObj=dataYH.obj; 
-			for (var index = 0;index <= dataObj.length - 1;  index = index + 1) {
-			var a=dataObj[index][0]*1000;
-			dataObj[index][0]=a;
-		} 
 		}else{
 			var jsonObject =$.parseJSON(dataYH);
 			var dataObj=jsonObject.obj;			
 		}
 		console.log("图8A32的obj数据为：\n");
 		console.log(dataObj);
+		var dataObjBefore=dataObj.data_before;
+		var dataObjFirst=dataObj.data_first;
+		var dataObjSecond=dataObj.data_second;
 
-
-	// //获取数据
-	// $.getJSON('../lib/dataForOne.json',function (dataYH) {
-	// 	var data=dataYH.obj;
-	// 	for (var index = 0;index <= data.length - 1;  index = index + 1) {
-	// 		var a=data[index][0]*1000;
-	// 		data[index][0]=a;
-	// 	} 
-
-	// $.getJSON('weekly/IndicatorQuery?indicatorId=0001',function (dataYH) {	
-	// var jsonObject =$.parseJSON(dataYH);
-	// var data=jsonObject.obj;
-	// console.log("图1的obj数据为：\n");
-	// console.log(dataObj);
-
+		var dataOrderBefore=calculateQuantity(dataObjBefore);
+		var dataOrderFirst=calculateQuantity(dataObjFirst);
+		var dataOrderSecond=calculateQuantity(dataObjSecond);
 
 		// Create the chart
 		Highcharts.setOptions({
@@ -1430,19 +1453,16 @@ function drawChart_A32(){
 		}
 
 		});
-		var mychart =Highcharts.stockChart('showDiagram8', {
+		var mychart = Highcharts.chart('showDiagram8', {
+			chart: {
+				type: 'spline'
+			},
 			credits: {
 				enabled: false
 			},
-			scrollbar: {
-		        enabled: true
-		    },
 		    legend: {
 		        enabled: true,
 		        align: 'right',
-		        // backgroundColor: '#FCFFC5',
-		        // borderColor: 'black',
-		        // borderWidth: 2,
 		        color: 'gray',
 		        layout: 'vertical',
 		        verticalAlign: 'top',
@@ -1459,48 +1479,6 @@ function drawChart_A32(){
 		        // itemWidth: 80,
 		        // maxHeight:10
 		    },
-			rangeSelector: {
-				enabled: true,
-				selected: 3,
-				buttonTheme: { // styles for the buttons
-		  //           fill: 'none',
-		  //           stroke: 'none',
-		  //           'stroke-width': 0,
-		  //           // r: 20,
-		  //           width: 22,
-    //     			// height: 20,
-		            style: {
-		                // color: 'gray',
-		                // fontWeight: 'bold',
-		                fontSize:13,
-		          
-		            },
-		  //           states: {
-		  //               hover: {
-		  //               },
-		  //               select: {
-		  //                   fill: '#039',
-		  //                   style: {
-		  //                       color: 'white'
-		  //                   }
-		  //               }
-		  //               // disabled: { ... }
-		  //           }
-		        },
-		        inputBoxBorderColor: 'gray',
-		        inputBoxWidth: 90,
-		        inputBoxHeight: 18,
-		        inputStyle: {
-		            color: 'black',
-		            // fontWeight: 'bold'
-		            fontSize:13
-		        },
-		        labelStyle: {
-		            color: 'gray',
-		            fontWeight: 'bold',
-		            fontSize:13
-		        },
-			},
 			exporting: {
 			    enabled: false,
 			    scale: 1,
@@ -1516,183 +1494,17 @@ function drawChart_A32(){
 						},
 				margin: 30
 			},
-			plotOptions: {
-		        series: {
-		            events: {
-		     //            click: function (event) {
-		     //                // alert(this.name + ' clicked\n' +
-		     //                //     'Alt: ' + event.altKey + '\n' +
-		     //                //     'Control: ' + event.ctrlKey + '\n' +
-		     //                //       'Shift: ' + event.shiftKey + '\n');
-		     //                console.log('zhixingle点击函数，看看土包更新');
-		     //                let cdiv=document.getElementById('ChildDiv');
-		     //                if(cdiv!=null){  
-						 //        let p = cdiv.parentNode;  
-						 //        p.removeChild(cdiv);  
-						 //    }  
-
-		     //                var mouseX;//记录鼠标点击位置。  
-							// var mouseY;//记录鼠标点击位置
-
-		     //                var ev = ev||event;   
-						 //    if(ev.pageX || ev.pageY){   
-						 //        mouseX = ev.pageX+'px';   
-						 //        mouseY = ev.pageY+'px';  
-						 //    }else{//兼容ie   
-						 //        mouseX = ev.clientX+document.body.scrollLeft - document.body.clientLeft+'px';  
-						 //      mouseY = ev.clientY+document.documentElement.scrollTop+'px';  
-						 //    } 
-						 //    var my = document.createElement("ChildDiv");   //创建一个div    
-						 //    document.body.appendChild(my);   //添加到页面     
-						 //    my.style.position="absolute";    //通过样式指定该div的位置方式,  
-						 //    my.style.top= mouseY;   //通过样式指定y坐标  
-						 //    my.style.left= mouseX;   //通过样式指定x坐标  
-						 //    my.style.border='1px solid #FF0000'; // 设置边框  
-						 //    my.style.width='300px';  
-							// my.style.height='200px';//通过样式指定宽度、高度    
-							// //通过样式指定背景颜色,,若是背景图片 例为my.style.backgroundImage="url(img/3.jpg)"     
-							// my.style.backgroundColor="#ffffcc";   //设置样式透明  
-							// var alpha = 80;  
-							// my.style.filter='alpha(opacity:'+alpha+')';//IE   
-							// my.style.opacity=alpha/100;//IE之外其他浏览器  
-							// my.id = "ChildDiv";//设置ID 
-
-							// //给div加一个点击后隐藏的函数 
-							// my.onclick = function(){
-							//    if(  (cdiv=document.getElementById('ChildDiv'))!=null){  
-							//         p = cdiv.parentNode;  
-							//         p.removeChild(cdiv);  
-							//     } 
-							//  };
-
-							// //在div中创建图表
-							// var chart = Highcharts.chart('ChildDiv', {
-							// chart: {
-							// 		type: 'column'
-							// },
-							// credits: {
-							// 	enabled: false
-							// },
-							// title: {
-							// 		text: 'PE频率'
-							// },
-							// subtitle: {
-							// 		text: '数据截止 2017-03'
-							// },
-							// xAxis: {
-							// 		type: 'category',
-							// 		labels: {
-							// 				rotation: -45  // 设置轴标签旋转角度
-							// 		}
-							// },
-							// yAxis: {
-							// 		min: 0,
-							// 		title: {
-							// 				// text: '人口 (百万)'
-							// 		}
-							// },
-							// legend: {
-							// 		enabled: false
-							// },
-							// tooltip: {
-							// 		pointFormat: 'PE频率: <b>{point.y:.1f} 百万</b>'
-							// },
-							// series: [{
-							// 			name: 'PE频率',
-							// 			data: [
-							// 				['0', 24.25],
-							// 				['15', 23.50],
-							// 				['30', 21.51],
-							// 				['45', 16.78],
-							// 				['60', 16.06],
-							// 				['75', 15.20],
-							// 				['90', 14.16],
-							// 				['105', 13.51],
-							// 				['120', 13.08],
-							// 				['135', 12.44],
-							// 				['150', 12.19],
-							// 				['165', 12.03],
-							// 				['180', 10.46],
-							// 				['195', 10.07],
-							// 				['210', 10.05],
-							// 				['225', 9.99],
-							// 				['240', 9.78],
-							// 				['255', 9.73],
-							// 				['270', 9.27],
-							// 				['290', 8.87]
-							// 			],
-							// 			dataLabels: {
-							// 				enabled: true,
-							// 				rotation: -90,
-							// 				color: '#FFFFFF',
-							// 				align: 'right',
-							// 				format: '{point.y:.1f}', // :.1f 为保留 1 位小数
-							// 				y: 10
-							// 			}
-							// 		}]
-							// });
-		     //            }
-		            }
-		        }
-		    },
 		    tooltip: {
-				split: false,
-				dateTimeLabelFormats: {
-						millisecond: '%H:%M:%S.%L',
-						second: '%H:%M:%S',
-						minute: '%H:%M',
-						hour: '%H:%M',
-						day: '%m-%d',
-						year: '%Y-%m-%d',
-				},
-				headerFormat: '{point.x:%Y-%m-%d}<br>'
+				headerFormat: '',
+				pointFormat: '<b>{series.name}</b><br>{point.x}, {point.y}',
 			},
-			navigator: {
-				enabled: true,
-				xAxis: {
-					dateTimeLabelFormats: {
-							millisecond: '%H:%M:%S.%L',
-							second: '%H:%M:%S',
-							minute: '%H:%M',
-							hour: '%H:%M',
-							day: '%m-%d',
-							week: '%Y-%m-%d',
-				            month: '%Y-%m',
-				            year: '%Y'
-					}
-				}
-			},
-
 		    xAxis: {				
 		        title: {
 		            enabled: true,
 		            // text: '2本周换手率历史分位'
 		        },
-		        type: 'datetime',
-		        // tickInterval: 24*3600*1000,
-				dateTimeLabelFormats: {
-					millisecond: '%H:%M:%S.%L',
-					second: '%H:%M:%S',
-					minute: '%H:%M',
-					hour: '%H:%M',
-					day: '%Y-%m-%d',
-		            week: '%Y-%m-%d',
-		            month: '%Y-%m',
-		            year: '%Y'
-				},
-				// crosshair: {
-				// 	label: {
-				// 			format: '%Y-%m-%d'
-				// 	}
-				// }
-
-		        labels: {
-		        	// rotation: -10
-		        // 	formatter: function() {
-		        //      	return Math.round(this.value*100) + '%';
-		        //      	// return Highcharts.numberFormat(this.value.percentage,2)+ '%';
-		        //  	}
-		        },
+		        type: 'category',
+		        tickInterval: 50,
 		        // startOnTick: true,
 		        // endOnTick: true,
 		        // showLastLabel: true
@@ -1705,11 +1517,20 @@ function drawChart_A32(){
 				},
 			},
 			series: [{
-				name: '2018年6月1日',
-				data: dataObj,
-				tooltip: {
-						valueDecimals: 4
-				},
+				name: 'Before',
+				data: dataOrderBefore,
+				dashStyle:'line',
+				color:'blue'
+			},
+			{
+				name: 'First',
+				data: dataOrderFirst,
+				dashStyle:'line',
+				color:'red'
+			},
+			{
+				name: 'Second',
+				data: dataOrderSecond,
 				dashStyle:'Dot'
 			}]
 		});
@@ -3809,7 +3630,7 @@ function svgToPng(svg,pngWidth,pngHeight,pngName){
 
 }
 
-function CalculateQuantity(row_items){
+function calculateQuantity(row_items){
 	//柱状图数据收集---------------------------------------------------
 		var ProblemStatistic=new Array();
 		if (row_items.length>0) {
