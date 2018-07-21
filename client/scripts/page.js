@@ -215,18 +215,19 @@ if (window.location.href=='http://localhost:3000/observesystem.html') {onlineOrL
 		$('html,body').animate({scrollTop:0},'slow');
 	});
 
-	$('#comment-confirm').click(function(){		
+	$('#comment-confirm').click(function(){	
+		console.log('#comment-confirm')	;
 		var key = $(this).parents().find('.DiagramAreaDiv2').attr('key');
 		var commentWord = $(this).parentsUntil('.comment-box').find('.comment-word').val();
 		var time = getFormatTime();
 		console.log(time);
 		var data = {
-			'time':time,
-			'commentWord':commentWord
+			'content':commentWord,
+			'indicatorId':key
 		}
 		$.ajax({
 			method: "POST",
-			url: '/weekly/saveReview?indicatorId='+key+'&content=test',
+			url: '/weekly/saveReview',
 			data: data
 		})
 		.done(function( msg ) {
@@ -307,7 +308,7 @@ function getCommentTable(key){
 			let jsonObject =$.parseJSON(data);
 			dataObj=jsonObject.ret;			
 		}
-		console.log($('.comment-table'));
+
 
 		var row_obj=$("<tr></tr>");
 		var col_td=$("<th></th>");
@@ -352,6 +353,45 @@ getCommentTable(keys.B31);
 getCommentTable(keys.B32);
 getCommentTable(keys.B33);
 getCommentTable(keys.B41);
+
+/**
+ * Mark:渲染指数列表数据
+ */
+function getSelectedData(key,className){
+	let globalDataURL = '';
+	if (onlineOrLocal) {
+		if(key==='0001'){
+			globalDataURL='../lib/index.json';
+		}else{
+			globalDataURL='../lib/citicIndex.json';
+		}
+	}else{
+		globalDataURL='/weekly/IndexQuery?indexType='+key;
+	}
+	
+	$.getJSON(globalDataURL,function (data) {	
+		let dataObj = [];
+		if (onlineOrLocal) {
+			dataObj=data.obj; 
+		}else{
+			let jsonObject =$.parseJSON(data);
+			dataObj=jsonObject.obj;			
+		}
+		for (let m = 0; m < dataObj.length; m++) {
+			var option='';
+			var optionLeft = "<option value="
+			var optionRight = "</option>"
+			option = $(optionLeft+dataObj[m][1]+'>'+optionRight);
+			option.append(dataObj[m][0]);	
+			$(className).append(option);						
+			// $('.selected-index').append(option);
+		}
+	});
+}
+
+getSelectedData('0001','.selected-index');
+getSelectedData('0002','.selected-citic-index');
+
 
 	//checkbox对应图标展开操作
 	// $("input[id^='menuTwoCheck']").each(function(){
