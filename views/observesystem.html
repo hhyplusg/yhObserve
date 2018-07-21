@@ -73,7 +73,7 @@
                         <div id="showDiagram1" class="DiagramAreaDiv1">
                         </div>  
                          
-                        <div class="DiagramAreaDiv2" key='{keys.A11}}'>
+                        <div class="DiagramAreaDiv2" key='{{keys.A11}}'>
                             {% include "comment.html" %} 
                             {% include "table.html" %}
                             <div class="table-container">
@@ -158,7 +158,7 @@
                                     <option value="5" >MA120</option>
                             </select>
                             <span>指数名称：</span>
-                            <select class="form-control" id="">
+                            <select>
                                     <option value="881001.WI" selected="selected">万得全A</option>
                                     <option value="000300.SH">沪深300</option>
                                     <option value="000905.SH">中证500</option>
@@ -191,11 +191,7 @@
                     <div class="DiagramBigDiv" id="diagramDiv5" aria-hidden="true" >
                         <div class="selectDataArea">
                             <span>指数名称：</span>
-                            <select class="form-control" id="">
-                                    <option value="881001.WI" selected="selected">万得全A</option>
-                                    <option value="000300.SH">沪深300</option>
-                                    <option value="000905.SH">中证500</option>
-                                    <option value="399006.SZ" >创业板指</option>                          
+                            <select class="selected-index">
                             </select>
                         </div>
                         <!-- 图表div -->
@@ -224,11 +220,7 @@
                     <div class="DiagramBigDiv" id="diagramDiv6" aria-hidden="true" >
                         <div class="selectDataArea">
                             <span>指数名称：</span>
-                            <select class="form-control" id="">
-                                    <option value="881001.WI" selected="selected">万得全A</option>
-                                    <option value="000300.SH">沪深300</option>
-                                    <option value="000905.SH">中证500</option>
-                                    <option value="399006.SZ" >创业板指</option>                          
+                            <select class="selected-index">
                             </select>
                         </div>
                         <!-- 图表div -->
@@ -264,9 +256,7 @@
                     <div class="DiagramBigDiv" id="diagramDiv7" aria-hidden="true" >
                         <div class="selectDataArea">
                             <span>指数名称A：</span>
-                            <select class="form-control" id="">
-                                    <option value="1" selected="selected">中小板指</option>
-                                    <option value="2" >创业板指</option>
+                            <select class="selected-index">
                             </select>
                         </div>
                         <!-- 图表div -->
@@ -296,9 +286,7 @@
                     <div class="DiagramBigDiv" id="diagramDiv8" aria-hidden="false" >
                         <div class="selectDataArea">
                             <span>指数名称A：</span>
-                            <select class="form-control" id="">
-                                    <option value="1" selected="selected">中小板指</option>
-                                    <option value="2" >创业板指</option>
+                            <select class="selected-index">
                             </select>
                         </div>
                         <!-- 图表div -->
@@ -348,43 +336,15 @@
                     <div class="DiagramBigDiv" id="diagramDiv9" aria-hidden="false" >
                         <div class="selectDataArea">
                             <span>指数名称A：</span>
-                            <select class="form-control" id="">
-                                    <option value="1">中小板指</option>
-                                    <option value="2" selected="selected">创业板指</option>
-                                    <option value="3">中小板综</option>
-                                    <option value="4" >创业板综</option>
-                                    <option value="5" >深圳综指</option>
-                                    <option value="6">万得全A</option>
-                                    <option value="7" >家电（中信）</option>
-                                    <option value="8">纺织服装（中信）</option>
-                                    <option value="9" >医药（中信）</option>
-                                    <option value="10" >食品饮料（中信）</option>
-                                    <option value="11" >农林牧渔（中信）</option>
-                                    <option value="2">银行（中信）</option>
-                                    <option value="13" >非银行金融（中信）</option>
-                                    <option value="14" >房地产（中信）</option>
+                            <select class="selected-index">
                             </select>
                             <span>指数名称B：</span>
-                            <select class="form-control" id="">
-                                    <option value="1">中小板指</option>
-                                    <option value="2" selected="selected">创业板指</option>
-                                    <option value="3">中小板综</option>
-                                    <option value="4" >创业板综</option>
-                                    <option value="5" >深圳综指</option>
-                                    <option value="6">万得全A</option>
-                                    <option value="7" >家电（中信）</option>
-                                    <option value="8">纺织服装（中信）</option>
-                                    <option value="9" >医药（中信）</option>
-                                    <option value="10" >食品饮料（中信）</option>
-                                    <option value="11" >农林牧渔（中信）</option>
-                                    <option value="2">银行（中信）</option>
-                                    <option value="13" >非银行金融（中信）</option>
-                                    <option value="14" >房地产（中信）</option>
+                            <select class="selected-index">
                             </select>
                             <span>平滑周期：</span>
                             <select class="form-control" id="">
-                                    <option value="1">MA5</option>
-                                    <option value="2" selected="selected">MA10</option>
+                                    <option value="1" selected="selected">MA5</option>
+                                    <option value="2">MA10</option>
                                     <option value="3">MA20</option>
                                     <option value="4" >MA60</option>
                                     <option value="5" >MA120</option>
@@ -506,21 +466,7 @@
                     <div class="DiagramBigDiv" id="diagramDiv13" aria-hidden="false">
                         <div class="selectDataArea">
                             <span>指数名称：</span>
-                            <select class="form-control" id="">
-                                    <option value="1">中小板指</option>
-                                    <option value="2" selected="selected">创业板指</option>
-                                    <option value="3">中小板综</option>
-                                    <option value="4" >创业板综</option>
-                                    <option value="5" >深圳综指</option>
-                                    <option value="6">万得全A</option>
-                                    <option value="7" >家电（中信）</option>
-                                    <option value="8">纺织服装（中信）</option>
-                                    <option value="9" >医药（中信）</option>
-                                    <option value="10" >食品饮料（中信）</option>
-                                    <option value="11" >农林牧渔（中信）</option>
-                                    <option value="2">银行（中信）</option>
-                                    <option value="13" >非银行金融（中信）</option>
-                                    <option value="14" >房地产（中信）</option>
+                            <select class="selected-index">
                             </select>
                         </div>
 
@@ -607,21 +553,7 @@
                     <div class="DiagramBigDiv" id="diagramDiv16" aria-hidden="true">
                         <div class="selectDataArea">
                             <span>指数名称：</span>
-                            <select class="form-control" id="">
-                                    <option value="1">中小板指</option>
-                                    <option value="2" selected="selected">创业板指</option>
-                                    <option value="3">中小板综</option>
-                                    <option value="4" >创业板综</option>
-                                    <option value="5" >深圳综指</option>
-                                    <option value="6">万得全A</option>
-                                    <option value="7" >家电（中信）</option>
-                                    <option value="8">纺织服装（中信）</option>
-                                    <option value="9" >医药（中信）</option>
-                                    <option value="10" >食品饮料（中信）</option>
-                                    <option value="11" >农林牧渔（中信）</option>
-                                    <option value="2">银行（中信）</option>
-                                    <option value="13" >非银行金融（中信）</option>
-                                    <option value="14" >房地产（中信）</option>
+                            <select class="selected-citic-index">
                             </select>
                         </div>
                         <!-- 图表div -->
@@ -657,21 +589,7 @@
                     <div class="DiagramBigDiv" id="diagramDiv17" aria-hidden="false">
                         <div class="selectDataArea">
                             <span>指数名称：</span>
-                            <select class="form-control" id="">
-                                    <option value="1">中小板指</option>
-                                    <option value="2" selected="selected">创业板指</option>
-                                    <option value="3">中小板综</option>
-                                    <option value="4" >创业板综</option>
-                                    <option value="5" >深圳综指</option>
-                                    <option value="6">万得全A</option>
-                                    <option value="7" >家电（中信）</option>
-                                    <option value="8">纺织服装（中信）</option>
-                                    <option value="9" >医药（中信）</option>
-                                    <option value="10" >食品饮料（中信）</option>
-                                    <option value="11" >农林牧渔（中信）</option>
-                                    <option value="2">银行（中信）</option>
-                                    <option value="13" >非银行金融（中信）</option>
-                                    <option value="14" >房地产（中信）</option>
+                            <select class="selected-index">
                             </select>
                         </div>
                         <!-- 图表div -->
