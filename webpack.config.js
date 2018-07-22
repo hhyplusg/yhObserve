@@ -1,5 +1,6 @@
 var webpack = require('webpack');
 var path = require('path');
+const uglify = require('uglifyjs-webpack-plugin');
 
 // https://blog.csdn.net/maomaolaoshi/article/details/78741007
 // 打包思路：可以把库文件打包在一个文件中；把公共不变文件打包到一个文件中
@@ -7,7 +8,7 @@ var path = require('path');
 // webpack在gulpfile中引用，则读取不到插件
 module.exports = {
     // mode: "development", 
-    devtool: 'cheap-module-eval-source-map',
+    devtool: 'cheap-module-source-map',
     entry:
     {
         'observe':['./client/scripts/observe.js'],
@@ -83,7 +84,7 @@ module.exports = {
         extensions: [".js", ".json", ".jsx", ".css"],
     },
     plugins: [
-
+        new uglify()
     ],
     // watch: true
     

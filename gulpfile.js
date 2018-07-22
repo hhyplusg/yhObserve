@@ -11,6 +11,11 @@ var webpack = require('webpack-stream');
 // var webpack = require('webpack');
 var webpackConfig = require('./webpack.config.js')
 
+const rollup = require('rollup').rollup;
+const nodeResolve = require('rollup-plugin-node-resolve');
+const buble = require('rollup-plugin-buble');
+const babel = require('rollup-plugin-babel');
+
 const nunjucks = require('nunjucks');
 const del = require('del');
 nunjucks.configure('views', {
@@ -158,24 +163,67 @@ gulp.task('jshint', function () {
 
 
 
-gulp.task('scripts', () => {
-  return gulp.src('client/scripts/*.js')
-    .pipe($.plumber())  //自动处理全部错误信息防止因为错误而导致 watch 不正常工作
-    .pipe($.sourcemaps.init({loadMaps:true})) 
-    .pipe($.babel())
-    .pipe(webpack(webpackConfig))
-    .pipe($.sourcemaps.write('./'))
-    .pipe(gulp.dest('.tmp/scripts/'))
-    .pipe(browserSync.reload({stream: true}));
+// gulp.task('scripts', () => {
+//   return gulp.src('client/scripts/*.js')
+//     .pipe($.plumber())  //自动处理全部错误信息防止因为错误而导致 watch 不正常工作
+//     .pipe($.sourcemaps.init({loadMaps:true})) 
+//     .pipe($.babel())
+//     .pipe(webpack(webpackConfig))
+//     .pipe($.sourcemaps.write('./'))
+//     .pipe(gulp.dest('.tmp/scripts/'))
+//     .pipe(browserSync.reload({stream: true}));
+// });
+
+
+gulp.task('scripts', async () => {
+  const details = await fs.readAsync('views/data/path-detail.json','json');
+  const demos = details.demos;
+  async function rollupOneJs(demo) {
+    var js = demo.js;
+    await js.forEach(rollupJs);  //一定要用await，不然不会按照顺序运行
+  }
+
+
+   async function rollupJs(js){
+     console.log(js);
+    try {  
+      const bundle = await rollup({
+        input:`client/scripts/${js}`,
+        plugins:[
+          babel({
+            exclude:'node_modules/**'
+          }),
+          nodeResolve({
+            jsnext:true,
+          })
+        ]
+      });
+      await bundle.write({
+        file: `.tmp/scripts/${js}`,
+        format: 'iife',
+        sourcemap: true
+      });
+    } catch (error) {
+      console.log('error'+error);
+    }
+  }
+
+  await demos.forEach(rollupOneJs);
+  browserSync.reload();
 });
-
-
 
 gulp.task('comJs', () => {
   return gulp.src('.tmp/scripts/*.js')
     .pipe($.uglify())
+    .pipe(webpack(webpackConfig))
     .pipe(gulp.dest('.tmp/scripts/'));
 });
+gulp.task('comJsWebpack', () => {
+  return gulp.src('.tmp/scripts/*.js')
+    .pipe(webpack(webpackConfig))
+    .pipe(gulp.dest('.tmp/scripts/'));
+});
+
 gulp.task('comCss', () => {
   return gulp.src('.tmp/styles/*.css')
     .pipe($.cssnano())
@@ -198,7 +246,8 @@ gulp.task('copylib', () => {
   return gulp.src('client/lib/**')
     .pipe(gulp.dest('.tmp/lib/'));
 });
-gulp.task('serve', gulp.parallel('build-page', 'styles', 'scripts','copylib',  () => {
+gulp.task('serve', gulp.series('build-page','copylib','styles', 'scripts', 'comCss', 'comJs', () => {
+  // gulp.task('serve', gulp.parallel('build-page', 'styles', 'scripts','comCss', 'comJs','copylib',  () => {
   browserSync.init({
     server: {
       baseDir: ['.tmp'],
@@ -228,7 +277,7 @@ gulp.task('serve', gulp.parallel('build-page', 'styles', 'scripts','copylib',  (
 
 }));
 
-gulp.task('build', gulp.series('prod','clean','copylib','styles', 'scripts', 'build-page','comJs','comCss', 'copylib', 'dev'));
+gulp.task('build', gulp.series('prod','clean','copylib','styles', 'scripts', 'build-page','comCss', 'comJs','copylib', 'dev'));
 
 
 
