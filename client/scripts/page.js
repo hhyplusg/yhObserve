@@ -219,9 +219,8 @@ if (window.location.href=='http://localhost:3000/observesystem.html') {onlineOrL
 
 	$('.comment-confirm').click(function(){	
 		var key = $(this).parent().parent().parent().parent().attr('key');
-		var commentWord = $(this).parentsUntil('.comment-box').find('.comment-word').val();
-		var time = getFormatTime();
-		console.log(time+':'+key);
+		var commentWord = $(this).parent().parent().find('.comment-word').val();
+		console.log(commentWord);
 		var data = {
 			'content':commentWord,
 			'indicatorId':key
@@ -245,6 +244,7 @@ if (window.location.href=='http://localhost:3000/observesystem.html') {onlineOrL
 		var startDate = $(this).parent().find('.start-date').val();
 		var endDate = $(this).parent().find('.end-date').val();
 		// console.log(startDate+':'+key);
+		
 		startDate = startDate.replace(/-/g,'');
 		endDate = endDate.replace(/-/g,'');
 
@@ -254,7 +254,7 @@ if (window.location.href=='http://localhost:3000/observesystem.html') {onlineOrL
 		}
 		
 		console.log(':'+key);
-		console.log(':'+endDate);
+		// console.log(':'+endDate);
 		var data = {
 			'startDate':startDate,
 			'endDate':endDate
@@ -271,8 +271,8 @@ if (window.location.href=='http://localhost:3000/observesystem.html') {onlineOrL
 		.fail(function( jqXHR, textStatus ) {
 			console.log( "Request failed: " + textStatus );
 		});
-
 		getCommentTable(key);
+		
 	});
 
 	
@@ -298,6 +298,7 @@ function getFormatTime(){
  */
 
 function getCommentTable(key){
+	$('#comment-table'+key).empty();
 	let globalDataURL = '';
 	if (onlineOrLocal) {
 		globalDataURL='../lib/commentA11.json';

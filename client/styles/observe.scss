@@ -372,6 +372,7 @@ $background-color: white;
 }
 
 .table-container {
+    padding-bottom: 50px;
     margin-top: 20px;
     text-align: center;
     font-family: 'Arial Normal', 'Arial';
@@ -489,10 +490,10 @@ $background-color: white;
             button{
                 padding: 0px 10px;
             }
-            .confirm{
-                color: white;
-                background-color: $left-img-background-color;
-            }
+            // .confirm{
+            //     color: white;
+            //     background-color: $left-img-background-color;
+            // }
         }
 
     }
