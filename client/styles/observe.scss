@@ -301,6 +301,7 @@ $background-color: white;
     #showDiagram4,#showDiagram5,#showDiagram6,#showDiagram7,#showDiagram8,#showDiagram9,#showDiagram12,#showDiagram13,#showDiagram16,#showDiagram17{
         margin-top: 30px;
     }
+    
 }
 
 #diagramDiv2{
@@ -319,7 +320,15 @@ $background-color: white;
     .spanExportButton{top:88px;left:53%;}
 }
 #diagramDiv7{
+    height:750px;
     .spanExportButton{top:88px;left:56%;}
+    #showDiagram7Small{
+        height: 200px;
+        width: 400px;
+    }
+    #showDiagram7{
+         height: 450px;
+    }
 }
 #diagramDiv8{
     .spanExportButton{top:78px;left:56%;}

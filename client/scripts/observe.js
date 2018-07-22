@@ -388,7 +388,7 @@ function drawChart_A11(){
 
 	});
 	$("#testExport").click(function(event){
-		console.log("点击了导出图片！");
+		console.log("点击了导出图片A11！");
 		var chart = $('#showDiagram1').highcharts();
 
 		var curTime=getCurrentTime(1);
@@ -464,6 +464,9 @@ function drawChart_A12(){
 			credits: {
 				enabled: false
 			},
+			chart:{
+				marginBottom:20
+			},
 			navigator: {
 		        enabled: true,
 		        series: {
@@ -474,8 +477,8 @@ function drawChart_A12(){
 		    exporting: {
 			    enabled: false,
 			    scale: 1,
-			    sourceWidth: 700,
-        		sourceHeight: 500
+			    sourceWidth: 800,
+        		sourceHeight: 600
 			},
 			rangeSelector: {
 				selected: 3,
@@ -571,6 +574,36 @@ function drawChart_A12(){
 				}
 			]
 		});
+	});
+
+	$('#diagramDiv2').find('.spanExportButton').click(function(event){
+		console.log("点击了导出图片A12！");
+		var chart = $('#showDiagram2').highcharts();
+		var curTime=getCurrentTime(1);
+		//设置出图时带标题
+		chart.title.update({ text: '融资买入/可用担保价值'});
+		// chart.legend.update({ enabled: true,
+		//     align: 'center',
+		//     verticalAlign: 'bottom',
+		//  //    x: 280,
+		// 	// y: 5,
+		// 	floating: false,
+		// 	itemStyle:{
+		// 		"color": "black", 
+		// 		"cursor": "pointer", 
+		// 		"fontSize": "12px", 
+		// 		// "fontWeight": "bold"
+		// 	},
+		//     // margin:0,
+		// });
+
+		//图标转换成图片
+		var svg = chart.getSVG().replace(/</g, '\n<').replace(/>/g, '>'); // make it slightly more readable								
+		var pngName='融资买入/可用担保价值'+curTime;
+		svgToPng(svg,800,600,pngName);
+		//出图完设置无标题
+		chart.title.update({ text: ''});
+
 	});
 
 }
@@ -693,6 +726,20 @@ function drawChart_A21(){
 
 		// SandSignika(Highcharts);
 	});
+
+	$('#diagramDiv3').find('.spanExportButton').click(function(event){
+		console.log("点击了导出图片A21！");
+		var chart = $('#showDiagram3').highcharts();
+		var curTime=getCurrentTime(1);
+		//设置出图时带标题
+		chart.title.update({ text: '综合性情绪指标'});
+		//图标转换成图片
+		var svg = chart.getSVG().replace(/</g, '\n<').replace(/>/g, '>'); // make it slightly more readable								
+		var pngName='综合性情绪指标'+curTime;
+		svgToPng(svg,800,600,pngName);
+		//出图完设置无标题
+		chart.title.update({ text: ''});
+	});
 }
 
 function drawChart_A22(){   
@@ -810,6 +857,19 @@ function drawChart_A22(){
 		});
 
 		// SandSignika(Highcharts);
+	});
+	$('#diagramDiv4').find('.spanExportButton').click(function(event){
+		console.log("点击了导出图片A22！");
+		var chart = $('#showDiagram4').highcharts();
+		var curTime=getCurrentTime(1);
+		//设置出图时带标题
+		chart.title.update({ text: '指定板块的强势股占比'});
+		//图标转换成图片
+		var svg = chart.getSVG().replace(/</g, '\n<').replace(/>/g, '>'); // make it slightly more readable								
+		var pngName='指定板块的强势股占比'+curTime;
+		svgToPng(svg,800,600,pngName);
+		//出图完设置无标题
+		chart.title.update({ text: ''});
 	});
 
 
@@ -947,6 +1007,19 @@ function drawChart_A23(){
 		});
 
 		// SandSignika(Highcharts);
+	});
+	$('#diagramDiv5').find('.spanExportButton').click(function(event){
+		console.log("点击了导出图片A23！");
+		var chart = $('#showDiagram5').highcharts();
+		var curTime=getCurrentTime(1);
+		//设置出图时带标题
+		chart.title.update({ text: '指定板块的强势股占比'});
+		//图标转换成图片
+		var svg = chart.getSVG().replace(/</g, '\n<').replace(/>/g, '>'); // make it slightly more readable								
+		var pngName='指定板块的强势股占比'+curTime;
+		svgToPng(svg,800,600,pngName);
+		//出图完设置无标题
+		chart.title.update({ text: ''});
 	});
 
 
@@ -1665,27 +1738,6 @@ function drawChart_A32(){
 				dashStyle:'Dot'
 			}]
 		});
-
-	});
-	$("#testExport").click(function(event){
-		console.log("点击了导出图片！");
-		var chart = $('#showDiagram1').highcharts();
-		$('#showDiagram1').find('.svg').css("color","red");
-
-		var curTime=getCurrentTime(1);
-		// console.log('获取的时间是：---\n');console.log(curTime);
-
-		chart.exportChart({
-			exportFormat : 'PNG',
-			filename: '博弈_存量指标'+curTime
-		});
-
-		//图标转换成图片
-		// var svg = chart.getSVG()
-		// 		.replace(/</g, '\n<') // make it slightly more readable
-		// 		.replace(/>/g, '>');				
-		// console.log('svg---');
-		// $("#showDiagram1").html(svg);
 
 	});
 
