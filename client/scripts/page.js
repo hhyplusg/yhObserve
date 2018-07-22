@@ -1,25 +1,9 @@
 
-import {EventObject,getUrlParams,isEmptyObj} from './api';
+import {EventObject,getUrlParams,isEmptyObj,keys} from './api';
 
-const keys = {
-	"A11":"0001",
-	"A12":"0002",
-	"A21":"0003",
-	"A22":"0004",
-	"A23":"0009",
-	"A24":"0018",
-	"A31":"2000",
-	"A32":"1011",
-	"B11":"0019",
-	"B21":"1018",
-	"B22":"1019",
-	"B23":"1022",
-	"B24":"0022",
-	"B31":"1017",
-	"B32":"0016",
-	"B33":"1016",
-	"B41":"0014"
-};
+window.keyVal = '';
+window.selectedVal = '';
+
 // "A11":{"indicatorId":"0001","windCode":[],"smooth":[] },
 
 let onlineOrLocal=false;  
@@ -383,6 +367,7 @@ function getSelectedData(key,className){
 			let jsonObject =$.parseJSON(data);
 			dataObj=jsonObject.obj;			
 		}
+		// window.index = dataObj[0][0];
 		for (let m = 0; m < dataObj.length; m++) {
 			var option='';
 			var optionLeft = "<option value="
@@ -397,6 +382,43 @@ function getSelectedData(key,className){
 
 getSelectedData('0001','.selected-index');
 getSelectedData('0002','.selected-citic-index');
+// console.log(window.index);
+
+/**
+ * 选择下拉框
+ * 如果既有平滑周期，又有指数名称，这2个值的class不一样，分别获取2个值，然后分别处理
+ */
+
+$(".selected-index").change(function(){
+	 
+	var key = $(this).attr('key');
+	var selectedVal = $(this).val();
+	window.keyVal = key;
+	window.selectedVal = selectedVal;
+	switch (key)
+	{
+		case keys.A22: 
+		// drawChart_A22(val);
+		case keys.A23: ;
+		// drawChart_A23(val);
+		case keys.A24: ;
+		// drawChart_A24(val);
+		case keys.A31: ;
+		// drawChart_A31(val);
+		case keys.A32: ;
+		// drawChart_A32(val);
+		case keys.B11: ;
+		// drawChart_B11(val);
+		case keys.A33: ;
+		// drawChart_A33(val);
+		case keys.A41: ;
+		// drawChart_A41(val);
+	}
+	
+
+});
+
+
 
 
 	//checkbox对应图标展开操作
