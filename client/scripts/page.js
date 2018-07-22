@@ -163,10 +163,9 @@ if (window.location.href=='http://localhost:3000/observesystem.html') {onlineOrL
 		});
 	}
 
-    $(".comment-page-btn").click(function(){
-        // $(".create-comment-container").css('display','none');
-		$(this).parent().parent().parent().css('display','none');
-    });
+    // $(".comment-page-btn").click(function(){
+	// 	$(this).parent().parent().parent().css('display','none');
+    // });
     $(".create-comment-btn").click(function(){
 		$(this).parent().parent().parent().find('.create-comment-container').css('display','block');
         // $(".create-comment-container").css('display','block');
@@ -214,13 +213,15 @@ if (window.location.href=='http://localhost:3000/observesystem.html') {onlineOrL
 	$('.returnToTop').click(function(){
 		$('html,body').animate({scrollTop:0},'slow');
 	});
+	$('.comment-cancel').click(function(){	
+		$(this).parent().parent().parent().css('display','none');
+	});
 
-	$('#comment-confirm').click(function(){	
-		console.log('#comment-confirm')	;
-		var key = $(this).parents().find('.DiagramAreaDiv2').attr('key');
+	$('.comment-confirm').click(function(){	
+		var key = $(this).parent().parent().parent().parent().attr('key');
 		var commentWord = $(this).parentsUntil('.comment-box').find('.comment-word').val();
 		var time = getFormatTime();
-		console.log(time);
+		console.log(time+':'+key);
 		var data = {
 			'content':commentWord,
 			'indicatorId':key
@@ -236,12 +237,14 @@ if (window.location.href=='http://localhost:3000/observesystem.html') {onlineOrL
 		.fail(function( jqXHR, textStatus ) {
 			console.log( "Request failed: " + textStatus );
 		});
+		$(this).parent().parent().parent().css('display','none');
+		getCommentTable(key);
 	});
 	$('.comment-inquery').click(function(){
-		
+		var key = $(this).parent().parent().parent().attr('key');
 		var startDate = $(this).parent().find('.start-date').val();
 		var endDate = $(this).parent().find('.end-date').val();
-		
+		// console.log(startDate+':'+key);
 		startDate = startDate.replace(/-/g,'');
 		endDate = endDate.replace(/-/g,'');
 
@@ -250,7 +253,7 @@ if (window.location.href=='http://localhost:3000/observesystem.html') {onlineOrL
 			endDate = getFormatTime();
 		}
 		
-		console.log(':'+startDate);
+		console.log(':'+key);
 		console.log(':'+endDate);
 		var data = {
 			'startDate':startDate,
@@ -268,6 +271,8 @@ if (window.location.href=='http://localhost:3000/observesystem.html') {onlineOrL
 		.fail(function( jqXHR, textStatus ) {
 			console.log( "Request failed: " + textStatus );
 		});
+
+		getCommentTable(key);
 	});
 
 	
