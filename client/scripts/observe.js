@@ -77,6 +77,7 @@ $(function(){
 	drawChart_A23(); 
 	drawChart_A24();  //换手率
 	drawChart_A31();  //指定版块的个股估值分布
+	drawSmallDiagram();
 	drawChart_A32();
 	drawChart_B11();  //指定版块的相对换手率历史变化
 	drawChart_B21();   //柱状图  换手率变化最大的基准
@@ -1110,7 +1111,6 @@ function drawChart_A31(){
 			    margin:0,
 		    },
 			rangeSelector: {
-				// enabled: false,
 				selected: 3,
 				labelStyle: {
 		            color: 'gray',
@@ -1148,12 +1148,7 @@ function drawChart_A31(){
 		                    console.log('zhixingle点击函数--');
 		                    console.log(event.point.x+'----'+event.point.y);
 		                    //获取点击数据的时间
-		                    var dateSeconds=new Date(event.point.x);
-		                    var month = dateSeconds.getMonth()+1;
-							if (month<10) {month='0'+month;}
-							var day = dateSeconds.getDate();
-							if (day<10) {day='0'+day;}
-		                    var dateYMD=dateSeconds.getFullYear()+ month+ day;
+		                    var dateYMD=getCurrentTime(2);
 		                    console.log(dateYMD);
 		                    //传递点击数据，获取小图数据
 							$.ajax({
@@ -1161,7 +1156,7 @@ function drawChart_A31(){
 								url: '/weekly/IndicatorQuery?indicatorId=0011&windCode=000300.SH&startDate='+dateYMD+'&endDate='+dateYMD,							
 							})
 							.done(function( msg ) {
-								console.log( "返回的Data " + msg );
+								console.log( "小图返回的Data " + msg );
 								if (onlineOrLocal) {
 									globalDataURL='../lib/data7A31小图.json';
 									//获取数据
@@ -1195,7 +1190,7 @@ function drawChart_A31(){
 									    my.style.top= mouseY;   //通过样式指定y坐标  
 									    my.style.left= mouseX;   //通过样式指定x坐标  
 									    my.style.border='1px solid #FF0000'; // 设置边框  
-									    my.style.width='300px';  
+									    my.style.width='400px';  
 										my.style.height='200px';//通过样式指定宽度、高度    
 										//通过样式指定背景颜色,,若是背景图片 例为my.style.backgroundImage="url(img/3.jpg)"     
 										my.style.backgroundColor="#ffffcc";   //设置样式透明  
@@ -1223,20 +1218,25 @@ function drawChart_A31(){
 										title: {
 												text: 'PE频率'
 										},
-										subtitle: {
-												// text: '数据截止 2017-03'
+										exporting:{
+											enabled: false
 										},
 										xAxis: {
-												type: 'category',
-												labels: {
-														rotation: -45  // 设置轴标签旋转角度
-												}
+											type: 'category',
+											labels: {
+												rotation: -45,  // 设置轴标签旋转角度
+												style:{
+													// "color": "black", 
+													// "cursor": "pointer", 
+													"fontSize": "10px", 
+												},
+											}
 										},
 										yAxis: {
 												min: 0,
-												title: {
-														// text: '人口 (百万)'
-												}
+												// title: {
+												// 		// text: '人口 (百万)'
+												// }
 										},
 										legend: {
 												enabled: false
@@ -1245,16 +1245,16 @@ function drawChart_A31(){
 												pointFormat: 'PE频率: <b>{point.y:.1f}</b>'
 										},
 										series: [{
-												name: 'PE频率',
-												data: finalResult,
-												dataLabels: {
-														enabled: true,
-														rotation: -90,
-														color: '#FFFFFF',
-														align: 'right',
-														format: '{point.y:.1f}', // :.1f 为保留 1 位小数
-														y: 10
-												}
+											name: 'PE频率',
+											data: finalResult,
+											dataLabels: {
+												enabled: true,
+												rotation: -90,
+												color: '#FFFFFF',
+												align: 'right',
+												format: '{point.y:.1f}', // :.1f 为保留 1 位小数
+												y: 10
+											}
 										}]
 										});
 										globalClicked=true;
@@ -1266,7 +1266,7 @@ function drawChart_A31(){
 									var jsonObject =$.parseJSON(msg);
 									var dataObj=jsonObject.obj;	
 									var finalResult=calculateQuantity(dataObj);
-										//画小图
+									//画小图
 										let cdiv=document.getElementById('ChildDiv');
 					                    if(cdiv!=null){  
 									        let p = cdiv.parentNode;  
@@ -1290,11 +1290,11 @@ function drawChart_A31(){
 									    my.style.top= mouseY;   //通过样式指定y坐标  
 									    my.style.left= mouseX;   //通过样式指定x坐标  
 									    my.style.border='1px solid #FF0000'; // 设置边框  
-									    my.style.width='300px';  
+									    my.style.width='400px';  
 										my.style.height='200px';//通过样式指定宽度、高度    
 										//通过样式指定背景颜色,,若是背景图片 例为my.style.backgroundImage="url(img/3.jpg)"     
 										my.style.backgroundColor="#ffffcc";   //设置样式透明  
-										var alpha = 80;  
+										var alpha = 90;  
 										my.style.filter='alpha(opacity:'+alpha+')';//IE   
 										my.style.opacity=alpha/100;//IE之外其他浏览器  
 										my.id = "ChildDiv";//设置ID 
@@ -1318,20 +1318,25 @@ function drawChart_A31(){
 										title: {
 												text: 'PE频率'
 										},
-										subtitle: {
-												// text: '数据截止 2017-03'
+										exporting:{
+											enabled: false
 										},
 										xAxis: {
-												type: 'category',
-												labels: {
-														rotation: -45  // 设置轴标签旋转角度
-												}
+											type: 'category',
+											labels: {
+												rotation: -45,  // 设置轴标签旋转角度
+												style:{
+													// "color": "black", 
+													// "cursor": "pointer", 
+													"fontSize": "10px", 
+												},
+											}
 										},
 										yAxis: {
 												min: 0,
-												title: {
-														// text: '人口 (百万)'
-												}
+												// title: {
+												// 		// text: '人口 (百万)'
+												// }
 										},
 										legend: {
 												enabled: false
@@ -1340,16 +1345,16 @@ function drawChart_A31(){
 												pointFormat: 'PE频率: <b>{point.y:.1f}</b>'
 										},
 										series: [{
-												name: 'PE频率',
-												data: finalResult,
-												dataLabels: {
-														enabled: true,
-														rotation: -90,
-														color: '#FFFFFF',
-														align: 'right',
-														format: '{point.y:.1f}', // :.1f 为保留 1 位小数
-														y: 10
-												}
+											name: 'PE频率',
+											data: finalResult,
+											dataLabels: {
+												enabled: true,
+												rotation: -90,
+												color: '#FFFFFF',
+												align: 'right',
+												format: '{point.y:.1f}', // :.1f 为保留 1 位小数
+												y: 10
+											}
 										}]
 										});
 										globalClicked=true;
@@ -1399,11 +1404,11 @@ function drawChart_A31(){
 									    my.style.top= mouseY;   //通过样式指定y坐标  
 									    my.style.left= mouseX;   //通过样式指定x坐标  
 									    my.style.border='1px solid #FF0000'; // 设置边框  
-									    my.style.width='300px';  
+									    my.style.width='400px';  
 										my.style.height='200px';//通过样式指定宽度、高度    
 										//通过样式指定背景颜色,,若是背景图片 例为my.style.backgroundImage="url(img/3.jpg)"     
 										my.style.backgroundColor="#ffffcc";   //设置样式透明  
-										var alpha = 80;  
+										var alpha = 95;  
 										my.style.filter='alpha(opacity:'+alpha+')';//IE   
 										my.style.opacity=alpha/100;//IE之外其他浏览器  
 										my.id = "ChildDiv";//设置ID 
@@ -1427,38 +1432,41 @@ function drawChart_A31(){
 										title: {
 												text: 'PE频率'
 										},
-										subtitle: {
-												// text: '数据截止 2017-03'
+										exporting:{
+											enabled: false
 										},
 										xAxis: {
-												type: 'category',
-												labels: {
-														rotation: -45  // 设置轴标签旋转角度
-												}
+											type: 'category',
+											labels: {
+												rotation: -45,  // 设置轴标签旋转角度
+												style:{
+													"fontSize": 5, 
+												},
+											}
 										},
 										yAxis: {
 												min: 0,
-												title: {
-														// text: '人口 (百万)'
-												}
+												// title: {
+												// 		// text: '人口 (百万)'
+												// }
 										},
 										legend: {
 												enabled: false
 										},
 										tooltip: {
-												pointFormat: 'PE频率: <b>{point.y:.1f}</b>'
+												pointFormat: 'PE频率: <b>{point.y}</b>'
 										},
 										series: [{
-												name: 'PE频率',
-												data: finalResult,
-												dataLabels: {
-														enabled: true,
-														rotation: -90,
-														color: '#FFFFFF',
-														align: 'right',
-														format: '{point.y:.1f}', // :.1f 为保留 1 位小数
-														y: 10
-												}
+											name: 'PE频率',
+											data: finalResult,
+											dataLabels: {
+												enabled: true,
+												rotation: -90,
+												color: '#FFFFFF',
+												align: 'right',
+												// format: '{point.y:.1f}', // :.1f 为保留 1 位小数
+												y: 10
+											}
 										}]
 										});
 										globalClicked=true;
@@ -3850,7 +3858,212 @@ function calculateQuantity(row_items){
 		return caculateResult;
 }
 
+function drawSmallDiagram(){
 
+	//获取点击数据的时间
+    var dateYMD=getCurrentTime(2);
+    console.log(dateYMD);
+    //传递点击数据，获取小图数据
+	$.ajax({
+		method: "GET",
+		url: '/weekly/IndicatorQuery?indicatorId=0011&windCode=000300.SH&startDate='+dateYMD+'&endDate='+dateYMD,							
+	})
+	.done(function( msg ) {
+		console.log( "固定小图返回的Data " + msg );
+		if (onlineOrLocal) {
+			globalDataURL='../lib/data7A31小图.json';
+			//获取数据
+			$.getJSON(globalDataURL,function (dataYH) {	
+				var dataObj=dataYH.obj;
+				console.log("图7A31小图的obj数据为：\n");
+				console.log(dataObj);
+
+				var finalResult=calculateQuantity(dataObj);				
+
+				//在div中创建图表
+				var chart = Highcharts.chart('showDiagram7Small', {
+				chart: {
+						type: 'column'
+				},
+				credits: {
+					enabled: false
+				},
+				title: {
+						text: 'PE频率'
+				},
+				exporting:{
+					enabled: false
+				},
+				xAxis: {
+					type: 'category',
+					labels: {
+						rotation: -45,  // 设置轴标签旋转角度
+						style:{
+							// "color": "black", 
+							// "cursor": "pointer", 
+							"fontSize": "10px", 
+						},
+					}
+				},
+				yAxis: {
+						min: 0,
+						// title: {
+						// 		// text: '人口 (百万)'
+						// }
+				},
+				legend: {
+						enabled: false
+				},
+				tooltip: {
+						pointFormat: 'PE频率: <b>{point.y:.1f}</b>'
+				},
+				series: [{
+					name: 'PE频率',
+					data: finalResult,
+					dataLabels: {
+						enabled: true,
+						rotation: -90,
+						color: '#FFFFFF',
+						align: 'right',
+						format: '{point.y:.1f}', // :.1f 为保留 1 位小数
+						y: 10
+					}
+				}]
+				});
+				globalClicked=true;
+
+			});
+		}
+		else{   //不是本地出小图
+			console.log( "进入在线画小图：-" + msg );
+			var jsonObject =$.parseJSON(msg);
+			var dataObj=jsonObject.obj;	
+			var finalResult=calculateQuantity(dataObj);			
+
+			//在div中创建图表
+			var chart = Highcharts.chart('showDiagram7Small', {
+				chart: {
+						type: 'column'
+				},
+				credits: {
+					enabled: false
+				},
+				title: {
+						text: 'PE频率'
+				},
+				exporting:{
+					enabled: false
+				},
+				xAxis: {
+					type: 'category',
+					labels: {
+						rotation: -45,  // 设置轴标签旋转角度
+						style:{
+							// "color": "black", 
+							// "cursor": "pointer", 
+							"fontSize": "10px", 
+						},
+					}
+				},
+				yAxis: {
+						min: 0,
+						// title: {
+						// 		// text: '人口 (百万)'
+						// }
+				},
+				legend: {
+						enabled: false
+				},
+				tooltip: {
+						pointFormat: 'PE频率: <b>{point.y:.1f}</b>'
+				},
+				series: [{
+					name: 'PE频率',
+					data: finalResult,
+					dataLabels: {
+						enabled: true,
+						rotation: -90,
+						color: '#FFFFFF',
+						align: 'right',
+						format: '{point.y:.1f}', // :.1f 为保留 1 位小数
+						y: 10
+					}
+				}]
+			});
+		}
+
+
+
+
+
+
+	})
+	.fail(function( jqXHR, textStatus ) {
+		console.log( "Request failed: " + textStatus );
+
+		if (onlineOrLocal) {
+			globalDataURL='../lib/data7A31小图.json';
+			//获取数据
+			$.getJSON(globalDataURL,function (dataYH) {	
+				var dataObj=dataYH.obj;
+				console.log("图7A31小图的obj数据为：\n");
+				console.log(dataObj);
+
+				var finalResult=calculateQuantity(dataObj);
+				
+				//在div中创建图表
+				var chart = Highcharts.chart('showDiagram7Small', {
+				chart: {
+						type: 'column'
+				},
+				credits: {
+					enabled: false
+				},
+				title: {
+						text: 'PE频率'
+				},
+				exporting:{
+					enabled: false
+				},
+				xAxis: {
+					type: 'category',
+					labels: {
+						rotation: -45,  // 设置轴标签旋转角度
+						style:{
+							"fontSize": 5, 
+						},
+					}
+				},
+				yAxis: {
+						min: 0,
+						// title: {
+						// 		// text: '人口 (百万)'
+						// }
+				},
+				legend: {
+						enabled: false
+				},
+				tooltip: {
+						pointFormat: 'PE频率: <b>{point.y}</b>'
+				},
+				series: [{
+					name: 'PE频率',
+					data: finalResult,
+					dataLabels: {
+						enabled: true,
+						rotation: -90,
+						color: '#FFFFFF',
+						align: 'right',
+						// format: '{point.y:.1f}', // :.1f 为保留 1 位小数
+						y: 10
+					}
+				}]
+				});
+
+			});
+		}
+	});
+}
 
 
 
