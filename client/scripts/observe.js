@@ -30,6 +30,21 @@ var GlobalLegendStyle={
     // padding:0
 };
 
+var GlobalPNGLegend={
+    enabled: true,
+    align: 'right',
+    verticalAlign: 'top',
+    x: -10,
+	y: 35,
+	floating: false,
+	itemStyle:{
+		"color": "black", 
+		"cursor": "pointer", 
+		"fontSize": "12px", 
+	},
+    margin:0,
+};
+
 var GlobalTitleStyle={
 				// text: '博弈/存量指标',
 				style: {
@@ -252,8 +267,8 @@ function drawChart_A11(){
 			exporting: {
 			    enabled: false,
 			    scale: 1,
-			    sourceWidth: 700,
-        		sourceHeight: 500
+			    sourceWidth: 800,
+        		sourceHeight: 500,
 			},
 			title: {
 				// text: '博弈/存量指标',
@@ -401,6 +416,21 @@ function drawChart_A11(){
 
 		//设置出图时带标题
 		chart.title.update({ text: '博弈/存量指标'});
+		chart.legend.update({
+		    enabled: true,
+		    align: 'right',
+		    verticalAlign: 'top',
+		    x: -10,
+			y: 35,
+			floating: false,
+			itemStyle:{
+				"color": "black", 
+				"cursor": "pointer", 
+				"fontSize": "12px", 
+			},
+		    margin:0,
+		    // padding:0
+		});
 
 
 		//图标转换成图片
@@ -420,6 +450,21 @@ function drawChart_A11(){
 
 		//出图完设置无标题
 		chart.title.update({ text: ''});
+		chart.legend.update({
+		    enabled: true,
+		    align: 'right',
+		    verticalAlign: 'top',
+		    x: -50,
+			y: 5,
+			floating: false,
+			itemStyle:{
+				"color": "black", 
+				"cursor": "pointer", 
+				"fontSize": "12px", 
+			},
+		    margin:0,
+		    // padding:0
+		});
 
 	});
 }
@@ -475,7 +520,7 @@ function drawChart_A12(){
 				}
 		    },
 		    exporting: {
-			    enabled: false,
+			    enabled: true,
 			    scale: 1,
 			    sourceWidth: 800,
         		sourceHeight: 600
@@ -582,27 +627,42 @@ function drawChart_A12(){
 		var curTime=getCurrentTime(1);
 		//设置出图时带标题
 		chart.title.update({ text: '融资买入/可用担保价值'});
-		// chart.legend.update({ enabled: true,
-		//     align: 'right',
-		//     verticalAlign: 'bottom',
-		//  //    x: 280,
-		// 	// y: 5,
-		// 	floating: false,
-		// 	itemStyle:{
-		// 		"color": "black", 
-		// 		"cursor": "pointer", 
-		// 		"fontSize": "12px", 
-		// 		// "fontWeight": "bold"
-		// 	},
-		//     // margin:0,
-		// });
+		chart.legend.update({
+	        enabled: true,
+		    align: 'right',
+		    verticalAlign: 'top',
+		    x: -10,
+			y: 35,
+			floating: false,
+			itemStyle:{
+				"color": "black", 
+				"cursor": "pointer", 
+				"fontSize": "12px", 
+			},
+		    margin:0,
+	    });
 
 		//图标转换成图片
-		var svg = chart.getSVG().replace(/</g, '\n<').replace(/>/g, '>'); // make it slightly more readable								
+		var svg = chart.getSVG();
+		// .replace(/</g, '\n<').replace(/>/g, '>'); // make it slightly more readable								
 		var pngName='融资买入/可用担保价值'+curTime;
 		svgToPng(svg,800,600,pngName);
 		//出图完设置无标题
 		chart.title.update({ text: ''});
+		chart.legend.update({
+	        enabled: true,
+		    align: 'right',
+		    verticalAlign: 'top',
+		    x: -80,
+			y: 20,
+			floating: false,
+			itemStyle:{
+				"color": "black", 
+				"cursor": "pointer", 
+				"fontSize": "12px", 
+			},
+		    margin:0,
+	    });
 
 	});
 
@@ -658,8 +718,8 @@ function drawChart_A21(){
 			exporting: {
 			    enabled: false,
 			    scale: 1,
-			    sourceWidth: 700,
-        		sourceHeight: 500
+			    sourceWidth: 800,
+        		sourceHeight: 600
 			},
 			navigator: {
 		        enabled: true,
@@ -733,12 +793,27 @@ function drawChart_A21(){
 		var curTime=getCurrentTime(1);
 		//设置出图时带标题
 		chart.title.update({ text: '综合性情绪指标'});
+		chart.legend.update(GlobalPNGLegend);
 		//图标转换成图片
 		var svg = chart.getSVG().replace(/</g, '\n<').replace(/>/g, '>'); // make it slightly more readable								
 		var pngName='综合性情绪指标'+curTime;
 		svgToPng(svg,800,600,pngName);
 		//出图完设置无标题
 		chart.title.update({ text: ''});
+		chart.legend.update({
+	        enabled: true,
+		    align: 'right',
+		    verticalAlign: 'top',
+		    x: -80,
+			y: 20,
+			floating: false,
+			itemStyle:{
+				"color": "black", 
+				"cursor": "pointer", 
+				"fontSize": "12px", 
+			},
+		    margin:0,
+	    });
 	});
 }
 
@@ -797,8 +872,8 @@ function drawChart_A22(){
 		    exporting: {
 			    enabled: false,
 			    scale: 1,
-			    sourceWidth: 700,
-        		sourceHeight: 500
+			    sourceWidth: 800,
+        		sourceHeight: 600
 			},
 			// title: {
 			// 	text: '指定板块的强势股占比',  //基础表实现双轴（网络数据）
@@ -864,12 +939,27 @@ function drawChart_A22(){
 		var curTime=getCurrentTime(1);
 		//设置出图时带标题
 		chart.title.update({ text: '指定板块的强势股占比'});
+		chart.legend.update(GlobalPNGLegend);
 		//图标转换成图片
 		var svg = chart.getSVG().replace(/</g, '\n<').replace(/>/g, '>'); // make it slightly more readable								
 		var pngName='指定板块的强势股占比'+curTime;
 		svgToPng(svg,800,600,pngName);
 		//出图完设置无标题
 		chart.title.update({ text: ''});
+		chart.legend.update({
+	        enabled: true,
+		    align: 'right',
+		    verticalAlign: 'top',
+		    x: -80,
+			y: 20,
+			floating: false,
+			itemStyle:{
+				"color": "black", 
+				"cursor": "pointer", 
+				"fontSize": "12px", 
+			},
+		    margin:0,
+	    });
 	});
 
 
@@ -915,8 +1005,8 @@ function drawChart_A23(){
 			exporting: {
 			    enabled: false,
 			    scale: 1,
-			    sourceWidth: 700,
-        		sourceHeight: 500
+			    sourceWidth: 800,
+        		sourceHeight: 600
 			},
 			rangeSelector: {
 				selected: 3,
@@ -1009,10 +1099,10 @@ function drawChart_A23(){
 		var chart = $('#showDiagram5').highcharts();
 		var curTime=getCurrentTime(1);
 		//设置出图时带标题
-		chart.title.update({ text: '指定板块的强势股占比'});
+		chart.title.update({ text: '分级基金成交显示的风险偏好'});
 		//图标转换成图片
 		var svg = chart.getSVG().replace(/</g, '\n<').replace(/>/g, '>'); // make it slightly more readable								
-		var pngName='指定板块的强势股占比'+curTime;
+		var pngName='分级基金成交显示的风险偏好'+curTime;
 		svgToPng(svg,800,600,pngName);
 		//出图完设置无标题
 		chart.title.update({ text: ''});
@@ -1075,8 +1165,8 @@ function drawChart_A24(){
 		    exporting: {
 			    enabled: false,
 			    scale: 1,
-			    sourceWidth: 700,
-        		sourceHeight: 500
+			    sourceWidth: 800,
+        		sourceHeight: 600
 			},
 			// title: {
 			// 	text: '指定版块的历史换手率',  //基础表实现双轴（网络数据）
@@ -1135,6 +1225,35 @@ function drawChart_A24(){
 		});
 
 		// SandSignika(Highcharts);
+	});
+
+	$('#diagramDiv6').find('.spanExportButton').click(function(event){
+		console.log("点击了导出图片A24！");
+		var chart = $('#showDiagram6').highcharts();
+		var curTime=getCurrentTime(1);
+		//设置出图时带标题
+		chart.title.update({ text: '指定板块的历史换手率'});
+		chart.legend.update(GlobalPNGLegend);
+		//图标转换成图片
+		var svg = chart.getSVG().replace(/</g, '\n<').replace(/>/g, '>'); // make it slightly more readable								
+		var pngName='指定板块的历史换手率'+curTime;
+		svgToPng(svg,800,600,pngName);
+		//出图完设置无标题
+		chart.title.update({ text: ''});
+		chart.legend.update({
+	        enabled: true,
+		    align: 'right',
+		    verticalAlign: 'top',
+		    x: -80,
+			y: 20,
+			floating: false,
+			itemStyle:{
+				"color": "black", 
+				"cursor": "pointer", 
+				"fontSize": "12px", 
+			},
+		    margin:0,
+	    });
 	});
 
 
@@ -1197,8 +1316,8 @@ function drawChart_A31(){
 			exporting: {
 			    enabled: false,
 			    scale: 1,
-			    sourceWidth: 700,
-        		sourceHeight: 500
+			    sourceWidth: 800,
+        		sourceHeight: 600
 			},
 			// title: {
 			// 	// text: '指定版块的个股估值分布',
@@ -1596,6 +1715,34 @@ function drawChart_A31(){
 		});
 
 	});
+	$('#diagramDiv7').find('.spanExportButton').click(function(event){
+		console.log("点击了导出图片A31！");
+		var chart = $('#showDiagram7').highcharts();
+		var curTime=getCurrentTime(1);
+		//设置出图时带标题
+		chart.title.update({ text: '指定板块的个股估值分布'});
+		chart.legend.update(GlobalPNGLegend);
+		//图标转换成图片
+		var svg = chart.getSVG().replace(/</g, '\n<').replace(/>/g, '>'); // make it slightly more readable								
+		var pngName='指定板块的个股估值分布'+curTime;
+		svgToPng(svg,800,600,pngName);
+		//出图完设置无标题
+		chart.title.update({ text: ''});
+		chart.legend.update({
+	        enabled: true,
+		    align: 'right',
+		    verticalAlign: 'top',
+		    x: -50,
+			y: 20,
+			floating: false,
+			itemStyle:{
+				"color": "black", 
+				"cursor": "pointer", 
+				"fontSize": "12px", 
+			},
+		    margin:0,
+	    });
+	});
 }
 // 点线
 function drawChart_A32(){
@@ -1681,8 +1828,8 @@ function drawChart_A32(){
 			exporting: {
 			    enabled: false,
 			    scale: 1,
-			    sourceWidth: 700,
-        		sourceHeight: 500
+			    sourceWidth: 800,
+        		sourceHeight: 600
 			},
 			title: {
 				text: '',//个股估值分布的重要时点比较
@@ -1736,6 +1883,34 @@ function drawChart_A32(){
 		});
 
 	});
+	$('#diagramDiv8').find('.spanExportButton').click(function(event){
+		console.log("点击了导出图片A32！");
+		var chart = $('#showDiagram8').highcharts();
+		var curTime=getCurrentTime(1);
+		//设置出图时带标题
+		chart.title.update({ text: '个股估值分布的重要时点比较'});
+		chart.legend.update(GlobalPNGLegend);
+		//图标转换成图片
+		var svg = chart.getSVG().replace(/</g, '\n<').replace(/>/g, '>'); // make it slightly more readable								
+		var pngName='个股估值分布的重要时点比较'+curTime;
+		svgToPng(svg,800,600,pngName);
+		//出图完设置无标题
+		chart.title.update({ text: ''});
+		chart.legend.update({
+	        enabled: true,
+		    align: 'right',
+		    verticalAlign: 'top',
+		    x: -50,
+			y: 10,
+			floating: false,
+			itemStyle:{
+				"color": "black", 
+				"cursor": "pointer", 
+				"fontSize": "12px", 
+			},
+		    margin:20,
+	    });
+	});
 
 }
 //双轴双线 
@@ -1773,8 +1948,8 @@ function drawChart_B11(){
 			exporting: {
 			    enabled: false,
 			    scale: 1,
-			    sourceWidth: 700,
-        		sourceHeight: 500
+			    sourceWidth: 800,
+        		sourceHeight: 600
 			},
 		    navigator: {
 		        enabled: true,
@@ -1873,6 +2048,35 @@ function drawChart_B11(){
 		});
 	});
 
+	$('#diagramDiv9').find('.spanExportButton').click(function(event){
+		console.log("点击了导出图片B11！");
+		var chart = $('#showDiagram9').highcharts();
+		var curTime=getCurrentTime(1);
+		//设置出图时带标题
+		chart.title.update({ text: '指定板块相对换手率的历史变化'});
+		chart.legend.update(GlobalPNGLegend);
+		//图标转换成图片
+		var svg = chart.getSVG().replace(/</g, '\n<').replace(/>/g, '>'); // make it slightly more readable								
+		var pngName='指定板块相对换手率的历史变化'+curTime;
+		svgToPng(svg,800,600,pngName);
+		//出图完设置无标题
+		chart.title.update({ text: ''});
+		chart.legend.update({
+	        enabled: true,
+		    align: 'right',
+		    verticalAlign: 'top',
+		    x: -70,
+			y: 20,
+			floating: false,
+			itemStyle:{
+				"color": "black", 
+				"cursor": "pointer", 
+				"fontSize": "12px", 
+			},
+		    margin:0,
+	    });
+	});
+
 	
 
 }
@@ -1905,133 +2109,137 @@ function drawChart_B21(){
 		// let xAxisDataLeft = ['乐风', '瑞纳', '腾翼C30'];
 		// let xAxisDataRight = ['乐风', '瑞纳', '腾翼C30', '悦翔', '比亚迪F3'];
 		let seriesData = {'left':dataObj.data_base[1],'right':dataObj.data_index[1]};
-		function setOption(title,xAxisData,seriesData){
-			// 指定图表的配置项和数据
-			var option = {
-				title: {
-					text: title,
-					left:'center',
-					textStyle:{fontFamily: '宋体',fontSize: 18,fontWeight: 'bolder',	color: '#000000'} 
-				},
-				tooltip: {},
-				toolbox: {
-					show:false, left:'8%', top:'4%',itemSize:10,
-					feature:{
-						saveAsImage:{show:true},
-						dataView:{show:true},
-						restore:{show:true},
-						magicType:{type: ['line', 'bar']}
-					}
-				},
-				legend: {
-					// data:['数量'],
-				},
-				xAxis: {
-					type: 'category',
-					data: xAxisData,
-					axisLabel:{
-		            	interval:0,
-		            	formatter : function(params){
-		                   var newParamsName = "";// 最终拼接成的字符串
-		                            var paramsNameNumber = params.length;// 实际标签的个数
-		                            var provideNumber = 4;// 每行能显示的字的个数
-		                            var rowNumber = Math.ceil(paramsNameNumber / provideNumber);// 换行的话，需要显示几行，向上取整
-		                            /**
-		                             * 判断标签的个数是否大于规定的个数， 如果大于，则进行换行处理 如果不大于，即等于或小于，就返回原标签
-		                             */
-		                            // 条件等同于rowNumber>1
-		                            if (paramsNameNumber > provideNumber) {
-		                                /** 循环每一行,p表示行 */
-		                                for (var p = 0; p < rowNumber; p++) {
-		                                    var tempStr = "";// 表示每一次截取的字符串
-		                                    var start = p * provideNumber;// 开始截取的位置
-		                                    var end = start + provideNumber;// 结束截取的位置
-		                                    // 此处特殊处理最后一行的索引值
-		                                    if (p == rowNumber - 1) {
-		                                        // 最后一次不换行
-		                                        tempStr = params.substring(start, paramsNameNumber);
-		                                    } else {
-		                                        // 每一次拼接字符串并换行
-		                                        tempStr = params.substring(start, end) + "\n";
-		                                    }
-		                                    newParamsName += tempStr;// 最终拼成的字符串
-		                                }
+		drawHistogram(showDiagramLeft10,'基准',xAxisDataLeft,seriesData.left);
+		drawHistogram(showDiagramRight10,'板块',xAxisDataRight,seriesData.right);
 
-		                            } else {
-		                                // 将旧标签的值赋给新标签
-		                                newParamsName = params;
-		                            }
-		                            //将最终的字符串返回
-		                            return newParamsName
-		                }
-		            }
-				},
-				yAxis: { 
-					// axisLine: {show: false},
-					minInterval: 1,
-					splitLine:{ 
-						show:false 
-					}
-				},
 
-				grid: {  
-					left: '8%',  
-					right: '8%',  
-					bottom: '8%',  
-					containLabel: true  
-				},
-			//   series: [{
-			//       name: '数量',
-			//       type: 'bar',
-			//       barWidth:'50%',
-			//       data: [],
-				//    itemStyle: {
-					//     normal:{
-					//     	color:'#2914E5',
-				//         	label:{
-					//         	show:true,
-					//         	// formatter: '{b} : {c} \n ({d}%)',  position:'outer'
-					//         	textStyle:{fontFamily: '宋体',fontSize: 15} 
-					//         },
-					//         // labelLine:{show:true}
-					//     }
-					// }
-			//   }]
-				series: [{
-					barWidth:'50%',
-					data: seriesData,
-					type: 'bar',
-					itemStyle: {
-						normal: {
-						// 随机显示
-						//color:function(d){return "#"+Math.floor(Math.random()*(256*256*256-1)).toString(16);}
+		// function setOption(title,xAxisData,seriesData){
+		// 	// 指定图表的配置项和数据
+		// 	var option = {
+		// 		title: {
+		// 			text: title,
+		// 			left:'center',
+		// 			textStyle:{fontFamily: '宋体',fontSize: 18,fontWeight: 'bolder',	color: '#000000'} 
+		// 		},
+		// 		tooltip: {},
+		// 		toolbox: {
+		// 			show:false, left:'8%', top:'4%',itemSize:10,
+		// 			feature:{
+		// 				saveAsImage:{show:true},
+		// 				dataView:{show:true},
+		// 				restore:{show:true},
+		// 				magicType:{type: ['line', 'bar']}
+		// 			}
+		// 		},
+		// 		legend: {
+		// 			// data:['数量'],
+		// 		},
+		// 		xAxis: {
+		// 			type: 'category',
+		// 			data: xAxisData,
+		// 			axisLabel:{
+		//             	interval:0,
+		//             	formatter : function(params){
+		//                    var newParamsName = "";// 最终拼接成的字符串
+		//                             var paramsNameNumber = params.length;// 实际标签的个数
+		//                             var provideNumber = 4;// 每行能显示的字的个数
+		//                             var rowNumber = Math.ceil(paramsNameNumber / provideNumber);// 换行的话，需要显示几行，向上取整
+		//                             /**
+		//                              * 判断标签的个数是否大于规定的个数， 如果大于，则进行换行处理 如果不大于，即等于或小于，就返回原标签
+		//                              */
+		//                             // 条件等同于rowNumber>1
+		//                             if (paramsNameNumber > provideNumber) {
+		//                                 /** 循环每一行,p表示行 */
+		//                                 for (var p = 0; p < rowNumber; p++) {
+		//                                     var tempStr = "";// 表示每一次截取的字符串
+		//                                     var start = p * provideNumber;// 开始截取的位置
+		//                                     var end = start + provideNumber;// 结束截取的位置
+		//                                     // 此处特殊处理最后一行的索引值
+		//                                     if (p == rowNumber - 1) {
+		//                                         // 最后一次不换行
+		//                                         tempStr = params.substring(start, paramsNameNumber);
+		//                                     } else {
+		//                                         // 每一次拼接字符串并换行
+		//                                         tempStr = params.substring(start, end) + "\n";
+		//                                     }
+		//                                     newParamsName += tempStr;// 最终拼成的字符串
+		//                                 }
+
+		//                             } else {
+		//                                 // 将旧标签的值赋给新标签
+		//                                 newParamsName = params;
+		//                             }
+		//                             //将最终的字符串返回
+		//                             return newParamsName
+		//                 }
+		//             }
+		// 		},
+		// 		yAxis: { 
+		// 			// axisLine: {show: false},
+		// 			minInterval: 1,
+		// 			splitLine:{ 
+		// 				show:false 
+		// 			}
+		// 		},
+
+		// 		grid: {  
+		// 			left: '8%',  
+		// 			right: '8%',  
+		// 			bottom: '8%',  
+		// 			containLabel: true  
+		// 		},
+		// 	//   series: [{
+		// 	//       name: '数量',
+		// 	//       type: 'bar',
+		// 	//       barWidth:'50%',
+		// 	//       data: [],
+		// 		//    itemStyle: {
+		// 			//     normal:{
+		// 			//     	color:'#2914E5',
+		// 		//         	label:{
+		// 			//         	show:true,
+		// 			//         	// formatter: '{b} : {c} \n ({d}%)',  position:'outer'
+		// 			//         	textStyle:{fontFamily: '宋体',fontSize: 15} 
+		// 			//         },
+		// 			//         // labelLine:{show:true}
+		// 			//     }
+		// 			// }
+		// 	//   }]
+		// 		series: [{
+		// 			barWidth:'50%',
+		// 			data: seriesData,
+		// 			type: 'bar',
+		// 			itemStyle: {
+		// 				normal: {
+		// 				// 随机显示
+		// 				//color:function(d){return "#"+Math.floor(Math.random()*(256*256*256-1)).toString(16);}
 	              
-						// 定制显示（按顺序）
-						color: function(params) { 
-									var colorList = ['#446FA4','#4877AF','#4C7DB8','#38AC1','#849FCA']; 
-									return colorList[params.dataIndex] 
-								},
+		// 				// 定制显示（按顺序）
+		// 				color: function(params) { 
+		// 							var colorList = ['#446FA4','#4877AF','#4C7DB8','#38AC1','#849FCA']; 
+		// 							return colorList[params.dataIndex] 
+		// 						},
 						
-		             	label:{
-			            	show:true,
-			            	// formatter: '{b} : {c} \n ({d}%)',  position:'outer'
-			            	textStyle:{fontFamily: '宋体',fontSize: 10} 
-			            }
+		//              	label:{
+		// 	            	show:true,
+		// 	            	// formatter: '{b} : {c} \n ({d}%)',  position:'outer'
+		// 	            	textStyle:{fontFamily: '宋体',fontSize: 10} 
+		// 	            }
 					 
-						}
+		// 				}
 
-					}
-				}]
-			};
-			return option;
-		}
+		// 			}
+		// 		}]
+		// 	};
+		// 	return option;
+		// }
 	    
-	    // //set searchedData into option
-	    // option.xAxis.data=histogramChartData1;
-	    // option.series[0].data=histogramChartData2;  
-	    // 使用刚指定的配置项和数据显示图表。
-	    myChartLeft.setOption(setOption('基准',xAxisDataLeft,seriesData.left));
-		myChartRight.setOption(setOption('板块',xAxisDataRight,seriesData.right));
+	 //    // //set searchedData into option
+	 //    // option.xAxis.data=histogramChartData1;
+	 //    // option.series[0].data=histogramChartData2;  
+	 //    // 使用刚指定的配置项和数据显示图表。
+	 //    myChartLeft.setOption(setOption('基准',xAxisDataLeft,seriesData.left));
+		// myChartRight.setOption(setOption('板块',xAxisDataRight,seriesData.right));
 	});
 
 
@@ -2067,133 +2275,136 @@ function drawChart_B22(){
 		// let xAxisDataLeft = ['乐风', '瑞纳', '腾翼C30'];
 		// let xAxisDataRight = ['乐风', '瑞纳', '腾翼C30', '悦翔', '比亚迪F3'];
 		let seriesData = {'left':dataObj.data_base[1],'right':dataObj.data_index[1]};
-		function setOption(title,xAxisData,seriesData){
-			// 指定图表的配置项和数据
-			var option = {
-				title: {
-					text: title,
-					left:'center',
-					textStyle:{fontFamily: '宋体',fontSize: 18,fontWeight: 'bolder',	color: '#000000'} 
-				},
-				tooltip: {},
-				toolbox: {
-					show:false, left:'8%', top:'4%',itemSize:10,
-					feature:{
-						saveAsImage:{show:true},
-						dataView:{show:true},
-						restore:{show:true},
-						magicType:{type: ['line', 'bar']}
-					}
-				},
-				legend: {
-					// data:['数量'],
-				},
-				xAxis: {
-					type: 'category',
-					data: xAxisData,
-					axisLabel:{
-		            	interval:0,
-		            	formatter : function(params){
-		                   var newParamsName = "";// 最终拼接成的字符串
-		                            var paramsNameNumber = params.length;// 实际标签的个数
-		                            var provideNumber = 4;// 每行能显示的字的个数
-		                            var rowNumber = Math.ceil(paramsNameNumber / provideNumber);// 换行的话，需要显示几行，向上取整
-		                            /**
-		                             * 判断标签的个数是否大于规定的个数， 如果大于，则进行换行处理 如果不大于，即等于或小于，就返回原标签
-		                             */
-		                            // 条件等同于rowNumber>1
-		                            if (paramsNameNumber > provideNumber) {
-		                                /** 循环每一行,p表示行 */
-		                                for (var p = 0; p < rowNumber; p++) {
-		                                    var tempStr = "";// 表示每一次截取的字符串
-		                                    var start = p * provideNumber;// 开始截取的位置
-		                                    var end = start + provideNumber;// 结束截取的位置
-		                                    // 此处特殊处理最后一行的索引值
-		                                    if (p == rowNumber - 1) {
-		                                        // 最后一次不换行
-		                                        tempStr = params.substring(start, paramsNameNumber);
-		                                    } else {
-		                                        // 每一次拼接字符串并换行
-		                                        tempStr = params.substring(start, end) + "\n";
-		                                    }
-		                                    newParamsName += tempStr;// 最终拼成的字符串
-		                                }
+		drawHistogram(showDiagramLeft11,'基准',xAxisDataLeft,seriesData.left);
+		drawHistogram(showDiagramRight11,'板块',xAxisDataRight,seriesData.right);
 
-		                            } else {
-		                                // 将旧标签的值赋给新标签
-		                                newParamsName = params;
-		                            }
-		                            //将最终的字符串返回
-		                            return newParamsName
-		                }
-		            }
-				},
-				yAxis: { 
-					// axisLine: {show: false},
-					minInterval: 1,
-					splitLine:{ 
-						show:false 
-					}
-				},
+		// // function setOption(title,xAxisData,seriesData){
+		// // 	// 指定图表的配置项和数据
+		// // 	var option = {
+		// // 		title: {
+		// // 			text: title,
+		// // 			left:'center',
+		// // 			textStyle:{fontFamily: '宋体',fontSize: 18,fontWeight: 'bolder',	color: '#000000'} 
+		// // 		},
+		// // 		tooltip: {},
+		// // 		toolbox: {
+		// // 			show:false, left:'8%', top:'4%',itemSize:10,
+		// // 			feature:{
+		// // 				saveAsImage:{show:true},
+		// // 				dataView:{show:true},
+		// // 				restore:{show:true},
+		// // 				magicType:{type: ['line', 'bar']}
+		// // 			}
+		// // 		},
+		// // 		legend: {
+		// // 			// data:['数量'],
+		// // 		},
+		// // 		xAxis: {
+		// // 			type: 'category',
+		// // 			data: xAxisData,
+		// // 			axisLabel:{
+		// //             	interval:0,
+		// //             	formatter : function(params){
+		// //                    var newParamsName = "";// 最终拼接成的字符串
+		// //                             var paramsNameNumber = params.length;// 实际标签的个数
+		// //                             var provideNumber = 4;// 每行能显示的字的个数
+		// //                             var rowNumber = Math.ceil(paramsNameNumber / provideNumber);// 换行的话，需要显示几行，向上取整
+		// //                             /**
+		// //                              * 判断标签的个数是否大于规定的个数， 如果大于，则进行换行处理 如果不大于，即等于或小于，就返回原标签
+		// //                              */
+		// //                             // 条件等同于rowNumber>1
+		// //                             if (paramsNameNumber > provideNumber) {
+		// //                                 /** 循环每一行,p表示行 */
+		// //                                 for (var p = 0; p < rowNumber; p++) {
+		// //                                     var tempStr = "";// 表示每一次截取的字符串
+		// //                                     var start = p * provideNumber;// 开始截取的位置
+		// //                                     var end = start + provideNumber;// 结束截取的位置
+		// //                                     // 此处特殊处理最后一行的索引值
+		// //                                     if (p == rowNumber - 1) {
+		// //                                         // 最后一次不换行
+		// //                                         tempStr = params.substring(start, paramsNameNumber);
+		// //                                     } else {
+		// //                                         // 每一次拼接字符串并换行
+		// //                                         tempStr = params.substring(start, end) + "\n";
+		// //                                     }
+		// //                                     newParamsName += tempStr;// 最终拼成的字符串
+		// //                                 }
 
-				grid: {  
-					left: '8%',  
-					right: '8%',  
-					bottom: '8%',  
-					containLabel: true  
-				},
-			//   series: [{
-			//       name: '数量',
-			//       type: 'bar',
-			//       barWidth:'50%',
-			//       data: [],
-				//    itemStyle: {
-					//     normal:{
-					//     	color:'#2914E5',
-				//         	label:{
-					//         	show:true,
-					//         	// formatter: '{b} : {c} \n ({d}%)',  position:'outer'
-					//         	textStyle:{fontFamily: '宋体',fontSize: 15} 
-					//         },
-					//         // labelLine:{show:true}
-					//     }
-					// }
-			//   }]
-				series: [{
-					barWidth:'50%',
-					data: seriesData,
-					type: 'bar',
-					itemStyle: {
-						normal: {
-						// 随机显示
-						//color:function(d){return "#"+Math.floor(Math.random()*(256*256*256-1)).toString(16);}
+		// //                             } else {
+		// //                                 // 将旧标签的值赋给新标签
+		// //                                 newParamsName = params;
+		// //                             }
+		// //                             //将最终的字符串返回
+		// //                             return newParamsName
+		// //                 }
+		// //             }
+		// // 		},
+		// // 		yAxis: { 
+		// // 			// axisLine: {show: false},
+		// // 			minInterval: 1,
+		// // 			splitLine:{ 
+		// // 				show:false 
+		// // 			}
+		// // 		},
+
+		// // 		grid: {  
+		// // 			left: '8%',  
+		// // 			right: '8%',  
+		// // 			bottom: '8%',  
+		// // 			containLabel: true  
+		// // 		},
+		// // 	//   series: [{
+		// // 	//       name: '数量',
+		// // 	//       type: 'bar',
+		// // 	//       barWidth:'50%',
+		// // 	//       data: [],
+		// // 		//    itemStyle: {
+		// // 			//     normal:{
+		// // 			//     	color:'#2914E5',
+		// // 		//         	label:{
+		// // 			//         	show:true,
+		// // 			//         	// formatter: '{b} : {c} \n ({d}%)',  position:'outer'
+		// // 			//         	textStyle:{fontFamily: '宋体',fontSize: 15} 
+		// // 			//         },
+		// // 			//         // labelLine:{show:true}
+		// // 			//     }
+		// // 			// }
+		// // 	//   }]
+		// // 		series: [{
+		// // 			barWidth:'50%',
+		// // 			data: seriesData,
+		// // 			type: 'bar',
+		// // 			itemStyle: {
+		// // 				normal: {
+		// // 				// 随机显示
+		// // 				//color:function(d){return "#"+Math.floor(Math.random()*(256*256*256-1)).toString(16);}
 	              
-						// 定制显示（按顺序）
-						color: function(params) { 
-									var colorList = ['#446FA4','#4877AF','#4C7DB8','#38AC1','#849FCA']; 
-									return colorList[params.dataIndex] 
-								},
+		// // 				// 定制显示（按顺序）
+		// // 				color: function(params) { 
+		// // 							var colorList = ['#446FA4','#4877AF','#4C7DB8','#38AC1','#849FCA']; 
+		// // 							return colorList[params.dataIndex] 
+		// // 						},
 						
-		             	label:{
-			            	show:true,
-			            	// formatter: '{b} : {c} \n ({d}%)',  position:'outer'
-			            	textStyle:{fontFamily: '宋体',fontSize: 10} 
-			            }
+		// //              	label:{
+		// // 	            	show:true,
+		// // 	            	// formatter: '{b} : {c} \n ({d}%)',  position:'outer'
+		// // 	            	textStyle:{fontFamily: '宋体',fontSize: 10} 
+		// // 	            }
 					 
-						}
+		// // 				}
 
-					}
-				}]
-			};
-			return option;
-		}
+		// // 			}
+		// // 		}]
+		// // 	};
+		// // 	return option;
+		// // }
 	    
-	    // //set searchedData into option
-	    // option.xAxis.data=histogramChartData1;
-	    // option.series[0].data=histogramChartData2;  
-	    // 使用刚指定的配置项和数据显示图表。
-	    myChartLeft.setOption(setOption('基准',xAxisDataLeft,seriesData.left));
-		myChartRight.setOption(setOption('板块',xAxisDataRight,seriesData.right));
+	 //    // //set searchedData into option
+	 //    // option.xAxis.data=histogramChartData1;
+	 //    // option.series[0].data=histogramChartData2;  
+	 //    // 使用刚指定的配置项和数据显示图表。
+	 //    myChartLeft.setOption(setOption('基准',xAxisDataLeft,seriesData.left));
+		// myChartRight.setOption(setOption('板块',xAxisDataRight,seriesData.right));
 	});
 
 }
@@ -2316,8 +2527,8 @@ function drawChart_B24(){
 			exporting: {
 			    enabled: false,
 			    scale: 1,
-			    sourceWidth: 700,
-        		sourceHeight: 500
+			    sourceWidth: 800,
+        		sourceHeight: 600
 			},
 		    navigator: {
 		        enabled: true,
@@ -2416,6 +2627,34 @@ function drawChart_B24(){
 			]
 		});
 	});
+	$('#diagramDiv13').find('.spanExportButton').click(function(event){
+		console.log("点击了导出图片B24！");
+		var chart = $('#showDiagram13').highcharts();
+		var curTime=getCurrentTime(1);
+		//设置出图时带标题
+		chart.title.update({ text: '指定板块周换手率的历史变化'});
+		chart.legend.update(GlobalPNGLegend);
+		//图标转换成图片
+		var svg = chart.getSVG().replace(/</g, '\n<').replace(/>/g, '>'); // make it slightly more readable								
+		var pngName='指定板块周换手率的历史变化'+curTime;
+		svgToPng(svg,800,600,pngName);
+		//出图完设置无标题
+		chart.title.update({ text: ''});
+		chart.legend.update({
+	        enabled: true,
+		    align: 'right',
+		    verticalAlign: 'top',
+		    x: -80,
+			y: 20,
+			floating: false,
+			itemStyle:{
+				"color": "black", 
+				"cursor": "pointer", 
+				"fontSize": "12px", 
+			},
+		    margin:0,
+	    });
+	});
 
 
 }
@@ -2446,133 +2685,132 @@ function drawChart_B31(){
 		// let xAxisDataLeft = ['乐风', '瑞纳', '腾翼C30'];
 		// let xAxisDataRight = ['乐风', '瑞纳', '腾翼C30', '悦翔', '比亚迪F3'];
 		let seriesData = {'left':dataObj.data_decay[1],'right':dataObj.data_grow[1]};
-		function setOption(title,xAxisData,seriesData){
-			// 指定图表的配置项和数据
-			var option = {
-				title: {
-					text: title,
-					left:'center',
-					textStyle:{fontFamily: '宋体',fontSize: 18,fontWeight: 'bolder',	color: '#000000'} 
-				},
-				tooltip: {},
-				toolbox: {
-					show:false, left:'8%', top:'4%',itemSize:10,
-					feature:{
-						saveAsImage:{show:true},
-						dataView:{show:true},
-						restore:{show:true},
-						magicType:{type: ['line', 'bar']}
-					}
-				},
-				legend: {
-					// data:['数量'],
-				},
-				xAxis: {
-					type: 'category',
-					data: xAxisData,
-					axisLabel:{
-		            	interval:0,
-		            	formatter : function(params){
-		                   var newParamsName = "";// 最终拼接成的字符串
-		                            var paramsNameNumber = params.length;// 实际标签的个数
-		                            var provideNumber = 5;// 每行能显示的字的个数
-		                            var rowNumber = Math.ceil(paramsNameNumber / provideNumber);// 换行的话，需要显示几行，向上取整
-		                            /**
-		                             * 判断标签的个数是否大于规定的个数， 如果大于，则进行换行处理 如果不大于，即等于或小于，就返回原标签
-		                             */
-		                            // 条件等同于rowNumber>1
-		                            if (paramsNameNumber > provideNumber) {
-		                                /** 循环每一行,p表示行 */
-		                                for (var p = 0; p < rowNumber; p++) {
-		                                    var tempStr = "";// 表示每一次截取的字符串
-		                                    var start = p * provideNumber;// 开始截取的位置
-		                                    var end = start + provideNumber;// 结束截取的位置
-		                                    // 此处特殊处理最后一行的索引值
-		                                    if (p == rowNumber - 1) {
-		                                        // 最后一次不换行
-		                                        tempStr = params.substring(start, paramsNameNumber);
-		                                    } else {
-		                                        // 每一次拼接字符串并换行
-		                                        tempStr = params.substring(start, end) + "\n";
-		                                    }
-		                                    newParamsName += tempStr;// 最终拼成的字符串
-		                                }
+		drawHistogram(showDiagramLeft14,'加强',xAxisDataLeft,seriesData.left);
+		drawHistogram(showDiagramRight14,'衰竭',xAxisDataRight,seriesData.right);
+		// function setOption(title,xAxisData,seriesData){
+		// 	// 指定图表的配置项和数据
+		// 	var option = {
+		// 		title: {
+		// 			text: title,
+		// 			left:'center',
+		// 			textStyle:{fontFamily: '宋体',fontSize: 18,fontWeight: 'bolder',	color: '#000000'} 
+		// 		},
+		// 		tooltip: {},
+		// 		toolbox: {
+		// 			show:false, left:'8%', top:'4%',itemSize:10,
+		// 			feature:{
+		// 				saveAsImage:{show:true},
+		// 				dataView:{show:true},
+		// 				restore:{show:true},
+		// 				magicType:{type: ['line', 'bar']}
+		// 			}
+		// 		},
+		// 		legend: {
+		// 			// data:['数量'],
+		// 		},
+		// 		xAxis: {
+		// 			type: 'category',
+		// 			data: xAxisData,
+		// 			axisLabel:{
+		//             	interval:0,
+		//             	formatter : function(params){
+		//                    var newParamsName = "";// 最终拼接成的字符串
+		//                             var paramsNameNumber = params.length;// 实际标签的个数
+		//                             var provideNumber = 5;// 每行能显示的字的个数
+		//                             var rowNumber = Math.ceil(paramsNameNumber / provideNumber);// 换行的话，需要显示几行，向上取整
+		//                             /**
+		//                              * 判断标签的个数是否大于规定的个数， 如果大于，则进行换行处理 如果不大于，即等于或小于，就返回原标签
+		//                              */
+		//                             // 条件等同于rowNumber>1
+		//                             if (paramsNameNumber > provideNumber) {
+		//                                 /** 循环每一行,p表示行 */
+		//                                 for (var p = 0; p < rowNumber; p++) {
+		//                                     var tempStr = "";// 表示每一次截取的字符串
+		//                                     var start = p * provideNumber;// 开始截取的位置
+		//                                     var end = start + provideNumber;// 结束截取的位置
+		//                                     // 此处特殊处理最后一行的索引值
+		//                                     if (p == rowNumber - 1) {
+		//                                         // 最后一次不换行
+		//                                         tempStr = params.substring(start, paramsNameNumber);
+		//                                     } else {
+		//                                         // 每一次拼接字符串并换行
+		//                                         tempStr = params.substring(start, end) + "\n";
+		//                                     }
+		//                                     newParamsName += tempStr;// 最终拼成的字符串
+		//                                 }
 
-		                            } else {
-		                                // 将旧标签的值赋给新标签
-		                                newParamsName = params;
-		                            }
-		                            //将最终的字符串返回
-		                            return newParamsName
-		                }
-		            }
-				},
-				yAxis: { 
-					// axisLine: {show: false},
-					minInterval: 1,
-					splitLine:{ 
-						show:false 
-					}
-				},
+		//                             } else {
+		//                                 // 将旧标签的值赋给新标签
+		//                                 newParamsName = params;
+		//                             }
+		//                             //将最终的字符串返回
+		//                             return newParamsName
+		//                 }
+		//             }
+		// 		},
+		// 		yAxis: { 
+		// 			// axisLine: {show: false},
+		// 			minInterval: 1,
+		// 			splitLine:{ 
+		// 				show:false 
+		// 			}
+		// 		},
 
-				grid: {  
-					left: '8%',  
-					right: '8%',  
-					bottom: '8%',  
-					containLabel: true  
-				},
-			//   series: [{
-			//       name: '数量',
-			//       type: 'bar',
-			//       barWidth:'50%',
-			//       data: [],
-				//    itemStyle: {
-					//     normal:{
-					//     	color:'#2914E5',
-				//         	label:{
-					//         	show:true,
-					//         	// formatter: '{b} : {c} \n ({d}%)',  position:'outer'
-					//         	textStyle:{fontFamily: '宋体',fontSize: 15} 
-					//         },
-					//         // labelLine:{show:true}
-					//     }
-					// }
-			//   }]
-				series: [{
-					barWidth:'50%',
-					data: seriesData,
-					type: 'bar',
-					itemStyle: {
-						normal: {
-						// 随机显示
-						//color:function(d){return "#"+Math.floor(Math.random()*(256*256*256-1)).toString(16);}
+		// 		grid: {  
+		// 			left: '8%',  
+		// 			right: '8%',  
+		// 			bottom: '8%',  
+		// 			containLabel: true  
+		// 		},
+		// 	//   series: [{
+		// 	//       name: '数量',
+		// 	//       type: 'bar',
+		// 	//       barWidth:'50%',
+		// 	//       data: [],
+		// 		//    itemStyle: {
+		// 			//     normal:{
+		// 			//     	color:'#2914E5',
+		// 		//         	label:{
+		// 			//         	show:true,
+		// 			//         	// formatter: '{b} : {c} \n ({d}%)',  position:'outer'
+		// 			//         	textStyle:{fontFamily: '宋体',fontSize: 15} 
+		// 			//         },
+		// 			//         // labelLine:{show:true}
+		// 			//     }
+		// 			// }
+		// 	//   }]
+		// 		series: [{
+		// 			barWidth:'50%',
+		// 			data: seriesData,
+		// 			type: 'bar',
+		// 			itemStyle: {
+		// 				normal: {
+		// 				// 随机显示
+		// 				//color:function(d){return "#"+Math.floor(Math.random()*(256*256*256-1)).toString(16);}
 	              
-						// 定制显示（按顺序）
-						color: function(params) { 
-									var colorList = ['#446FA4','#4877AF','#4C7DB8','#38AC1','#849FCA']; 
-									return colorList[params.dataIndex] 
-								},
+		// 				// 定制显示（按顺序）
+		// 				color: function(params) { 
+		// 							var colorList = ['#446FA4','#4877AF','#4C7DB8','#38AC1','#849FCA']; 
+		// 							return colorList[params.dataIndex] 
+		// 						},
 						
-		             	label:{
-			            	show:true,
-			            	// formatter: '{b} : {c} \n ({d}%)',  position:'outer'
-			            	textStyle:{fontFamily: '宋体',fontSize: 15} 
-			            }
+		//              	label:{
+		// 	            	show:true,
+		// 	            	// formatter: '{b} : {c} \n ({d}%)',  position:'outer'
+		// 	            	textStyle:{fontFamily: '宋体',fontSize: 15} 
+		// 	            }
 					 
-						}
+		// 				}
 
-					}
-				}]
-			};
-			return option;
-		}
-	    
-	    // //set searchedData into option
-	    // option.xAxis.data=histogramChartData1;
-	    // option.series[0].data=histogramChartData2;  
-	    // 使用刚指定的配置项和数据显示图表。
-	    myChartLeft.setOption(setOption('加强',xAxisDataLeft,seriesData.left));
-		myChartRight.setOption(setOption('衰竭',xAxisDataRight,seriesData.right));
+		// 			}
+		// 		}]
+		// 	};
+		// 	return option;
+		// }
+  
+	 //    // 使用刚指定的配置项和数据显示图表。
+	 //    myChartLeft.setOption(setOption('加强',xAxisDataLeft,seriesData.left));
+		// myChartRight.setOption(setOption('衰竭',xAxisDataRight,seriesData.right));
 	});
 }
 
@@ -2688,8 +2926,8 @@ function drawChart_B32(){
 		exporting: {
 		    enabled: false,
 		    scale: 1,
-		    sourceWidth: 700,
-    		sourceHeight: 500
+		    sourceWidth: 800,
+    		sourceHeight: 600
 		},
 		// title:GlobalTitleStyle,
 		xAxis: {
@@ -2736,7 +2974,7 @@ function drawChart_B32(){
 			align: 'left',
 			verticalAlign: 'top',
 			x: 70,
-			y: 50,
+			y: 20,
 			floating: true,
 			backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF',
 			borderWidth: 1
@@ -2801,6 +3039,42 @@ function drawChart_B32(){
 		});
 
     });	
+	$('#diagramDiv15').find('.spanExportButton').click(function(event){
+		console.log("点击了导出图片B32！");
+		var chart = $('#showDiagram15').highcharts();
+		var curTime=getCurrentTime(1);
+		//设置出图时带标题
+		chart.title.update({ text: '所有行业“速度/加速度”的最新分布'});
+		chart.legend.update({
+			// enabled: false,
+			layout: 'vertical',
+			align: 'left',
+			verticalAlign: 'top',
+			x: 70,
+			y: 40,
+			floating: true,
+			backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF',
+			borderWidth: 1
+		});
+		//图标转换成图片
+		var svg = chart.getSVG().replace(/</g, '\n<').replace(/>/g, '>'); // make it slightly more readable								
+		var pngName='所有行业“速度/加速度”的最新分布'+curTime;
+		svgToPng(svg,800,600,pngName);
+		//出图完设置无标题
+		chart.title.update({ text: ''});
+		chart.legend.update({
+			// enabled: false,
+			layout: 'vertical',
+			align: 'left',
+			verticalAlign: 'top',
+			x: 70,
+			y: 20,
+			floating: true,
+			backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF',
+			borderWidth: 1
+	    });
+	});
+	
 }
 
 
@@ -2942,8 +3216,8 @@ function drawChart_B33(){
 		    exporting: {
 			    enabled: false,
 			    scale: 1,
-			    sourceWidth: 700,
-	    		sourceHeight: 500
+			    sourceWidth: 800,
+	    		sourceHeight: 600
 			},
 		    xAxis: {
 		        reversed: false,
@@ -2991,6 +3265,34 @@ function drawChart_B33(){
 				color:globalColorBlue
 		    }]
 		});
+	});
+	$('#diagramDiv16').find('.spanExportButton').click(function(event){
+		console.log("点击了导出图片B33！");
+		var chart = $('#showDiagram16').highcharts();
+		var curTime=getCurrentTime(1);
+		//设置出图时带标题
+		chart.title.update({ text: '指定行业“速度/加速度”的历史变化路径'});
+		// chart.legend.update(GlobalPNGLegend);
+		//图标转换成图片
+		var svg = chart.getSVG().replace(/</g, '\n<').replace(/>/g, '>'); // make it slightly more readable								
+		var pngName='指定行业“速度/加速度”的历史变化路径'+curTime;
+		svgToPng(svg,800,600,pngName);
+		//出图完设置无标题
+		chart.title.update({ text: ''});
+		// chart.legend.update({
+	 //        enabled: true,
+		//     align: 'right',
+		//     verticalAlign: 'top',
+		//     x: -50,
+		// 	y: 20,
+		// 	floating: false,
+		// 	itemStyle:{
+		// 		"color": "black", 
+		// 		"cursor": "pointer", 
+		// 		"fontSize": "12px", 
+		// 	},
+		//     margin:0,
+	 //    });
 	});
 }
 
@@ -3079,8 +3381,8 @@ function drawChart_B41(){
 			exporting: {
 			    enabled: false,
 			    scale: 1,
-			    sourceWidth: 700,
-        		sourceHeight: 500
+			    sourceWidth: 800,
+        		sourceHeight: 600
 			},
 			// title: {
 			// 	text: '中期_HP滤波后的行业估值',
@@ -3092,125 +3394,6 @@ function drawChart_B41(){
 			// 	margin: 30
 			// },
 			title:GlobalTitleStyle,
-			plotOptions: {
-		        series: {
-		        	allowPointSelect:true,
-		            events: {
-		                click: function (event) {
-		                    // alert(this.name + ' clicked\n' +
-		                    //     'Alt: ' + event.altKey + '\n' +
-		                    //     'Control: ' + event.ctrlKey + '\n' +
-		                    //       'Shift: ' + event.shiftKey + '\n');
-		                    console.log('zhixingle点击函数，看看土包更新');
-		                    // drawChart2();
-		                    let cdiv=document.getElementById('ChildDiv');
-		                    if(cdiv!=null){  
-						        let p = cdiv.parentNode;  
-						        p.removeChild(cdiv);  
-						    }  
-
-		                    var mouseX;//记录鼠标点击位置。  
-							var mouseY;//记录鼠标点击位置
-
-		                    var ev = ev||event;   
-						    if(ev.pageX || ev.pageY){   
-						        mouseX = ev.pageX+'px';   
-						        mouseY = ev.pageY+'px';  
-						    }else{//兼容ie   
-						        mouseX = ev.clientX+document.body.scrollLeft - document.body.clientLeft+'px';  
-						      mouseY = ev.clientY+document.documentElement.scrollTop+'px';  
-						    } 
-						    var my = document.createElement("ChildDiv");   //创建一个div    
-						    document.body.appendChild(my);   //添加到页面     
-						    my.style.position="absolute";    //通过样式指定该div的位置方式,  
-						    my.style.top= mouseY;   //通过样式指定y坐标  
-						    my.style.left= mouseX;   //通过样式指定x坐标  
-						    my.style.border='1px solid #FF0000'; // 设置边框  
-						    my.style.width='300px';  
-							my.style.height='200px';//通过样式指定宽度、高度    
-							//通过样式指定背景颜色,,若是背景图片 例为my.style.backgroundImage="url(img/3.jpg)"     
-							my.style.backgroundColor="#ffffcc";   //设置样式透明  
-							var alpha = 80;  
-							my.style.filter='alpha(opacity:'+alpha+')';//IE   
-							my.style.opacity=alpha/100;//IE之外其他浏览器  
-							my.id = "ChildDiv";//设置ID 
-
-							//给div加一个点击后隐藏的函数 
-							my.onclick = function(){
-							   if(  (cdiv=document.getElementById('ChildDiv'))!=null){  
-							        p = cdiv.parentNode;  
-							        p.removeChild(cdiv);  
-							    } 
-							 };
-
-							//在div中创建图表
-							var chart = Highcharts.chart('ChildDiv', {
-							chart: {
-									type: 'column'
-							},
-							credits: {
-								enabled: false
-							},
-							title: {
-									text: 'PE频率'
-							},
-							subtitle: {
-									text: '数据截止 2017-03'
-							},
-							xAxis: {
-									type: 'category',
-									labels: {
-											rotation: -45  // 设置轴标签旋转角度
-									}
-							},
-							yAxis: {
-									lineWidth:1,
-									min: 0,
-									title: {
-											// text: '人口 (百万)'
-									}
-							},
-							legend: {
-									enabled: false
-							},
-							tooltip: {
-									pointFormat: 'PE频率: <b>{point.y:.1f} 百万</b>'
-							},
-							series: [{
-									name: 'PE频率',
-									data: [
-											['0', 24.25],
-											['270', 9.27],
-											['290', 8.87]
-									],
-									dataLabels: {
-											enabled: true,
-											rotation: -90,
-											color: '#FFFFFF',
-											align: 'right',
-											format: '{point.y:.1f}', // :.1f 为保留 1 位小数
-											y: 10
-									}
-							}]
-							});
-							globalClicked=true;
-		            	},
-			            mouseOut: function (event) {
-			            	 if(globalClicked) {
-			            	 	globalClicked=false;	}
-			            	 else{
-			            	 	// console.log("---鼠标移除22");
-			            	 	var cdiv=document.getElementById('ChildDiv');
-			            	 	if(cdiv!=null){  
-							        var p = cdiv.parentNode;  
-							        p.removeChild(cdiv);  
-							    }
-			            	}		            	
-			            }
-		            }       
-		        }
-		    },
-
 		    xAxis: {				
 		        title: {
 		            enabled: true,
@@ -3239,7 +3422,9 @@ function drawChart_B41(){
 						width: 2,
 						label: {
 								text: '1 X Sigma'
-						}
+						},
+						zIndex:200,
+
 				}, {
 						value: dataObjDataY[1],
 						color: 'red',
@@ -3247,7 +3432,8 @@ function drawChart_B41(){
 						width: 2,
 						label: {
 								 text: '3 X Sigma'
-						}
+						},
+						zIndex:200,
 				},
 				{
 						value: -dataObjDataY[0],
@@ -3256,7 +3442,8 @@ function drawChart_B41(){
 						width: 2,
 						label: {
 								text: '1 X Sigma'
-						}
+						},
+						zIndex:200,
 				}, {
 						value: -dataObjDataY[1],
 						color: 'red',
@@ -3264,7 +3451,8 @@ function drawChart_B41(){
 						width: 2,
 						label: {
 								 text: '3 X Sigma'
-						}
+						},
+						zIndex:200,
 				}]
 			},
 
@@ -3291,6 +3479,34 @@ function drawChart_B41(){
 		// console.log(imgSrc);
 		// $("#showDiagram1").html('<img src='+imgSrc+' />');
 
+	});
+	$('#diagramDiv17').find('.spanExportButton').click(function(event){
+		console.log("点击了导出图片B41！");
+		var chart = $('#showDiagram17').highcharts();
+		var curTime=getCurrentTime(1);
+		//设置出图时带标题
+		chart.title.update({ text: '中期_HP滤波后的行业估值'});
+		chart.legend.update(GlobalPNGLegend);
+		//图标转换成图片
+		var svg = chart.getSVG().replace(/</g, '\n<').replace(/>/g, '>'); // make it slightly more readable								
+		var pngName='中期_HP滤波后的行业估值'+curTime;
+		svgToPng(svg,800,600,pngName);
+		//出图完设置无标题
+		chart.title.update({ text: ''});
+		chart.legend.update({
+	        enabled: true,
+		    align: 'right',
+		    verticalAlign: 'top',
+		    x: -50,
+			y: 20,
+			floating: false,
+			itemStyle:{
+				"color": "black", 
+				"cursor": "pointer", 
+				"fontSize": "12px", 
+			},
+		    margin:0,
+	    });
 	});
 }
 
@@ -3774,36 +3990,64 @@ function getCurrentTime(lengthChoose){
 	return currentTime;
 }
 
-function drawHistogram(){
-	var chart = Highcharts.chart('showDiagram16',{
+function drawHistogram(showDiagramID,title,xAxisData,seriesData){
+	var chart = Highcharts.chart(showDiagramID,{
 	    chart: {
 	        type: 'column'
 	    },
+	    credits: {
+			enabled: false
+		},
+		exporting:{
+			enabled: false
+		},
+		legend:{
+			enabled: false
+		},
 	    title: {
-	        text: '月平均降雨量'
+	        text: title
 	    },
-	    subtitle: {
-	        text: '数据来源: WorldClimate.com'
-	    },
+	    // subtitle: {
+	    //     text: '数据来源: WorldClimate.com'
+	    // },
 	    xAxis: {
-	        categories: [
-	            '一月','二月','三月','四月','五月','六月','七月','八月','九月','十月','十一月','十二月'
-	        ],
+	        categories: xAxisData,
 	        // colors:['red','green','red','green','red','green'],
-	        crosshair: true
+	        crosshair: true,
+	        labels: {
+	        	autoRotation:false,
+		        style: {
+		            fontSize: '10px',
+		            textOverflow: 'none',
+		            // whiteSpace:"wrap"
+		        },
+		        formatter: function() {
+		            var labelVal = this.value;
+		            var reallyVal = labelVal;
+		            var lvl = labelVal.length;
+		            if(lvl > 5 && lvl <=10){
+		                reallyVal = labelVal.substr(0,5)+"<br/>"+labelVal.substring(5,lvl);
+		            }else if(lvl > 10 && lvl <=15){
+		                reallyVal = labelVal.substr(0,5)+"<br/>"+labelVal.substr(5,5)+"<br/>"+labelVal.substring(10,lvl);
+		            }else if(lvl > 15 && lvl <=20){
+		                reallyVal = labelVal.substr(0,5)+"<br/>"+labelVal.substr(5,5)+"<br/>"+labelVal.substr(10,5)+"<br/>"+labelVal.substring(15,lvl);
+		            }else if(lvl > 20 && lvl <=25){
+		                reallyVal = labelVal.substr(0,5)+"<br/>"+labelVal.substr(5,5)+"<br/>"+labelVal.substr(10,5)+"<br/>"+labelVal.substr(15,5)+"<br/>"+labelVal.substring(20,lvl);
+		            }else if(lvl > 25){
+		                reallyVal = labelVal.substr(0,5)+"<br/>"+labelVal.substr(5,5)+"<br/>"+labelVal.substr(10,5)+"<br/>"+labelVal.substr(15,5)+"<br/>"+labelVal.substr(20,5)+"<br/>"+labelVal.substring(25,lvl);
+		            }
+		            
+		            return reallyVal;
+		        }
+		    },
 	    },
 	    yAxis: {
 	        min: 0,
-	        title: {
-	            text: '降雨量 (mm)'
-	        }
+	        lineWidth:1
 	    },
 	    tooltip: {
-	        // head + 每个 point + footer 拼接成完整的 table
-	        headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-	        pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-	        '<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
-	        footerFormat: '</table>',
+	        headerFormat: '',
+		    pointFormat: '{point.category}<br>{point.y}',
 	        shared: true,
 	        useHTML: true
 	    },
@@ -3811,12 +4055,22 @@ function drawHistogram(){
 	        column: {
 	            borderWidth: 0,
 	            colorByPoint:true
-	        }
+	        },
+	        series: {
+				dataLabels: {
+					enabled: true,
+					allowOverlap: true, // 允许数据标签重叠
+					style:{
+						fontSize:6,
+						fontWeight:10,
+					}
+				}
+			}
 	    },
 	    series: [{
-	        name: '东京',
-	        data: [49.9, 71.5, 106.4, 129.2, 135.6,],
-	        colors: ['#7cb5ec', 'red', '#90ed7d', '#f7a35c', '#8085e9', '#f15c80', '#e4d354', '#2b908f', '#f45b5b', '#91e8e1']
+	        name: '',
+	        data: seriesData,
+	        colors: ['#446FA4','#4877AF','#4C7DB8','#638AC1','#849FCA']
 	    }]
 	});
 }
@@ -3952,6 +4206,7 @@ function drawSmallDiagram(){
 							// "cursor": "pointer", 
 							"fontSize": "10px", 
 						},
+						
 					}
 				},
 				yAxis: {
