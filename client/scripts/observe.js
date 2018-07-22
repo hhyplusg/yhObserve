@@ -11,10 +11,10 @@ var globalClicked=false;
 
 var GlobalLegendStyle={
     enabled: true,
-    align: 'center',
+    align: 'right',
     // layout: 'vertical',
     verticalAlign: 'top',
-    x: 280,
+    x: -50,
 	y: 5,
 	floating: false,
 	itemStyle:{
@@ -187,7 +187,7 @@ function drawChart_A11(){
 		  //   legend: {
 		  //   	// legendStyle
 		  //       enabled: true,
-		  //       align: 'center',
+		  //       align: 'right',
 		  //       layout: 'vertical',
 		  //       verticalAlign: 'top',
 		  //       x: 280,
@@ -492,9 +492,9 @@ function drawChart_A12(){
 			// legend:GlobalLegendStyle,
 		    legend: {
 		        enabled: true,
-			    align: 'center',
+			    align: 'right',
 			    verticalAlign: 'top',
-			    x: 160,
+			    x: -80,
 				y: 20,
 				floating: false,
 				itemStyle:{
@@ -583,7 +583,7 @@ function drawChart_A12(){
 		//设置出图时带标题
 		chart.title.update({ text: '融资买入/可用担保价值'});
 		// chart.legend.update({ enabled: true,
-		//     align: 'center',
+		//     align: 'right',
 		//     verticalAlign: 'bottom',
 		//  //    x: 280,
 		// 	// y: 5,
@@ -680,9 +680,9 @@ function drawChart_A21(){
 			title:GlobalTitleStyle,
 			legend: {
 		        enabled: true,
-			    align: 'center',
+			    align: 'right',
 			    verticalAlign: 'top',
-			    x: 180,
+			    x: -80,
 				y: 20,
 				floating: false,
 				itemStyle:{
@@ -812,9 +812,9 @@ function drawChart_A22(){
 			title:GlobalTitleStyle,
 			legend: {
 		        enabled: true,
-			    align: 'center',
+			    align: 'right',
 			    verticalAlign: 'top',
-			    x: 130,
+			    x: -80,
 				y: 20,
 				floating: false,
 				itemStyle:{
@@ -946,15 +946,10 @@ function drawChart_A23(){
 			legend: {
 		        enabled: true,
 		        align: 'center',
-		        // backgroundColor: '#FCFFC5',
-		        // borderColor: 'black',
-		        // borderWidth: 2,
-		        color: 'gray',
-		        // layout: 'vertical',
 		        verticalAlign: 'bottom',
 		  //       x: -40,
 				// y: 50,
-				// floating: true,
+				// floating: false,
 				itemStyle:{
 					"color": "black", 
 					"cursor": "pointer", 
@@ -965,6 +960,7 @@ function drawChart_A23(){
 		        // shadow: true,
 		        // itemWidth: 800
 		        // maxHeight:10
+		        // margin:0,
 		    },
 
 			yAxis:[
@@ -1094,9 +1090,9 @@ function drawChart_A24(){
 			title:GlobalTitleStyle,
 			legend: {
 		        enabled: true,
-			    align: 'center',
+			    align: 'right',
 			    verticalAlign: 'top',
-			    x: 160,
+			    x: -75,
 				y: 20,
 				floating: false,
 				itemStyle:{
@@ -1171,9 +1167,9 @@ function drawChart_A31(){
 			},
 		    legend: {
 		        enabled: true,
-			    align: 'center',
+			    align: 'right',
 			    verticalAlign: 'top',
-			    x: 260,
+			    x: -50,
 				y: 20,
 				floating: false,
 				itemStyle:{
@@ -1670,9 +1666,9 @@ function drawChart_A32(){
 			},
 		    legend: {
 		        enabled: true,
-			    align: 'center',
+			    align: 'right',
 			    verticalAlign: 'top',
-			    x: 160,
+			    x: -50,
 				y: 10,
 				floating: false,
 				itemStyle:{
@@ -1792,9 +1788,9 @@ function drawChart_B11(){
 		    // },
 		    legend: {
 		        enabled: true,
-			    align: 'center',
+			    align: 'right',
 			    verticalAlign: 'top',
-			    x: 100,
+			    x: -70,
 				y: 20,
 				floating: false,
 				itemStyle:{
@@ -2335,9 +2331,9 @@ function drawChart_B24(){
 		    // },
 		    legend: {
 		        enabled: true,
-			    align: 'center',
+			    align: 'right',
 			    verticalAlign: 'top',
-			    x: 180,
+			    x: -80,
 				y: 20,
 				floating: false,
 				itemStyle:{
@@ -3052,9 +3048,9 @@ function drawChart_B41(){
 			},
 		    legend: {
 		        enabled: true,
-			    align: 'center',
+			    align: 'right',
 			    verticalAlign: 'top',
-			    x: 250,
+			    x: -50,
 				y: 20,
 				floating: false,
 				itemStyle:{
@@ -3168,6 +3164,7 @@ function drawChart_B41(){
 									}
 							},
 							yAxis: {
+									lineWidth:1,
 									min: 0,
 									title: {
 											// text: '人口 (百万)'
@@ -3959,6 +3956,7 @@ function drawSmallDiagram(){
 				},
 				yAxis: {
 						min: 0,
+						lineWidth:1
 						// title: {
 						// 		// text: '人口 (百万)'
 						// }
@@ -4088,6 +4086,7 @@ function drawSmallDiagram(){
 				},
 				yAxis: {
 						min: 0,
+						lineWidth:1,
 						// title: {
 						// 		// text: '人口 (百万)'
 						// }
