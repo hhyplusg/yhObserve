@@ -40,7 +40,7 @@ gulp.task('build-page', () => {
   
   const destDir = '.tmp';
   const pathDetail = loadJsonFile('views/data/path-detail.json');
-  const chartKey = loadJsonFile('views/data/chart-key.json');
+
   const keys = {
 	"A11":"0001",
 	"A12":"0002",
