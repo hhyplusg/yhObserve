@@ -1,7 +1,7 @@
 import {EventObject,GetCookie,SetCookie,DeleteCookie,isWeiXin,parseUrlSearch,getUrlParams,isEmptyObj,getDeviceType} from './api';
 
 // import * as SandSignika from '../lib/Highstock-6.1.0/code/themes/sand-signika';
-var globalColorRed='red';
+var globalColorRed='red';  //#1E90FF  #FF4500
 var globalColorBlue='blue';
 var globalColorGray='gray';
 var onlineOrLocal=false;  //false=online, true=local
@@ -9,7 +9,64 @@ if (window.location.href=='http://localhost:3000/observesystem.html') {onlineOrL
 var globalDataURL='';
 var globalClicked=false;
 
-var legendStyle="enabled: true,\nalign: 'center',\n		       color: 'gray',\nlayout: 'vertical',	        verticalAlign: 'top',\nx: 280,\ny: 5,			floating: false,			itemStyle:{					'color': 'black', 				'cursor': 'pointer', 					'fontSize': '12px', 	},			        margin:0";
+var GlobalLegendStyle={
+    enabled: true,
+    align: 'center',
+    // layout: 'vertical',
+    verticalAlign: 'top',
+    x: 280,
+	y: 5,
+	floating: false,
+	itemStyle:{
+		"color": "black", 
+		"cursor": "pointer", 
+		"fontSize": "12px", 
+		// "fontWeight": "bold"
+	},
+    // shadow: true,
+    // itemWidth: 80,
+    // maxHeight:20,
+    margin:0,
+    // padding:0
+};
+
+var GlobalTitleStyle={
+				// text: '博弈/存量指标',
+				style: {
+							color: 'black',
+							fontWeight: 'bold',
+							fontSize: '18px'
+						},
+				// margin: 30
+};
+
+// Create the chart
+Highcharts.setOptions({
+    global: {
+        useUTC: false
+    },
+    lang:{
+		contextButtonTitle:"图表导出菜单",
+		decimalPoint:".",
+		downloadJPEG:"下载JPEG图片",
+		downloadPDF:"下载PDF文件",
+		downloadPNG:"下载PNG文件",
+		downloadSVG:"下载SVG文件",
+		drillUpText:"返回 {series.name}",
+		loading:"加载中",
+		months:["一月","二月","三月","四月","五月","六月","七月","八月","九月","十月","十一月","十二月"],
+		noData:"没有数据",
+		// numericSymbols: [ "千" , "兆" , "G" , "T" , "P" , "E"],
+		printChart:"打印图表",
+		resetZoom:"恢复缩放",
+		resetZoomTitle:"恢复图表",
+		shortMonths: [ "Jan" , "Feb" , "Mar" , "Apr" , "May" , "Jun" , "Jul" , "Aug" , "Sep" , "Oct" , "Nov" , "Dec"],
+		thousandsSep:",",
+		weekdays: ["星期一", "星期二", "星期三", "星期三", "星期四", "星期五", "星期六","星期天"]
+	}
+
+});
+
 
 $(function(){
 	console.log("开始画图--");
@@ -38,6 +95,11 @@ $(function(){
 		// var blob = new Blob(['out_put_string'], {type: "text/plain;charset=utf-8"});//out_put_string为需要保存到文件的字符串内容
 		// saveAs(blob, "filename.php");//filename.php为保存的文件名
 		$("#bigDiv").wordExport();
+	});
+	
+	$('#diagramDiv8').find('.selected-index').change(function(event){
+		console.log("下拉选择执行！");
+		drawChart_A32();
 	});
 
 
@@ -80,35 +142,36 @@ function drawChart_A11(){
 	// 	var jsonObject =$.parseJSON(dataYH);
 	// 	var data=jsonObject.obj;
 	// 	console.log("图1的obj数据为：\n");
-		
+
+		// 		// Create the chart
+		// Highcharts.setOptions({
+		//     global: {
+		//         useUTC: false
+		//     },
+		//     lang:{
+		// 		contextButtonTitle:"图表导出菜单",
+		// 		decimalPoint:".",
+		// 		downloadJPEG:"下载JPEG图片",
+		// 		downloadPDF:"下载PDF文件",
+		// 		downloadPNG:"下载PNG文件",
+		// 		downloadSVG:"下载SVG文件",
+		// 		drillUpText:"返回 {series.name}",
+		// 		loading:"加载中",
+		// 		months:["一月","二月","三月","四月","五月","六月","七月","八月","九月","十月","十一月","十二月"],
+		// 		noData:"没有数据",
+		// 		// numericSymbols: [ "千" , "兆" , "G" , "T" , "P" , "E"],
+		// 		printChart:"打印图表",
+		// 		resetZoom:"恢复缩放",
+		// 		resetZoomTitle:"恢复图表",
+		// 		shortMonths: [ "Jan" , "Feb" , "Mar" , "Apr" , "May" , "Jun" , "Jul" , "Aug" , "Sep" , "Oct" , "Nov" , "Dec"],
+		// 		thousandsSep:",",
+		// 		weekdays: ["星期一", "星期二", "星期三", "星期三", "星期四", "星期五", "星期六","星期天"]
+		// 	}
+
+		// });
 
 
-		// Create the chart
-		Highcharts.setOptions({
-		    global: {
-		        useUTC: false
-		    },
-		    lang:{
-				contextButtonTitle:"图表导出菜单",
-				decimalPoint:".",
-				downloadJPEG:"下载JPEG图片",
-				downloadPDF:"下载PDF文件",
-				downloadPNG:"下载PNG文件",
-				downloadSVG:"下载SVG文件",
-				drillUpText:"返回 {series.name}",
-				loading:"加载中",
-				months:["一月","二月","三月","四月","五月","六月","七月","八月","九月","十月","十一月","十二月"],
-				noData:"没有数据",
-				// numericSymbols: [ "千" , "兆" , "G" , "T" , "P" , "E"],
-				printChart:"打印图表",
-				resetZoom:"恢复缩放",
-				resetZoomTitle:"恢复图表",
-				shortMonths: [ "Jan" , "Feb" , "Mar" , "Apr" , "May" , "Jun" , "Jul" , "Aug" , "Sep" , "Oct" , "Nov" , "Dec"],
-				thousandsSep:",",
-				weekdays: ["星期一", "星期二", "星期三", "星期三", "星期四", "星期五", "星期六","星期天"]
-		}
 
-		});
 		var mychart =Highcharts.stockChart('showDiagram1', {
 			credits: {
 				enabled: false
@@ -119,31 +182,28 @@ function drawChart_A11(){
 			scrollbar: {
 		        enabled: true
 		    },
-		    legend: {
-		    	// legendStyle
-		        enabled: true,
-		        align: 'center',
-		        // backgroundColor: '#FCFFC5',
-		        // borderColor: 'black',
-		        // borderWidth: 2,
-		        color: 'gray',
-		        layout: 'vertical',
-		        verticalAlign: 'top',
-		        x: 280,
-				y: 5,
-				floating: false,
-				itemStyle:{
-					"color": "black", 
-					"cursor": "pointer", 
-					"fontSize": "12px", 
-					// "fontWeight": "bold"
-				},
-		        // shadow: true,
-		        // itemWidth: 80,
-		        // maxHeight:20,
-		        margin:0,
-		        // padding:0
-		    },
+		    legend:GlobalLegendStyle,
+		  //   legend: {
+		  //   	// legendStyle
+		  //       enabled: true,
+		  //       align: 'center',
+		  //       layout: 'vertical',
+		  //       verticalAlign: 'top',
+		  //       x: 280,
+				// y: 5,
+				// floating: false,
+				// itemStyle:{
+				// 	"color": "black", 
+				// 	"cursor": "pointer", 
+				// 	"fontSize": "12px", 
+				// 	// "fontWeight": "bold"
+				// },
+		  //       // shadow: true,
+		  //       // itemWidth: 80,
+		  //       // maxHeight:20,
+		  //       margin:0,
+		  //       // padding:0
+		  //   },
 			rangeSelector: {
 				enabled: true,
 				selected: 3,
@@ -316,9 +376,9 @@ function drawChart_A11(){
 			series: [{
 				name: '博弈/存量资金',
 				data: dataObj,
-				tooltip: {
-						valueDecimals: 4
-				},
+				// tooltip: {
+				// 		valueDecimals: 4
+				// },
 				// dashStyle:'Dot'
 				lineWidth:2,
 				color:globalColorBlue
@@ -330,7 +390,7 @@ function drawChart_A11(){
 		console.log("点击了导出图片！");
 		var chart = $('#showDiagram1').highcharts();
 
-		var curTime=getCurrentTime();
+		var curTime=getCurrentTime(1);
 		// // console.log('获取的时间是：---\n');console.log(curTime);	
 
 		// chart.exportChart({
@@ -403,50 +463,53 @@ function drawChart_A12(){
 			credits: {
 				enabled: false
 			},
+			navigator: {
+		        enabled: true,
+		        series: {
+					type: 'line',
+					color: 'gray',
+				}
+		    },
+		    exporting: {
+			    enabled: false,
+			    scale: 1,
+			    sourceWidth: 700,
+        		sourceHeight: 500
+			},
 			rangeSelector: {
 				selected: 3,
 				// enabled: false,
+				labelStyle: {
+		            color: 'gray',
+		            fontWeight: 'bold',
+		            fontSize:13
+		        },
 			},
-			// exporting: {
-		 //        enabled: false
-		 //    },
-		    // navigator: {
-		    //     enabled: false
-		    // },
-		    // scrollbar: {
-		    //     enabled: false
-		    // },
+			// legend:GlobalLegendStyle,
 		    legend: {
 		        enabled: true,
-		        align: 'right',
-		        // backgroundColor: '#FCFFC5',
-		        // borderColor: 'black',
-		        // borderWidth: 2,
-		        color: 'gray',
-		        // layout: 'vertical',
-		        verticalAlign: 'top',
-		        x: -40,
-				y: 15,
-				floating: true,
+			    align: 'center',
+			    verticalAlign: 'top',
+			    x: 160,
+				y: 20,
+				floating: false,
 				itemStyle:{
 					"color": "black", 
 					"cursor": "pointer", 
 					"fontSize": "12px", 
-					// "fontWeight": "bold"
-				}
-		        // shadow: true,
-		        // itemWidth: 80,
-		        // maxHeight:10
+				},
+			    margin:0,
 		    },
-			title: {
-				text: '融资买入/可用担保价值',
-				style: {
-							color: 'black',
-							fontWeight: 'bold',
-							fontSize: 20
-					},
-				margin: 30
-			},
+			// title: {
+			// 	text: '融资买入/可用担保价值',
+			// 	style: {
+			// 				color: 'black',
+			// 				fontWeight: 'bold',
+			// 				fontSize: 20
+			// 		},
+			// 	margin: 30
+			// },
+			title:GlobalTitleStyle,
 			yAxis: [
 			{
 					title: {
@@ -495,18 +558,15 @@ function drawChart_A12(){
 					name: '融资买入/可用担保价值',
 					data: dataObj.data,
 					yAxis:0,
-					color:'#1E90FF',
-					lineWidth:1
+					lineWidth:2,
+					color:globalColorBlue
 				},
 				{
 					name: '沪深300',
 					data: dataObj.index_data,	
 					yAxis:1,
-					color:'#FF4500',
-					lineWidth:1
-					// line:{
-					// 	color:'red'
-					// }			
+					lineWidth:2,
+					color:globalColorRed		
 				}
 			]
 		});
@@ -554,38 +614,49 @@ function drawChart_A21(){
 				enabled: false
 			},
 			rangeSelector: {
-				selected: 3
+				selected: 3,
+				labelStyle: {
+		            color: 'gray',
+		            fontWeight: 'bold',
+		            fontSize:13
+		        },
 			},
-			title: {
-				text: '市场情绪指数',  //基础表实现双轴（网络数据）
-				style: {
-							color: 'black',
-							fontWeight: 'bold',
-							fontSize: 20
-						},
-				margin: 30
+			exporting: {
+			    enabled: false,
+			    scale: 1,
+			    sourceWidth: 700,
+        		sourceHeight: 500
 			},
+			navigator: {
+		        enabled: true,
+		        series: {
+					type: 'line',
+					color: 'gray',
+				}
+		    },
+			// title: {
+			// 	text: '市场情绪指数',  //基础表实现双轴（网络数据）
+			// 	style: {
+			// 				color: 'black',
+			// 				fontWeight: 'bold',
+			// 				fontSize: 20
+			// 			},
+			// 	margin: 30
+			// },
+			title:GlobalTitleStyle,
 			legend: {
 		        enabled: true,
-		        align: 'right',
-		        // backgroundColor: '#FCFFC5',
-		        // borderColor: 'black',
-		        // borderWidth: 2,
-		        color: 'gray',
-		        // layout: 'vertical',
-		        verticalAlign: 'top',
-		        x: -40,
-				y: 15,
-				floating: true,
+			    align: 'center',
+			    verticalAlign: 'top',
+			    x: 180,
+				y: 20,
+				floating: false,
 				itemStyle:{
 					"color": "black", 
 					"cursor": "pointer", 
 					"fontSize": "12px", 
-					// "fontWeight": "bold"
-				}
-		        // shadow: true,
-		        // itemWidth: 80,
-		        // maxHeight:10
+				},
+			    margin:0,
 		    },
 
 			yAxis:[
@@ -606,18 +677,15 @@ function drawChart_A21(){
 					name: '市场情绪指数',
 					data: dataObj.data,
 					yAxis:0,
-					color:'#1E90FF',
-					lineWidth:1
+					lineWidth:2,
+					color:globalColorBlue
 				},
 				{
 					name: '沪指300',
 					data: dataObj.index_data,	
 					yAxis:1,
-					color:'#B22222',
-					lineWidth:1
-					// line:{
-					// 	color:'red'
-					// }			
+					lineWidth:2,
+					color:globalColorRed			
 				}
 			]
 		});
@@ -664,38 +732,49 @@ function drawChart_A22(){
 				enabled: false
 			},
 			rangeSelector: {
-				selected: 3
+				selected: 3,
+				labelStyle: {
+		            color: 'gray',
+		            fontWeight: 'bold',
+		            fontSize:13
+		        },
 			},
-			title: {
-				text: '指定板块的强势股占比',  //基础表实现双轴（网络数据）
-				style: {
-							color: 'black',
-							fontWeight: 'bold',
-							fontSize: 20
-						},
-				margin: 30
+			navigator: {
+		        enabled: true,
+		        series: {
+					type: 'line',
+					color: 'gray',
+				}
+		    },
+		    exporting: {
+			    enabled: false,
+			    scale: 1,
+			    sourceWidth: 700,
+        		sourceHeight: 500
 			},
+			// title: {
+			// 	text: '指定板块的强势股占比',  //基础表实现双轴（网络数据）
+			// 	style: {
+			// 				color: 'black',
+			// 				fontWeight: 'bold',
+			// 				fontSize: 20
+			// 			},
+			// 	margin: 30
+			// },
+			title:GlobalTitleStyle,
 			legend: {
 		        enabled: true,
-		        align: 'right',
-		        // backgroundColor: '#FCFFC5',
-		        // borderColor: 'black',
-		        // borderWidth: 2,
-		        color: 'gray',
-		        // layout: 'vertical',
-		        verticalAlign: 'top',
-		        x: -40,
-				y: 15,
-				floating: true,
+			    align: 'center',
+			    verticalAlign: 'top',
+			    x: 130,
+				y: 20,
+				floating: false,
 				itemStyle:{
 					"color": "black", 
 					"cursor": "pointer", 
 					"fontSize": "12px", 
-					// "fontWeight": "bold"
-				}
-		        // shadow: true,
-		        // itemWidth: 80,
-		        // maxHeight:10
+				},
+			    margin:0,
 		    },
 
 			yAxis:[
@@ -716,18 +795,15 @@ function drawChart_A22(){
 					name: ' 全部A股MA60强势股数占比',
 					data: dataObj.data,
 					yAxis:0,
-					color:'#1E90FF',
-					lineWidth:1
+					lineWidth:2,
+					color:globalColorBlue
 				},
 				{
 					name: '沪深300（右轴）',
 					data: dataObj.index_data,	
 					yAxis:1,
-					color:'#B22222',
-					lineWidth:1
-					// line:{
-					// 	color:'red'
-					// }			
+					lineWidth:2,
+					color:globalColorRed		
 				}
 			]
 		});
@@ -775,18 +851,37 @@ function drawChart_A23(){
 			credits: {
 				enabled: false
 			},
+			exporting: {
+			    enabled: false,
+			    scale: 1,
+			    sourceWidth: 700,
+        		sourceHeight: 500
+			},
 			rangeSelector: {
-				selected: 3
+				selected: 3,
+				labelStyle: {
+		            color: 'gray',
+		            fontWeight: 'bold',
+		            fontSize:13
+		        },
 			},
-			title: {
-				text: '分级基金成交显示的风险偏好',  //基础表实现双轴（网络数据）
-				style: {
-							color: 'black',
-							fontWeight: 'bold',
-							fontSize: 20
-						},
-				margin: 30
-			},
+			navigator: {
+		        enabled: true,
+		        series: {
+					type: 'line',
+					color: 'gray',
+				}
+		    },
+			// title: {
+			// 	text: '分级基金成交显示的风险偏好',  //基础表实现双轴（网络数据）
+			// 	style: {
+			// 				color: 'black',
+			// 				fontWeight: 'bold',
+			// 				fontSize: 20
+			// 			},
+			// 	margin: 30
+			// },
+			title:GlobalTitleStyle,
 			legend: {
 		        enabled: true,
 		        align: 'center',
@@ -829,28 +924,22 @@ function drawChart_A23(){
 					name: '成交额：分级B/A',
 					data: dataObj.data,
 					yAxis:0,
-					color:'#1E90FF',
-					lineWidth:1
+					lineWidth:2,
+					color:globalColorBlue
 				},
 				{
 					name: '成交额：分级B/A(MA10)',
 					data: dataObj.data_MA10,	
 					yAxis:0,
-					color:'#B22222',
-					lineWidth:1
-					// line:{
-					// 	color:'red'
-					// }			
+					lineWidth:2,
+					color:globalColorRed			
 				},
 				{
 					name: '中证500(右轴)',
 					data: dataObj.index_data,	
 					yAxis:1,
-					color:'gray',
-					lineWidth:1
-					// line:{
-					// 	color:'red'
-					// }			
+					lineWidth:2,
+					color:globalColorGray		
 				}
 
 			]
@@ -899,38 +988,49 @@ function drawChart_A24(){
 				enabled: false
 			},
 			rangeSelector: {
-				selected: 3
+				selected: 3,
+				labelStyle: {
+		            color: 'gray',
+		            fontWeight: 'bold',
+		            fontSize:13
+		        },
 			},
-			title: {
-				text: '指定版块的历史换手率',  //基础表实现双轴（网络数据）
-				style: {
-							color: 'black',
-							fontWeight: 'bold',
-							fontSize: 20
-						},
-				margin: 30
+			navigator: {
+		        enabled: true,
+		        series: {
+					type: 'line',
+					color: 'gray',
+				}
+		    },
+		    exporting: {
+			    enabled: false,
+			    scale: 1,
+			    sourceWidth: 700,
+        		sourceHeight: 500
 			},
+			// title: {
+			// 	text: '指定版块的历史换手率',  //基础表实现双轴（网络数据）
+			// 	style: {
+			// 				color: 'black',
+			// 				fontWeight: 'bold',
+			// 				fontSize: 20
+			// 			},
+			// 	margin: 30
+			// },
+			title:GlobalTitleStyle,
 			legend: {
 		        enabled: true,
-		        align: 'right',
-		        // backgroundColor: '#FCFFC5',
-		        // borderColor: 'black',
-		        // borderWidth: 2,
-		        color: 'gray',
-		        // layout: 'vertical',
-		        verticalAlign: 'top',
-		        x: -40,
-				y: 15,
-				floating: true,
+			    align: 'center',
+			    verticalAlign: 'top',
+			    x: 160,
+				y: 20,
+				floating: false,
 				itemStyle:{
 					"color": "black", 
 					"cursor": "pointer", 
 					"fontSize": "12px", 
-					// "fontWeight": "bold"
-				}
-		        // shadow: true,
-		        // itemWidth: 80,
-		        // maxHeight:10
+				},
+			    margin:0,
 		    },
 
 			yAxis:[
@@ -951,18 +1051,15 @@ function drawChart_A24(){
 					name: 'A股年化换手率',
 					data: dataObj.data,
 					yAxis:0,
-					color:'#1E90FF',
-					lineWidth:1
+					lineWidth:2,
+					color:globalColorBlue
 				},
 				{
 					name: 'A股年化换手率(MA20)',
 					data: dataObj.data_MA20,	
 					yAxis:1,
-					color:'#B22222',
-					lineWidth:1
-					// line:{
-					// 	color:'red'
-					// }			
+					lineWidth:2,
+					color:globalColorRed			
 				}
 			]
 		});
@@ -999,29 +1096,51 @@ function drawChart_A31(){
 				enabled: false
 			},
 		    legend: {
-		        align: 'right',
-		        layout: 'vertical',
-		        verticalAlign: 'top',
-		        x: -10,
-				y: 10,
-				floating: true
+		        enabled: true,
+			    align: 'center',
+			    verticalAlign: 'top',
+			    x: 260,
+				y: 20,
+				floating: false,
+				itemStyle:{
+					"color": "black", 
+					"cursor": "pointer", 
+					"fontSize": "12px", 
+				},
+			    margin:0,
 		    },
 			rangeSelector: {
 				// enabled: false,
 				selected: 3,
+				labelStyle: {
+		            color: 'gray',
+		            fontWeight: 'bold',
+		            fontSize:13
+		        },
 			},
+			navigator: {
+		        enabled: true,
+		        series: {
+					type: 'line',
+					color: 'gray',
+				}
+		    },
 			exporting: {
-			    // enabled: false
+			    enabled: false,
+			    scale: 1,
+			    sourceWidth: 700,
+        		sourceHeight: 500
 			},
-			title: {
-				// text: '指定版块的个股估值分布',
-				style: {
-							color: 'black',
-							fontWeight: 'bold',
-							fontSize: 20
-						},
-				margin: 30
-			},
+			// title: {
+			// 	// text: '指定版块的个股估值分布',
+			// 	style: {
+			// 				color: 'black',
+			// 				fontWeight: 'bold',
+			// 				fontSize: 20
+			// 			},
+			// 	margin: 30
+			// },
+			title:GlobalTitleStyle,
 			plotOptions: {
 		        series: {
 		            events: {
@@ -1144,7 +1263,9 @@ function drawChart_A31(){
 								}
 								else{   //不是本地出小图
 									console.log( "进入在线画小图：-" + msg );
-									var finalResult=calculateQuantity(msg);
+									var jsonObject =$.parseJSON(msg);
+									var dataObj=jsonObject.obj;	
+									var finalResult=calculateQuantity(dataObj);
 										//画小图
 										let cdiv=document.getElementById('ChildDiv');
 					                    if(cdiv!=null){  
@@ -1392,9 +1513,8 @@ function drawChart_A31(){
 			series: [{
 				name: '指定板块的个股估值分布',
 				data: dataObj,
-				tooltip: {
-						// valueDecimals: 4
-				}
+				lineWidth:2,
+				color:globalColorBlue
 			}]
 		});
 
@@ -1404,10 +1524,17 @@ function drawChart_A31(){
 function drawChart_A32(){
 
 	console.log("开始drawChart-A32");
+	// 获取选择的参数
+	var selectItem=$('#diagramDiv8').find('.selected-index').val();
+	console.log("当前选择的item是："+selectItem);
+	var dateLastDay=getCurrentTime(3);	
+	console.log("前一个自然日时间是："+dateLastDay);
+
+
 	if (onlineOrLocal) {
 		globalDataURL='../lib/data8A32.json';
-	}else{
-		globalDataURL='weekly/IndicatorQuery?indicatorId=1011&windCode=000300.SH&startDate=20180611&endDate=20180611';
+	}else{		
+		globalDataURL='weekly/IndicatorQuery?indicatorId=1011&windCode='+selectItem+'&startDate='+dateLastDay+'&endDate='+dateLastDay;
 	}
 	//获取数据
 	$.getJSON(globalDataURL,function (dataYH) {	
@@ -1428,31 +1555,31 @@ function drawChart_A32(){
 		var dataOrderSecond=calculateQuantity(dataObjSecond);
 
 		// Create the chart
-		Highcharts.setOptions({
-		    global: {
-		        useUTC: false
-		    },
-		    lang:{
-				contextButtonTitle:"图表导出菜单",
-				decimalPoint:".",
-				downloadJPEG:"下载JPEG图片",
-				downloadPDF:"下载PDF文件",
-				downloadPNG:"下载PNG文件",
-				downloadSVG:"下载SVG文件",
-				drillUpText:"返回 {series.name}",
-				loading:"加载中",
-				months:["一月","二月","三月","四月","五月","六月","七月","八月","九月","十月","十一月","十二月"],
-				noData:"没有数据",
-				numericSymbols: [ "千" , "兆" , "G" , "T" , "P" , "E"],
-				printChart:"打印图表",
-				resetZoom:"恢复缩放",
-				resetZoomTitle:"恢复图表",
-				shortMonths: [ "Jan" , "Feb" , "Mar" , "Apr" , "May" , "Jun" , "Jul" , "Aug" , "Sep" , "Oct" , "Nov" , "Dec"],
-				thousandsSep:",",
-				weekdays: ["星期一", "星期二", "星期三", "星期三", "星期四", "星期五", "星期六","星期天"]
-		}
+		// Highcharts.setOptions({
+		//     global: {
+		//         useUTC: false
+		//     },
+		//     lang:{
+		// 		contextButtonTitle:"图表导出菜单",
+		// 		decimalPoint:".",
+		// 		downloadJPEG:"下载JPEG图片",
+		// 		downloadPDF:"下载PDF文件",
+		// 		downloadPNG:"下载PNG文件",
+		// 		downloadSVG:"下载SVG文件",
+		// 		drillUpText:"返回 {series.name}",
+		// 		loading:"加载中",
+		// 		months:["一月","二月","三月","四月","五月","六月","七月","八月","九月","十月","十一月","十二月"],
+		// 		noData:"没有数据",
+		// 		numericSymbols: [ "千" , "兆" , "G" , "T" , "P" , "E"],
+		// 		printChart:"打印图表",
+		// 		resetZoom:"恢复缩放",
+		// 		resetZoomTitle:"恢复图表",
+		// 		shortMonths: [ "Jan" , "Feb" , "Mar" , "Apr" , "May" , "Jun" , "Jul" , "Aug" , "Sep" , "Oct" , "Nov" , "Dec"],
+		// 		thousandsSep:",",
+		// 		weekdays: ["星期一", "星期二", "星期三", "星期三", "星期四", "星期五", "星期六","星期天"]
+		// 	}
 
-		});
+		// });
 		var mychart = Highcharts.chart('showDiagram8', {
 			chart: {
 				type: 'spline'
@@ -1462,22 +1589,17 @@ function drawChart_A32(){
 			},
 		    legend: {
 		        enabled: true,
-		        align: 'right',
-		        color: 'gray',
-		        layout: 'vertical',
-		        verticalAlign: 'top',
-		        x: -40,
-				y: 15,
-				floating: true,
+			    align: 'center',
+			    verticalAlign: 'top',
+			    x: 160,
+				y: 10,
+				floating: false,
 				itemStyle:{
 					"color": "black", 
 					"cursor": "pointer", 
 					"fontSize": "12px", 
-					// "fontWeight": "bold"
-				}
-		        // shadow: true,
-		        // itemWidth: 80,
-		        // maxHeight:10
+				},
+			    margin:20,
 		    },
 			exporting: {
 			    enabled: false,
@@ -1486,14 +1608,15 @@ function drawChart_A32(){
         		sourceHeight: 500
 			},
 			title: {
-				text: '个股估值分布的重要时点比较',
-				style: {
-							color: 'black',
-							fontWeight: 'bold',
-							fontSize: '18px'
-						},
-				margin: 30
+				text: '',//个股估值分布的重要时点比较
+			// 	style: {
+			// 				color: 'black',
+			// 				fontWeight: 'bold',
+			// 				fontSize: '18px'
+			// 			},
+			// 	margin: 30
 			},
+			// title:GlobalTitleStyle,
 		    tooltip: {
 				headerFormat: '',
 				pointFormat: '<b>{series.name}</b><br>{point.x}, {point.y}',
@@ -1517,19 +1640,19 @@ function drawChart_A32(){
 				},
 			},
 			series: [{
-				name: 'Before',
+				name: dateLastDay,
 				data: dataOrderBefore,
 				dashStyle:'line',
 				color:'blue'
 			},
 			{
-				name: 'First',
+				name: '20150616',
 				data: dataOrderFirst,
 				dashStyle:'line',
 				color:'red'
 			},
 			{
-				name: 'Second',
+				name: '20121201',
 				data: dataOrderSecond,
 				dashStyle:'Dot'
 			}]
@@ -1541,7 +1664,7 @@ function drawChart_A32(){
 		var chart = $('#showDiagram1').highcharts();
 		$('#showDiagram1').find('.svg').css("color","red");
 
-		var curTime=getCurrentTime();
+		var curTime=getCurrentTime(1);
 		// console.log('获取的时间是：---\n');console.log(curTime);
 
 		chart.exportChart({
@@ -1585,51 +1708,54 @@ function drawChart_B11(){
 			},
 			rangeSelector: {
 				selected: 3,
-				// enabled: false,
+				labelStyle: {
+		            color: 'gray',
+		            fontWeight: 'bold',
+		            fontSize:13
+		        },
 			},
-			// exporting: {
-		 //        enabled: false
-		 //    },
-		    // navigator: {
-		    //     enabled: false
-		    // },
+			exporting: {
+			    enabled: false,
+			    scale: 1,
+			    sourceWidth: 700,
+        		sourceHeight: 500
+			},
+		    navigator: {
+		        enabled: true,
+		        series: {
+					type: 'line',
+					color: 'gray',
+				}
+		    },
 		    // scrollbar: {
 		    //     enabled: false
 		    // },
 		    legend: {
 		        enabled: true,
-		        align: 'right',
-		        // backgroundColor: '#FCFFC5',
-		        // borderColor: 'black',
-		        // borderWidth: 2,
-		        color: 'gray',
-		        // layout: 'vertical',
-		        verticalAlign: 'top',
-		        x: -40,
-				y: 15,
-				floating: true,
+			    align: 'center',
+			    verticalAlign: 'top',
+			    x: 100,
+				y: 20,
+				floating: false,
 				itemStyle:{
 					"color": "black", 
 					"cursor": "pointer", 
 					"fontSize": "12px", 
-					// "fontWeight": "bold"
-				}
-		        // shadow: true,
-		        // itemWidth: 80,
-		        // maxHeight:10
+				},
+			    margin:0,
 		    },
 
 
-
-			title: {
-				// text: '指定板块相对换手率的历史变化',
-				style: {
-							color: 'black',
-							fontWeight: 'bold',
-							fontSize: 20
-					},
-				margin: 30
-			},
+		    title:GlobalTitleStyle,
+			// title: {
+			// 	// text: '指定板块相对换手率的历史变化',
+			// 	style: {
+			// 				color: 'black',
+			// 				fontWeight: 'bold',
+			// 				fontSize: 20
+			// 		},
+			// 	margin: 30
+			// },
 			yAxis: [
 			{
 					title: {
@@ -1677,18 +1803,15 @@ function drawChart_B11(){
 					name: '换手率：上证50/中证500(MA20)',
 					data: dataObj.data,
 					yAxis:0,
-					color:'#1E90FF',
-					lineWidth:1
+					lineWidth:2,
+					color:globalColorBlue
 				},
 				{
 					name: '上证50/中证500(右轴)',
 					data: dataObj.index_data,	
 					yAxis:1,
-					color:'#FF4500',
-					lineWidth:1
-					// line:{
-					// 	color:'red'
-					// }			
+					lineWidth:2,
+					color:globalColorRed			
 				}
 			]
 		});
@@ -2128,51 +2251,54 @@ function drawChart_B24(){
 			},
 			rangeSelector: {
 				selected: 3,
-				// enabled: false,
+				labelStyle: {
+		            color: 'gray',
+		            fontWeight: 'bold',
+		            fontSize:13
+		        },
 			},
-			// exporting: {
-		 //        enabled: false
-		 //    },
-		    // navigator: {
-		    //     enabled: false
-		    // },
+			exporting: {
+			    enabled: false,
+			    scale: 1,
+			    sourceWidth: 700,
+        		sourceHeight: 500
+			},
+		    navigator: {
+		        enabled: true,
+		        series: {
+					type: 'line',
+					color: 'gray',
+				}
+		    },
 		    // scrollbar: {
 		    //     enabled: false
 		    // },
 		    legend: {
 		        enabled: true,
-		        align: 'right',
-		        // backgroundColor: '#FCFFC5',
-		        // borderColor: 'black',
-		        // borderWidth: 2,
-		        color: 'gray',
-		        // layout: 'vertical',
-		        verticalAlign: 'top',
-		        x: -40,
-				y: 15,
-				floating: true,
+			    align: 'center',
+			    verticalAlign: 'top',
+			    x: 180,
+				y: 20,
+				floating: false,
 				itemStyle:{
 					"color": "black", 
 					"cursor": "pointer", 
 					"fontSize": "12px", 
-					// "fontWeight": "bold"
-				}
-		        // shadow: true,
-		        // itemWidth: 80,
-		        // maxHeight:10
+				},
+			    margin:0,
 		    },
 
 
-
-			title: {
-				text: '指定板块周换手率的历史变化',
-				style: {
-							color: 'black',
-							fontWeight: 'bold',
-							fontSize: 20
-					},
-				margin: 30
-			},
+		    title:GlobalTitleStyle,
+			// title: {
+			// 	text: '指定板块周换手率的历史变化',
+			// 	style: {
+			// 				color: 'black',
+			// 				fontWeight: 'bold',
+			// 				fontSize: 20
+			// 		},
+			// 	margin: 30
+			// },
 			yAxis: [
 			{
 					title: {
@@ -2221,18 +2347,15 @@ function drawChart_B24(){
 					name: '换手率分位(MA5)',
 					data: dataObj.data,
 					yAxis:0,
-					color:'#1E90FF',
-					lineWidth:1
+					lineWidth:2,
+					color:globalColorBlue
 				},
 				{
 					name: '收盘价',
 					data: dataObj.index_data,	
 					yAxis:1,
-					color:'#FF4500',
-					lineWidth:1
-					// line:{
-					// 	color:'red'
-					// }			
+					lineWidth:2,
+					color:globalColorRed			
 				}
 			]
 		});
@@ -2504,8 +2627,15 @@ function drawChart_B32(){
 			enabled: false
 		},
 		title: {
-			text: '所有行业的速度/加速度最新分布'
+			text: ''//所有行业的速度/加速度最新分布
 		},
+		exporting: {
+		    enabled: false,
+		    scale: 1,
+		    sourceWidth: 700,
+    		sourceHeight: 500
+		},
+		// title:GlobalTitleStyle,
 		xAxis: {
 			lineWidth:1,
 			gridLineWidth:1,
@@ -2744,16 +2874,25 @@ function drawChart_B33(){
 		    credits: {
 				enabled: false
 			},
+		    // title: {
+		    //     // text: '指定行业“速度/加速度”的历史变化路径'
+		    // },
 		    title: {
-		        text: '指定行业“速度/加速度”的历史变化路径'
+		        text: ''
 		    },
-		    subtitle: {
-		        // text: '根据标准大气模型绘制'
-		    },
+		    // subtitle: {
+		    //     // text: '根据标准大气模型绘制'
+		    // },
+		    exporting: {
+			    enabled: false,
+			    scale: 1,
+			    sourceWidth: 700,
+	    		sourceHeight: 500
+			},
 		    xAxis: {
 		        reversed: false,
 		        title: {
-		            enabled: true,
+		            enabled: false,
 		            // text: '海拔高度'
 		        },
 		        labels: {
@@ -2768,11 +2907,11 @@ function drawChart_B33(){
 		        title: {
 		            // text: '温度'
 		        },
-		        labels: {
-		            formatter: function () {
-		                return this.value + '°';
-		            }
-		        },
+		        // labels: {
+		        //     formatter: function () {
+		        //         return this.value + '°';
+		        //     }
+		        // },
 		        lineWidth: 2,
 		    },
 		    legend: {
@@ -2791,7 +2930,9 @@ function drawChart_B33(){
 		    },
 		    series: [{
 		        name: '速度/加速度',
-		        data: dataJsonArray
+		        data: dataJsonArray,
+		        lineWidth:2,
+				color:globalColorBlue
 		    }]
 		});
 	});
@@ -2849,37 +2990,52 @@ function drawChart_B41(){
 			credits: {
 				enabled: false
 			},
-		    legend:{
-		        // enabled: false,
-		        align: 'right',
-		        // backgroundColor: '#FCFFC5',
-		        // borderColor: 'black',
-		        // borderWidth: 2,
-		        layout: 'vertical',
-		        verticalAlign: 'top',
-		  //       x: -10,
-				// y: 10,
-				floating: true
-		        // shadow: true,
-		        // itemWidth: 80,
-		        // maxHeight:10
+		    legend: {
+		        enabled: true,
+			    align: 'center',
+			    verticalAlign: 'top',
+			    x: 250,
+				y: 20,
+				floating: false,
+				itemStyle:{
+					"color": "black", 
+					"cursor": "pointer", 
+					"fontSize": "12px", 
+				},
+			    margin:0,
 		    },
 			rangeSelector: {
 				// enabled: false,
 				selected: 3,
+				labelStyle: {
+		            color: 'gray',
+		            fontWeight: 'bold',
+		            fontSize:13
+		        },
 			},
-			// exporting: {
-			//     enabled: false
+			navigator: {
+		        enabled: true,
+		        series: {
+					type: 'line',
+					color: 'gray',
+				}
+		    },
+			exporting: {
+			    enabled: false,
+			    scale: 1,
+			    sourceWidth: 700,
+        		sourceHeight: 500
+			},
+			// title: {
+			// 	text: '中期_HP滤波后的行业估值',
+			// 	style: {
+			// 				color: 'black',
+			// 				fontWeight: 'bold',
+			// 				fontSize: 20
+			// 			},
+			// 	margin: 30
 			// },
-			title: {
-				text: '中期_HP滤波后的行业估值',
-				style: {
-							color: 'black',
-							fontWeight: 'bold',
-							fontSize: 20
-						},
-				margin: 30
-			},
+			title:GlobalTitleStyle,
 			plotOptions: {
 		        series: {
 		        	allowPointSelect:true,
@@ -3058,9 +3214,8 @@ function drawChart_B41(){
 			series: [{
 				name: '中期_HP滤波后的行业估值',
 				data: dataObjData,
-				tooltip: {
-						valueDecimals: 4
-				}
+				lineWidth:2,
+				color:globalColorBlue
 			}]
 		});
 
@@ -3535,7 +3690,7 @@ function drawChart_B32_old(){
 
 
 
-function getCurrentTime(){
+function getCurrentTime(lengthChoose){
 	//获取当前时间
 	var date = new Date();
 	var year = date.getFullYear();
@@ -3546,7 +3701,19 @@ function getCurrentTime(){
 	var hour = date.getHours();
 	var minute = date.getMinutes();
 	var second = date.getSeconds();
-	var currentTime=year+month+day+hour+minute+second;
+	var currentTime='';
+	if (lengthChoose==1) {
+		currentTime=year+month+day+hour+minute+second;
+	}
+	if (lengthChoose==2) { //20180912
+		currentTime=year+month+day;		
+	}
+	if (lengthChoose==3) {  //前一天
+		day = date.getDate()-1;
+		if (day<10) {day='0'+day;}
+		currentTime=year+month+day;		
+	}
+	console.log("-------"+currentTime);
 	return currentTime;
 }
 
@@ -3672,13 +3839,13 @@ function calculateQuantity(row_items){
 
 		var caculateResult=new Array();
 		for (var m = 0; m < ProblemStatistic.length; m++) {
-			console.log('统计结果为：'+ProblemStatistic[m]+'共'+ProblemNumStatistic[m]+'\n');
+			// console.log('统计结果为：'+ProblemStatistic[m]+'共'+ProblemNumStatistic[m]+'\n');
 			var temp=new Array();
 			temp[0]=ProblemStatistic[m];
 			temp[1]=Math.round(ProblemNumStatistic[m]*1000/row_items.length)/1000;
 			// temp[1]=ProblemNumStatistic[m]/row_items.length;
 			caculateResult.push(temp);
-			console.log('统计结果为：'+temp[0]+'共'+temp[1]+'\n');
+			// console.log('统计结果为：'+temp[0]+'共'+temp[1]+'\n');
 		}
 		return caculateResult;
 }
