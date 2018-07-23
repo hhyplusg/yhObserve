@@ -510,7 +510,7 @@ function drawChart_A12(){
 				enabled: false
 			},
 			chart:{
-				marginBottom:20
+				// marginBottom:20
 			},
 			navigator: {
 		        enabled: true,
@@ -520,15 +520,45 @@ function drawChart_A12(){
 				}
 		    },
 		    exporting: {
-			    enabled: true,
+			    enabled: false,
 			    scale: 1,
 			    sourceWidth: 800,
-        		sourceHeight: 600
+        		sourceHeight: 500
 			},
-			rangeSelector: {
+			// rangeSelector: {
+			// 	selected: 3,
+			// 	// enabled: false,
+			// 	buttonTheme:{
+			// 		style:{
+			// 			fontSize:13,
+			// 		}
+
+			// 	},
+			// 	labelStyle: {
+		    //         color: 'gray',
+		    //         fontWeight: 'bold',
+		    //         fontSize:13
+		    //     },
+			// },
+						rangeSelector: {
+				enabled: true,
 				selected: 3,
-				// enabled: false,
-				labelStyle: {
+				// margin:50,
+				buttonTheme: { 
+		            style: {
+		                fontSize:13,
+		          
+		            },
+		        },
+		        inputBoxBorderColor: 'gray',
+		        inputBoxWidth: 80,
+		        inputBoxHeight: 18,
+		        inputStyle: {
+		            color: 'black',
+		            // fontWeight: 'bold'
+		            fontSize:13
+		        },
+		        labelStyle: {
 		            color: 'gray',
 		            fontWeight: 'bold',
 		            fontSize:13
