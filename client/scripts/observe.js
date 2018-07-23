@@ -1336,7 +1336,13 @@ function drawChart_A31(){
 		                    console.log('zhixingle点击函数--');
 		                    console.log(event.point.x+'----'+event.point.y);
 		                    //获取点击数据的时间
-		                    var dateYMD=getCurrentTime(2);
+		                    var date = new Date(event.point.x);
+							var year = date.getFullYear();
+							var month = date.getMonth()+1;
+							if (month<10) {month='0'+month;}
+							var day = date.getDate();
+							if (day<10) {day='0'+day;}
+		                    var dateYMD=year+month+day;
 		                    console.log(dateYMD);
 		                    //传递点击数据，获取小图数据
 							$.ajax({
@@ -4092,19 +4098,64 @@ function svgToPng(svg,pngWidth,pngHeight,pngName){
      // var svgXml = $('svg').html();
  
 	var image = new Image();
+	image.crossOrigin = 'anonymous';
 	image.src = 'data:image/svg+xml;base64,' + window.btoa(unescape(encodeURIComponent(svg))); //给图片对象写入base64编码的svg流
-	 
+	// getDataUrlBySrc(svg).then(b64 => (image.src = b64));
+
 	var canvas = document.createElement('canvas');  //准备空画布
 	canvas.width = pngWidth;  
     canvas.height = pngHeight; 
 	 
 	var context = canvas.getContext('2d');  //取得画布的2d绘图上下文
-	context.drawImage(image, 0, 0);
-	var a = document.createElement("a"); 
-	a.href = canvas.toDataURL('image/png'); //将画布内的信息导出为png图片数据
-	a.download = pngName+".png";  //设定下载名称
-	// a.href = url;  
-	a.click(); //点击触发下载
+	image.onload=function(){
+		context.drawImage(image, 0, 0);
+		var a = document.createElement("a"); 
+			a.href = canvas.toDataURL('image/png'); //将画布内的信息导出为png图片数据
+			a.download = pngName+".png";  //设定下载名称
+			// a.href = url;  
+			a.click(); //点击触发下载
+	
+
+		
+	};
+
+ 
+	function getDataUrlBySrc(src) {
+	 return new Promise<string>((resolve, reject) => {
+	 if (Cache.localGet("isIE")) {
+	  const xmlHTTP = new XMLHttpRequest();
+	  xmlHTTP.open("GET", src, true);
+	 
+	  // 以 ArrayBuffer 的形式返回数据
+	  xmlHTTP.responseType = "arraybuffer";
+	 
+	  xmlHTTP.onload = function(e) {
+	   
+	  // 1. 将返回的数据存储在一个 8 位无符号整数值的类型化数组里面
+	  const arr = new Uint8Array(xmlHTTP.response);
+	   
+	  // 2. 转为 charCode 字符串
+	  const raw = Array.prototype.map
+	   .call(arr, charCode => String.fromCharCode(charCode))
+	   .join("");
+	    
+	  // 3. 将二进制字符串转为 base64 编码的字符串
+	  const b64 = btoa(raw);
+	   
+	  const dataURL = "data:image/png;base64," + b64;
+	  resolve(dataURL);
+	  };
+	  xmlHTTP.onerror = function(err) {
+	  reject(err);
+	  };
+	  xmlHTTP.send();
+	 } else {
+	  resolve(src);
+	 }
+	 });
+	}
+
+
 
 }
 
