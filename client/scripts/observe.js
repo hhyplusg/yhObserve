@@ -89,7 +89,7 @@ $(function(){
 	drawChart_A12(); //百分比图方法实现双轴</li>     <!-- 融资买入/可用担保价值 -->
 	drawChart_A21(); // 基础表实现双轴</li>           <!-- 综合性情绪指标 -->
 	drawChart_A22(keys.A22,'881001.WI','MA5');  //百分比图方法实现双轴</li>     <!-- 融资买入/可用担保价值 -->
-	drawChart_A23(keys.A23,'000300.SH'); 
+	drawChart_A23(keys.A23,'000001.SH','上证综指'); 
 	drawChart_A24(keys.A24,'000300.SH');  //换手率
 	drawChart_A31(keys.A31,'000300.SH');  //指定版块的个股估值分布
 	drawSmallDiagram();
@@ -994,7 +994,7 @@ function drawChart_A22(key,windCode,smooth){
 
 
 }
-function drawChart_A23(key,selectedVal){  
+function drawChart_A23(key,selectedVal,selectedText){  
 	console.log("开始drawChart-_5A23");
 	if (onlineOrLocal) {
 		globalDataURL='../lib/data5A23.json';
@@ -1112,7 +1112,7 @@ function drawChart_A23(key,selectedVal){
 					color:globalColorRed			
 				},
 				{
-					name: '中证500(右轴)',
+					name: selectedText,
 					data: dataObj.index_data,	
 					yAxis:1,
 					lineWidth:2,
@@ -4990,7 +4990,7 @@ $(".selected-index").change(function(){
 	switch (key)
 	{
 		case keys.A23: 
-		    drawChart_A23(key,selectedVal);
+		    drawChart_A23(key,selectedVal,selectedText);
 		case keys.A24: ;
 		    drawChart_A24(key,selectedVal);
 		case keys.A31: 

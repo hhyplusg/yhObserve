@@ -201,7 +201,7 @@ gulp.task('scripts', async () => {
       await bundle.write({
         file: `.tmp/scripts/${js}`,
         format: 'iife',
-        sourcemap: true
+        sourcemap: false
       });
     } catch (error) {
       console.log('error'+error);
