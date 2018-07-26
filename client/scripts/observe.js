@@ -90,19 +90,19 @@ $(function(){
 	drawChart_A21(); // 基础表实现双轴</li>           <!-- 综合性情绪指标 -->
 	drawChart_A22(keys.A22,'881001.WI','MA5','万得全A');  //百分比图方法实现双轴</li>     <!-- 融资买入/可用担保价值 -->
 	drawChart_A23(keys.A23,'000001.SH','上证综指'); 
-	drawChart_A24(keys.A24,'000300.SH');  //换手率
+	drawChart_A24(keys.A24,'000001.SH');  //换手率
 	drawChart_A31(keys.A31,'000300.SH');  //指定版块的个股估值分布
 	drawSmallDiagram();
-	drawChart_A32(keys.A32,'000300.SH');
+	drawChart_A32(keys.A32,'000001.SH');
 	drawChart_B11(keys.B11,'000001.SH','000016.SH','MA5','上证综指','上证50','MA5');  //指定版块的相对换手率历史变化 key,windCode1,windCode2,smooth
 	drawChart_B21();   //柱状图  换手率变化最大的基准
 	drawChart_B22();   //柱状图  换手率绝对水平最高的基准
 	drawChart_B23();   //表格   基准/版块的周换手率
-	drawChart_B24(keys.B24,'000300.SH');   //双轴  指定板块周换手率的历史变化
+	drawChart_B24(keys.B24,'000001.SH');   //双轴  指定板块周换手率的历史变化
 	drawChart_B31();   //柱状图
 	drawChart_B32();   //象限图
 	drawChart_B33(keys.B33,'CI005001.WI');  // 反转图 	
-	drawChart_B41(keys.B41,'000300.SH');
+	drawChart_B41(keys.B41,'000001.SH');
 	// drawHistogram();
 	// drawChart7(); // 象限图
 	// export

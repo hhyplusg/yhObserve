@@ -387,6 +387,10 @@ function getSelectedData(key,className){
 			$(className).append(option);						
 			// $('.selected-index').append(option);
 		}
+		// 默认选中
+	
+		 $('#diagramDiv7').find($("select option[value='000300.SH']")).attr("selected", "selected");  //A31
+		 $('#diagramDiv9').find('.windCode2').find($("option[value='000016.SH']")).attr("selected", "selected");  //B11
 	});
 }
 
