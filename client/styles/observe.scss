@@ -521,6 +521,10 @@ $background-color: white;
             padding: 10px;
             height: 15%;
         }
+        h3{
+            display: flex;
+            justify-content: space-between;
+        }
         .input{
             padding: 10px 30px;
             height: 70%;

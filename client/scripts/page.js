@@ -196,8 +196,15 @@ if (window.location.href=='http://localhost:3000/observesystem.html') {onlineOrL
 		$('html,body').animate({scrollTop:0},'slow');
 	});
 	$('.comment-cancel').click(function(){	
-		$(this).parent().parent().parent().css('display','none');
+		// $(this).parent().parent().parent().css('display','none');
+		$(this).parents().find('.create-comment-container').css('display','none');
 	});
+	$('.close-comment').click(function(){	
+		
+		$(this).parents().find('.create-comment-container').css('display','none');
+	});
+
+	
 
 	$('.comment-confirm').click(function(){	
 		var key = $(this).parent().parent().parent().parent().attr('key');
