@@ -2444,8 +2444,19 @@ function drawChart_B22(){
 	});
 
 }
+
+var isBenchmark = true;
+$('.selectDataArea .benchmark').click(function(){	
+	isBenchmark = true;
+	drawChart_B23();
+});
+$('.selectDataArea .plate').click(function(){	
+	isBenchmark = false;
+	drawChart_B23();
+});
 //表格
 function drawChart_B23(){
+	$('#showTable').empty();
 	console.log("开始drawChart-B23-");
 	if (onlineOrLocal) {
 		globalDataURL='../lib/data12B23.json';
@@ -2454,9 +2465,15 @@ function drawChart_B23(){
 	}
 	//获取数据
 	$.getJSON(globalDataURL,function (dataYH) {	
+		var dataBase = undefined;
 		if (onlineOrLocal) {
 			var dataObj=dataYH.obj;
-			var dataBase=dataObj.data_base; 
+			if(isBenchmark){
+				 dataBase = dataObj.data_base; 
+			}else{
+				 dataBase = dataObj.data_index;
+			}
+			
 		}else{
 			var jsonObject =$.parseJSON(dataYH);
 			var dataObj=jsonObject.obj;	
