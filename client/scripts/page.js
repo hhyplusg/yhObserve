@@ -17,7 +17,6 @@ if (window.location.href=='http://localhost:3000/observesystem.html') {onlineOrL
 		let img = $(this).find('.right-img-three').get(0);
 		let nextSbl = this.nextElementSibling;
 		let id= this.getAttribute('id').replace('diagramThree','');	
-		console.log(id);
 		if (img){
 			if (ariaExpanded == 'false'){
 				let menuThreeCheck = $("#menuThreeCheck"+id);
@@ -220,7 +219,8 @@ if (window.location.href=='http://localhost:3000/observesystem.html') {onlineOrL
 			data: data
 		})
 		.done(function( data ) {
-			getTable(key,data);
+			
+			getCommentTable(key);
 			console.log( "Data " + data );
 		})
 		.fail(function( jqXHR, textStatus ) {
@@ -234,7 +234,6 @@ if (window.location.href=='http://localhost:3000/observesystem.html') {onlineOrL
 		var key = $(this).parent().parent().parent().attr('key');
 		var startDate = $(this).parent().find('.start-date').val();
 		var endDate = $(this).parent().find('.end-date').val();
-		// console.log(startDate+':'+key);
 		
 		startDate = startDate.replace(/-/g,'');
 		endDate = endDate.replace(/-/g,'');
@@ -244,8 +243,7 @@ if (window.location.href=='http://localhost:3000/observesystem.html') {onlineOrL
 			endDate = getFormatTime();
 		}
 		
-		console.log(':'+key);
-		// console.log(':'+endDate);
+
 		var data = {
 			'startDate':startDate,
 			'endDate':endDate
@@ -257,7 +255,7 @@ if (window.location.href=='http://localhost:3000/observesystem.html') {onlineOrL
 			data: data
 		})
 		.done(function( data ) {
-			getCommentTable(key);
+			getTable(key,data);
 			
 			console.log( "Data " + data );
 		})
@@ -277,7 +275,7 @@ function getFormatTime(){
 	var date = myDate.getDate()<10 ? '0'+(myDate.getDate()):(myDate.getDate());
 
 	var time = ''+year+month+date;
-	// console.log(year+'-'+month+'-'+date);
+
 	return time
 }
 
@@ -394,7 +392,7 @@ function getSelectedData(key,className){
 
 getSelectedData('0001','.selected-index');
 getSelectedData('0002','.selected-citic-index');
-// console.log(window.index);
+
 
 // $('text').focus(function(){
 // 	console.log('highcharts-range-selector');
