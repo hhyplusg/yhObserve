@@ -392,39 +392,9 @@ getSelectedData('0001','.selected-index');
 getSelectedData('0002','.selected-citic-index');
 // console.log(window.index);
 
-/**
- * 选择下拉框
- * 如果既有平滑周期，又有指数名称，这2个值的class不一样，分别获取2个值，然后分别处理
- */
 
-$(".selected-index").change(function(){
-	 
-	var key = $(this).attr('key');
-	var selectedVal = $(this).val();
-	window.keyVal = key;
-	window.selectedVal = selectedVal;
-	switch (key)
-	{
-		case keys.A22: 
-		// drawChart_A22(val);
-		case keys.A23: ;
-		// drawChart_A23(val);
-		case keys.A24: ;
-		// drawChart_A24(val);
-		case keys.A31: ;
-		// drawChart_A31(val);
-		case keys.A32: ;
-		// drawChart_A32(val);
-		case keys.B11: ;
-		// drawChart_B11(val);
-		case keys.A33: ;
-		// drawChart_A33(val);
-		case keys.A41: ;
-		// drawChart_A41(val);
-	}
-	
 
-});
+
 
 
 

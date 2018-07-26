@@ -1,4 +1,4 @@
-import {EventObject,GetCookie,SetCookie,DeleteCookie,isWeiXin,parseUrlSearch,getUrlParams,isEmptyObj,getDeviceType} from './api';
+import {EventObject,GetCookie,SetCookie,DeleteCookie,isWeiXin,parseUrlSearch,getUrlParams,isEmptyObj,getDeviceType,keys} from './api';
 
 // import * as SandSignika from '../lib/Highstock-6.1.0/code/themes/sand-signika';
 var globalColorRed='red';  //#1E90FF  #FF4500
@@ -91,9 +91,9 @@ $(function(){
 	drawChart_A22();  //百分比图方法实现双轴</li>     <!-- 融资买入/可用担保价值 -->
 	drawChart_A23(); 
 	drawChart_A24();  //换手率
-	drawChart_A31();  //指定版块的个股估值分布
+	drawChart_A31(keys.A31,'000300.SH');  //指定版块的个股估值分布
 	drawSmallDiagram();
-	drawChart_A32();
+	drawChart_A32(keys.A32,'000300.SH');
 	drawChart_B11();  //指定版块的相对换手率历史变化
 	drawChart_B21();   //柱状图  换手率变化最大的基准
 	drawChart_B22();   //柱状图  换手率绝对水平最高的基准
@@ -113,10 +113,10 @@ $(function(){
 		$("#bigDiv").wordExport();
 	});
 	
-	$('#diagramDiv8').find('.selected-index').change(function(event){
-		console.log("下拉选择执行！");
-		drawChart_A32();
-	});
+	// $('#diagramDiv8').find('.selected-index').change(function(event){
+	// 	console.log("下拉选择执行！");
+	// 	drawChart_A32();
+	// });
 
 
 
@@ -1290,12 +1290,508 @@ function drawChart_A24(){
 
 }
 //大图带小图
-function drawChart_A31(){
+// function drawChart_A31(){
+// 	// 第一次获取selectItem为null，因为还没请求到值。设置默认值
+// 	let selectItem = $('#diagramDiv7').find('.selected-index').val();
+// 	console.log(selectItem);
+
+// 	console.log("开始drawChart-_A31-");
+// 	if (onlineOrLocal) {
+// 		globalDataURL='../lib/data7A31大图.json';
+// 	}else{
+// 		globalDataURL='weekly/IndicatorQuery?indicatorId=2000&windCode=000300.SH';
+// 	}
+// 	//获取数据
+// 	$.getJSON(globalDataURL,function (dataYH) {	
+// 		if (onlineOrLocal) {
+// 			var dataObj=dataYH.obj;
+
+// 		}else{
+// 			var jsonObject =$.parseJSON(dataYH);
+// 			var dataObj=jsonObject.obj;			
+// 		}
+// 		console.log("图7A31的obj数据为：\n");
+// 		console.log(dataObj);
+
+// 		// Create the chart
+// 		var mychart =Highcharts.stockChart('showDiagram7', {
+// 			credits: {
+// 				enabled: false
+// 			},
+// 		    legend: {
+// 		        enabled: true,
+// 			    align: 'right',
+// 			    verticalAlign: 'top',
+// 			    x: -50,
+// 				y: 20,
+// 				floating: false,
+// 				itemStyle:{
+// 					"color": "black", 
+// 					"cursor": "pointer", 
+// 					"fontSize": "12px", 
+// 				},
+// 			    margin:0,
+// 		    },
+// 			rangeSelector: {
+// 				selected: 3,
+// 				labelStyle: {
+// 		            color: 'gray',
+// 		            fontWeight: 'bold',
+// 		            fontSize:13
+// 		        },
+// 			},
+// 			navigator: {
+// 		        enabled: true,
+// 		        series: {
+// 					type: 'line',
+// 					color: 'gray',
+// 				}
+// 		    },
+// 			exporting: {
+// 			    enabled: false,
+// 			    scale: 1,
+// 			    sourceWidth: 800,
+//         		sourceHeight: 600
+// 			},
+// 			// title: {
+// 			// 	// text: '指定版块的个股估值分布',
+// 			// 	style: {
+// 			// 				color: 'black',
+// 			// 				fontWeight: 'bold',
+// 			// 				fontSize: 20
+// 			// 			},
+// 			// 	margin: 30
+// 			// },
+// 			title:GlobalTitleStyle,
+// 			plotOptions: {
+// 		        series: {
+// 		            events: {
+// 		                click: function (event) {
+// 		                    console.log('zhixingle点击函数--');
+// 		                    console.log(event.point.x+'----'+event.point.y);
+// 		                    //获取点击数据的时间
+// 		                    var date = new Date(event.point.x);
+// 							var year = date.getFullYear();
+// 							var month = date.getMonth()+1;
+// 							if (month<10) {month='0'+month;}
+// 							var day = date.getDate();
+// 							if (day<10) {day='0'+day;}
+// 		                    var dateYMD=year+month+day;
+// 		                    console.log(dateYMD);
+// 		                    //传递点击数据，获取小图数据
+// 							$.ajax({
+// 								method: "GET",
+// 								url: '/weekly/IndicatorQuery?indicatorId=0011&windCode=000300.SH&startDate='+dateYMD+'&endDate='+dateYMD,							
+// 							})
+// 							.done(function( msg ) {
+// 								console.log( "小图返回的Data " + msg );
+// 								if (onlineOrLocal) {
+// 									globalDataURL='../lib/data7A31小图.json';
+// 									//获取数据
+// 									$.getJSON(globalDataURL,function (dataYH) {	
+// 										var dataObj=dataYH.obj;
+// 										console.log("图7A31小图的obj数据为：\n");
+// 										console.log(dataObj);
+
+// 										var finalResult=calculateQuantity(dataObj);
+// 										//画小图
+// 										let cdiv=document.getElementById('ChildDiv');
+// 					                    if(cdiv!=null){  
+// 									        let p = cdiv.parentNode;  
+// 									        p.removeChild(cdiv);  
+// 									    }  
+
+// 					                    var mouseX;//记录鼠标点击位置。  
+// 										var mouseY;//记录鼠标点击位置
+
+// 					                    var ev = ev||event;   
+// 									    if(ev.pageX || ev.pageY){   
+// 									        mouseX = ev.pageX+'px';   
+// 									        mouseY = ev.pageY+'px';  
+// 									    }else{//兼容ie   
+// 									        mouseX = ev.clientX+document.body.scrollLeft - document.body.clientLeft+'px';  
+// 									      mouseY = ev.clientY+document.documentElement.scrollTop+'px';  
+// 									    } 
+// 									    var my = document.createElement("ChildDiv");   //创建一个div    
+// 									    document.body.appendChild(my);   //添加到页面     
+// 									    my.style.position="absolute";    //通过样式指定该div的位置方式,  
+// 									    my.style.top= mouseY;   //通过样式指定y坐标  
+// 									    my.style.left= mouseX;   //通过样式指定x坐标  
+// 									    my.style.border='1px solid #FF0000'; // 设置边框  
+// 									    my.style.width='400px';  
+// 										my.style.height='200px';//通过样式指定宽度、高度    
+// 										//通过样式指定背景颜色,,若是背景图片 例为my.style.backgroundImage="url(img/3.jpg)"     
+// 										my.style.backgroundColor="#ffffcc";   //设置样式透明  
+// 										var alpha = 80;  
+// 										my.style.filter='alpha(opacity:'+alpha+')';//IE   
+// 										my.style.opacity=alpha/100;//IE之外其他浏览器  
+// 										my.id = "ChildDiv";//设置ID 
+
+// 										//给div加一个点击后隐藏的函数 
+// 										my.onclick = function(){
+// 										   if(  (cdiv=document.getElementById('ChildDiv'))!=null){  
+// 										       var p = cdiv.parentNode;  
+// 										        p.removeChild(cdiv);  
+// 										    } 
+// 										 };
+
+// 										//在div中创建图表
+// 										var chart = Highcharts.chart('ChildDiv', {
+// 										chart: {
+// 												type: 'column'
+// 										},
+// 										credits: {
+// 											enabled: false
+// 										},
+// 										title: {
+// 												text: selectItem+dateYMD+'PE分布'
+// 										},
+// 										exporting:{
+// 											enabled: false
+// 										},
+// 										xAxis: {
+// 											type: 'category',
+// 											labels: {
+// 												rotation: -45,  // 设置轴标签旋转角度
+// 												style:{
+// 													// "color": "black", 
+// 													// "cursor": "pointer", 
+// 													"fontSize": "10px", 
+// 												},
+// 											}
+// 										},
+// 										yAxis: {
+// 												min: 0,
+// 												// title: {
+// 												// 		// text: '人口 (百万)'
+// 												// }
+// 										},
+// 										legend: {
+// 												enabled: false
+// 										},
+// 										tooltip: {
+// 												pointFormat: 'PE频率: <b>{point.y:.1f}</b>'
+// 										},
+// 										series: [{
+// 											name: 'PE频率',
+// 											data: finalResult,
+// 											dataLabels: {
+// 												enabled: true,
+// 												rotation: -90,
+// 												color: '#FFFFFF',
+// 												align: 'right',
+// 												format: '{point.y:.1f}', // :.1f 为保留 1 位小数
+// 												y: 10
+// 											}
+// 										}]
+// 										});
+// 										globalClicked=true;
+
+// 									});
+// 								}
+// 								else{   //不是本地出小图
+// 									console.log( "进入在线画小图：-" + msg );
+// 									var jsonObject =$.parseJSON(msg);
+// 									var dataObj=jsonObject.obj;	
+// 									var finalResult=calculateQuantity(dataObj);
+// 									//画小图
+// 										let cdiv=document.getElementById('ChildDiv');
+// 					                    if(cdiv!=null){  
+// 									        let p = cdiv.parentNode;  
+// 									        p.removeChild(cdiv);  
+// 									    }  
+
+// 					                    var mouseX;//记录鼠标点击位置。  
+// 										var mouseY;//记录鼠标点击位置
+
+// 					                    var ev = ev||event;   
+// 									    if(ev.pageX || ev.pageY){   
+// 									        mouseX = ev.pageX+'px';   
+// 									        mouseY = ev.pageY+'px';  
+// 									    }else{//兼容ie   
+// 									        mouseX = ev.clientX+document.body.scrollLeft - document.body.clientLeft+'px';  
+// 									      mouseY = ev.clientY+document.documentElement.scrollTop+'px';  
+// 									    } 
+// 									    var my = document.createElement("ChildDiv");   //创建一个div    
+// 									    document.body.appendChild(my);   //添加到页面     
+// 									    my.style.position="absolute";    //通过样式指定该div的位置方式,  
+// 									    my.style.top= mouseY;   //通过样式指定y坐标  
+// 									    my.style.left= mouseX;   //通过样式指定x坐标  
+// 									    my.style.border='1px solid #FF0000'; // 设置边框  
+// 									    my.style.width='400px';  
+// 										my.style.height='200px';//通过样式指定宽度、高度    
+// 										//通过样式指定背景颜色,,若是背景图片 例为my.style.backgroundImage="url(img/3.jpg)"     
+// 										my.style.backgroundColor="#ffffcc";   //设置样式透明  
+// 										var alpha = 90;  
+// 										my.style.filter='alpha(opacity:'+alpha+')';//IE   
+// 										my.style.opacity=alpha/100;//IE之外其他浏览器  
+// 										my.id = "ChildDiv";//设置ID 
+
+// 										//给div加一个点击后隐藏的函数 
+// 										my.onclick = function(){
+// 										   if(  (cdiv=document.getElementById('ChildDiv'))!=null){  
+// 										        p = cdiv.parentNode;  
+// 										        p.removeChild(cdiv);  
+// 										    } 
+// 										 };
+
+// 										//在div中创建图表
+// 										var chart = Highcharts.chart('ChildDiv', {
+// 										chart: {
+// 												type: 'column'
+// 										},
+// 										credits: {
+// 											enabled: false
+// 										},
+// 										title: {
+// 												text: selectItem+dateYMD+'PE分布'
+// 										},
+// 										exporting:{
+// 											enabled: false
+// 										},
+// 										xAxis: {
+// 											type: 'category',
+// 											labels: {
+// 												rotation: -45,  // 设置轴标签旋转角度
+// 												style:{
+// 													// "color": "black", 
+// 													// "cursor": "pointer", 
+// 													"fontSize": "10px", 
+// 												},
+// 											}
+// 										},
+// 										yAxis: {
+// 												min: 0,
+// 												// title: {
+// 												// 		// text: '人口 (百万)'
+// 												// }
+// 										},
+// 										legend: {
+// 												enabled: false
+// 										},
+// 										tooltip: {
+// 												pointFormat: 'PE频率: <b>{point.y:.1f}</b>'
+// 										},
+// 										series: [{
+// 											name: 'PE频率',
+// 											data: finalResult,
+// 											dataLabels: {
+// 												enabled: true,
+// 												rotation: -90,
+// 												color: '#FFFFFF',
+// 												align: 'right',
+// 												format: '{point.y:.1f}', // :.1f 为保留 1 位小数
+// 												y: 10
+// 											}
+// 										}]
+// 										});
+// 										globalClicked=true;
+
+
+// 								}
+
+
+
+
+
+
+// 							})
+// 							.fail(function( jqXHR, textStatus ) {
+// 								console.log( "Request failed: " + textStatus );
+
+// 								if (onlineOrLocal) {
+// 									globalDataURL='../lib/data7A31小图.json';
+// 									//获取数据
+// 									$.getJSON(globalDataURL,function (dataYH) {	
+// 										var dataObj=dataYH.obj;
+// 										console.log("图7A31小图的obj数据为：\n");
+// 										console.log(dataObj);
+
+// 										var finalResult=calculateQuantity(dataObj);
+// 										//画小图
+// 										let cdiv=document.getElementById('ChildDiv');
+// 					                    if(cdiv!=null){  
+// 									        let p = cdiv.parentNode;  
+// 									        p.removeChild(cdiv);  
+// 									    }  
+
+// 					                    var mouseX;//记录鼠标点击位置。  
+// 										var mouseY;//记录鼠标点击位置
+
+// 					                    var ev = ev||event;   
+// 									    if(ev.pageX || ev.pageY){   
+// 									        mouseX = ev.pageX+'px';   
+// 									        mouseY = ev.pageY+'px';  
+// 									    }else{//兼容ie   
+// 									        mouseX = ev.clientX+document.body.scrollLeft - document.body.clientLeft+'px';  
+// 									      mouseY = ev.clientY+document.documentElement.scrollTop+'px';  
+// 									    } 
+// 									    var my = document.createElement("ChildDiv");   //创建一个div    
+// 									    document.body.appendChild(my);   //添加到页面     
+// 									    my.style.position="absolute";    //通过样式指定该div的位置方式,  
+// 									    my.style.top= mouseY;   //通过样式指定y坐标  
+// 									    my.style.left= mouseX;   //通过样式指定x坐标  
+// 									    my.style.border='1px solid #FF0000'; // 设置边框  
+// 									    my.style.width='400px';  
+// 										my.style.height='200px';//通过样式指定宽度、高度    
+// 										//通过样式指定背景颜色,,若是背景图片 例为my.style.backgroundImage="url(img/3.jpg)"     
+// 										my.style.backgroundColor="#ffffcc";   //设置样式透明  
+// 										var alpha = 95;  
+// 										my.style.filter='alpha(opacity:'+alpha+')';//IE   
+// 										my.style.opacity=alpha/100;//IE之外其他浏览器  
+// 										my.id = "ChildDiv";//设置ID 
+
+// 										//给div加一个点击后隐藏的函数 
+// 										my.onclick = function(){
+// 										   if(  (cdiv=document.getElementById('ChildDiv'))!=null){  
+// 										        p = cdiv.parentNode;  
+// 										        p.removeChild(cdiv);  
+// 										    } 
+// 										 };
+
+// 										//在div中创建图表
+// 										var chart = Highcharts.chart('ChildDiv', {
+// 										chart: {
+// 												type: 'column'
+// 										},
+// 										credits: {
+// 											enabled: false
+// 										},
+// 										title: {
+// 												text: selectItem+dateYMD+'PE分布'
+// 										},
+// 										exporting:{
+// 											enabled: false
+// 										},
+// 										xAxis: {
+// 											type: 'category',
+// 											labels: {
+// 												rotation: -45,  // 设置轴标签旋转角度
+// 												style:{
+// 													"fontSize": 5, 
+// 												},
+// 											}
+// 										},
+// 										yAxis: {
+// 												min: 0,
+// 												// title: {
+// 												// 		// text: '人口 (百万)'
+// 												// }
+// 										},
+// 										legend: {
+// 												enabled: false
+// 										},
+// 										tooltip: {
+// 												pointFormat: 'PE频率: <b>{point.y}</b>'
+// 										},
+// 										series: [{
+// 											name: 'PE频率',
+// 											data: finalResult,
+// 											dataLabels: {
+// 												enabled: true,
+// 												rotation: -90,
+// 												color: '#FFFFFF',
+// 												align: 'right',
+// 												// format: '{point.y:.1f}', // :.1f 为保留 1 位小数
+// 												y: 10
+// 											}
+// 										}]
+// 										});
+// 										globalClicked=true;
+
+// 									});
+// 								}
+// 							});
+
+
+		                    
+// 		            	},
+// 			            mouseOut: function (event) {
+// 			            	 if(globalClicked) {
+// 			            	 	globalClicked=false;	}
+// 			            	 else{
+// 			            	 	// console.log("---鼠标移除22");
+// 			            	 	var cdiv=document.getElementById('ChildDiv');
+// 			            	 	if(cdiv!=null){  
+// 							        var p = cdiv.parentNode;  
+// 							        p.removeChild(cdiv);  
+// 							    }
+// 			            	}		            	
+// 			            }
+		                
+// 		            }
+// 		        }
+// 		    },
+
+// 		    xAxis: {				
+// 		        title: {
+// 		            enabled: true,
+// 		            // text: '2本周换手率历史分位'
+// 		        },
+// 		        // labels: {
+// 		        // 	formatter: function() {
+// 		        //      	return Math.round(this.value*100) + '%';
+// 		        //      	// return Highcharts.numberFormat(this.value.percentage,2)+ '%';
+// 		        //  	}
+// 		        // },
+// 		        // startOnTick: true,
+// 		        // endOnTick: true,
+// 		        // showLastLabel: true
+// 		    },
+// 			yAxis: {
+// 				opposite: false,
+// 				lineWidth:1,
+// 				title: {
+// 					// text: '这个是Y轴'
+// 				},
+// 			},
+
+// 			series: [{
+// 				name: '指定板块的个股估值分布',
+// 				data: dataObj,
+// 				lineWidth:2,
+// 				color:globalColorBlue
+// 			}]
+// 		});
+
+// 	});
+// 	$('#diagramDiv7').find('.spanExportButton').click(function(event){
+// 		console.log("点击了导出图片A31！");
+// 		var chart = $('#showDiagram7').highcharts();
+// 		var curTime=getCurrentTime(1);
+// 		//设置出图时带标题
+// 		chart.title.update({ text: '指定板块的个股估值分布'});
+// 		chart.legend.update(GlobalPNGLegend);
+// 		//图标转换成图片
+// 		var svg = chart.getSVG().replace(/</g, '\n<').replace(/>/g, '>'); // make it slightly more readable								
+// 		var pngName='指定板块的个股估值分布'+curTime;
+// 		svgToPng(svg,800,600,pngName);
+// 		//出图完设置无标题
+// 		chart.title.update({ text: ''});
+// 		chart.legend.update({
+// 	        enabled: true,
+// 		    align: 'right',
+// 		    verticalAlign: 'top',
+// 		    x: -50,
+// 			y: 20,
+// 			floating: false,
+// 			itemStyle:{
+// 				"color": "black", 
+// 				"cursor": "pointer", 
+// 				"fontSize": "12px", 
+// 			},
+// 		    margin:0,
+// 	    });
+// 	});
+// }
+function drawChart_A31(key,selectedVal){
+	// 第一次获取selectItem为null，因为还没请求到值。设置默认值
+	
 	console.log("开始drawChart-_A31-");
 	if (onlineOrLocal) {
 		globalDataURL='../lib/data7A31大图.json';
 	}else{
-		globalDataURL='weekly/IndicatorQuery?indicatorId=2000&windCode=000300.SH';
+		globalDataURL='weekly/IndicatorQuery?indicatorId='+key+'&windCode='+selectedVal;
 	}
 	//获取数据
 	$.getJSON(globalDataURL,function (dataYH) {	
@@ -1377,7 +1873,7 @@ function drawChart_A31(){
 		                    //传递点击数据，获取小图数据
 							$.ajax({
 								method: "GET",
-								url: '/weekly/IndicatorQuery?indicatorId=0011&windCode=000300.SH&startDate='+dateYMD+'&endDate='+dateYMD,							
+								url: '/weekly/IndicatorQuery?indicatorId=0011&windCode='+selectedVal+'&startDate='+dateYMD+'&endDate='+dateYMD,							
 							})
 							.done(function( msg ) {
 								console.log( "小图返回的Data " + msg );
@@ -1426,7 +1922,7 @@ function drawChart_A31(){
 										//给div加一个点击后隐藏的函数 
 										my.onclick = function(){
 										   if(  (cdiv=document.getElementById('ChildDiv'))!=null){  
-										        p = cdiv.parentNode;  
+										       var p = cdiv.parentNode;  
 										        p.removeChild(cdiv);  
 										    } 
 										 };
@@ -1440,7 +1936,7 @@ function drawChart_A31(){
 											enabled: false
 										},
 										title: {
-												text: 'PE频率'
+												text: dateYMD +' '+selectedVal+' '+'PE分布'
 										},
 										exporting:{
 											enabled: false
@@ -1540,7 +2036,7 @@ function drawChart_A31(){
 											enabled: false
 										},
 										title: {
-												text: 'PE频率'
+												text: dateYMD +' '+selectedVal+' '+'PE分布'
 										},
 										exporting:{
 											enabled: false
@@ -1654,7 +2150,7 @@ function drawChart_A31(){
 											enabled: false
 										},
 										title: {
-												text: 'PE频率'
+												text: dateYMD +' '+selectedVal+' '+'PE分布'
 										},
 										exporting:{
 											enabled: false
@@ -1781,7 +2277,7 @@ function drawChart_A31(){
 	});
 }
 // 点线
-function drawChart_A32(){
+function drawChart_A32(key,selectedVal){
 
 	console.log("开始drawChart-A32");
 	// 获取选择的参数
@@ -1794,7 +2290,7 @@ function drawChart_A32(){
 	if (onlineOrLocal) {
 		globalDataURL='../lib/data8A32.json';
 	}else{		
-		globalDataURL='weekly/IndicatorQuery?indicatorId=1011&windCode='+selectItem+'&startDate='+dateLastDay+'&endDate='+dateLastDay;
+		globalDataURL='weekly/IndicatorQuery?indicatorId='+key+'&windCode='+selectedVal+'&startDate='+dateLastDay+'&endDate='+dateLastDay;
 	}
 	//获取数据
 	$.getJSON(globalDataURL,function (dataYH) {	
@@ -4475,5 +4971,38 @@ function drawSmallDiagram(){
 
 
 
+/**
+ * 选择下拉框
+ * 如果既有平滑周期，又有指数名称，这2个值的class不一样，分别获取2个值，然后分别处理
+ */
 
+$(".selected-index").change(function(){
+	 
+	var key = $(this).attr('key');
+	var selectedVal = $(this).val();
+	var selectedText = $(this).find("option:selected").text();
+	    
+	console.log(key,selectedVal,selectedText);
 
+	switch (key)
+	{
+		case keys.A22: 
+		// drawChart_A22(key,val);
+		case keys.A23: ;
+		// drawChart_A23(key,val);
+		case keys.A24: ;
+		// drawChart_A24(key,val);
+		case keys.A31: 
+			drawChart_A31(key,selectedVal);
+		case keys.A32: ;
+			drawChart_A32(key,selectedVal);
+		case keys.B11: ;
+		// drawChart_B11(key,val);
+		case keys.A33: ;
+		// drawChart_A33(key,val);
+		case keys.A41: ;
+		// drawChart_A41(key,val);
+	}
+	
+
+});
