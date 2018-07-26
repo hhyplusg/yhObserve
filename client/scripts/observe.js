@@ -88,13 +88,13 @@ $(function(){
 	drawChart_A11();  //<!-- 博弈/存量指标 -->
 	drawChart_A12(); //百分比图方法实现双轴</li>     <!-- 融资买入/可用担保价值 -->
 	drawChart_A21(); // 基础表实现双轴</li>           <!-- 综合性情绪指标 -->
-	drawChart_A22(keys.A22,'881001.WI','MA5');  //百分比图方法实现双轴</li>     <!-- 融资买入/可用担保价值 -->
+	drawChart_A22(keys.A22,'881001.WI','MA5','万得全A');  //百分比图方法实现双轴</li>     <!-- 融资买入/可用担保价值 -->
 	drawChart_A23(keys.A23,'000001.SH','上证综指'); 
 	drawChart_A24(keys.A24,'000300.SH');  //换手率
 	drawChart_A31(keys.A31,'000300.SH');  //指定版块的个股估值分布
 	drawSmallDiagram();
 	drawChart_A32(keys.A32,'000300.SH');
-	drawChart_B11(keys.B11,'000001.SH','000001.SH','MA5');  //指定版块的相对换手率历史变化 key,windCode1,windCode2,smooth
+	drawChart_B11(keys.B11,'000001.SH','000016.SH','MA5','上证综指','上证50','MA5');  //指定版块的相对换手率历史变化 key,windCode1,windCode2,smooth
 	drawChart_B21();   //柱状图  换手率变化最大的基准
 	drawChart_B22();   //柱状图  换手率绝对水平最高的基准
 	drawChart_B23();   //表格   基准/版块的周换手率
@@ -631,11 +631,15 @@ function drawChart_A12(){
 					
 			}				
 			],
-			// plotOptions: {
-			// 		series: {
-			// 				compare: 'percent'
-			// 		}
-			// },
+			plotOptions:{
+				line:{
+					states:{
+						hover:{
+							lineWidthPlus:0
+						}
+					}
+				}
+			},
 			tooltip: {
 					pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y}</b>',
 					valueDecimals: 3
@@ -804,6 +808,15 @@ function drawChart_A21(){
 					},
 				}
 			], 
+			plotOptions:{
+				line:{
+					states:{
+						hover:{
+							lineWidthPlus:0
+						}
+					}
+				}
+			},
 			series: [
 				{
 					name: '市场情绪指数',
@@ -855,7 +868,7 @@ function drawChart_A21(){
 	});
 }
 
-function drawChart_A22(key,windCode,smooth){   
+function drawChart_A22(key,windCode,smooth,windCodeText){   
 	console.log("开始drawChart-_A22");
 	if (onlineOrLocal) {
 		globalDataURL='../lib/data4A22.json';
@@ -950,7 +963,16 @@ function drawChart_A22(key,windCode,smooth){
 							// text: 'Y轴2'
 					},
 				}
-			], 
+			],
+			plotOptions:{
+				line:{
+					states:{
+						hover:{
+							lineWidthPlus:0
+						}
+					}
+				}
+			}, 
 			series: [
 				{
 					name: ' 全部A股MA60强势股数占比',
@@ -960,7 +982,7 @@ function drawChart_A22(key,windCode,smooth){
 					color:globalColorBlue
 				},
 				{
-					name: '沪深300（右轴）',
+					name: windCodeText+'（右轴）',
 					data: dataObj.index_data,	
 					yAxis:1,
 					lineWidth:2,
@@ -1103,7 +1125,16 @@ function drawChart_A23(key,selectedVal,selectedText){
 							// text: 'Y轴2'
 					},
 				}
-			], 
+			],
+			plotOptions:{
+				line:{
+					states:{
+						hover:{
+							lineWidthPlus:0
+						}
+					}
+				}
+			}, 
 			series: [
 				{
 					name: '成交额：分级B/A',
@@ -1244,6 +1275,15 @@ function drawChart_A24(key,selectedVal){
 					},
 				}
 			], 
+			plotOptions:{
+				line:{
+					states:{
+						hover:{
+							lineWidthPlus:0
+						}
+					}
+				}
+			},
 			series: [
 				{
 					name: 'A股年化换手率',
@@ -2245,7 +2285,15 @@ function drawChart_A31(key,selectedVal){
 					// text: '这个是Y轴'
 				},
 			},
-
+			plotOptions:{
+				line:{
+					states:{
+						hover:{
+							lineWidthPlus:0
+						}
+					}
+				}
+			},
 			series: [{
 				name: '指定板块的个股估值分布',
 				data: dataObj,
@@ -2403,6 +2451,15 @@ function drawChart_A32(key,selectedVal){
 					// text: '这个是Y轴'
 				},
 			},
+			plotOptions:{
+				line:{
+					states:{
+						hover:{
+							lineWidthPlus:0
+						}
+					}
+				}
+			},
 			series: [{
 				name: dateLastDay,
 				data: dataOrderBefore,
@@ -2454,7 +2511,7 @@ function drawChart_A32(key,selectedVal){
 
 }
 //双轴双线 
-function drawChart_B11(key,windCode1,windCode2,smooth){  
+function drawChart_B11(key,windCode1,windCode2,smooth,windCode1Text,windCode2Text,smoothText){  
 	console.log("开始drawChart-_B11-");
 	if (onlineOrLocal) {
 		globalDataURL='../lib/data9B11.json';
@@ -2565,20 +2622,29 @@ function drawChart_B11(key,windCode1,windCode2,smooth){
 			// 				compare: 'percent'
 			// 		}
 			// },
+			plotOptions:{
+				line:{
+					states:{
+						hover:{
+							lineWidthPlus:0
+						}
+					}
+				}
+			},
 			tooltip: {
 					pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y}</b>',
 					valueDecimals: 3
 			},
 			series: [
 				{
-					name: '换手率：上证50/中证500(MA20)',
+					name: '换手率：'+windCode1Text+'/'+windCode2Text+'('+smoothText+')',//'换手率：上证50/中证500(MA20)',
 					data: dataObj.data,
 					yAxis:0,
 					lineWidth:2,
 					color:globalColorBlue
 				},
 				{
-					name: '上证50/中证500(右轴)',
+					name: windCode1Text+'/'+windCode2Text+'(右轴)',//'上证50/中证500(右轴)',
 					data: dataObj.index_data,	
 					yAxis:1,
 					lineWidth:2,
@@ -3162,6 +3228,15 @@ function drawChart_B24(key,selectedVal){
 			// 				compare: 'percent'
 			// 		}
 			// },
+			plotOptions:{
+				line:{
+					states:{
+						hover:{
+							lineWidthPlus:0
+						}
+					}
+				}
+			},
 			tooltip: {
 					pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y}</b>',
 					valueDecimals: 3
@@ -4048,7 +4123,15 @@ function drawChart_B41(key,selectedVal){
 						zIndex:200,
 				}]
 			},
-
+			plotOptions:{
+				line:{
+					states:{
+						hover:{
+							lineWidthPlus:0
+						}
+					}
+				}
+			},
 			series: [{
 				name: '中期_HP滤波后的行业估值',
 				data: dataObjData,
@@ -5027,26 +5110,27 @@ function drawSmallDiagram(){
 $(".selected-index").change(function(){
 	 
 	var key = $(this).attr('key');
-	var selectedVal = $(this).val();
-	var selectedText = $(this).find("option:selected").text();
-	    
-	console.log(key,selectedVal,selectedText);
-	switch (key)
-	{
-		case keys.A23: 
-		    drawChart_A23(key,selectedVal,selectedText); break;
-		case keys.A24: ;
-		    drawChart_A24(key,selectedVal); break;
-		case keys.A31: 
-			drawChart_A31(key,selectedVal); break;
-		case keys.A32: 
-			drawChart_A32(key,selectedVal); break;
-		case keys.B24: 
-		    drawChart_B24(key,selectedVal); break;
-		case keys.B41: ;
-		    drawChart_B41(key,selectedVal); break;
+	if(key!==keys.B11){	
+		var selectedVal = $(this).val();
+		var selectedText = $(this).find("option:selected").text();
+			
+		console.log(key,selectedVal,selectedText);
+		switch (key)
+		{
+			case keys.A23: 
+				drawChart_A23(key,selectedVal,selectedText); break;
+			case keys.A24: ;
+				drawChart_A24(key,selectedVal); break;
+			case keys.A31: 
+				drawChart_A31(key,selectedVal); break;
+			case keys.A32: 
+				drawChart_A32(key,selectedVal); break;
+			case keys.B24: 
+				drawChart_B24(key,selectedVal); break;
+			case keys.B41: ;
+				drawChart_B41(key,selectedVal); break;
+		}
 	}
-
 });
 
 // B33
@@ -5063,28 +5147,32 @@ $("#diagramDiv4 .smooth").change(function(){
 	var key = $(this).attr('key');
 	var smooth = $(this).val();
 	var windCode = $('#diagramDiv4').find('.windCode').val();	
-	var selectedText = $(this).find("option:selected").text();    
-	console.log(key,selectedVal,selectedText);
-	drawChart_A22(key,windCode,smooth);
+	var windCodeText = $('#diagramDiv4').find('.windCode').find("option:selected").text();    
+	console.log(key,smooth,windCode,windCodeText);
+	drawChart_A22(key,windCode,smooth,windCodeText);
 });
 $("#diagramDiv4 .windCode").change(function(){	 
 	var key = $(this).attr('key');
 	var windCode = $(this).val();
 	var smooth = $('#diagramDiv4').find('.smooth').val();
-	var selectedText = $(this).find("option:selected").text();	    
-	console.log(key,selectedVal,selectedText);
-	drawChart_A22(key,windCode,smooth);
+	var windCodeText = $(this).find("option:selected").text();	    
+	console.log(key,smooth,windCode,windCodeText);
+	drawChart_A22(key,windCode,smooth,windCodeText);
 });
 
 // B11
-$("#diagramDiv9 .smooth").change(function(){	 
+$("#diagramDiv9 .smooth").change(function(){
+	var windCode1Select = $('#diagramDiv9').find('.windCode1');	 
+	var windCode2Select = $('#diagramDiv9').find('.windCode2');	 
 	var key = $(this).attr('key');
 	var smooth = $(this).val();
-	var windCode1 = $('#diagramDiv9').find('.windCode1').val();
-	var windCode2 = $('#diagramDiv9').find('.windCode2').val();
-	var selectedText = $(this).find("option:selected").text();	    
-	console.log(key,selectedVal,selectedText);
-	drawChart_B11(key,windCode1,windCode2,smooth);
+	var windCode1 = windCode1Select.val();
+	var windCode2 = windCode2Select.val();
+	var smoothText = $(this).find("option:selected").text();	
+	var windCode1Text = windCode1Select.find("option:selected").text();
+	var windCode2Text = windCode2Select.find("option:selected").text();
+	console.log(key,smoothText,windCode1Text,windCode2Text);
+	drawChart_B11(key,windCode1,windCode2,smooth,windCode1Text,windCode2Text,smoothText);
 });
 
 $("#diagramDiv9 .windCode1").change(function(){	 
@@ -5092,9 +5180,13 @@ $("#diagramDiv9 .windCode1").change(function(){
 	var windCode1 = $(this).val();
 	var smooth = $('#diagramDiv9').find('.smooth').val();
 	var windCode2 = $('#diagramDiv9').find('.windCode2').val();
-	var selectedText = $(this).find("option:selected").text();	    
-	console.log(key,selectedVal,selectedText);
-	drawChart_B11(key,windCode1,windCode2,smooth);
+
+	var windCode1Text = $(this).find("option:selected").text();	
+	var smoothText = $('#diagramDiv9').find('.smooth').find("option:selected").text();
+	var windCode2Text = $('#diagramDiv9').find('.windCode2').find("option:selected").text();
+
+	console.log(key,smoothText,windCode1Text,windCode2Text);
+	drawChart_B11(key,windCode1,windCode2,smooth,windCode1Text,windCode2Text,smoothText);
 });
 
 $("#diagramDiv9 .windCode2").change(function(){	 
@@ -5102,7 +5194,12 @@ $("#diagramDiv9 .windCode2").change(function(){
 	var windCode2 = $(this).val();
 	var smooth = $('#diagramDiv9').find('.smooth').val();
 	var windCode1 = $('#diagramDiv9').find('.windCode1').val();
-	var selectedText = $(this).find("option:selected").text();	    
-	console.log(key,selectedVal,selectedText);
-	drawChart_B11(key,windCode1,windCode2,smooth);
+
+	var windCode2Text = $(this).find("option:selected").text();	
+	var windCode1Text = $('#diagramDiv9').find('.windCode1').find("option:selected").text();
+	var smoothText = $('#diagramDiv9').find('.smooth').find("option:selected").text();
+
+	drawChart_B11(key,windCode1,windCode2,smooth,windCode1Text,windCode2Text,smoothText);
+
+	console.log(key,smoothText,windCode1Text,windCode2Text);
 });
