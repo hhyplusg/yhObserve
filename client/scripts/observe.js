@@ -1095,22 +1095,17 @@ function drawChart_A23(key,selectedVal,selectedText){
 			title:GlobalTitleStyle,
 			legend: {
 		        enabled: true,
-		        align: 'center',
-		        verticalAlign: 'bottom',
-		  //       x: -40,
-				// y: 50,
-				// floating: false,
+			    align: 'right',
+			    verticalAlign: 'top',
+			    x: -100,
+				y: 20,
+				floating: false,
 				itemStyle:{
 					"color": "black", 
 					"cursor": "pointer", 
 					"fontSize": "12px", 
-					// "fontWeight": "bold"
 				},
-				// width:800
-		        // shadow: true,
-		        // itemWidth: 800
-		        // maxHeight:10
-		        // margin:0,
+			    margin:0,
 		    },
 
 			yAxis:[
@@ -1169,12 +1164,40 @@ function drawChart_A23(key,selectedVal,selectedText){
 		var curTime=getCurrentTime(1);
 		//设置出图时带标题
 		chart.title.update({ text: '分级基金成交显示的风险偏好'});
+		chart.legend.update({
+	        enabled: true,
+		    align: 'right',
+		    verticalAlign: 'top',
+		    x: -40,
+			y: 30,
+			floating: false,
+			itemStyle:{
+				"color": "black", 
+				"cursor": "pointer", 
+				"fontSize": "12px", 
+			},
+		    margin:0,
+		});
 		//图标转换成图片
 		var svg = chart.getSVG().replace(/</g, '\n<').replace(/>/g, '>'); // make it slightly more readable								
 		var pngName='分级基金成交显示的风险偏好'+curTime;
 		svgToPng(svg,800,600,pngName);
 		//出图完设置无标题
 		chart.title.update({ text: ''});
+		chart.legend.update({
+	        enabled: true,
+		    align: 'right',
+		    verticalAlign: 'top',
+		    x: -100,
+			y: 20,
+			floating: false,
+			itemStyle:{
+				"color": "black", 
+				"cursor": "pointer", 
+				"fontSize": "12px", 
+			},
+		    margin:0,
+		});
 	});
 
 
@@ -3602,14 +3625,26 @@ function drawChart_B32(){
 		},
 		legend: {
 			// enabled: false,
-			layout: 'vertical',
-			align: 'left',
-			verticalAlign: 'top',
-			x: 70,
-			y: 20,
-			floating: true,
-			backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF',
-			borderWidth: 1
+			// layout: 'vertical',
+			// align: 'left',
+			// verticalAlign: 'top',
+			// x: 70,
+			// y: 20,
+			// floating: true,
+			// backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF',
+			// borderWidth: 1
+			enabled: true,
+		    align: 'right',
+		    verticalAlign: 'top',
+		    x: -60,
+			y: 0,
+			floating: false,
+			itemStyle:{
+				"color": "black", 
+				"cursor": "pointer", 
+				"fontSize": "12px", 
+			},
+		    margin:10,
 		},
 		tooltip: {
 			style: {
@@ -3679,14 +3714,18 @@ function drawChart_B32(){
 		chart.title.update({ text: '所有行业“速度/加速度”的最新分布'});
 		chart.legend.update({
 			// enabled: false,
-			layout: 'vertical',
-			align: 'left',
-			verticalAlign: 'top',
-			x: 70,
-			y: 40,
-			floating: true,
-			backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF',
-			borderWidth: 1
+			enabled: true,
+		    align: 'right',
+		    verticalAlign: 'top',
+		    x: -60,
+			y: 0,
+			floating: false,
+			itemStyle:{
+				"color": "black", 
+				"cursor": "pointer", 
+				"fontSize": "12px", 
+			},
+		    margin:10,
 		});
 		//图标转换成图片
 		var svg = chart.getSVG().replace(/</g, '\n<').replace(/>/g, '>'); // make it slightly more readable								
@@ -3696,14 +3735,18 @@ function drawChart_B32(){
 		chart.title.update({ text: ''});
 		chart.legend.update({
 			// enabled: false,
-			layout: 'vertical',
-			align: 'left',
-			verticalAlign: 'top',
-			x: 70,
-			y: 20,
-			floating: true,
-			backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF',
-			borderWidth: 1
+			enabled: true,
+		    align: 'right',
+		    verticalAlign: 'top',
+		    x: -60,
+			y: 0,
+			floating: false,
+			itemStyle:{
+				"color": "black", 
+				"cursor": "pointer", 
+				"fontSize": "12px", 
+			},
+		    margin:10,
 	    });
 	});
 	
@@ -3843,9 +3886,6 @@ function drawChart_B33(key,selectedVal){
 		    title: {
 		        text: ''
 		    },
-		    // subtitle: {
-		    //     // text: '根据标准大气模型绘制'
-		    // },
 		    exporting: {
 			    enabled: false,
 			    scale: 1,
@@ -3863,20 +3903,37 @@ function drawChart_B33(key,selectedVal){
 		                return this.value;
 		            }
 		        },
+		        plotLines: [{
+					zIndex: 99,
+					value: 1,
+					color: 'gray',
+					dashStyle: 'solid',
+					width: 1,
+					// label: {
+					// 		text: '0.25'
+					// }
+				}],
 		        maxPadding: 0.05,
 		        showLastLabel: true,
+		        lineWidth: 0,
+		        gridLineWidth:0,
 		        tickLength:5,
 		    },
 		    yAxis: {
 		        title: {
 		            // text: '温度'
 		        },
-		        // labels: {
-		        //     formatter: function () {
-		        //         return this.value + '°';
-		        //     }
-		        // },
-		        lineWidth: 1,
+		        plotLines: [{
+					zIndex: 99,
+					value: 1,
+					color: 'gray',
+					dashStyle: 'solid',
+					width: 1,
+					// label: {
+					// 		text: '0.25'
+					// }
+				}],
+		        lineWidth: 0,
 		        gridLineWidth:0,
 		        tickLength:5,
 		        tickWidth:1,
@@ -3924,14 +3981,14 @@ function drawChart_B33(key,selectedVal){
 		// 		// offset:  yZero
 		// });
 		//方法2
-		var yAxis = chart.yAxis[0],
-			xAxis = chart.xAxis[0];
-		xAxis.update({
-				offset: -yAxis.toPixels(1) + yAxis.top
-		});
-		yAxis.update({
-				offset: -xAxis.toPixels(1) + xAxis.top
-		});
+		// var yAxis = chart.yAxis[0],
+		// 	xAxis = chart.xAxis[0];
+		// xAxis.update({
+		// 		offset: -yAxis.toPixels(1) + yAxis.top
+		// });
+		// yAxis.update({
+		// 		offset: -xAxis.toPixels(1) + xAxis.top
+		// });
 		});
 	});
 	$('#diagramDiv16').find('.spanExportButton').click(function(event){
