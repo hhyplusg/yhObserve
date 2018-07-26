@@ -4131,6 +4131,8 @@ function svgToPng(svg,pngWidth,pngHeight,pngName){
 	image.crossOrigin = 'anonymous';
 	image.src = 'data:image/svg+xml;base64,' + window.btoa(unescape(encodeURIComponent(svg))); //给图片对象写入base64编码的svg流
 	// getDataUrlBySrc(svg).then(b64 => (image.src = b64));
+	console.log('导出图片的URL---');
+	console.log(image.src);
 
 	var canvas = document.createElement('canvas');  //准备空画布
 	canvas.width = pngWidth;  
@@ -4142,6 +4144,8 @@ function svgToPng(svg,pngWidth,pngHeight,pngName){
 		var a = document.createElement("a"); 
 			a.href = canvas.toDataURL('image/png'); //将画布内的信息导出为png图片数据
 			a.download = pngName+".png";  //设定下载名称
+			console.log('导出图片的a.href---');
+			console.log(a.href);
 			// a.href = url;  
 			a.click(); //点击触发下载
 	
