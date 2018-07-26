@@ -88,13 +88,13 @@ $(function(){
 	drawChart_A11();  //<!-- 博弈/存量指标 -->
 	drawChart_A12(); //百分比图方法实现双轴</li>     <!-- 融资买入/可用担保价值 -->
 	drawChart_A21(); // 基础表实现双轴</li>           <!-- 综合性情绪指标 -->
-	drawChart_A22();  //百分比图方法实现双轴</li>     <!-- 融资买入/可用担保价值 -->
+	drawChart_A22(keys.A22,'881001.WI','MA5');  //百分比图方法实现双轴</li>     <!-- 融资买入/可用担保价值 -->
 	drawChart_A23(keys.A23,'000300.SH'); 
 	drawChart_A24(keys.A24,'000300.SH');  //换手率
 	drawChart_A31(keys.A31,'000300.SH');  //指定版块的个股估值分布
 	drawSmallDiagram();
 	drawChart_A32(keys.A32,'000300.SH');
-	drawChart_B11();  //指定版块的相对换手率历史变化
+	drawChart_B11(keys.B11,'000001.SH','000001.SH','MA5');  //指定版块的相对换手率历史变化 key,windCode1,windCode2,smooth
 	drawChart_B21();   //柱状图  换手率变化最大的基准
 	drawChart_B22();   //柱状图  换手率绝对水平最高的基准
 	drawChart_B23();   //表格   基准/版块的周换手率
@@ -847,12 +847,12 @@ function drawChart_A21(){
 	});
 }
 
-function drawChart_A22(){   
+function drawChart_A22(key,windCode,smooth){   
 	console.log("开始drawChart-_A22");
 	if (onlineOrLocal) {
 		globalDataURL='../lib/data4A22.json';
 	}else{
-		globalDataURL='weekly/IndicatorQuery?indicatorId=0004&windCode=881001.WI&smooth=MA5';
+		globalDataURL='weekly/IndicatorQuery?indicatorId='+key+'&windCode='+windCode+'&smooth='+smooth;
 	}
 	//获取数据
 	$.getJSON(globalDataURL,function (dataYH) {	
@@ -2446,12 +2446,12 @@ function drawChart_A32(key,selectedVal){
 
 }
 //双轴双线 
-function drawChart_B11(){  
+function drawChart_B11(key,windCode1,windCode2,smooth){  
 	console.log("开始drawChart-_B11-");
 	if (onlineOrLocal) {
 		globalDataURL='../lib/data9B11.json';
 	}else{
-		globalDataURL='weekly/IndicatorQuery?indicatorId=0019&windCode=000300.SH,399006.SZ&smooth=MA5 ';
+		globalDataURL='weekly/IndicatorQuery?indicatorId='+key+'&windCode='+windCode1+','+windCode2+'&smooth='+smooth;
 	}
 	//获取数据
 	$.getJSON(globalDataURL,function (dataYH) {	
@@ -5005,10 +5005,60 @@ $(".selected-index").change(function(){
 
 });
 
+// B33
 $(".selected-citic-index").change(function(){	 
 	var key = $(this).attr('key');
 	var selectedVal = $(this).val();
 	var selectedText = $(this).find("option:selected").text();	    
 	console.log(key,selectedVal,selectedText);
 	drawChart_B33(key,selectedVal);
+});
+
+// A22只要选择其中一个就更新
+$("#diagramDiv4 .smooth").change(function(){	 
+	var key = $(this).attr('key');
+	var smooth = $(this).val();
+	var windCode = $('#diagramDiv4').find('.windCode').val();	
+	var selectedText = $(this).find("option:selected").text();    
+	console.log(key,selectedVal,selectedText);
+	drawChart_A22(key,windCode,smooth);
+});
+$("#diagramDiv4 .windCode").change(function(){	 
+	var key = $(this).attr('key');
+	var windCode = $(this).val();
+	var smooth = $('#diagramDiv4').find('.smooth').val();
+	var selectedText = $(this).find("option:selected").text();	    
+	console.log(key,selectedVal,selectedText);
+	drawChart_A22(key,windCode,smooth);
+});
+
+// B11
+$("#diagramDiv9 .smooth").change(function(){	 
+	var key = $(this).attr('key');
+	var smooth = $(this).val();
+	var windCode1 = $('#diagramDiv9').find('.windCode1').val();
+	var windCode2 = $('#diagramDiv9').find('.windCode2').val();
+	var selectedText = $(this).find("option:selected").text();	    
+	console.log(key,selectedVal,selectedText);
+	drawChart_B11(key,windCode1,windCode2,smooth);
+});
+
+$("#diagramDiv9 .windCode1").change(function(){	 
+	var key = $(this).attr('key');
+	var windCode1 = $(this).val();
+	var smooth = $('#diagramDiv9').find('.smooth').val();
+	var windCode2 = $('#diagramDiv9').find('.windCode2').val();
+	var selectedText = $(this).find("option:selected").text();	    
+	console.log(key,selectedVal,selectedText);
+	drawChart_B11(key,windCode1,windCode2,smooth);
+});
+
+$("#diagramDiv9 .windCode2").change(function(){	 
+	var key = $(this).attr('key');
+	var windCode2 = $(this).val();
+	var smooth = $('#diagramDiv9').find('.smooth').val();
+	var windCode1 = $('#diagramDiv9').find('.windCode1').val();
+	var selectedText = $(this).find("option:selected").text();	    
+	console.log(key,selectedVal,selectedText);
+	drawChart_B11(key,windCode1,windCode2,smooth);
 });
