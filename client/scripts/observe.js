@@ -98,10 +98,10 @@ $(function(){
 	drawChart_B21();   //柱状图  换手率变化最大的基准
 	drawChart_B22();   //柱状图  换手率绝对水平最高的基准
 	drawChart_B23();   //表格   基准/版块的周换手率
-	drawChart_B24();   //双轴  指定板块周换手率的历史变化
+	drawChart_B24(keys.B24,'000300.SH');   //双轴  指定板块周换手率的历史变化
 	drawChart_B31();   //柱状图
 	drawChart_B32();   //象限图
-	drawChart_B33();  // 反转图 	
+	drawChart_B33(keys.B33,'CI005001.WI');  // 反转图 	
 	drawChart_B41();
 	// drawHistogram();
 	// drawChart7(); // 象限图
@@ -3041,13 +3041,13 @@ function drawChart_B23(){
 
 }
 //双轴双线
-function drawChart_B24(){
+function drawChart_B24(key,selectedVal){
 
 	console.log("开始drawChart-_B24-");
 	if (onlineOrLocal) {
 		globalDataURL='../lib/data2.json';
 	}else{
-		globalDataURL='weekly/IndicatorQuery?indicatorId=0022&windCode=000300.SH';
+		globalDataURL='weekly/IndicatorQuery?indicatorId='+key+'&windCode='+selectedVal;
 	}
 	//获取数据
 	$.getJSON(globalDataURL,function (dataYH) {	
@@ -3628,7 +3628,7 @@ function drawChart_B32(){
 
 
 //反转图
-function drawChart_B33(){
+function drawChart_B33(key,selectedVal){
 	console.log("开始drawChart-B33-");
 	// (function(H) {
 
@@ -3719,7 +3719,7 @@ function drawChart_B33(){
  	if (onlineOrLocal) {
 		globalDataURL='../lib/data16B33.json';
 	}else{
-		globalDataURL='weekly/IndicatorQuery?indicatorId=1016&windCode=CI005001.WI';
+		globalDataURL='weekly/IndicatorQuery?indicatorId='+key+'&windCode='+selectedVal;
 	}
 	// console.log("图16B33的URL数据为：\n"+globalDataURL);
 	//获取数据
@@ -4994,10 +4994,13 @@ $(".selected-index").change(function(){
 		// drawChart_A24(key,val);
 		case keys.A31: 
 			drawChart_A31(key,selectedVal);
-		case keys.A32: ;
+		case keys.A32: 
 			drawChart_A32(key,selectedVal);
 		case keys.B11: ;
 		// drawChart_B11(key,val);
+		case keys.B24: 
+		drawChart_B24(key,selectedVal);
+
 		case keys.A33: ;
 		// drawChart_A33(key,val);
 		case keys.A41: ;
@@ -5005,4 +5008,12 @@ $(".selected-index").change(function(){
 	}
 	
 
+});
+
+$(".selected-citic-index").change(function(){	 
+	var key = $(this).attr('key');
+	var selectedVal = $(this).val();
+	var selectedText = $(this).find("option:selected").text();	    
+	console.log(key,selectedVal,selectedText);
+	drawChart_B33(key,selectedVal);
 });
