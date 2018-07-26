@@ -402,11 +402,11 @@ function drawChart_A11(){
 		},function (chart) {
 
         // apply the date pickers
-        setTimeout(function () {
-            $('input.highcharts-range-selector', $(chart.container).parent())
-                .datepicker();
-        }, 0);
-    });
+        // setTimeout(function () {
+        //     $('input.highcharts-range-selector', $(chart.container).parent())
+        //         .datepicker();
+        // }, 0);
+    	});
 
 	});
 
