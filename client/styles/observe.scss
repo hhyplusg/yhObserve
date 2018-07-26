@@ -5,7 +5,7 @@ $right-one-background-color: white;
 $background-color: white;
 .returnToTop{
     position: fixed;
-    z-index: 100;
+    z-index: 100000;
     bottom: 10%;
     right: 10%;
     border: 1px solid $left-img-background-color;
@@ -273,15 +273,16 @@ $background-color: white;
 
     .spanExportButton{
         position:absolute;
-        text-align:left; 
-        display:block;
+        // position:relative;
+        display:inline-block;
         top:58px;
         left:55%; 
+        // left:-35px; 
         font-family: 'Arial Normal', 'Arial';
         font-weight: 400;
         font-style: normal;
         font-size: 10px;
-        z-index:100;
+        z-index:10;
         color: gray;
         cursor:pointer; 
     }
@@ -510,6 +511,10 @@ $background-color: white;
 
 .create-comment-container{
     display: none;
+    z-index: 1000;
+    div{
+       z-index: 1000; 
+    }
     .comment-box{
         .title{
             border-bottom:1px solid $left-img-background-color; 
@@ -550,7 +555,7 @@ $background-color: white;
 
 .comment-overlay-shadow {
     position: fixed;
-    z-index: 1;
+    
     opacity: 1;
     transition: opacity .3s ease-in-out;
     background: rgba(0,0,0,.7);
@@ -562,7 +567,7 @@ $background-color: white;
 
 .comment-box {
     position: fixed;
-    z-index: 60;
+    // z-index: 60;
     font-size: 15px;
     opacity: 1;
     height: 50%;
