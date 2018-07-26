@@ -180,14 +180,12 @@ if (window.location.href=='http://localhost:3000/observesystem.html') {onlineOrL
 			}
 		}
 		$(this).find('.DiagramTitleTwo').slideToggle(500);
-		// console.log('.DiagramTitleOne');
-		// return false
+
     });
 
 	$(".DiagramTitleTwo").click(function(e){
 		e.stopPropagation();
 		$(this).find('.DiagramTitleThree').slideToggle(500);
-		// return false
     });
 	$(".DiagramTitleThree,.DiagramBigDiv").click(function(e){
 		e.stopPropagation();
@@ -216,13 +214,15 @@ if (window.location.href=='http://localhost:3000/observesystem.html') {onlineOrL
 		})
 		.done(function( msg ) {
 			console.log( "Data " + msg );
+			getCommentTable(key);
 		})
 		.fail(function( jqXHR, textStatus ) {
 			console.log( "Request failed: " + textStatus );
 		});
 		$(this).parent().parent().parent().css('display','none');
-		getCommentTable(key);
+		
 	});
+	// 查询是先post，后get另一个网址来请求数据
 	$('.comment-inquery').click(function(){
 		var key = $(this).parent().parent().parent().attr('key');
 		var startDate = $(this).parent().find('.start-date').val();
@@ -246,16 +246,17 @@ if (window.location.href=='http://localhost:3000/observesystem.html') {onlineOrL
 
 		$.ajax({
 			method: "POST",
-			url: '/weekly/review?indicatorId=0001&startDate='+startDate+'&endDate='+endDate,
+			url: '/weekly/review?indicatorId='+key+'&startDate='+startDate+'&endDate='+endDate,
 			data: data
 		})
 		.done(function( msg ) {
+			getCommentTable(key);
 			console.log( "Data " + msg );
 		})
 		.fail(function( jqXHR, textStatus ) {
 			console.log( "Request failed: " + textStatus );
 		});
-		getCommentTable(key);
+		
 		
 	});
 
