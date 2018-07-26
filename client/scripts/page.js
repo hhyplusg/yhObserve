@@ -17,7 +17,6 @@ if (window.location.href=='http://localhost:3000/observesystem.html') {onlineOrL
 		let img = $(this).find('.right-img-three').get(0);
 		let nextSbl = this.nextElementSibling;
 		let id= this.getAttribute('id').replace('diagramThree','');	
-		console.log(id);
 		if (img){
 			if (ariaExpanded == 'false'){
 				let menuThreeCheck = $("#menuThreeCheck"+id);
@@ -219,9 +218,10 @@ if (window.location.href=='http://localhost:3000/observesystem.html') {onlineOrL
 			url: '/weekly/saveReview',
 			data: data
 		})
-		.done(function( msg ) {
-			console.log( "Data " + msg );
+		.done(function( data ) {
+			
 			getCommentTable(key);
+			console.log( "Data " + data );
 		})
 		.fail(function( jqXHR, textStatus ) {
 			console.log( "Request failed: " + textStatus );
@@ -234,7 +234,6 @@ if (window.location.href=='http://localhost:3000/observesystem.html') {onlineOrL
 		var key = $(this).parent().parent().parent().attr('key');
 		var startDate = $(this).parent().find('.start-date').val();
 		var endDate = $(this).parent().find('.end-date').val();
-		// console.log(startDate+':'+key);
 		
 		startDate = startDate.replace(/-/g,'');
 		endDate = endDate.replace(/-/g,'');
@@ -244,8 +243,7 @@ if (window.location.href=='http://localhost:3000/observesystem.html') {onlineOrL
 			endDate = getFormatTime();
 		}
 		
-		console.log(':'+key);
-		// console.log(':'+endDate);
+
 		var data = {
 			'startDate':startDate,
 			'endDate':endDate
@@ -256,9 +254,10 @@ if (window.location.href=='http://localhost:3000/observesystem.html') {onlineOrL
 			url: '/weekly/review?indicatorId='+key+'&startDate='+startDate+'&endDate='+endDate,
 			data: data
 		})
-		.done(function( msg ) {
-			getCommentTable(key);
-			console.log( "Data " + msg );
+		.done(function( data ) {
+			getTable(key,data);
+			
+			console.log( "Data " + data );
 		})
 		.fail(function( jqXHR, textStatus ) {
 			console.log( "Request failed: " + textStatus );
@@ -276,7 +275,7 @@ function getFormatTime(){
 	var date = myDate.getDate()<10 ? '0'+(myDate.getDate()):(myDate.getDate());
 
 	var time = ''+year+month+date;
-	// console.log(year+'-'+month+'-'+date);
+
 	return time
 }
 
@@ -290,7 +289,7 @@ function getFormatTime(){
  */
 
 function getCommentTable(key){
-	$('#comment-table'+key).empty();
+	// $('#comment-table'+key).empty();
 	let globalDataURL = '';
 	if (onlineOrLocal) {
 		globalDataURL='../lib/commentA11.json';
@@ -299,37 +298,40 @@ function getCommentTable(key){
 	}
 	
 	$.getJSON(globalDataURL,function (data) {	
-		let dataObj = [];
-		if (onlineOrLocal) {
-			dataObj=data.ret; 
-		}else{
-			let jsonObject =$.parseJSON(data);
-			dataObj=jsonObject.ret;			
-		}
-
-
-		var row_obj=$("<tr></tr>");
-		var col_td=$("<th></th>");
-		col_td.html('日期');row_obj.append(col_td);
-		col_td=$("<th></th>");
-		col_td.html('点评');row_obj.append(col_td);
-		col_td=$("<th></th>");
-		col_td.html('点评人');row_obj.append(col_td);
-
-		$('#comment-table'+key).append(row_obj);	
-		for (let m = 0; m < dataObj.length; m++) {
-			var row_obj2=$("<tr></tr>");
-			for (let i = 0; i < dataObj[m].length; i++) {		
-				col_td=$("<td align='center' bgcolor='#FFFFFF'></td>");
-				col_td.html(dataObj[m][i]);
-				row_obj2.append(col_td);				
-			}
-			$('#comment-table'+key).append(row_obj2);
-		}
+		getTable(key,data);
 	});
 }
 
+function getTable(key,data){
+	$('#comment-table'+key).empty();
+	let dataObj = [];
+	if (onlineOrLocal) {
+		dataObj=data.ret; 
+	}else{
+		let jsonObject =$.parseJSON(data);
+		dataObj=jsonObject.ret;			
+	}
 
+
+	var row_obj=$("<tr></tr>");
+	var col_td=$("<th></th>");
+	col_td.html('日期');row_obj.append(col_td);
+	col_td=$("<th></th>");
+	col_td.html('点评');row_obj.append(col_td);
+	col_td=$("<th></th>");
+	col_td.html('点评人');row_obj.append(col_td);
+
+	$('#comment-table'+key).append(row_obj);	
+	for (let m = 0; m < dataObj.length; m++) {
+		var row_obj2=$("<tr></tr>");
+		for (let i = 0; i < dataObj[m].length; i++) {		
+			col_td=$("<td align='center' bgcolor='#FFFFFF'></td>");
+			col_td.html(dataObj[m][i]);
+			row_obj2.append(col_td);				
+		}
+		$('#comment-table'+key).append(row_obj2);
+	}
+}
 	
 getCommentTable(keys.A11);
 getCommentTable(keys.A12);
@@ -390,10 +392,15 @@ function getSelectedData(key,className){
 
 getSelectedData('0001','.selected-index');
 getSelectedData('0002','.selected-citic-index');
-// console.log(window.index);
 
 
+// $('text').focus(function(){
+// 	console.log('highcharts-range-selector');
+// });
 
+// $('.highcharts-range-selector').change(function(){
+// 	console.log('highcharts-range-selector');
+// });
 
 
 
