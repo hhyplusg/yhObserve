@@ -3467,7 +3467,7 @@ function drawChart_B41(){
 						dashStyle: 'shortdash',
 						width: 2,
 						label: {
-								 text: '3 X Sigma'
+								 text: '2 X Sigma'
 						},
 						zIndex:200,
 				},
@@ -3486,7 +3486,7 @@ function drawChart_B41(){
 						dashStyle: 'shortdash',
 						width: 2,
 						label: {
-								 text: '3 X Sigma'
+								 text: '2 X Sigma'
 						},
 						zIndex:200,
 				}]
