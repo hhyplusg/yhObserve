@@ -399,9 +399,17 @@ function drawChart_A11(){
 				lineWidth:2,
 				color:globalColorBlue
 			}]
-		});
+		},function (chart) {
+
+        // apply the date pickers
+        setTimeout(function () {
+            $('input.highcharts-range-selector', $(chart.container).parent())
+                .datepicker();
+        }, 0);
+    });
 
 	});
+
 	$("#testExport").click(function(event){
 		console.log("点击了导出图片A11！");
 		var chart = $('#showDiagram1').highcharts();
@@ -3851,7 +3859,7 @@ function drawChart_B41(key,selectedVal){
 	if (onlineOrLocal) {
 		globalDataURL='../lib/data17B41.json';
 	}else{
-		globalDataURL='weekly/IndicatorQuery?indicatorId='+key+'0014&windCode='+selectedVal;
+		globalDataURL='weekly/IndicatorQuery?indicatorId='+key+'&windCode='+selectedVal;
 	}
 	//获取数据
 	$.getJSON(globalDataURL,function (dataYH) {	
@@ -4990,17 +4998,17 @@ $(".selected-index").change(function(){
 	switch (key)
 	{
 		case keys.A23: 
-		    drawChart_A23(key,selectedVal,selectedText);
+		    drawChart_A23(key,selectedVal,selectedText); break;
 		case keys.A24: ;
-		    drawChart_A24(key,selectedVal);
+		    drawChart_A24(key,selectedVal); break;
 		case keys.A31: 
-			drawChart_A31(key,selectedVal);
+			drawChart_A31(key,selectedVal); break;
 		case keys.A32: 
-			drawChart_A32(key,selectedVal);
+			drawChart_A32(key,selectedVal); break;
 		case keys.B24: 
-		    drawChart_B24(key,selectedVal);
+		    drawChart_B24(key,selectedVal); break;
 		case keys.B41: ;
-		    drawChart_B41(key,selectedVal);
+		    drawChart_B41(key,selectedVal); break;
 	}
 
 });
