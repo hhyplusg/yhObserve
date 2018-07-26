@@ -89,8 +89,8 @@ $(function(){
 	drawChart_A12(); //百分比图方法实现双轴</li>     <!-- 融资买入/可用担保价值 -->
 	drawChart_A21(); // 基础表实现双轴</li>           <!-- 综合性情绪指标 -->
 	drawChart_A22();  //百分比图方法实现双轴</li>     <!-- 融资买入/可用担保价值 -->
-	drawChart_A23(); 
-	drawChart_A24();  //换手率
+	drawChart_A23(keys.A23,'000300.SH'); 
+	drawChart_A24(keys.A24,'000300.SH');  //换手率
 	drawChart_A31(keys.A31,'000300.SH');  //指定版块的个股估值分布
 	drawSmallDiagram();
 	drawChart_A32(keys.A32,'000300.SH');
@@ -102,7 +102,7 @@ $(function(){
 	drawChart_B31();   //柱状图
 	drawChart_B32();   //象限图
 	drawChart_B33(keys.B33,'CI005001.WI');  // 反转图 	
-	drawChart_B41();
+	drawChart_B41(keys.B41,'000300.SH');
 	// drawHistogram();
 	// drawChart7(); // 象限图
 	// export
@@ -994,12 +994,12 @@ function drawChart_A22(){
 
 
 }
-function drawChart_A23(){  
+function drawChart_A23(key,selectedVal){  
 	console.log("开始drawChart-_5A23");
 	if (onlineOrLocal) {
 		globalDataURL='../lib/data5A23.json';
 	}else{
-		globalDataURL='weekly/IndicatorQuery?indicatorId=0009&smooth=MA5';
+		globalDataURL='weekly/IndicatorQuery?indicatorId='+key+'&windCode='+selectedVal;
 	}
 	//获取数据
 	$.getJSON(globalDataURL,function (dataYH) {	
@@ -1140,12 +1140,12 @@ function drawChart_A23(){
 
 
 }
-function drawChart_A24(){   
+function drawChart_A24(key,selectedVal){   
 	console.log("开始drawChart-_A24-");
 	if (onlineOrLocal) {
 		globalDataURL='../lib/data6A24.json';
 	}else{
-		globalDataURL='weekly/IndicatorQuery?indicatorId=0018&windCode=000001.SH&smooth=MA5';
+		globalDataURL='weekly/IndicatorQuery?indicatorId='+key+'&windCode='+selectedVal+'&smooth=MA5';
 	}
 	//获取数据
 	$.getJSON(globalDataURL,function (dataYH) {	
@@ -3845,13 +3845,13 @@ function drawChart_B33(key,selectedVal){
 	});
 }
 
-function drawChart_B41(){
+function drawChart_B41(key,selectedVal){
 	console.log("开始drawChart-B41");
 	//获取数据
 	if (onlineOrLocal) {
 		globalDataURL='../lib/data17B41.json';
 	}else{
-		globalDataURL='weekly/IndicatorQuery?indicatorId=0014&windCode=000300.SH';
+		globalDataURL='weekly/IndicatorQuery?indicatorId='+key+'0014&windCode='+selectedVal;
 	}
 	//获取数据
 	$.getJSON(globalDataURL,function (dataYH) {	
@@ -4974,6 +4974,10 @@ function drawSmallDiagram(){
 /**
  * 选择下拉框
  * 如果既有平滑周期，又有指数名称，这2个值的class不一样，分别获取2个值，然后分别处理
+ * 	// 没有下拉：A11 A12 A21 B21 B22 B23 B31 B32
+	// 一个下拉：A23 A24 A31 A32 B24 B33(下拉值不一样) B41
+	// 二个下拉：A22 
+	// 三个下拉：B11
  */
 
 $(".selected-index").change(function(){
@@ -4983,30 +4987,21 @@ $(".selected-index").change(function(){
 	var selectedText = $(this).find("option:selected").text();
 	    
 	console.log(key,selectedVal,selectedText);
-
 	switch (key)
 	{
-		case keys.A22: 
-		// drawChart_A22(key,val);
-		case keys.A23: ;
-		// drawChart_A23(key,val);
+		case keys.A23: 
+		    drawChart_A23(key,selectedVal);
 		case keys.A24: ;
-		// drawChart_A24(key,val);
+		    drawChart_A24(key,selectedVal);
 		case keys.A31: 
 			drawChart_A31(key,selectedVal);
 		case keys.A32: 
 			drawChart_A32(key,selectedVal);
-		case keys.B11: ;
-		// drawChart_B11(key,val);
 		case keys.B24: 
-		drawChart_B24(key,selectedVal);
-
-		case keys.A33: ;
-		// drawChart_A33(key,val);
-		case keys.A41: ;
-		// drawChart_A41(key,val);
+		    drawChart_B24(key,selectedVal);
+		case keys.B41: ;
+		    drawChart_B41(key,selectedVal);
 	}
-	
 
 });
 
