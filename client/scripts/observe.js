@@ -113,12 +113,8 @@ $(function(){
 	drawChart_A22(keys.A22,'881001.WI','MA5','万得全A','MA5');  //百分比图方法实现双轴</li>     <!-- 融资买入/可用担保价值 -->
 	drawChart_A23(keys.A23,'000001.SH','上证综指'); 
 	drawChart_A24(keys.A24,'000001.SH');  //换手率
-
-	
-	// drawSmallDiagram();
-
 	drawChart_A31(keys.A31,'000300.SH','沪深300');  //指定版块的个股估值分布
-	// drawSmallDiagram();
+	drawSmallDiagram('000300.SH','沪深300');
 
 	drawChart_A32(keys.A32,'000001.SH');
 	drawChart_B11(keys.B11,'000001.SH','000016.SH','MA5','上证综指','上证50','MA5');  //指定版块的相对换手率历史变化 key,windCode1,windCode2,smooth
@@ -691,7 +687,7 @@ function drawChart_A12(){
 					color:globalColorBlue
 				},
 				{
-					name: '沪深300',
+					name: '沪深300(右轴)',
 					data: dataObj.index_data,	
 					yAxis:1,
 					lineWidth:2,
@@ -869,7 +865,7 @@ function drawChart_A21(){
 					color:globalColorBlue
 				},
 				{
-					name: '沪指300',
+					name: '沪指300(右轴)',
 					data: dataObj.index_data,	
 					yAxis:1,
 					lineWidth:2,
@@ -1199,7 +1195,7 @@ function drawChart_A23(key,selectedVal,selectedText){
 					color:globalColorRed			
 				},
 				{
-					name: selectedText,
+					name: selectedText+'(右轴)',
 					data: dataObj.index_data,	
 					yAxis:1,
 					lineWidth:2,
@@ -1525,8 +1521,7 @@ function drawChart_A31_old(){
 									$.getJSON(globalDataURL,function (dataYH) {	
 										var dataObj=dataYH.obj;
 										console.log("图7A31小图的obj数据为：\n");
-										console.log(dataObj);
-
+										// console.log(dataObj);
 										var finalResult=calculateQuantity(dataObj);
 										//画小图
 										let cdiv=document.getElementById('ChildDiv');
@@ -1560,6 +1555,7 @@ function drawChart_A31_old(){
 										my.style.filter='alpha(opacity:'+alpha+')';//IE   
 										my.style.opacity=alpha/100;//IE之外其他浏览器  
 										my.id = "ChildDiv";//设置ID 
+										my.style.zIndex=1000;
 
 										//给div加一个点击后隐藏的函数 
 										my.onclick = function(){
@@ -1660,6 +1656,7 @@ function drawChart_A31_old(){
 										my.style.filter='alpha(opacity:'+alpha+')';//IE   
 										my.style.opacity=alpha/100;//IE之外其他浏览器  
 										my.id = "ChildDiv";//设置ID 
+										my.style.zIndex=1000;
 
 										//给div加一个点击后隐藏的函数 
 										my.onclick = function(){
@@ -1696,9 +1693,9 @@ function drawChart_A31_old(){
 										},
 										yAxis: {
 												min: 0,
-												// title: {
-												// 		// text: '人口 (百万)'
-												// }
+												title: {
+														text: ''
+												}
 										},
 										legend: {
 												enabled: false
@@ -1720,14 +1717,7 @@ function drawChart_A31_old(){
 										}]
 										});
 										globalClicked=true;
-
-
 								}
-
-
-
-
-
 
 							})
 							.fail(function( jqXHR, textStatus ) {
@@ -1774,6 +1764,7 @@ function drawChart_A31_old(){
 										my.style.filter='alpha(opacity:'+alpha+')';//IE   
 										my.style.opacity=alpha/100;//IE之外其他浏览器  
 										my.id = "ChildDiv";//设置ID 
+										my.style.zIndex=1000;
 
 										//给div加一个点击后隐藏的函数 
 										my.onclick = function(){
@@ -2042,6 +2033,7 @@ function drawChart_A31(key,selectedVal,selectedText){
 										my.style.filter='alpha(opacity:'+alpha+')';//IE   
 										my.style.opacity=alpha/100;//IE之外其他浏览器  
 										my.id = "ChildDiv";//设置ID 
+										my.style.zIndex=1000;
 
 										//给div加一个点击后隐藏的函数 
 										my.onclick = function(){
@@ -2142,6 +2134,7 @@ function drawChart_A31(key,selectedVal,selectedText){
 										my.style.filter='alpha(opacity:'+alpha+')';//IE   
 										my.style.opacity=alpha/100;//IE之外其他浏览器  
 										my.id = "ChildDiv";//设置ID 
+										my.style.zIndex=1000;
 
 										//给div加一个点击后隐藏的函数 
 										my.onclick = function(){
@@ -2252,7 +2245,8 @@ function drawChart_A31(key,selectedVal,selectedText){
 										var alpha = 95;  
 										my.style.filter='alpha(opacity:'+alpha+')';//IE   
 										my.style.opacity=alpha/100;//IE之外其他浏览器  
-										my.id = "ChildDiv";//设置ID 
+										my.id = "ChildDiv";//设置ID
+										my.style.zIndex=1000; 
 
 										//给div加一个点击后隐藏的函数 
 										// my.onclick = function(){
@@ -2552,7 +2546,11 @@ function drawChart_A32(key,selectedVal){
 		});
 
 	});
-	$('#diagramDiv8').find('.spanExportButton').click(function(event){
+	
+
+}
+
+$('#diagramDiv8').find('.spanExportButton').click(function(event){
 		console.log("点击了导出图片A32！");
 		var chart = $('#showDiagram8').highcharts();
 		var curTime=getCurrentTime(1);
@@ -2580,8 +2578,6 @@ function drawChart_A32(key,selectedVal){
 		    margin:20,
 	    });
 	});
-
-}
 //双轴双线 
 function drawChart_B11(key,windCode1,windCode2,smooth,windCode1Text,windCode2Text,smoothText){  
 	console.log("开始drawChart-_B11-");
@@ -3384,7 +3380,7 @@ function drawChart_B24(key,selectedVal){
 					color:globalColorBlue
 				},
 				{
-					name: '指数+收盘价',
+					name: '指数+收盘价(右轴)',
 					data: dataObj.index_data,	
 					yAxis:1,
 					lineWidth:2,
@@ -5105,7 +5101,7 @@ function calculateQuantity(row_items){
 		return caculateResult;
 }
 
-function drawSmallDiagram(){
+function drawSmallDiagram(selectedVal,selectedText){
 
 	//获取点击数据的时间
     var dateYMD=getCurrentTime(2);
@@ -5113,7 +5109,7 @@ function drawSmallDiagram(){
     //传递点击数据，获取小图数据
 	$.ajax({
 		method: "GET",
-		url: '/weekly/IndicatorQuery?indicatorId=0011&windCode=000300.SH&startDate='+dateYMD+'&endDate='+dateYMD,							
+		url: '/weekly/IndicatorQuery?indicatorId=0011&windCode='+selectedVal+'&startDate='+dateYMD+'&endDate='+dateYMD,								
 	})
 	.done(function( msg ) {
 		console.log( "固定小图返回的Data " + msg );
@@ -5136,7 +5132,7 @@ function drawSmallDiagram(){
 					enabled: false
 				},
 				title: {
-						text: 'PE频率'
+						text: selectedText +' '+dateYMD+' '+'PE分布',
 				},
 				exporting:{
 					enabled: false
@@ -5198,7 +5194,7 @@ function drawSmallDiagram(){
 					enabled: false
 				},
 				title: {
-						text: 'PE频率'
+						text: selectedText +' '+dateYMD+' '+'PE分布',
 				},
 				exporting:{
 					enabled: false
@@ -5269,7 +5265,7 @@ function drawSmallDiagram(){
 					enabled: false
 				},
 				title: {
-						text: 'PE频率'
+						text: selectedText +' '+dateYMD+' '+'PE分布',
 				},
 				exporting:{
 					enabled: false
@@ -5340,8 +5336,9 @@ $(".selected-index").change(function(){
 				drawChart_A23(key,selectedVal,selectedText); break;
 			case keys.A24: ;
 				drawChart_A24(key,selectedVal); break;
-			case keys.A31: 
-				drawChart_A31(key,selectedVal,selectedText); break;
+			case keys.A31:
+				// $('#showDiagram7').html='' ;
+				drawChart_A31(key,selectedVal,selectedText);drawSmallDiagram(selectedVal,selectedText);break;
 			case keys.A32: 
 				drawChart_A32(key,selectedVal); break;
 			case keys.B24: 
