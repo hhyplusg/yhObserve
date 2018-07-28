@@ -3756,90 +3756,101 @@ function drawChart_B32(){
 //反转图
 function drawChart_B33(key,selectedVal){
 	console.log("开始drawChart-B33-");
-	// (function(H) {
+	(function(H) {
 
- //    H.wrap(H.Series.prototype, 'drawGraph', function(proceed) {
+    H.wrap(H.Series.prototype, 'drawGraph', function(proceed) {
 
- //      // Now apply the original function with the original arguments, 
- //      // which are sliced off this function's arguments
- //      proceed.apply(this, Array.prototype.slice.call(arguments, 1));
+    	// console.log("开始drawChart-B33-111---\n");
 
- //      var arrowLength = 20,
- //        arrowWidth = 10,
- //        series = this,
- //        data = series.data,
- //        len = data.length,
- //        segments = data,
- //        lastSeg = segments[segments.length - 1],
- //        path = [];
+    // Now apply the original function with the original arguments, 
+    // which are sliced off this function's arguments
+    proceed.apply(this, Array.prototype.slice.call(arguments, 1));
 
- //        // console.log(this);
- //        // console.log(lastSeg);
+    console.log("--------------------------开始drawChart-B33-222--this-\n");
+    // console.log(this);
+	var thisChart=this.chart;
+	var curID=$(thisChart.container).parent().attr("id")
+	console.log(curID);
+	if (curID=='showDiagram16') {
+	console.log("**********************发现了161616");
 
-	//     var lastPoint = null;
-	//     var nextLastPoint = null;
+      var arrowLength = 20,
+        arrowWidth = 10,
+        series = this,
+        data = series.data,
+        len = data.length,
+        segments = data,
+        lastSeg = segments[segments.length - 1],
+        path = [];
 
- //      if (lastSeg) {
- //      if (lastSeg.y === 0) {
- //        lastPoint = segments[segments.length - 2];
- //        nextLastPoint = segments[segments.length - 1];
- //      } else {
- //        lastPoint = segments[segments.length - 1];
- //        nextLastPoint = segments[segments.length - 2];
- //      }
+        // console.log(this);
+        // console.log(lastSeg);
 
- //      var angle = Math.atan((lastPoint.plotX - nextLastPoint.plotX) /
- //        (lastPoint.plotY - nextLastPoint.plotY));
+	    var lastPoint = null;
+	    var nextLastPoint = null;
 
- //      if (angle < 0) angle = Math.PI + angle;
+      if (lastSeg) {
+      if (lastSeg.y === 0) {
+        lastPoint = segments[segments.length - 2];
+        nextLastPoint = segments[segments.length - 1];
+      } else {
+        lastPoint = segments[segments.length - 1];
+        nextLastPoint = segments[segments.length - 2];
+      }
 
- //      path.push('M', lastPoint.plotX, lastPoint.plotY);
+      var angle = Math.atan((lastPoint.plotX - nextLastPoint.plotX) /
+        (lastPoint.plotY - nextLastPoint.plotY));
 
- //      if (lastPoint.plotX > nextLastPoint.plotX) {
- //        path.push(
- //          'L',
- //          lastPoint.plotX + arrowWidth * Math.cos(angle),
- //          lastPoint.plotY - arrowWidth * Math.sin(angle)
- //        );
- //        path.push(
- //          lastPoint.plotX + arrowLength * Math.sin(angle),
- //          lastPoint.plotY + arrowLength * Math.cos(angle)
- //        );
- //        path.push(
- //          lastPoint.plotX - arrowWidth * Math.cos(angle),
- //          lastPoint.plotY + arrowWidth * Math.sin(angle),
- //          'Z'
- //        );
- //      } else {
- //        path.push(
- //          'L',
- //          lastPoint.plotX - arrowWidth * Math.cos(angle),
- //          lastPoint.plotY + arrowWidth * Math.sin(angle)
- //        );
- //        path.push(
- //          lastPoint.plotX - arrowLength * Math.sin(angle),
- //          lastPoint.plotY - arrowLength * Math.cos(angle)
- //        );
- //        path.push(
- //          lastPoint.plotX + arrowWidth * Math.cos(angle),
- //          lastPoint.plotY - arrowWidth * Math.sin(angle),
- //          'Z'
- //        );
- //      }
+      if (angle < 0) angle = Math.PI + angle;
 
- //      series.chart.renderer.path(path)
- //        .attr({
- //          fill: series.color
- //        })
- //        .add(series.group);
+      path.push('M', lastPoint.plotX, lastPoint.plotY);
+
+      if (lastPoint.plotX > nextLastPoint.plotX) {
+        path.push(
+          'L',
+          lastPoint.plotX + arrowWidth * Math.cos(angle),
+          lastPoint.plotY - arrowWidth * Math.sin(angle)
+        );
+        path.push(
+          lastPoint.plotX + arrowLength * Math.sin(angle),
+          lastPoint.plotY + arrowLength * Math.cos(angle)
+        );
+        path.push(
+          lastPoint.plotX - arrowWidth * Math.cos(angle),
+          lastPoint.plotY + arrowWidth * Math.sin(angle),
+          'Z'
+        );
+      } else {
+        path.push(
+          'L',
+          lastPoint.plotX - arrowWidth * Math.cos(angle),
+          lastPoint.plotY + arrowWidth * Math.sin(angle)
+        );
+        path.push(
+          lastPoint.plotX - arrowLength * Math.sin(angle),
+          lastPoint.plotY - arrowLength * Math.cos(angle)
+        );
+        path.push(
+          lastPoint.plotX + arrowWidth * Math.cos(angle),
+          lastPoint.plotY - arrowWidth * Math.sin(angle),
+          'Z'
+        );
+      }
+
+      series.chart.renderer.path(path)
+        .attr({
+          fill: series.color
+        })
+        .add(series.group);
 
 
- //      }
+      }
+  }
     
 
 
- //    });
- //  }(Highcharts));
+    });
+  }(Highcharts));
 
 
  	if (onlineOrLocal) {
