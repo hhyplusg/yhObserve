@@ -3894,26 +3894,21 @@ $('#diagramDiv15').find('.spanExportButton').click(function(event){
 });
 
 
-//反转图
-function drawChart_B33(key,selectedVal,selectedText){
-	console.log("开始drawChart-B33-");
-	(function(H) {
+(function(H) {
 
     H.wrap(H.Series.prototype, 'drawGraph', function(proceed) {
 
-    	// console.log("开始drawChart-B33-111---\n");
+    var thisChart=this.chart;
+	var curID=$(thisChart.container).parent().attr("id");
+	console.log(curID);
 
-    // Now apply the original function with the original arguments, 
-    // which are sliced off this function's arguments
     proceed.apply(this, Array.prototype.slice.call(arguments, 1));
 
-    console.log("------------------开始drawChart-B33--this-");
-    // console.log(this);
-	var thisChart=this.chart;
-	var curID=$(thisChart.container).parent().attr("id")
-	console.log(curID);
-	if (curID=='showDiagram16') {
-	console.log("**********************发现了161616");
+    // console.log("B33-draw开始-------------------this-"+proceed);
+    // console.log(arguments);
+	
+	if (curID==='showDiagram16') {
+	console.log("B33-draw**********************发现了161616");
 
       var arrowLength = 20,
         arrowWidth = 10,
@@ -3988,11 +3983,14 @@ function drawChart_B33(key,selectedVal,selectedText){
       }
   }
     
-
-
     });
   }(Highcharts));
 
+
+//反转图
+function drawChart_B33(key,selectedVal,selectedText){
+	console.log("开始drawChart-B33-");
+	
 
  	if (onlineOrLocal) {
 		globalDataURL='../lib/data16B33.json';
