@@ -112,16 +112,16 @@ $(function(){
 	drawChart_A21(); // 基础表实现双轴</li>           <!-- 综合性情绪指标 -->
 	drawChart_A22(keys.A22,'881001.WI','MA5','万得全A','MA5');  //百分比图方法实现双轴</li>     <!-- 融资买入/可用担保价值 -->
 	drawChart_A23(keys.A23,'000001.SH','上证综指'); 
-	drawChart_A24(keys.A24,'000001.SH');  //换手率
+	drawChart_A24(keys.A24,'000001.SH','上证综指');  //换手率
 	drawChart_A31(keys.A31,'000300.SH','沪深300');  //指定版块的个股估值分布
 	drawSmallDiagram('000300.SH','沪深300');
 
-	drawChart_A32(keys.A32,'000001.SH');
+	drawChart_A32(keys.A32,'000001.SH','上证综指');
 	drawChart_B11(keys.B11,'000001.SH','000016.SH','MA5','上证综指','上证50','MA5');  //指定版块的相对换手率历史变化 key,windCode1,windCode2,smooth
 	drawChart_B21();   //柱状图  换手率变化最大的基准
 	drawChart_B22();   //柱状图  换手率绝对水平最高的基准
 	drawChart_B23();   //表格   基准/版块的周换手率
-	drawChart_B24(keys.B24,'000001.SH');   //双轴  指定板块周换手率的历史变化
+	drawChart_B24(keys.B24,'000001.SH','上证综指');   //双轴  指定板块周换手率的历史变化
 	drawChart_B31();   //柱状图
 	drawChart_B32();   //象限图
 	drawChart_B33(keys.B33,'CI005001.WI','石油石化(中信)');  // 反转图 	
@@ -702,53 +702,53 @@ function drawChart_A12(){
     	});
 	});
 
-	$('#diagramDiv2').find('.spanExportButton').click(function(event){
-		console.log("点击了导出图片A12！");
-		var chart = $('#showDiagram2').highcharts();
-		var curTime=getCurrentTime(1);
-		//设置出图时带标题
-		chart.title.update({ text: '融资买入/可用担保价值'});
-		chart.legend.update({
-	        enabled: true,
-		    align: 'right',
-		    verticalAlign: 'top',
-		    x: -10,
-			y: 35,
-			floating: false,
-			itemStyle:{
-				"color": "black", 
-				"cursor": "pointer", 
-				"fontSize": "12px", 
-			},
-		    margin:0,
-	    });
 
-		//图标转换成图片
-		var svg = chart.getSVG();
-		// .replace(/</g, '\n<').replace(/>/g, '>'); // make it slightly more readable								
-		var pngName='融资买入/可用担保价值'+curTime;
-		svgToPng(svg,800,600,pngName);
-		//出图完设置无标题
-		chart.title.update({ text: ''});
-		chart.legend.update({
-	        enabled: true,
-		    align: 'right',
-		    verticalAlign: 'top',
-		    x: -80,
-			y: 20,
-			floating: false,
-			itemStyle:{
-				"color": "black", 
-				"cursor": "pointer", 
-				"fontSize": "12px", 
-			},
-		    margin:0,
-	    });
-
-	});
 
 }
+$('#diagramDiv2').find('.spanExportButton').click(function(event){
+	console.log("点击了导出图片A12！");
+	var chart = $('#showDiagram2').highcharts();
+	var curTime=getCurrentTime(1);
+	//设置出图时带标题
+	chart.title.update({ text: '融资买入/可用担保价值'});
+	chart.legend.update({
+        enabled: true,
+	    align: 'right',
+	    verticalAlign: 'top',
+	    x: -10,
+		y: 35,
+		floating: false,
+		itemStyle:{
+			"color": "black", 
+			"cursor": "pointer", 
+			"fontSize": "12px", 
+		},
+	    margin:0,
+    });
 
+	//图标转换成图片
+	var svg = chart.getSVG();
+	// .replace(/</g, '\n<').replace(/>/g, '>'); // make it slightly more readable								
+	var pngName='融资买入/可用担保价值'+curTime;
+	svgToPng(svg,800,600,pngName);
+	//出图完设置无标题
+	chart.title.update({ text: ''});
+	chart.legend.update({
+        enabled: true,
+	    align: 'right',
+	    verticalAlign: 'top',
+	    x: -80,
+		y: 20,
+		floating: false,
+		itemStyle:{
+			"color": "black", 
+			"cursor": "pointer", 
+			"fontSize": "12px", 
+		},
+	    margin:0,
+    });
+
+});
 
 //基础表实现双轴
 function drawChart_A21(){
@@ -882,36 +882,37 @@ function drawChart_A21(){
 		// SandSignika(Highcharts);
 	});
 
-	$('#diagramDiv3').find('.spanExportButton').click(function(event){
-		console.log("点击了导出图片A21！");
-		var chart = $('#showDiagram3').highcharts();
-		var curTime=getCurrentTime(1);
-		//设置出图时带标题
-		chart.title.update({ text: '综合性情绪指标'});
-		chart.legend.update(GlobalPNGLegend);
-		//图标转换成图片
-		var svg = chart.getSVG().replace(/</g, '\n<').replace(/>/g, '>'); // make it slightly more readable								
-		var pngName='综合性情绪指标'+curTime;
-		svgToPng(svg,800,600,pngName);
-		//出图完设置无标题
-		chart.title.update({ text: ''});
-		chart.legend.update({
-	        enabled: true,
-		    align: 'right',
-		    verticalAlign: 'top',
-		    x: -80,
-			y: 20,
-			floating: false,
-			itemStyle:{
-				"color": "black", 
-				"cursor": "pointer", 
-				"fontSize": "12px", 
-			},
-		    margin:0,
-	    });
-	});
+
 }
 
+$('#diagramDiv3').find('.spanExportButton').click(function(event){
+	console.log("点击了导出图片A21！");
+	var chart = $('#showDiagram3').highcharts();
+	var curTime=getCurrentTime(1);
+	//设置出图时带标题
+	chart.title.update({ text: '综合性情绪指标'});
+	chart.legend.update(GlobalPNGLegend);
+	//图标转换成图片
+	var svg = chart.getSVG().replace(/</g, '\n<').replace(/>/g, '>'); // make it slightly more readable								
+	var pngName='综合性情绪指标'+curTime;
+	svgToPng(svg,800,600,pngName);
+	//出图完设置无标题
+	chart.title.update({ text: ''});
+	chart.legend.update({
+        enabled: true,
+	    align: 'right',
+	    verticalAlign: 'top',
+	    x: -80,
+		y: 20,
+		floating: false,
+		itemStyle:{
+			"color": "black", 
+			"cursor": "pointer", 
+			"fontSize": "12px", 
+		},
+	    margin:0,
+    });
+});
 function drawChart_A22(key,windCode,smooth,windCodeText,smoothText){   
 	console.log("开始drawChart-_A22");
 	if (onlineOrLocal) {
@@ -1042,37 +1043,36 @@ function drawChart_A22(key,windCode,smooth,windCodeText,smoothText){
 
 		// SandSignika(Highcharts);
 	});
-	$('#diagramDiv4').find('.spanExportButton').click(function(event){
-		console.log("点击了导出图片A22！");
-		var chart = $('#showDiagram4').highcharts();
-		var curTime=getCurrentTime(1);
-		//设置出图时带标题
-		chart.title.update({ text: '指定板块的强势股占比'});
-		chart.legend.update(GlobalPNGLegend);
-		//图标转换成图片
-		var svg = chart.getSVG().replace(/</g, '\n<').replace(/>/g, '>'); // make it slightly more readable								
-		var pngName='指定板块的强势股占比'+curTime;
-		svgToPng(svg,800,600,pngName);
-		//出图完设置无标题
-		chart.title.update({ text: ''});
-		chart.legend.update({
-	        enabled: true,
-		    align: 'right',
-		    verticalAlign: 'top',
-		    x: -80,
-			y: 20,
-			floating: false,
-			itemStyle:{
-				"color": "black", 
-				"cursor": "pointer", 
-				"fontSize": "12px", 
-			},
-		    margin:0,
-	    });
-	});
-
 
 }
+$('#diagramDiv4').find('.spanExportButton').click(function(event){
+	console.log("点击了导出图片A22！");
+	var chart = $('#showDiagram4').highcharts();
+	var curTime=getCurrentTime(1);
+	//设置出图时带标题
+	chart.title.update({ text: '指定板块的强势股占比'});
+	chart.legend.update(GlobalPNGLegend);
+	//图标转换成图片
+	var svg = chart.getSVG().replace(/</g, '\n<').replace(/>/g, '>'); // make it slightly more readable								
+	var pngName='指定板块的强势股占比'+curTime;
+	svgToPng(svg,800,600,pngName);
+	//出图完设置无标题
+	chart.title.update({ text: ''});
+	chart.legend.update({
+        enabled: true,
+	    align: 'right',
+	    verticalAlign: 'top',
+	    x: -80,
+		y: 20,
+		floating: false,
+		itemStyle:{
+			"color": "black", 
+			"cursor": "pointer", 
+			"fontSize": "12px", 
+		},
+	    margin:0,
+    });
+});
 function drawChart_A23(key,selectedVal,selectedText){  
 	console.log("开始drawChart-_5A23");
 	if (onlineOrLocal) {
@@ -1212,51 +1212,52 @@ function drawChart_A23(key,selectedVal,selectedText){
 
 		// SandSignika(Highcharts);
 	});
-	$('#diagramDiv5').find('.spanExportButton').click(function(event){
-		console.log("点击了导出图片A23！");
-		var chart = $('#showDiagram5').highcharts();
-		var curTime=getCurrentTime(1);
-		//设置出图时带标题
-		chart.title.update({ text: '分级基金成交显示的风险偏好'});
-		chart.legend.update({
-	        enabled: true,
-		    align: 'right',
-		    verticalAlign: 'top',
-		    x: -40,
-			y: 30,
-			floating: false,
-			itemStyle:{
-				"color": "black", 
-				"cursor": "pointer", 
-				"fontSize": "12px", 
-			},
-		    margin:0,
-		});
-		//图标转换成图片
-		var svg = chart.getSVG().replace(/</g, '\n<').replace(/>/g, '>'); // make it slightly more readable								
-		var pngName='分级基金成交显示的风险偏好'+curTime;
-		svgToPng(svg,800,600,pngName);
-		//出图完设置无标题
-		chart.title.update({ text: ''});
-		chart.legend.update({
-	        enabled: true,
-		    align: 'right',
-		    verticalAlign: 'top',
-		    x: -100,
-			y: 20,
-			floating: false,
-			itemStyle:{
-				"color": "black", 
-				"cursor": "pointer", 
-				"fontSize": "12px", 
-			},
-		    margin:0,
-		});
-	});
+	
 
 
 }
-function drawChart_A24(key,selectedVal){   
+$('#diagramDiv5').find('.spanExportButton').click(function(event){
+	console.log("点击了导出图片A23！");
+	var chart = $('#showDiagram5').highcharts();
+	var curTime=getCurrentTime(1);
+	//设置出图时带标题
+	chart.title.update({ text: '分级基金成交显示的风险偏好'});
+	chart.legend.update({
+        enabled: true,
+	    align: 'right',
+	    verticalAlign: 'top',
+	    x: -40,
+		y: 30,
+		floating: false,
+		itemStyle:{
+			"color": "black", 
+			"cursor": "pointer", 
+			"fontSize": "12px", 
+		},
+	    margin:0,
+	});
+	//图标转换成图片
+	var svg = chart.getSVG().replace(/</g, '\n<').replace(/>/g, '>'); // make it slightly more readable								
+	var pngName='分级基金成交显示的风险偏好'+curTime;
+	svgToPng(svg,800,600,pngName);
+	//出图完设置无标题
+	chart.title.update({ text: ''});
+	chart.legend.update({
+        enabled: true,
+	    align: 'right',
+	    verticalAlign: 'top',
+	    x: -100,
+		y: 20,
+		floating: false,
+		itemStyle:{
+			"color": "black", 
+			"cursor": "pointer", 
+			"fontSize": "12px", 
+		},
+	    margin:0,
+	});
+});
+function drawChart_A24(key,selectedVal,selectedText){   
 	console.log("开始drawChart-_A24-");
 	if (onlineOrLocal) {
 		globalDataURL='../lib/data6A24.json';
@@ -1363,14 +1364,14 @@ function drawChart_A24(key,selectedVal){
 			},
 			series: [
 				{
-					name: '指数+年化换手率',
+					name: selectedText+'年化换手率',
 					data: dataObj.data,
 					// yAxis:0,
 					lineWidth:2,
 					color:globalColorBlue
 				},
 				{
-					name: '指数+年化换手率（MA20）',
+					name: selectedText+'年化换手率（MA20）',
 					data: dataObj.data_MA20,	
 					// yAxis:1,
 					lineWidth:2,
@@ -1387,38 +1388,37 @@ function drawChart_A24(key,selectedVal){
 		// SandSignika(Highcharts);
 	});
 
-	$('#diagramDiv6').find('.spanExportButton').click(function(event){
-		console.log("点击了导出图片A24！");
-		var chart = $('#showDiagram6').highcharts();
-		var curTime=getCurrentTime(1);
-		//设置出图时带标题
-		chart.title.update({ text: '指定板块的历史换手率'});
-		chart.legend.update(GlobalPNGLegend);
-		//图标转换成图片
-		var svg = chart.getSVG().replace(/</g, '\n<').replace(/>/g, '>'); // make it slightly more readable								
-		var pngName='指定板块的历史换手率'+curTime;
-		svgToPng(svg,800,600,pngName);
-		//出图完设置无标题
-		chart.title.update({ text: ''});
-		chart.legend.update({
-	        enabled: true,
-		    align: 'right',
-		    verticalAlign: 'top',
-		    x: -55,
-			y: 20,
-			floating: false,
-			itemStyle:{
-				"color": "black", 
-				"cursor": "pointer", 
-				"fontSize": "12px", 
-			},
-		    margin:0,
-	    });
-	});
-
-
-
+	
 }
+
+$('#diagramDiv6').find('.spanExportButton').click(function(event){
+	console.log("点击了导出图片A24！");
+	var chart = $('#showDiagram6').highcharts();
+	var curTime=getCurrentTime(1);
+	//设置出图时带标题
+	chart.title.update({ text: '指定板块的历史换手率'});
+	chart.legend.update(GlobalPNGLegend);
+	//图标转换成图片
+	var svg = chart.getSVG().replace(/</g, '\n<').replace(/>/g, '>'); // make it slightly more readable								
+	var pngName='指定板块的历史换手率'+curTime;
+	svgToPng(svg,800,600,pngName);
+	//出图完设置无标题
+	chart.title.update({ text: ''});
+	chart.legend.update({
+        enabled: true,
+	    align: 'right',
+	    verticalAlign: 'top',
+	    x: -55,
+		y: 20,
+		floating: false,
+		itemStyle:{
+			"color": "black", 
+			"cursor": "pointer", 
+			"fontSize": "12px", 
+		},
+	    margin:0,
+    });
+});
 //大图带小图
 function drawChart_A31_old(){
 	// 第一次获取selectItem为null，因为还没请求到值。设置默认值
@@ -1880,35 +1880,36 @@ function drawChart_A31_old(){
 		});
 
 	});
-	$('#diagramDiv7').find('.spanExportButton').click(function(event){
-		console.log("点击了导出图片A31！");
-		var chart = $('#showDiagram7').highcharts();
-		var curTime=getCurrentTime(1);
-		//设置出图时带标题
-		chart.title.update({ text: '指定板块的个股估值分布'});
-		chart.legend.update(GlobalPNGLegend);
-		//图标转换成图片
-		var svg = chart.getSVG().replace(/</g, '\n<').replace(/>/g, '>'); // make it slightly more readable								
-		var pngName='指定板块的个股估值分布'+curTime;
-		svgToPng(svg,800,600,pngName);
-		//出图完设置无标题
-		chart.title.update({ text: ''});
-		chart.legend.update({
-	        enabled: true,
-		    align: 'right',
-		    verticalAlign: 'top',
-		    x: -50,
-			y: 20,
-			floating: false,
-			itemStyle:{
-				"color": "black", 
-				"cursor": "pointer", 
-				"fontSize": "12px", 
-			},
-		    margin:0,
-	    });
-	});
+	
 }
+$('#diagramDiv7').find('.spanExportButton').click(function(event){
+	console.log("点击了导出图片A31！");
+	var chart = $('#showDiagram7').highcharts();
+	var curTime=getCurrentTime(1);
+	//设置出图时带标题
+	chart.title.update({ text: '指定板块的个股估值分布'});
+	chart.legend.update(GlobalPNGLegend);
+	//图标转换成图片
+	var svg = chart.getSVG().replace(/</g, '\n<').replace(/>/g, '>'); // make it slightly more readable								
+	var pngName='指定板块的个股估值分布'+curTime;
+	svgToPng(svg,800,600,pngName);
+	//出图完设置无标题
+	chart.title.update({ text: ''});
+	chart.legend.update({
+        enabled: true,
+	    align: 'right',
+	    verticalAlign: 'top',
+	    x: -50,
+		y: 20,
+		floating: false,
+		itemStyle:{
+			"color": "black", 
+			"cursor": "pointer", 
+			"fontSize": "12px", 
+		},
+	    margin:0,
+    });
+});
 function drawChart_A31(key,selectedVal,selectedText){
 	// 第一次获取selectItem为null，因为还没请求到值。设置默认值
 	
@@ -2399,7 +2400,7 @@ function drawChart_A31(key,selectedVal,selectedText){
 	});
 }
 // 点线
-function drawChart_A32(key,selectedVal){
+function drawChart_A32(key,selectedVal,selectedText){
 
 	console.log("开始drawChart-A32");
 	// 获取选择的参数
@@ -2527,19 +2528,19 @@ function drawChart_A32(key,selectedVal){
 				}
 			},
 			series: [{
-				name: dateLastDay,
+				name: selectedText+dateLastDay,
 				data: dataOrderBefore,
 				dashStyle:'line',
 				color:'blue'
 			},
 			{
-				name: '20150616',
+				name: selectedText+'20150616',
 				data: dataOrderFirst,
 				dashStyle:'line',
 				color:'red'
 			},
 			{
-				name: '20121201',
+				name: selectedText+'20121201',
 				data: dataOrderSecond,
 				dashStyle:'Dot'
 			}]
@@ -2727,38 +2728,35 @@ function drawChart_B11(key,windCode1,windCode2,smooth,windCode1Text,windCode2Tex
     	});
 	});
 
-	$('#diagramDiv9').find('.spanExportButton').click(function(event){
-		console.log("点击了导出图片B11！");
-		var chart = $('#showDiagram9').highcharts();
-		var curTime=getCurrentTime(1);
-		//设置出图时带标题
-		chart.title.update({ text: '指定板块相对换手率的历史变化'});
-		chart.legend.update(GlobalPNGLegend);
-		//图标转换成图片
-		var svg = chart.getSVG().replace(/</g, '\n<').replace(/>/g, '>'); // make it slightly more readable								
-		var pngName='指定板块相对换手率的历史变化'+curTime;
-		svgToPng(svg,800,600,pngName);
-		//出图完设置无标题
-		chart.title.update({ text: ''});
-		chart.legend.update({
-	        enabled: true,
-		    align: 'right',
-		    verticalAlign: 'top',
-		    x: -70,
-			y: 20,
-			floating: false,
-			itemStyle:{
-				"color": "black", 
-				"cursor": "pointer", 
-				"fontSize": "12px", 
-			},
-		    margin:0,
-	    });
-	});
-
-	
-
 }
+$('#diagramDiv9').find('.spanExportButton').click(function(event){
+	console.log("点击了导出图片B11！");
+	var chart = $('#showDiagram9').highcharts();
+	var curTime=getCurrentTime(1);
+	//设置出图时带标题
+	chart.title.update({ text: '指定板块相对换手率的历史变化'});
+	chart.legend.update(GlobalPNGLegend);
+	//图标转换成图片
+	var svg = chart.getSVG().replace(/</g, '\n<').replace(/>/g, '>'); // make it slightly more readable								
+	var pngName='指定板块相对换手率的历史变化'+curTime;
+	svgToPng(svg,800,600,pngName);
+	//出图完设置无标题
+	chart.title.update({ text: ''});
+	chart.legend.update({
+        enabled: true,
+	    align: 'right',
+	    verticalAlign: 'top',
+	    x: -70,
+		y: 20,
+		floating: false,
+		itemStyle:{
+			"color": "black", 
+			"cursor": "pointer", 
+			"fontSize": "12px", 
+		},
+	    margin:0,
+    });
+});
 //柱状图
 function drawChart_B21(){
 
@@ -3245,7 +3243,7 @@ function drawChart_B23(){
 
 }
 //双轴双线
-function drawChart_B24(key,selectedVal){
+function drawChart_B24(key,selectedVal,selectedText){
 
 	console.log("开始drawChart-_B24-");
 	if (onlineOrLocal) {
@@ -3373,14 +3371,14 @@ function drawChart_B24(key,selectedVal){
 			},
 			series: [
 				{
-					name: '指数+换手率分位（MA5）',
+					name: selectedText+'换手率分位（MA5）',
 					data: dataObj.data,
 					yAxis:0,
 					lineWidth:2,
 					color:globalColorBlue
 				},
 				{
-					name: '指数+收盘价(右轴)',
+					name: selectedText+'收盘价(右轴)',
 					data: dataObj.index_data,	
 					yAxis:1,
 					lineWidth:2,
@@ -3394,37 +3392,36 @@ function drawChart_B24(key,selectedVal){
 			}, 0);
     	});
 	});
-	$('#diagramDiv13').find('.spanExportButton').click(function(event){
-		console.log("点击了导出图片B24！");
-		var chart = $('#showDiagram13').highcharts();
-		var curTime=getCurrentTime(1);
-		//设置出图时带标题
-		chart.title.update({ text: '指定板块周换手率的历史变化'});
-		chart.legend.update(GlobalPNGLegend);
-		//图标转换成图片
-		var svg = chart.getSVG().replace(/</g, '\n<').replace(/>/g, '>'); // make it slightly more readable								
-		var pngName='指定板块周换手率的历史变化'+curTime;
-		svgToPng(svg,800,600,pngName);
-		//出图完设置无标题
-		chart.title.update({ text: ''});
-		chart.legend.update({
-	        enabled: true,
-		    align: 'right',
-		    verticalAlign: 'top',
-		    x: -80,
-			y: 20,
-			floating: false,
-			itemStyle:{
-				"color": "black", 
-				"cursor": "pointer", 
-				"fontSize": "12px", 
-			},
-		    margin:0,
-	    });
-	});
-
 
 }
+$('#diagramDiv13').find('.spanExportButton').click(function(event){
+	console.log("点击了导出图片B24！");
+	var chart = $('#showDiagram13').highcharts();
+	var curTime=getCurrentTime(1);
+	//设置出图时带标题
+	chart.title.update({ text: '指定板块周换手率的历史变化'});
+	chart.legend.update(GlobalPNGLegend);
+	//图标转换成图片
+	var svg = chart.getSVG().replace(/</g, '\n<').replace(/>/g, '>'); // make it slightly more readable								
+	var pngName='指定板块周换手率的历史变化'+curTime;
+	svgToPng(svg,800,600,pngName);
+	//出图完设置无标题
+	chart.title.update({ text: ''});
+	chart.legend.update({
+        enabled: true,
+	    align: 'right',
+	    verticalAlign: 'top',
+	    x: -80,
+		y: 20,
+		floating: false,
+		itemStyle:{
+			"color": "black", 
+			"cursor": "pointer", 
+			"fontSize": "12px", 
+		},
+	    margin:0,
+    });
+});
 //柱状图
 function drawChart_B31(){
 	if (onlineOrLocal) {
@@ -3848,51 +3845,52 @@ function drawChart_B32(){
 		});
 
     });	
-	$('#diagramDiv15').find('.spanExportButton').click(function(event){
-		console.log("点击了导出图片B32！");
-		var chart = $('#showDiagram15').highcharts();
-		var curTime=getCurrentTime(1);
-		//设置出图时带标题
-		chart.title.update({ text: '所有行业“速度/加速度”的最新分布'});
-		chart.legend.update({
-			// enabled: false,
-			enabled: true,
-		    align: 'right',
-		    verticalAlign: 'top',
-		    x: -60,
-			y: 0,
-			floating: false,
-			itemStyle:{
-				"color": "black", 
-				"cursor": "pointer", 
-				"fontSize": "12px", 
-			},
-		    margin:10,
-		});
-		//图标转换成图片
-		var svg = chart.getSVG().replace(/</g, '\n<').replace(/>/g, '>'); // make it slightly more readable								
-		var pngName='所有行业“速度/加速度”的最新分布'+curTime;
-		svgToPng(svg,800,600,pngName);
-		//出图完设置无标题
-		chart.title.update({ text: ''});
-		chart.legend.update({
-			// enabled: false,
-			enabled: true,
-		    align: 'right',
-		    verticalAlign: 'top',
-		    x: -60,
-			y: 0,
-			floating: false,
-			itemStyle:{
-				"color": "black", 
-				"cursor": "pointer", 
-				"fontSize": "12px", 
-			},
-		    margin:10,
-	    });
-	});
+
 	
 }
+$('#diagramDiv15').find('.spanExportButton').click(function(event){
+	console.log("点击了导出图片B32！");
+	var chart = $('#showDiagram15').highcharts();
+	var curTime=getCurrentTime(1);
+	//设置出图时带标题
+	chart.title.update({ text: '所有行业“速度/加速度”的最新分布'});
+	chart.legend.update({
+		// enabled: false,
+		enabled: true,
+	    align: 'right',
+	    verticalAlign: 'top',
+	    x: -60,
+		y: 0,
+		floating: false,
+		itemStyle:{
+			"color": "black", 
+			"cursor": "pointer", 
+			"fontSize": "12px", 
+		},
+	    margin:10,
+	});
+	//图标转换成图片
+	var svg = chart.getSVG().replace(/</g, '\n<').replace(/>/g, '>'); // make it slightly more readable								
+	var pngName='所有行业“速度/加速度”的最新分布'+curTime;
+	svgToPng(svg,800,600,pngName);
+	//出图完设置无标题
+	chart.title.update({ text: ''});
+	chart.legend.update({
+		// enabled: false,
+		enabled: true,
+	    align: 'right',
+	    verticalAlign: 'top',
+	    x: -60,
+		y: 0,
+		floating: false,
+		itemStyle:{
+			"color": "black", 
+			"cursor": "pointer", 
+			"fontSize": "12px", 
+		},
+	    margin:10,
+    });
+});
 
 
 //反转图
@@ -4144,36 +4142,37 @@ function drawChart_B33(key,selectedVal,selectedText){
 		// });
 		});
 	});
-	$('#diagramDiv16').find('.spanExportButton').click(function(event){
-		console.log("点击了导出图片B33！");
-		var chart = $('#showDiagram16').highcharts();
-		var curTime=getCurrentTime(1);
-		//设置出图时带标题
-		chart.title.update({ text: '指定行业“速度/加速度”的历史变化路径'});
-		// chart.legend.update(GlobalPNGLegend);
-		//图标转换成图片
-		var svg = chart.getSVG().replace(/</g, '\n<').replace(/>/g, '>'); // make it slightly more readable								
-		var pngName='指定行业“速度/加速度”的历史变化路径'+curTime;
-		svgToPng(svg,800,600,pngName);
-		//出图完设置无标题
-		chart.title.update({ text: ''});
-		// chart.legend.update({
-	 //        enabled: true,
-		//     align: 'right',
-		//     verticalAlign: 'top',
-		//     x: -50,
-		// 	y: 20,
-		// 	floating: false,
-		// 	itemStyle:{
-		// 		"color": "black", 
-		// 		"cursor": "pointer", 
-		// 		"fontSize": "12px", 
-		// 	},
-		//     margin:0,
-	 //    });
-	});
+
 }
 
+$('#diagramDiv16').find('.spanExportButton').click(function(event){
+	console.log("点击了导出图片B33！");
+	var chart = $('#showDiagram16').highcharts();
+	var curTime=getCurrentTime(1);
+	//设置出图时带标题
+	chart.title.update({ text: '指定行业“速度/加速度”的历史变化路径'});
+	// chart.legend.update(GlobalPNGLegend);
+	//图标转换成图片
+	var svg = chart.getSVG().replace(/</g, '\n<').replace(/>/g, '>'); // make it slightly more readable								
+	var pngName='指定行业“速度/加速度”的历史变化路径'+curTime;
+	svgToPng(svg,800,600,pngName);
+	//出图完设置无标题
+	chart.title.update({ text: ''});
+	// chart.legend.update({
+ //        enabled: true,
+	//     align: 'right',
+	//     verticalAlign: 'top',
+	//     x: -50,
+	// 	y: 20,
+	// 	floating: false,
+	// 	itemStyle:{
+	// 		"color": "black", 
+	// 		"cursor": "pointer", 
+	// 		"fontSize": "12px", 
+	// 	},
+	//     margin:0,
+ //    });
+});
 function drawChart_B41(key,selectedVal,selectedText){
 	console.log("开始drawChart-B41");
 	//获取数据
@@ -4371,36 +4370,36 @@ function drawChart_B41(key,selectedVal,selectedText){
 		// $("#showDiagram1").html('<img src='+imgSrc+' />');
 
 	});
-	$('#diagramDiv17').find('.spanExportButton').click(function(event){
-		console.log("点击了导出图片B41！");
-		var chart = $('#showDiagram17').highcharts();
-		var curTime=getCurrentTime(1);
-		//设置出图时带标题
-		chart.title.update({ text: '中期_HP滤波后的行业估值'});
-		chart.legend.update(GlobalPNGLegend);
-		//图标转换成图片
-		var svg = chart.getSVG().replace(/</g, '\n<').replace(/>/g, '>'); // make it slightly more readable								
-		var pngName='中期_HP滤波后的行业估值'+curTime;
-		svgToPng(svg,800,600,pngName);
-		//出图完设置无标题
-		chart.title.update({ text: ''});
-		chart.legend.update({
-	        enabled: true,
-		    align: 'right',
-		    verticalAlign: 'top',
-		    x: -50,
-			y: 20,
-			floating: false,
-			itemStyle:{
-				"color": "black", 
-				"cursor": "pointer", 
-				"fontSize": "12px", 
-			},
-		    margin:0,
-	    });
-	});
-}
 
+}
+$('#diagramDiv17').find('.spanExportButton').click(function(event){
+	console.log("点击了导出图片B41！");
+	var chart = $('#showDiagram17').highcharts();
+	var curTime=getCurrentTime(1);
+	//设置出图时带标题
+	chart.title.update({ text: '中期_HP滤波后的行业估值'});
+	chart.legend.update(GlobalPNGLegend);
+	//图标转换成图片
+	var svg = chart.getSVG().replace(/</g, '\n<').replace(/>/g, '>'); // make it slightly more readable								
+	var pngName='中期_HP滤波后的行业估值'+curTime;
+	svgToPng(svg,800,600,pngName);
+	//出图完设置无标题
+	chart.title.update({ text: ''});
+	chart.legend.update({
+        enabled: true,
+	    align: 'right',
+	    verticalAlign: 'top',
+	    x: -50,
+		y: 20,
+		floating: false,
+		itemStyle:{
+			"color": "black", 
+			"cursor": "pointer", 
+			"fontSize": "12px", 
+		},
+	    margin:0,
+    });
+});
 
 //基础表实现双轴（自己造数据）
 function drawChart4(){
@@ -5003,7 +5002,7 @@ function svgToPng(svg,pngWidth,pngHeight,pngName){
 			// console.log(a.href);
 			// a.href = url;  
 			a.click(); //点击触发下载
-	
+		a = null;
 
 		
 	};
@@ -5335,14 +5334,14 @@ $(".selected-index").change(function(){
 			case keys.A23: 
 				drawChart_A23(key,selectedVal,selectedText); break;
 			case keys.A24: ;
-				drawChart_A24(key,selectedVal); break;
+				drawChart_A24(key,selectedVal,selectedText); break;
 			case keys.A31:
 				// $('#showDiagram7').html='' ;
 				drawChart_A31(key,selectedVal,selectedText);drawSmallDiagram(selectedVal,selectedText);break;
 			case keys.A32: 
-				drawChart_A32(key,selectedVal); break;
+				drawChart_A32(key,selectedVal,selectedText); break;
 			case keys.B24: 
-				drawChart_B24(key,selectedVal); break;
+				drawChart_B24(key,selectedVal,selectedText); break;
 			case keys.B41: ;
 				drawChart_B41(key,selectedVal,selectedText); break;
 		}
