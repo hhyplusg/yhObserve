@@ -693,7 +693,12 @@ function drawChart_A12(){
 					color:globalColorRed		
 				}
 			]
-		});
+		},function (chart) {
+			setTimeout(function () {
+				$('input.highcharts-range-selector', $(chart.container).parent())
+					.datepicker(pickOption);
+			}, 0);
+    	});
 	});
 
 	$('#diagramDiv2').find('.spanExportButton').click(function(event){
@@ -866,7 +871,12 @@ function drawChart_A21(){
 					color:globalColorRed			
 				}
 			]
-		});
+		},function (chart) {
+			setTimeout(function () {
+				$('input.highcharts-range-selector', $(chart.container).parent())
+					.datepicker(pickOption);
+			}, 0);
+    	});
 
 		// SandSignika(Highcharts);
 	});
@@ -1022,7 +1032,12 @@ function drawChart_A22(key,windCode,smooth,windCodeText){
 					color:globalColorRed		
 				}
 			]
-		});
+		},function (chart) {
+			setTimeout(function () {
+				$('input.highcharts-range-selector', $(chart.container).parent())
+					.datepicker(pickOption);
+			}, 0);
+    	});
 
 		// SandSignika(Highcharts);
 	});
@@ -1187,7 +1202,12 @@ function drawChart_A23(key,selectedVal,selectedText){
 				}
 
 			]
-		});
+		},function (chart) {
+			setTimeout(function () {
+				$('input.highcharts-range-selector', $(chart.container).parent())
+					.datepicker(pickOption);
+			}, 0);
+    	});
 
 		// SandSignika(Highcharts);
 	});
@@ -1356,7 +1376,12 @@ function drawChart_A24(key,selectedVal){
 					color:globalColorRed			
 				}
 			]
-		});
+		},function (chart) {
+			setTimeout(function () {
+				$('input.highcharts-range-selector', $(chart.container).parent())
+					.datepicker(pickOption);
+			}, 0);
+    	});
 
 		// SandSignika(Highcharts);
 	});
@@ -2356,7 +2381,12 @@ function drawChart_A31(key,selectedVal){
 				lineWidth:2,
 				color:globalColorBlue
 			}]
-		});
+		},function (chart) {
+			setTimeout(function () {
+				$('input.highcharts-range-selector', $(chart.container).parent())
+					.datepicker(pickOption);
+			}, 0);
+    	});
 
 	});
 	$('#diagramDiv7').find('.spanExportButton').click(function(event){
@@ -2707,7 +2737,12 @@ function drawChart_B11(key,windCode1,windCode2,smooth,windCode1Text,windCode2Tex
 					color:globalColorRed			
 				}
 			]
-		});
+		},function (chart) {
+			setTimeout(function () {
+				$('input.highcharts-range-selector', $(chart.container).parent())
+					.datepicker(pickOption);
+			}, 0);
+    	});
 	});
 
 	$('#diagramDiv9').find('.spanExportButton').click(function(event){
@@ -3313,7 +3348,12 @@ function drawChart_B24(key,selectedVal){
 					color:globalColorRed			
 				}
 			]
-		});
+		},function (chart) {
+			setTimeout(function () {
+				$('input.highcharts-range-selector', $(chart.container).parent())
+					.datepicker(pickOption);
+			}, 0);
+    	});
 	});
 	$('#diagramDiv13').find('.spanExportButton').click(function(event){
 		console.log("点击了导出图片B24！");
@@ -4239,7 +4279,12 @@ function drawChart_B41(key,selectedVal){
 				lineWidth:2,
 				color:globalColorBlue
 			}]
-		});
+		},function (chart) {
+			setTimeout(function () {
+				$('input.highcharts-range-selector', $(chart.container).parent())
+					.datepicker(pickOption);
+			}, 0);
+    	});
 
 		// //图标转换成图片
 		// var svg = mychart.getSVG()
