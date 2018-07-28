@@ -122,6 +122,13 @@ $(function(){
 
 });
 
+$.datepicker.setDefaults({
+    dateFormat: 'yy-mm-dd',
+    onSelect: function () {
+        this.onchange();
+        this.onblur();
+    }
+});
 //基础表单轴
 function drawChart_A11(){
 	console.log("开始drawChart-_A11-");
@@ -402,13 +409,15 @@ function drawChart_A11(){
 		},function (chart) {
 
         // apply the date pickers
-        // setTimeout(function () {
-        //     $('input.highcharts-range-selector', $(chart.container).parent())
-        //         .datepicker();
-        // }, 0);
+			setTimeout(function () {
+				$('input.highcharts-range-selector', $(chart.container).parent())
+					.datepicker();
+			}, 0);
     	});
 
 	});
+
+	
 
 	$("#testExport").click(function(event){
 		console.log("点击了导出图片A11！");
