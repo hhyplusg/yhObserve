@@ -270,6 +270,7 @@ $background-color: white;
     overflow: hidden;
     max-height: 0;
     position:relative;
+    z-index:9;
 
     .spanExportButton{
         position:absolute;
@@ -328,15 +329,15 @@ $background-color: white;
     .spanExportButton{top:88px;left:56%;}
 }
 #diagramDiv7{
-    height:750px;
     .spanExportButton{top:88px;left:56%;}
-    #showDiagram7Small{
-        height: 200px;
-        width: 500px;
-    }
-    #showDiagram7{
-         height: 450px;
-    }
+    // height:750px;
+    // #showDiagram7Small{
+    //     height: 200px;
+    //     width: 500px;
+    // }
+    // #showDiagram7{
+    //      height: 450px;
+    // }
 }
 #diagramDiv8{
     .spanExportButton{top:78px;left:56%;}

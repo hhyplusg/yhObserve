@@ -114,7 +114,7 @@ $(function(){
 	drawChart_A23(keys.A23,'000001.SH','上证综指'); 
 	drawChart_A24(keys.A24,'000001.SH');  //换手率
 	drawChart_A31(keys.A31,'000300.SH');  //指定版块的个股估值分布
-	drawSmallDiagram();
+	// drawSmallDiagram();
 	drawChart_A32(keys.A32,'000001.SH');
 	drawChart_B11(keys.B11,'000001.SH','000016.SH','MA5','上证综指','上证50','MA5');  //指定版块的相对换手率历史变化 key,windCode1,windCode2,smooth
 	drawChart_B21();   //柱状图  换手率变化最大的基准
@@ -1949,22 +1949,12 @@ function drawChart_A31(key,selectedVal){
 			    sourceWidth: 800,
         		sourceHeight: 600
 			},
-			// title: {
-			// 	// text: '指定版块的个股估值分布',
-			// 	style: {
-			// 				color: 'black',
-			// 				fontWeight: 'bold',
-			// 				fontSize: 20
-			// 			},
-			// 	margin: 30
-			// },
 			title:GlobalTitleStyle,
 			plotOptions: {
 		        series: {
 		            events: {
 		                click: function (event) {
-		                    console.log('zhixingle点击函数--');
-		                    console.log(event.point.x+'----'+event.point.y);
+		                    console.log('zhixingle点击函数--');		                    
 		                    //获取点击数据的时间
 		                    var date = new Date(event.point.x);
 							var year = date.getFullYear();
@@ -1973,7 +1963,7 @@ function drawChart_A31(key,selectedVal){
 							var day = date.getDate();
 							if (day<10) {day='0'+day;}
 		                    var dateYMD=year+month+day;
-		                    console.log(dateYMD);
+		                    console.log(dateYMD+'----'+event.point.y);
 		                    //传递点击数据，获取小图数据
 							$.ajax({
 								method: "GET",
@@ -2188,9 +2178,6 @@ function drawChart_A31(key,selectedVal){
 
 
 
-
-
-
 							})
 							.fail(function( jqXHR, textStatus ) {
 								console.log( "Request failed: " + textStatus );
@@ -2238,12 +2225,12 @@ function drawChart_A31(key,selectedVal){
 										my.id = "ChildDiv";//设置ID 
 
 										//给div加一个点击后隐藏的函数 
-										my.onclick = function(){
-										   if(  (cdiv=document.getElementById('ChildDiv'))!=null){  
-										        p = cdiv.parentNode;  
-										        p.removeChild(cdiv);  
-										    } 
-										 };
+										// my.onclick = function(){
+										//    if(  (cdiv=document.getElementById('ChildDiv'))!=null){  
+										//         p = cdiv.parentNode;  
+										//         p.removeChild(cdiv);  
+										//     } 
+										//  };
 
 										//在div中创建图表
 										var chart = Highcharts.chart('ChildDiv', {
@@ -2269,10 +2256,7 @@ function drawChart_A31(key,selectedVal){
 											}
 										},
 										yAxis: {
-												min: 0,
-												// title: {
-												// 		// text: '人口 (百万)'
-												// }
+												min: 0,											
 										},
 										legend: {
 												enabled: false
@@ -2316,9 +2300,15 @@ function drawChart_A31(key,selectedVal){
 			            }
 		                
 		            }
-		        }
+		        },
+		        line:{
+					states:{
+						hover:{
+							lineWidthPlus:0
+						}
+					}
+				}
 		    },
-
 		    xAxis: {				
 		        title: {
 		            enabled: true,
@@ -2340,15 +2330,6 @@ function drawChart_A31(key,selectedVal){
 				title: {
 					// text: '这个是Y轴'
 				},
-			},
-			plotOptions:{
-				line:{
-					states:{
-						hover:{
-							lineWidthPlus:0
-						}
-					}
-				}
 			},
 			series: [{
 				name: '指定板块的个股估值分布',
@@ -4960,7 +4941,7 @@ function svgToPng(svg,pngWidth,pngHeight,pngName){
 	image.src = 'data:image/svg+xml;base64,' + window.btoa(unescape(encodeURIComponent(svg))); //给图片对象写入base64编码的svg流
 	// getDataUrlBySrc(svg).then(b64 => (image.src = b64));
 	console.log('导出图片的URL---');
-	console.log(image.src);
+	// console.log(image.src);
 
 	var canvas = document.createElement('canvas');  //准备空画布
 	canvas.width = pngWidth;  
@@ -4972,8 +4953,8 @@ function svgToPng(svg,pngWidth,pngHeight,pngName){
 		var a = document.createElement("a"); 
 			a.href = canvas.toDataURL('image/png'); //将画布内的信息导出为png图片数据
 			a.download = pngName+".png";  //设定下载名称
-			console.log('导出图片的a.href---');
-			console.log(a.href);
+			// console.log('导出图片的a.href---');
+			// console.log(a.href);
 			// a.href = url;  
 			a.click(); //点击触发下载
 	
@@ -5148,7 +5129,7 @@ function drawSmallDiagram(){
 					}
 				}]
 				});
-				globalClicked=true;
+				// globalClicked=true;
 
 			});
 		}
