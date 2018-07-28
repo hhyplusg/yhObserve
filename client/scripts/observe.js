@@ -1283,7 +1283,7 @@ function drawChart_A24(key,selectedVal){
 		        enabled: true,
 			    align: 'right',
 			    verticalAlign: 'top',
-			    x: -75,
+			    x: -55,
 				y: 20,
 				floating: false,
 				itemStyle:{
@@ -1293,19 +1293,19 @@ function drawChart_A24(key,selectedVal){
 				},
 			    margin:0,
 		    },
-
 			yAxis:[
 				{
 					opposite: false,
+					lineWidth:1,
 					title: {
 							// text: 'Y轴1'
 					},
 				},
-				{
-					title: {
-							// text: 'Y轴2'
-					},
-				}
+				// {
+				// 	title: {
+				// 			// text: 'Y轴2'
+				// 	},
+				// }
 			], 
 			plotOptions:{
 				line:{
@@ -1320,14 +1320,14 @@ function drawChart_A24(key,selectedVal){
 				{
 					name: 'A股年化换手率',
 					data: dataObj.data,
-					yAxis:0,
+					// yAxis:0,
 					lineWidth:2,
 					color:globalColorBlue
 				},
 				{
 					name: 'A股年化换手率(MA20)',
 					data: dataObj.data_MA20,	
-					yAxis:1,
+					// yAxis:1,
 					lineWidth:2,
 					color:globalColorRed			
 				}
@@ -1354,7 +1354,7 @@ function drawChart_A24(key,selectedVal){
 	        enabled: true,
 		    align: 'right',
 		    verticalAlign: 'top',
-		    x: -80,
+		    x: -55,
 			y: 20,
 			floating: false,
 			itemStyle:{
@@ -2739,8 +2739,8 @@ function drawChart_B21(){
 
 
 		// 基于准备好的dom，初始化echarts实例
-	    let myChartLeft = echarts.init(document.getElementById('showDiagramLeft10'));
-		let myChartRight = echarts.init(document.getElementById('showDiagramRight10'));
+	 //    let myChartLeft = echarts.init(document.getElementById('showDiagramLeft10'));
+		// let myChartRight = echarts.init(document.getElementById('showDiagramRight10'));
 	
 		let xAxisDataLeft = dataObj.data_base[0];
 		let xAxisDataRight = dataObj.data_index[0];
@@ -2749,6 +2749,35 @@ function drawChart_B21(){
 		let seriesData = {'left':dataObj.data_base[1],'right':dataObj.data_index[1]};
 		drawHistogram(showDiagramLeft10,'基准',xAxisDataLeft,seriesData.left);
 		drawHistogram(showDiagramRight10,'板块',xAxisDataRight,seriesData.right);
+
+
+		$('#leftButton').click(function(event){
+			console.log("点击了导出图片B11左图！");
+			var chart = $('#showDiagramLeft10').highcharts();
+			var curTime=getCurrentTime(1);
+			//设置出图时带标题
+			chart.title.update({ text: '本周换手率变化最大的基准'});
+			chart.exporting.update({ enabled: false,scale: 1,sourceWidth: 500,sourceHeight: 450});
+			//图标转换成图片
+			var svg = chart.getSVG().replace(/</g, '\n<').replace(/>/g, '>'); 
+			var pngName='本周换手率变化最大的基准'+curTime;
+			svgToPng(svg,500,450,pngName);
+			chart.title.update({ text: '基准'});
+		});
+
+		$('#rightButton').click(function(event){
+			console.log("点击了导出图片B11右图！");
+			var chart = $('#showDiagramRight10').highcharts();
+			var curTime=getCurrentTime(1);
+			//设置出图时带标题
+			chart.title.update({ text: '本周换手率变化最大的板块'});
+			chart.exporting.update({ enabled: false,scale: 1,sourceWidth: 500,sourceHeight: 450});
+			//图标转换成图片
+			var svg = chart.getSVG().replace(/</g, '\n<').replace(/>/g, '>'); 
+			var pngName='本周换手率变化最大的板块'+curTime;
+			svgToPng(svg,500,450,pngName);
+			chart.title.update({ text: '板块'});
+		});
 
 
 		// function setOption(title,xAxisData,seriesData){
@@ -2915,6 +2944,34 @@ function drawChart_B22(){
 		let seriesData = {'left':dataObj.data_base[1],'right':dataObj.data_index[1]};
 		drawHistogram(showDiagramLeft11,'基准',xAxisDataLeft,seriesData.left);
 		drawHistogram(showDiagramRight11,'板块',xAxisDataRight,seriesData.right);
+
+		$('#leftButton11').click(function(event){
+			console.log("点击了导出图片B12左图！");
+			var chart = $('#showDiagramLeft11').highcharts();
+			var curTime=getCurrentTime(1);
+			//设置出图时带标题
+			chart.title.update({ text: '本周换手率绝对水平最高的基准'});
+			chart.exporting.update({ enabled: false,scale: 1,sourceWidth: 500,sourceHeight: 450});
+			//图标转换成图片
+			var svg = chart.getSVG().replace(/</g, '\n<').replace(/>/g, '>'); 
+			var pngName='本周换手率绝对水平最高的基准'+curTime;
+			svgToPng(svg,500,450,pngName);
+			chart.title.update({ text: '基准'});
+		});
+
+		$('#rightButton11').click(function(event){
+			console.log("点击了导出图片B12右图！");
+			var chart = $('#showDiagramRight11').highcharts();
+			var curTime=getCurrentTime(1);
+			//设置出图时带标题
+			chart.title.update({ text: '本周换手率绝对水平最高的板块'});
+			chart.exporting.update({ enabled: false,scale: 1,sourceWidth: 500,sourceHeight: 450});
+			//图标转换成图片
+			var svg = chart.getSVG().replace(/</g, '\n<').replace(/>/g, '>'); 
+			var pngName='本周换手率绝对水平最高的板块'+curTime;
+			svgToPng(svg,500,450,pngName);
+			chart.title.update({ text: '板块'});
+		});
 
 		// // function setOption(title,xAxisData,seriesData){
 		// // 	// 指定图表的配置项和数据
@@ -3351,6 +3408,36 @@ function drawChart_B31(){
 		let seriesData = {'left':dataObj.data_decay[1],'right':dataObj.data_grow[1]};
 		drawHistogram(showDiagramLeft14,'加强',xAxisDataLeft,seriesData.left);
 		drawHistogram(showDiagramRight14,'衰竭',xAxisDataRight,seriesData.right);
+
+		$('#leftButton14').click(function(event){
+			console.log("点击了导出图片B31左图！");
+			var chart = $('#showDiagramLeft14').highcharts();
+			var curTime=getCurrentTime(1);
+			//设置出图时带标题
+			chart.title.update({ text: '本周新增“速度/加速度”加强的行业'});
+			chart.exporting.update({ enabled: false,scale: 1,sourceWidth: 500,sourceHeight: 450});
+			//图标转换成图片
+			var svg = chart.getSVG().replace(/</g, '\n<').replace(/>/g, '>'); 
+			var pngName='本周新增“速度/加速度”加强的行业'+curTime;
+			svgToPng(svg,500,450,pngName);
+			chart.title.update({ text: '加强'});
+		});
+
+		$('#rightButton14').click(function(event){
+			console.log("点击了导出图片B31右图！");
+			var chart = $('#showDiagramRight14').highcharts();
+			var curTime=getCurrentTime(1);
+			//设置出图时带标题
+			chart.title.update({ text: '本周新增“速度/加速度”衰竭的行业'});
+			chart.exporting.update({ enabled: false,scale: 1,sourceWidth: 500,sourceHeight: 450});
+			//图标转换成图片
+			var svg = chart.getSVG().replace(/</g, '\n<').replace(/>/g, '>'); 
+			var pngName='本周新增“速度/加速度”衰竭的行业'+curTime;
+			svgToPng(svg,500,450,pngName);
+			chart.title.update({ text: '衰竭'});
+		});
+
+
 		// function setOption(title,xAxisData,seriesData){
 		// 	// 指定图表的配置项和数据
 		// 	var option = {
@@ -4166,7 +4253,7 @@ function drawChart_B41(key,selectedVal){
 						dashStyle: 'shortdash',
 						width: 2,
 						label: {
-								text: '1 X Sigma'
+								text: '1Sigma('+dataObjDataY[0]+')'
 						},
 						zIndex:200,
 
@@ -4176,7 +4263,7 @@ function drawChart_B41(key,selectedVal){
 						dashStyle: 'shortdash',
 						width: 2,
 						label: {
-								 text: '2 X Sigma'
+								 text: '2Sigma('+dataObjDataY[1]+')'
 						},
 						zIndex:200,
 				},
@@ -4186,7 +4273,7 @@ function drawChart_B41(key,selectedVal){
 						dashStyle: 'shortdash',
 						width: 2,
 						label: {
-								text: '1 X Sigma'
+								text: '1Sigma(-'+dataObjDataY[0]+')'
 						},
 						zIndex:200,
 				}, {
@@ -4195,7 +4282,7 @@ function drawChart_B41(key,selectedVal){
 						dashStyle: 'shortdash',
 						width: 2,
 						label: {
-								 text: '2 X Sigma'
+								 text: '2Sigma(-'+dataObjDataY[1]+')'
 						},
 						zIndex:200,
 				}]
