@@ -443,7 +443,7 @@ function drawChart_A11(){
 	});
 
 	
-
+	// $("#testExport").off("click").on("click",function(event){
 	$("#testExport").click(function(event){
 		console.log("点击了导出图片A11！");
 		var chart = $('#showDiagram1').highcharts();
@@ -2801,7 +2801,7 @@ function drawChart_B21(){
 			var svg = chart.getSVG().replace(/</g, '\n<').replace(/>/g, '>'); 
 			var pngName='本周换手率变化最大的基准'+curTime;
 			svgToPng(svg,500,450,pngName);
-			chart.title.update({ text: '基准'});
+			chart.title.update({ text: '基准'+dataObj.date});
 		});
 
 		$('#rightButton').click(function(event){
@@ -2815,7 +2815,7 @@ function drawChart_B21(){
 			var svg = chart.getSVG().replace(/</g, '\n<').replace(/>/g, '>'); 
 			var pngName='本周换手率变化最大的板块'+curTime;
 			svgToPng(svg,500,450,pngName);
-			chart.title.update({ text: '板块'});
+			chart.title.update({ text: '板块'+dataObj.date});
 		});
 
 
@@ -3614,7 +3614,8 @@ function drawChart_B32(){
 	if (onlineOrLocal) {
 		globalDataURL='../lib/data15B32.json';
 	}else{
-		globalDataURL='weekly/IndicatorQuery?indicatorId=0016&startDate=20180611&endDate=20180611';
+		var lastDay = getCurrentTime(3);
+		globalDataURL='weekly/IndicatorQuery?indicatorId=0016&startDate='+lastDay+'&endDate='+lastDay;
 	}
 	//获取数据
 	$.getJSON(globalDataURL,function (dataYH) {	
@@ -3906,7 +3907,7 @@ function drawChart_B33(key,selectedVal,selectedText){
     // which are sliced off this function's arguments
     proceed.apply(this, Array.prototype.slice.call(arguments, 1));
 
-    console.log("--------------------------开始drawChart-B33-222--this-\n");
+    console.log("------------------开始drawChart-B33--this-");
     // console.log(this);
 	var thisChart=this.chart;
 	var curID=$(thisChart.container).parent().attr("id")
