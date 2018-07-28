@@ -110,11 +110,16 @@ $(function(){
 	drawChart_A11();  //<!-- 博弈/存量指标 -->
 	drawChart_A12(); //百分比图方法实现双轴</li>     <!-- 融资买入/可用担保价值 -->
 	drawChart_A21(); // 基础表实现双轴</li>           <!-- 综合性情绪指标 -->
-	drawChart_A22(keys.A22,'881001.WI','MA5','万得全A');  //百分比图方法实现双轴</li>     <!-- 融资买入/可用担保价值 -->
+	drawChart_A22(keys.A22,'881001.WI','MA5','万得全A','MA5');  //百分比图方法实现双轴</li>     <!-- 融资买入/可用担保价值 -->
 	drawChart_A23(keys.A23,'000001.SH','上证综指'); 
 	drawChart_A24(keys.A24,'000001.SH');  //换手率
-	drawChart_A31(keys.A31,'000300.SH');  //指定版块的个股估值分布
+
+	
 	// drawSmallDiagram();
+
+	drawChart_A31(keys.A31,'000300.SH','沪深300');  //指定版块的个股估值分布
+	// drawSmallDiagram();
+
 	drawChart_A32(keys.A32,'000001.SH');
 	drawChart_B11(keys.B11,'000001.SH','000016.SH','MA5','上证综指','上证50','MA5');  //指定版块的相对换手率历史变化 key,windCode1,windCode2,smooth
 	drawChart_B21();   //柱状图  换手率变化最大的基准
@@ -123,8 +128,8 @@ $(function(){
 	drawChart_B24(keys.B24,'000001.SH');   //双轴  指定板块周换手率的历史变化
 	drawChart_B31();   //柱状图
 	drawChart_B32();   //象限图
-	drawChart_B33(keys.B33,'CI005001.WI');  // 反转图 	
-	drawChart_B41(keys.B41,'000001.SH');
+	drawChart_B33(keys.B33,'CI005001.WI','石油石化(中信)');  // 反转图 	
+	drawChart_B41(keys.B41,'000001.SH','上证综指');
 	// drawHistogram();
 	// drawChart7(); // 象限图
 	// export
@@ -693,7 +698,12 @@ function drawChart_A12(){
 					color:globalColorRed		
 				}
 			]
-		});
+		},function (chart) {
+			setTimeout(function () {
+				$('input.highcharts-range-selector', $(chart.container).parent())
+					.datepicker(pickOption);
+			}, 0);
+    	});
 	});
 
 	$('#diagramDiv2').find('.spanExportButton').click(function(event){
@@ -866,7 +876,12 @@ function drawChart_A21(){
 					color:globalColorRed			
 				}
 			]
-		});
+		},function (chart) {
+			setTimeout(function () {
+				$('input.highcharts-range-selector', $(chart.container).parent())
+					.datepicker(pickOption);
+			}, 0);
+    	});
 
 		// SandSignika(Highcharts);
 	});
@@ -901,7 +916,7 @@ function drawChart_A21(){
 	});
 }
 
-function drawChart_A22(key,windCode,smooth,windCodeText){   
+function drawChart_A22(key,windCode,smooth,windCodeText,smoothText){   
 	console.log("开始drawChart-_A22");
 	if (onlineOrLocal) {
 		globalDataURL='../lib/data4A22.json';
@@ -1007,22 +1022,27 @@ function drawChart_A22(key,windCode,smooth,windCodeText){
 				}
 			}, 
 			series: [
-				{
-					name: ' 全部A股MA60强势股数占比',
+				{	
+					name: windCodeText+smoothText+'强势股占比',
 					data: dataObj.data,
 					yAxis:0,
 					lineWidth:2,
 					color:globalColorBlue
 				},
 				{
-					name: windCodeText+'（右轴）',
+					name: '沪深300（右轴）',
 					data: dataObj.index_data,	
 					yAxis:1,
 					lineWidth:2,
 					color:globalColorRed		
 				}
 			]
-		});
+		},function (chart) {
+			setTimeout(function () {
+				$('input.highcharts-range-selector', $(chart.container).parent())
+					.datepicker(pickOption);
+			}, 0);
+    	});
 
 		// SandSignika(Highcharts);
 	});
@@ -1187,7 +1207,12 @@ function drawChart_A23(key,selectedVal,selectedText){
 				}
 
 			]
-		});
+		},function (chart) {
+			setTimeout(function () {
+				$('input.highcharts-range-selector', $(chart.container).parent())
+					.datepicker(pickOption);
+			}, 0);
+    	});
 
 		// SandSignika(Highcharts);
 	});
@@ -1342,21 +1367,26 @@ function drawChart_A24(key,selectedVal){
 			},
 			series: [
 				{
-					name: 'A股年化换手率',
+					name: '指数+年化换手率',
 					data: dataObj.data,
 					// yAxis:0,
 					lineWidth:2,
 					color:globalColorBlue
 				},
 				{
-					name: 'A股年化换手率(MA20)',
+					name: '指数+年化换手率（MA20）',
 					data: dataObj.data_MA20,	
 					// yAxis:1,
 					lineWidth:2,
 					color:globalColorRed			
 				}
 			]
-		});
+		},function (chart) {
+			setTimeout(function () {
+				$('input.highcharts-range-selector', $(chart.container).parent())
+					.datepicker(pickOption);
+			}, 0);
+    	});
 
 		// SandSignika(Highcharts);
 	});
@@ -1888,7 +1918,7 @@ function drawChart_A31_old(){
 	    });
 	});
 }
-function drawChart_A31(key,selectedVal){
+function drawChart_A31(key,selectedVal,selectedText){
 	// 第一次获取selectItem为null，因为还没请求到值。设置默认值
 	
 	console.log("开始drawChart-_A31-");
@@ -2030,7 +2060,7 @@ function drawChart_A31(key,selectedVal){
 											enabled: false
 										},
 										title: {
-												text: dateYMD +' '+selectedVal+' '+'PE分布'
+												text: selectedText +' '+dateYMD+' '+'PE分布'
 										},
 										exporting:{
 											enabled: false
@@ -2130,7 +2160,7 @@ function drawChart_A31(key,selectedVal){
 											enabled: false
 										},
 										title: {
-												text: dateYMD +' '+selectedVal+' '+'PE分布'
+												text: selectedText +' '+dateYMD+' '+'PE分布'
 										},
 										exporting:{
 											enabled: false
@@ -2241,7 +2271,7 @@ function drawChart_A31(key,selectedVal){
 											enabled: false
 										},
 										title: {
-												text: dateYMD +' '+selectedVal+' '+'PE分布'
+												text: selectedText +' '+dateYMD+' '+'PE分布'
 										},
 										exporting:{
 											enabled: false
@@ -2332,12 +2362,17 @@ function drawChart_A31(key,selectedVal){
 				},
 			},
 			series: [{
-				name: '指定板块的个股估值分布',
+				name: selectedText+'的个股估值分布',
 				data: dataObj,
 				lineWidth:2,
 				color:globalColorBlue
 			}]
-		});
+		},function (chart) {
+			setTimeout(function () {
+				$('input.highcharts-range-selector', $(chart.container).parent())
+					.datepicker(pickOption);
+			}, 0);
+    	});
 
 	});
 	$('#diagramDiv7').find('.spanExportButton').click(function(event){
@@ -2688,7 +2723,12 @@ function drawChart_B11(key,windCode1,windCode2,smooth,windCode1Text,windCode2Tex
 					color:globalColorRed			
 				}
 			]
-		});
+		},function (chart) {
+			setTimeout(function () {
+				$('input.highcharts-range-selector', $(chart.container).parent())
+					.datepicker(pickOption);
+			}, 0);
+    	});
 	});
 
 	$('#diagramDiv9').find('.spanExportButton').click(function(event){
@@ -2752,8 +2792,8 @@ function drawChart_B21(){
 		// let xAxisDataLeft = ['乐风', '瑞纳', '腾翼C30'];
 		// let xAxisDataRight = ['乐风', '瑞纳', '腾翼C30', '悦翔', '比亚迪F3'];
 		let seriesData = {'left':dataObj.data_base[1],'right':dataObj.data_index[1]};
-		drawHistogram(showDiagramLeft10,'基准',xAxisDataLeft,seriesData.left);
-		drawHistogram(showDiagramRight10,'板块',xAxisDataRight,seriesData.right);
+		drawHistogram(showDiagramLeft10,'基准'+dataObj.date,xAxisDataLeft,seriesData.left);
+		drawHistogram(showDiagramRight10,'板块'+dataObj.date,xAxisDataRight,seriesData.right);
 
 
 		$('#leftButton').click(function(event){
@@ -3337,21 +3377,26 @@ function drawChart_B24(key,selectedVal){
 			},
 			series: [
 				{
-					name: '换手率分位(MA5)',
+					name: '指数+换手率分位（MA5）',
 					data: dataObj.data,
 					yAxis:0,
 					lineWidth:2,
 					color:globalColorBlue
 				},
 				{
-					name: '收盘价',
+					name: '指数+收盘价',
 					data: dataObj.index_data,	
 					yAxis:1,
 					lineWidth:2,
 					color:globalColorRed			
 				}
 			]
-		});
+		},function (chart) {
+			setTimeout(function () {
+				$('input.highcharts-range-selector', $(chart.container).parent())
+					.datepicker(pickOption);
+			}, 0);
+    	});
 	});
 	$('#diagramDiv13').find('.spanExportButton').click(function(event){
 		console.log("点击了导出图片B24！");
@@ -3411,8 +3456,8 @@ function drawChart_B31(){
 		// let xAxisDataLeft = ['乐风', '瑞纳', '腾翼C30'];
 		// let xAxisDataRight = ['乐风', '瑞纳', '腾翼C30', '悦翔', '比亚迪F3'];
 		let seriesData = {'left':dataObj.data_decay[1],'right':dataObj.data_grow[1]};
-		drawHistogram(showDiagramLeft14,'加强',xAxisDataLeft,seriesData.left);
-		drawHistogram(showDiagramRight14,'衰竭',xAxisDataRight,seriesData.right);
+		drawHistogram(showDiagramLeft14,'加强'+dataObj.date,xAxisDataLeft,seriesData.left);
+		drawHistogram(showDiagramRight14,'衰竭'+dataObj.date,xAxisDataRight,seriesData.right);
 
 		$('#leftButton14').click(function(event){
 			console.log("点击了导出图片B31左图！");
@@ -3781,7 +3826,7 @@ function drawChart_B32(){
 			}
 		},
 		series: [{
-			name: '速度/加速度',
+			name: '速度/加速度'+getCurrentTime(2),
 			// color: 'rgba(223, 83, 83, .5)',
 			data: dataJsonArray,
 			zIndex: 1000,
@@ -3855,7 +3900,7 @@ function drawChart_B32(){
 
 
 //反转图
-function drawChart_B33(key,selectedVal){
+function drawChart_B33(key,selectedVal,selectedText){
 	console.log("开始drawChart-B33-");
 	(function(H) {
 
@@ -4078,7 +4123,7 @@ function drawChart_B33(key,selectedVal){
 		        }
 		    },
 		    series: [{
-		        name: '速度/加速度',
+		        name: selectedText,
 		        data: dataJsonArray,
 		        lineWidth:2,
 				color:globalColorBlue
@@ -4133,7 +4178,7 @@ function drawChart_B33(key,selectedVal){
 	});
 }
 
-function drawChart_B41(key,selectedVal){
+function drawChart_B41(key,selectedVal,selectedText){
 	console.log("开始drawChart-B41");
 	//获取数据
 	if (onlineOrLocal) {
@@ -4302,12 +4347,17 @@ function drawChart_B41(key,selectedVal){
 				}
 			},
 			series: [{
-				name: '中期_HP滤波后的行业估值',
+				name: selectedText+'HP滤波后的估值',
 				data: dataObjData,
 				lineWidth:2,
 				color:globalColorBlue
 			}]
-		});
+		},function (chart) {
+			setTimeout(function () {
+				$('input.highcharts-range-selector', $(chart.container).parent())
+					.datepicker(pickOption);
+			}, 0);
+    	});
 
 		// //图标转换成图片
 		// var svg = mychart.getSVG()
@@ -5291,13 +5341,13 @@ $(".selected-index").change(function(){
 			case keys.A24: ;
 				drawChart_A24(key,selectedVal); break;
 			case keys.A31: 
-				drawChart_A31(key,selectedVal); break;
+				drawChart_A31(key,selectedVal,selectedText); break;
 			case keys.A32: 
 				drawChart_A32(key,selectedVal); break;
 			case keys.B24: 
 				drawChart_B24(key,selectedVal); break;
 			case keys.B41: ;
-				drawChart_B41(key,selectedVal); break;
+				drawChart_B41(key,selectedVal,selectedText); break;
 		}
 	}
 });
@@ -5308,7 +5358,7 @@ $(".selected-citic-index").change(function(){
 	var selectedVal = $(this).val();
 	var selectedText = $(this).find("option:selected").text();	    
 	console.log(key,selectedVal,selectedText);
-	drawChart_B33(key,selectedVal);
+	drawChart_B33(key,selectedVal,selectedText);
 });
 
 // A22只要选择其中一个就更新
@@ -5316,17 +5366,22 @@ $("#diagramDiv4 .smooth").change(function(){
 	var key = $(this).attr('key');
 	var smooth = $(this).val();
 	var windCode = $('#diagramDiv4').find('.windCode').val();	
-	var windCodeText = $('#diagramDiv4').find('.windCode').find("option:selected").text();    
-	console.log(key,smooth,windCode,windCodeText);
-	drawChart_A22(key,windCode,smooth,windCodeText);
+
+	var smoothText = $(this).find("option:selected").text();   
+	var windCodeText = $('#diagramDiv4').find('.windCode').find("option:selected").text();
+
+	console.log(key,smooth,windCode,windCodeText,smoothText);
+	drawChart_A22(key,windCode,smooth,windCodeText,smoothText);
 });
 $("#diagramDiv4 .windCode").change(function(){	 
 	var key = $(this).attr('key');
 	var windCode = $(this).val();
 	var smooth = $('#diagramDiv4').find('.smooth').val();
-	var windCodeText = $(this).find("option:selected").text();	    
-	console.log(key,smooth,windCode,windCodeText);
-	drawChart_A22(key,windCode,smooth,windCodeText);
+	var windCodeText = $(this).find("option:selected").text();
+	var smoothText = $('#diagramDiv4').find('.smooth').find("option:selected").text();
+
+	console.log(key,smooth,windCode,windCodeText,smoothText);
+	drawChart_A22(key,windCode,smooth,windCodeText,smoothText);
 });
 
 // B11
