@@ -1,11 +1,33 @@
 import {EventObject,GetCookie,SetCookie,DeleteCookie,isWeiXin,parseUrlSearch,getUrlParams,isEmptyObj,getDeviceType,keys} from './api';
 
+var pickOption = {
+			showAnim: 'slideDown',
+			nextText : '>',
+			prevText : '<',
+			showButtonPanel: false,
+			duration : 'fast',
+			monthNames: ['一月','二月','三月','四月','五月','六月',
+'七月','八月','九月','十月','十一月','十二月'],
+			monthNamesShort: ['一','二','三','四','五','六',
+			'七','八','九','十','十一','十二'],
+			dayNames: ['星期日','星期一','星期二','星期三','星期四','星期五','星期六'],
+			dayNamesShort: ['周日','周一','周二','周三','周四','周五','周六'],
+			dayNamesMin: ['日','一','二','三','四','五','六'],
+			closeText: '关闭',
+			dateFormat: 'yy-mm-dd',
+			// firstDay: 1,
+			defaultDate:'2011-03-10',
+			
+			// minDate: -1,
+			// maxDate: +17
+}
+
 // import * as SandSignika from '../lib/Highstock-6.1.0/code/themes/sand-signika';
 var globalColorRed='red';  //#1E90FF  #FF4500
 var globalColorBlue='blue';
 var globalColorGray='gray';
 var onlineOrLocal=false;  //false=online, true=local
-if (window.location.href=='http://localhost:3000/observesystem.html') {onlineOrLocal=true;}
+if (window.location.href=='http://localhost:3000/observesystem.html'||location.pathname=='/observesystem.html') {onlineOrLocal=true;}
 var globalDataURL='';
 var globalClicked=false;
 
@@ -122,13 +144,15 @@ $(function(){
 
 });
 
+// 设置图表中的函数
 $.datepicker.setDefaults({
     dateFormat: 'yy-mm-dd',
     onSelect: function () {
         this.onchange();
         this.onblur();
-    }
+    },
 });
+// $.datepicker.setDefaults($.datepicker.regional['zh-CN']);
 //基础表单轴
 function drawChart_A11(){
 	console.log("开始drawChart-_A11-");
@@ -411,7 +435,7 @@ function drawChart_A11(){
         // apply the date pickers
 			setTimeout(function () {
 				$('input.highcharts-range-selector', $(chart.container).parent())
-					.datepicker();
+					.datepicker(pickOption);
 			}, 0);
     	});
 
@@ -4958,40 +4982,40 @@ function svgToPng(svg,pngWidth,pngHeight,pngName){
 	};
 
  
-	function getDataUrlBySrc(src) {
-	 return new Promise<string>((resolve, reject) => {
-	 if (Cache.localGet("isIE")) {
-	  const xmlHTTP = new XMLHttpRequest();
-	  xmlHTTP.open("GET", src, true);
+	// function getDataUrlBySrc(src) {
+	//  return new Promise<string>((resolve, reject) => {
+	//  if (Cache.localGet("isIE")) {
+	//   const xmlHTTP = new XMLHttpRequest();
+	//   xmlHTTP.open("GET", src, true);
 	 
-	  // 以 ArrayBuffer 的形式返回数据
-	  xmlHTTP.responseType = "arraybuffer";
+	//   // 以 ArrayBuffer 的形式返回数据
+	//   xmlHTTP.responseType = "arraybuffer";
 	 
-	  xmlHTTP.onload = function(e) {
+	//   xmlHTTP.onload = function(e) {
 	   
-	  // 1. 将返回的数据存储在一个 8 位无符号整数值的类型化数组里面
-	  const arr = new Uint8Array(xmlHTTP.response);
+	//   // 1. 将返回的数据存储在一个 8 位无符号整数值的类型化数组里面
+	//   const arr = new Uint8Array(xmlHTTP.response);
 	   
-	  // 2. 转为 charCode 字符串
-	  const raw = Array.prototype.map
-	   .call(arr, charCode => String.fromCharCode(charCode))
-	   .join("");
+	//   // 2. 转为 charCode 字符串
+	//   const raw = Array.prototype.map
+	//    .call(arr, charCode => String.fromCharCode(charCode))
+	//    .join("");
 	    
-	  // 3. 将二进制字符串转为 base64 编码的字符串
-	  const b64 = btoa(raw);
+	//   // 3. 将二进制字符串转为 base64 编码的字符串
+	//   const b64 = btoa(raw);
 	   
-	  const dataURL = "data:image/png;base64," + b64;
-	  resolve(dataURL);
-	  };
-	  xmlHTTP.onerror = function(err) {
-	  reject(err);
-	  };
-	  xmlHTTP.send();
-	 } else {
-	  resolve(src);
-	 }
-	 });
-	}
+	//   const dataURL = "data:image/png;base64," + b64;
+	//   resolve(dataURL);
+	//   };
+	//   xmlHTTP.onerror = function(err) {
+	//   reject(err);
+	//   };
+	//   xmlHTTP.send();
+	//  } else {
+	//   resolve(src);
+	//  }
+	//  });
+	// }
 
 
 
@@ -5367,3 +5391,19 @@ $("#diagramDiv9 .windCode2").change(function(){
 
 	console.log(key,smoothText,windCode1Text,windCode2Text);
 });
+
+
+// $(".table-input .input-date").datepicker(pickOption); 
+
+// $(".table-input .start-date").val(getFormatTimeWithLine());
+
+// function getFormatTimeWithLine(){
+// 	var myDate = new Date();
+// 	var year = myDate.getFullYear();
+// 	var month = myDate.getMonth()<9 ? '0'+(myDate.getMonth()+1):(myDate.getMonth()+1);
+// 	var date = myDate.getDate()<10 ? '0'+(myDate.getDate()):(myDate.getDate());
+
+// 	var time = year+'-'+month+'-'+date;
+
+// 	return time
+// }

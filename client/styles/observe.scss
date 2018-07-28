@@ -603,3 +603,42 @@ $background-color: white;
     background: $background-color;
     overflow: visible;
 }
+
+.highcharts-range-selector ,.hasDatepicker{
+        color: blue;
+}
+.ui-datepicker{
+    background-color: #e0d1d5;
+    z-index: 100!important;
+    .ui-datepicker-header{
+        a{
+            color: blue;
+        }
+        padding: 0px 5px;
+        .ui-datepicker-prev{
+            float: left;
+        }
+        .ui-datepicker-next{
+            float: right;
+        }
+        .ui-datepicker-title{
+            text-align: center;
+        }
+        
+    }
+}
+.ui-datepicker-calendar{
+    z-index: 100;
+    a{
+            color: blue;
+    }
+    th,td{
+            padding: 2px;
+    }
+}
+
+// .table-input input{
+//     font-family: "Lucida Grande", "Lucida Sans Unicode", Arial, Helvetica, sans-serif;
+//     color: black;
+//     fill: black;
+// }
