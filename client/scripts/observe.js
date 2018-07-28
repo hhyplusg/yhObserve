@@ -110,7 +110,7 @@ $(function(){
 	drawChart_A11();  //<!-- 博弈/存量指标 -->
 	drawChart_A12(); //百分比图方法实现双轴</li>     <!-- 融资买入/可用担保价值 -->
 	drawChart_A21(); // 基础表实现双轴</li>           <!-- 综合性情绪指标 -->
-	drawChart_A22(keys.A22,'881001.WI','MA5','万得全A');  //百分比图方法实现双轴</li>     <!-- 融资买入/可用担保价值 -->
+	drawChart_A22(keys.A22,'881001.WI','MA5','万得全A','MA5');  //百分比图方法实现双轴</li>     <!-- 融资买入/可用担保价值 -->
 	drawChart_A23(keys.A23,'000001.SH','上证综指'); 
 	drawChart_A24(keys.A24,'000001.SH');  //换手率
 	drawChart_A31(keys.A31,'000300.SH','沪深300');  //指定版块的个股估值分布
@@ -911,7 +911,7 @@ function drawChart_A21(){
 	});
 }
 
-function drawChart_A22(key,windCode,smooth,windCodeText){   
+function drawChart_A22(key,windCode,smooth,windCodeText,smoothText){   
 	console.log("开始drawChart-_A22");
 	if (onlineOrLocal) {
 		globalDataURL='../lib/data4A22.json';
@@ -1017,8 +1017,8 @@ function drawChart_A22(key,windCode,smooth,windCodeText){
 				}
 			}, 
 			series: [
-				{
-					name: '指数+周期+强势股占比',
+				{	
+					name: windCodeText+smoothText+'强势股占比',
 					data: dataObj.data,
 					yAxis:0,
 					lineWidth:2,
@@ -5380,17 +5380,22 @@ $("#diagramDiv4 .smooth").change(function(){
 	var key = $(this).attr('key');
 	var smooth = $(this).val();
 	var windCode = $('#diagramDiv4').find('.windCode').val();	
-	var windCodeText = $('#diagramDiv4').find('.windCode').find("option:selected").text();    
-	console.log(key,smooth,windCode,windCodeText);
-	drawChart_A22(key,windCode,smooth,windCodeText);
+
+	var smoothText = $(this).find("option:selected").text();   
+	var windCodeText = $('#diagramDiv4').find('.windCode').find("option:selected").text();
+
+	console.log(key,smooth,windCode,windCodeText,smoothText);
+	drawChart_A22(key,windCode,smooth,windCodeText,smoothText);
 });
 $("#diagramDiv4 .windCode").change(function(){	 
 	var key = $(this).attr('key');
 	var windCode = $(this).val();
 	var smooth = $('#diagramDiv4').find('.smooth').val();
-	var windCodeText = $(this).find("option:selected").text();	    
-	console.log(key,smooth,windCode,windCodeText);
-	drawChart_A22(key,windCode,smooth,windCodeText);
+	var windCodeText = $(this).find("option:selected").text();
+	var smoothText = $('#diagramDiv4').find('.smooth').find("option:selected").text();
+
+	console.log(key,smooth,windCode,windCodeText,smoothText);
+	drawChart_A22(key,windCode,smooth,windCodeText,smoothText);
 });
 
 // B11
