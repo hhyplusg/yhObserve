@@ -199,7 +199,8 @@ gulp.task('scripts', async () => {
         ]
       });
       await bundle.write({
-        file: `.tmp/scripts/${js}`,
+        // file: `.tmp/scripts/${js}`,
+        file: `.tmp/static/js/strategicobserv/weekly/${js}`,
         format: 'iife',
         sourcemap: false
       });
@@ -213,7 +214,7 @@ gulp.task('scripts', async () => {
 });
 
 gulp.task('comJs', () => {
-  return gulp.src('.tmp/scripts/*.js')
+  return gulp.src('.tmp/static/js/strategicobserv/weekly/*.js')
     .pipe($.uglify())
     .pipe(webpack(webpackConfig))
     .pipe(gulp.dest('.tmp/static/js/strategicobserv/weekly/'));
