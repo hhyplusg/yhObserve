@@ -218,11 +218,11 @@ gulp.task('comJs', () => {
     .pipe(webpack(webpackConfig))
     .pipe(gulp.dest('.tmp/static/js/strategicobserv/weekly/'));
 });
-gulp.task('comJsWebpack', () => {
-  return gulp.src('.tmp/static/js/strategicobserv/weekly/*.js')
-    .pipe(webpack(webpackConfig))
-    .pipe(gulp.dest('.tmp/static/js/strategicobserv/weekly/'));
-});
+// gulp.task('comJsWebpack', () => {
+//   return gulp.src('.tmp/static/js/strategicobserv/weekly/*.js')
+//     .pipe(webpack(webpackConfig))
+//     .pipe(gulp.dest('.tmp/static/js/strategicobserv/weekly/'));
+// });
 
 gulp.task('comCss', () => {
   return gulp.src('.tmp/styles/*.css')
@@ -242,11 +242,18 @@ gulp.task('jshint', function () {
     .pipe($.jshint.reporter('fail'));
 });
 
-gulp.task('copylib', () => {
+gulp.task('copystatic', () => {
   return gulp.src('client/static/**')
     .pipe(gulp.dest('.tmp/static/'));
 });
-gulp.task('serve', gulp.series('build-page','copylib','styles', 'scripts', 'comCss', 'comJs', () => {
+
+gulp.task('copylib', () => {
+  return gulp.src('client/lib/**')
+    .pipe(gulp.dest('.tmp/lib/'));
+});
+
+
+gulp.task('serve', gulp.series('build-page','copystatic','copylib','styles', 'scripts', 'comCss', 'comJs', () => {
   // gulp.task('serve', gulp.parallel('build-page', 'styles', 'scripts','comCss', 'comJs','copylib',  () => {
   browserSync.init({
     server: {
@@ -272,12 +279,14 @@ gulp.task('serve', gulp.series('build-page','copylib','styles', 'scripts', 'comC
   );
 
   gulp.watch(['/*.js'],
-    gulp.parallel('scripts')
+    gulp.parallel('scripts','comJs')
   );
+
+  
 
 }));
 
-gulp.task('build', gulp.series('prod','clean','copylib','styles', 'scripts', 'build-page','comCss', 'comJs','copylib', 'dev'));
+gulp.task('build', gulp.series('prod','clean','copystatic','copylib','styles', 'scripts', 'build-page','comCss', 'comJs','copylib', 'dev'));
 
 
 

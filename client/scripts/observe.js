@@ -2191,44 +2191,17 @@ function drawChart_B22(){
 
 }
 
-var isBenchmark = true;
-$('.selectDataArea .benchmark').click(function(){	
-	isBenchmark = true;
-	drawChart_B23();
-});
-$('.selectDataArea .plate').click(function(){	
-	isBenchmark = false;
-	drawChart_B23();
-});
-//表格
-function drawChart_B23(){
-	$('#showTable').empty();
-	console.log("开始drawChart-B23-");
-	if (onlineOrLocal) {
-		globalDataURL='../lib/data12B23.json';
-	}else{
-		globalDataURL='weekly/IndicatorQuery?indicatorId=1022';
-	}
-	
-	$.getJSON(globalDataURL,function (dataYH) {	
-		var dataBase = undefined;
-		if (onlineOrLocal) {
-			var dataObj=dataYH.obj;
-			if(isBenchmark){
-				 dataBase = dataObj.data_base; 
-			}else{
-				 dataBase = dataObj.data_index;
-			}
-			
-		}else{
-			var jsonObject =$.parseJSON(dataYH);
-			var dataObj=jsonObject.obj;	
-			var dataBase=dataObj.data_base;		
-		}
-		console.log("图12B23的obj数据为：\n");
-		console.log(dataObj);
-
-
+// var isBenchmark = true;
+// $('.selectDataArea .benchmark').click(function(){	
+// 	isBenchmark = true;
+// 	drawChart_B23();
+// });
+// $('.selectDataArea .plate').click(function(){	
+// 	isBenchmark = false;
+// 	drawChart_B23();
+// });
+function getB23Table(dataBase){
+		$('#showTable').empty();
 		var row_obj=$("<tr></tr>");
 		var col_td=$("<td style='width:80px;font-Weight:bold'></td>");
 		col_td.html('基准指数');row_obj.append(col_td);
@@ -2255,15 +2228,51 @@ function drawChart_B23(){
 			}
 			$('#showTable').append(row_obj2);
 		}
-
-
+}
+var dataObjForB23 = {};
+//表格
+function drawChart_B23(){
+	console.log("开始drawChart-B23-");
+	if (onlineOrLocal) {
+		globalDataURL='../lib/data12B23.json';
+	}else{
+		globalDataURL='weekly/IndicatorQuery?indicatorId=1022';
+	}
+	var dataObj= undefined;
+	var dataBase = undefined;
+	$.getJSON(globalDataURL,function (dataYH) {	
 		
-
+		
+		if (onlineOrLocal) {
+			var dataObj=dataYH.obj;
+			// if(isBenchmark){
+				 dataBase = dataObj.data_base; 
+			// }else{
+			// 	 dataBase = dataObj.data_index;
+			// }
+			dataObjForB23 = dataObj;
+		}else{
+			var jsonObject =$.parseJSON(dataYH);
+			var dataObj=jsonObject.obj;	
+			dataBase = dataObj.data_base; 
+			dataObjForB23 = dataObj;
+		}
+		console.log("图12B23的obj数据为：\n"+dataObj);
+		getB23Table(dataBase);
 	});
 
-
-
 }
+
+$('.selectDataArea .benchmark').click(function(){
+	var dataBase = dataObjForB23.data_base;
+	getB23Table(dataBase);	
+
+});
+$('.selectDataArea .plate').click(function(){	
+	var dataIndex = dataObjForB23.data_index;
+	getB23Table(dataIndex);
+});
+
 //双轴双线
 function drawChart_B24(key,selectedVal,selectedText){
 

@@ -12,7 +12,8 @@ module.exports = {
     entry:
     {
         'observe':['./client/scripts/observe.js'],
-        'page':['./client/scripts/page.js']
+        'page':['./client/scripts/page.js'],
+        'exportword':['./client/scripts/exportword.js']
     },
    
     output: {
