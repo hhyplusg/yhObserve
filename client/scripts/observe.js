@@ -225,6 +225,8 @@ $(function(){
 		$("#bigDiv").wordExport();
 	});
 	
+	$('.selectDataArea .benchmark').css('backgroundColor','#d7d7d7');
+	$('.selectDataArea .plate').css('backgroundColor','white');
 
 });
 
@@ -338,7 +340,6 @@ function drawChart_A11(){
 				series: {
 					type: 'line',
 					color: 'gray',
-
 				}
 			},
 
@@ -357,10 +358,7 @@ function drawChart_A11(){
 		            month: '%Y-%m',
 		            year: '%Y'
 				},
-	
-
 		        labels: {
-
 		        },
 
 		    },
@@ -501,7 +499,8 @@ function drawChart_A12(){
 			    enabled: false,
 			    scale: 1,
 			    sourceWidth: 800,
-        		sourceHeight: 500
+        		sourceHeight: 600
+
 			},
 
 			rangeSelector: {
@@ -616,7 +615,8 @@ function drawChart_A12(){
 
 }
 $('#diagramDiv2').find('.spanExportButton').click(function(event){
-	console.log("点击了导出图片A12！");
+	console.log("点击了导出图片A12--！");
+
 	var chart = $('#showDiagram2').highcharts();
 	var curTime=getCurrentTime(1);
 	
@@ -2092,33 +2092,44 @@ function drawChart_B21(){
 		drawHistogram(showDiagramLeft10,'基准'+dataObj.date,xAxisDataLeft,seriesData.left);
 		drawHistogram(showDiagramRight10,'板块'+dataObj.date,xAxisDataRight,seriesData.right);
 
-
-		$('#leftButton').click(function(event){
-			console.log("点击了导出图片B11左图！");
-			var chart = $('#showDiagramLeft10').highcharts();
-			var curTime=getCurrentTime(1);
-			
-			chart.title.update({ text: '本周换手率变化最大的基准'+dataObj.date});
-			chart.exporting.update({ enabled: false,scale: 1,sourceWidth: 500,sourceHeight: 450});
-			
-			var svg = chart.getSVG().replace(/</g, '\n<').replace(/>/g, '>'); 
-			var pngName='本周换手率变化最大的基准'+curTime;
-			svgToPng(svg,500,450,pngName);
-			chart.title.update({ text: '基准'+dataObj.date});
-		});
-
 		$('#rightButton').click(function(event){
-			console.log("点击了导出图片B11右图！");
-			var chart = $('#showDiagramRight10').highcharts();
+			console.log("点击了导出图片B21两个图！");
+			var chartLeft = $('#showDiagramLeft10').highcharts();
+			var chartRight = $('#showDiagramRight10').highcharts();
 			var curTime=getCurrentTime(1);
+			var pngName='本周换手率变化最大的的基准/板块'+curTime;
+
+			chartLeft.title.update({ text: '本周换手率变化最大的的基准'+dataObj.date});
+			chartLeft.exporting.update({ enabled: false,scale: 1,sourceWidth: 500,sourceHeight: 450});			
+			var svgLeft = chartLeft.getSVG().replace(/</g, '\n<').replace(/>/g, '>'); 
 			
-			chart.title.update({ text: '本周换手率变化最大的板块'+dataObj.date});
-			chart.exporting.update({ enabled: false,scale: 1,sourceWidth: 500,sourceHeight: 450});
 			
-			var svg = chart.getSVG().replace(/</g, '\n<').replace(/>/g, '>'); 
-			var pngName='本周换手率变化最大的板块'+curTime;
-			svgToPng(svg,500,450,pngName);
-			chart.title.update({ text: '板块'+dataObj.date});
+			chartRight.title.update({ text: '本周换手率变化最大的的板块'+dataObj.date});
+			chartRight.exporting.update({ enabled: false,scale: 1,sourceWidth: 500,sourceHeight: 450});			
+			var svgRight = chartRight.getSVG().replace(/</g, '\n<').replace(/>/g, '>'); 
+			var imageLeft = new Image();
+			imageLeft.crossOrigin = 'anonymous';
+			imageLeft.src = 'data:image/svg+xml;base64,' + window.btoa(unescape(encodeURIComponent(svgLeft)));
+			var imageRight = new Image();
+			imageRight.crossOrigin = 'anonymous';
+			imageRight.src = 'data:image/svg+xml;base64,' + window.btoa(unescape(encodeURIComponent(svgRight))); 
+			var canvas = document.createElement('canvas');  
+			canvas.width = 1000;  
+		    canvas.height = 450; 			 
+			var context = canvas.getContext('2d');  
+			imageLeft.onload=function(){
+				context.drawImage(imageLeft, 0, 0);				
+			};
+			imageRight.onload=function(){
+				context.drawImage(imageRight, 500, 0);
+				var a = document.createElement("a"); 
+					a.href = canvas.toDataURL('image/png');
+					a.download = pngName+".png"; 
+					a.click(); 
+					a = null;				
+			};
+			chartLeft.title.update({ text: '基准'+dataObj.date});
+			chartRight.title.update({ text: '板块'+dataObj.date});
 		});
 
 	});
@@ -2158,32 +2169,72 @@ function drawChart_B22(){
 		drawHistogram(showDiagramLeft11,'基准'+dataObj.date,xAxisDataLeft,seriesData.left);
 		drawHistogram(showDiagramRight11,'板块'+dataObj.date,xAxisDataRight,seriesData.right);
 
-		$('#leftButton11').click(function(event){
-			console.log("点击了导出图片B12左图！");
-			var chart = $('#showDiagramLeft11').highcharts();
-			var curTime=getCurrentTime(1);
+		// $('#leftButton11').click(function(event){
+		// 	console.log("点击了导出图片B12左图！");
+		// 	var chart = $('#showDiagramLeft11').highcharts();
+		// 	var curTime=getCurrentTime(1);
 			
-			chart.title.update({ text: '本周换手率绝对水平最高的基准'+dataObj.date});
-			chart.exporting.update({ enabled: false,scale: 1,sourceWidth: 500,sourceHeight: 450});
+		// 	chart.title.update({ text: '本周换手率绝对水平最高的基准'+dataObj.date});
+		// 	chart.exporting.update({ enabled: false,scale: 1,sourceWidth: 500,sourceHeight: 450});
 			
-			var svg = chart.getSVG().replace(/</g, '\n<').replace(/>/g, '>'); 
-			var pngName='本周换手率绝对水平最高的基准'+curTime;
-			svgToPng(svg,500,450,pngName);
-			chart.title.update({ text: '基准'+dataObj.date});
-		});
+		// 	var svg = chart.getSVG().replace(/</g, '\n<').replace(/>/g, '>'); 
+		// 	var pngName='本周换手率绝对水平最高的基准'+curTime;
+		// 	svgToPng(svg,500,450,pngName);
+		// 	chart.title.update({ text: '基准'+dataObj.date});
+		// });
+
+		// $('#rightButton11').click(function(event){
+		// 	console.log("点击了导出图片B12右图！");
+		// 	var chart = $('#showDiagramRight11').highcharts();
+		// 	var curTime=getCurrentTime(1);
+			
+		// 	chart.title.update({ text: '本周换手率绝对水平最高的板块'+dataObj.date});
+		// 	chart.exporting.update({ enabled: false,scale: 1,sourceWidth: 500,sourceHeight: 450});
+			
+		// 	var svg = chart.getSVG().replace(/</g, '\n<').replace(/>/g, '>'); 
+		// 	var pngName='本周换手率绝对水平最高的板块'+curTime;
+		// 	svgToPng(svg,500,450,pngName);
+		// 	chart.title.update({ text: '板块'+dataObj.date});
+		// });
 
 		$('#rightButton11').click(function(event){
-			console.log("点击了导出图片B12右图！");
-			var chart = $('#showDiagramRight11').highcharts();
+			console.log("点击了导出图片B22两个图！");
+			var chartLeft = $('#showDiagramLeft11').highcharts();
+			var chartRight = $('#showDiagramRight11').highcharts();
 			var curTime=getCurrentTime(1);
+			var pngName='本周换手率绝对水平最高的基准/板块'+curTime;
+
+			chartLeft.title.update({ text: '本周换手率绝对水平最高的基准'+dataObj.date});
+			chartLeft.exporting.update({ enabled: false,scale: 1,sourceWidth: 500,sourceHeight: 450});			
+			var svgLeft = chartLeft.getSVG().replace(/</g, '\n<').replace(/>/g, '>'); 
 			
-			chart.title.update({ text: '本周换手率绝对水平最高的板块'+dataObj.date});
-			chart.exporting.update({ enabled: false,scale: 1,sourceWidth: 500,sourceHeight: 450});
 			
-			var svg = chart.getSVG().replace(/</g, '\n<').replace(/>/g, '>'); 
-			var pngName='本周换手率绝对水平最高的板块'+curTime;
-			svgToPng(svg,500,450,pngName);
-			chart.title.update({ text: '板块'+dataObj.date});
+			chartRight.title.update({ text: '本周换手率绝对水平最高的板块'+dataObj.date});
+			chartRight.exporting.update({ enabled: false,scale: 1,sourceWidth: 500,sourceHeight: 450});			
+			var svgRight = chartRight.getSVG().replace(/</g, '\n<').replace(/>/g, '>'); 
+			var imageLeft = new Image();
+			imageLeft.crossOrigin = 'anonymous';
+			imageLeft.src = 'data:image/svg+xml;base64,' + window.btoa(unescape(encodeURIComponent(svgLeft)));
+			var imageRight = new Image();
+			imageRight.crossOrigin = 'anonymous';
+			imageRight.src = 'data:image/svg+xml;base64,' + window.btoa(unescape(encodeURIComponent(svgRight))); 
+			var canvas = document.createElement('canvas');  
+			canvas.width = 1000;  
+		    canvas.height = 450; 			 
+			var context = canvas.getContext('2d');  
+			imageLeft.onload=function(){
+				context.drawImage(imageLeft, 0, 0);				
+			};
+			imageRight.onload=function(){
+				context.drawImage(imageRight, 500, 0);
+				var a = document.createElement("a"); 
+					a.href = canvas.toDataURL('image/png');
+					a.download = pngName+".png"; 
+					a.click(); 
+					a = null;				
+			};
+			chartLeft.title.update({ text: '基准'+dataObj.date});
+			chartRight.title.update({ text: '板块'+dataObj.date});
 		});
 
 		
@@ -2266,11 +2317,17 @@ function drawChart_B23(){
 $('.selectDataArea .benchmark').click(function(){
 	var dataBase = dataObjForB23.data_base;
 	getB23Table(dataBase);	
+	//设置样式
+	this.style.backgroundColor='#d7d7d7';
+	$('.selectDataArea .plate').css('backgroundColor','white');
 
 });
 $('.selectDataArea .plate').click(function(){	
 	var dataIndex = dataObjForB23.data_index;
 	getB23Table(dataIndex);
+	//设置样式
+	this.style.backgroundColor='#d7d7d7';
+	$('.selectDataArea .benchmark').css('backgroundColor','white');
 });
 
 //双轴双线
@@ -2466,32 +2523,44 @@ function drawChart_B31(){
 		drawHistogram(showDiagramLeft14,'加强'+dataObj.date,xAxisDataLeft,seriesData.left);
 		drawHistogram(showDiagramRight14,'衰竭'+dataObj.date,xAxisDataRight,seriesData.right);
 
-		$('#leftButton14').click(function(event){
-			console.log("点击了导出图片B31左图！");
-			var chart = $('#showDiagramLeft14').highcharts();
-			var curTime=getCurrentTime(1);
-			
-			chart.title.update({ text: '本周新增“速度/加速度”加强的行业'});
-			chart.exporting.update({ enabled: false,scale: 1,sourceWidth: 500,sourceHeight: 450});
-			
-			var svg = chart.getSVG().replace(/</g, '\n<').replace(/>/g, '>'); 
-			var pngName='本周新增“速度/加速度”加强的行业'+curTime;
-			svgToPng(svg,500,450,pngName);
-			chart.title.update({ text: '加强'});
-		});
-
 		$('#rightButton14').click(function(event){
-			console.log("点击了导出图片B31右图！");
-			var chart = $('#showDiagramRight14').highcharts();
+			console.log("点击了导出图片B31两个图！");
+			var chartLeft = $('#showDiagramLeft14').highcharts();
+			var chartRight = $('#showDiagramRight14').highcharts();
 			var curTime=getCurrentTime(1);
+			var pngName='本周新增“速度/加速度”加强与衰竭的行业'+curTime;
+
+			chartLeft.title.update({ text: '本周新增“速度/加速度”加强的行业'+dataObj.date});
+			chartLeft.exporting.update({ enabled: false,scale: 1,sourceWidth: 500,sourceHeight: 450});			
+			var svgLeft = chartLeft.getSVG().replace(/</g, '\n<').replace(/>/g, '>'); 
 			
-			chart.title.update({ text: '本周新增“速度/加速度”衰竭的行业'});
-			chart.exporting.update({ enabled: false,scale: 1,sourceWidth: 500,sourceHeight: 450});
 			
-			var svg = chart.getSVG().replace(/</g, '\n<').replace(/>/g, '>'); 
-			var pngName='本周新增“速度/加速度”衰竭的行业'+curTime;
-			svgToPng(svg,500,450,pngName);
-			chart.title.update({ text: '衰竭'});
+			chartRight.title.update({ text: '本周新增“速度/加速度”衰竭的行业'+dataObj.date});
+			chartRight.exporting.update({ enabled: false,scale: 1,sourceWidth: 500,sourceHeight: 450});			
+			var svgRight = chartRight.getSVG().replace(/</g, '\n<').replace(/>/g, '>'); 
+			var imageLeft = new Image();
+			imageLeft.crossOrigin = 'anonymous';
+			imageLeft.src = 'data:image/svg+xml;base64,' + window.btoa(unescape(encodeURIComponent(svgLeft)));
+			var imageRight = new Image();
+			imageRight.crossOrigin = 'anonymous';
+			imageRight.src = 'data:image/svg+xml;base64,' + window.btoa(unescape(encodeURIComponent(svgRight))); 
+			var canvas = document.createElement('canvas');  
+			canvas.width = 1000;  
+		    canvas.height = 450; 			 
+			var context = canvas.getContext('2d');  
+			imageLeft.onload=function(){
+				context.drawImage(imageLeft, 0, 0);				
+			};
+			imageRight.onload=function(){
+				context.drawImage(imageRight, 500, 0);
+				var a = document.createElement("a"); 
+					a.href = canvas.toDataURL('image/png');
+					a.download = pngName+".png"; 
+					a.click(); 
+					a = null;				
+			};
+			chartLeft.title.update({ text: '加强'+dataObj.date});
+			chartRight.title.update({ text: '衰竭'+dataObj.date});
 		});
 
 
