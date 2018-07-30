@@ -216,18 +216,18 @@ gulp.task('comJs', () => {
   return gulp.src('.tmp/scripts/*.js')
     .pipe($.uglify())
     .pipe(webpack(webpackConfig))
-    .pipe(gulp.dest('.tmp/scripts/'));
+    .pipe(gulp.dest('.tmp/static/js/strategicobserv/weekly/'));
 });
 gulp.task('comJsWebpack', () => {
-  return gulp.src('.tmp/scripts/*.js')
+  return gulp.src('.tmp/static/js/strategicobserv/weekly/*.js')
     .pipe(webpack(webpackConfig))
-    .pipe(gulp.dest('.tmp/scripts/'));
+    .pipe(gulp.dest('.tmp/static/js/strategicobserv/weekly/'));
 });
 
 gulp.task('comCss', () => {
   return gulp.src('.tmp/styles/*.css')
     .pipe($.cssnano())
-    .pipe(gulp.dest('.tmp/styles/'));
+    .pipe(gulp.dest('.tmp/static/lib/strategicobserv/weekly/styles/'));
 });
 
 
@@ -243,8 +243,8 @@ gulp.task('jshint', function () {
 });
 
 gulp.task('copylib', () => {
-  return gulp.src('client/lib/**')
-    .pipe(gulp.dest('.tmp/lib/'));
+  return gulp.src('client/static/**')
+    .pipe(gulp.dest('.tmp/static/'));
 });
 gulp.task('serve', gulp.series('build-page','copylib','styles', 'scripts', 'comCss', 'comJs', () => {
   // gulp.task('serve', gulp.parallel('build-page', 'styles', 'scripts','comCss', 'comJs','copylib',  () => {

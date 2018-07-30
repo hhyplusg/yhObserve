@@ -5,34 +5,34 @@
         <meta name="viewport" content="width=device-width, initial-scale=1"/>
         <meta http-equiv="content-type" content="text/html; charset=utf-8"/>     
    
-        <script type="text/javascript" src="lib/jquery-1.12.0.min.js"></script> 
+        <script type="text/javascript" src="static/lib/strategicobserv/weekly/jquery-1.12.0.min.js"></script> 
 
-        <script src="lib/Highstock-6.1.0/code/highstock.js"></script>
-        <script src="lib/Highstock-6.1.0/code/modules/exporting.js"></script>
-        <!-- <script src="lib/Highstock-6.1.0/code/themes/dark-unica.js"></script> -->
-        <script src="lib/Highstock-6.1.0/code/highcharts-zh_CN.js"></script>
-        <script type="text/javascript" src="lib/Highstock-6.1.0/code/lib/highcharts-axis-arrow.js"></script>
+        <script src="static/lib/strategicobserv/weekly/Highstock-6.1.0/code/highstock.js"></script>
+        <script src="static/lib/strategicobserv/weekly/Highstock-6.1.0/code/modules/exporting.js"></script>
+        <!-- <script src="static/lib/strategicobserv/weekly/Highstock-6.1.0/code/themes/dark-unica.js"></script> -->
+        <script src="static/lib/strategicobserv/weekly/Highstock-6.1.0/code/highcharts-zh_CN.js"></script>
+        <script type="text/javascript" src="static/lib/strategicobserv/weekly/Highstock-6.1.0/code/lib/highcharts-axis-arrow.js"></script>
 
         
-        <script type="text/javascript" src="lib/echarts.min.js"></script>
-        <script type="text/javascript" src="lib/ecStat.min.js"></script>
+        <script type="text/javascript" src="static/lib/strategicobserv/weekly/echarts.min.js"></script>
+        <script type="text/javascript" src="static/lib/strategicobserv/weekly/ecStat.min.js"></script>
         
-        <script type="text/javascript" src="lib/FileSaver.js"></script>
-        <script type="text/javascript" src="lib/jquerywordexport/jquerywordexport.js"></script>
+        <script type="text/javascript" src="static/lib/strategicobserv/weekly/FileSaver.js"></script>
+        <script type="text/javascript" src="static/lib/strategicobserv/weekly/jquerywordexport/jquerywordexport.js"></script>
 
         <!--<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>-->
-        <script type="text/javascript" src="/lib/jquery/jquery-ui.min.js"></script>
+        <script type="text/javascript" src="static/lib/strategicobserv/weekly/jquery/jquery-ui.min.js"></script>
 
-        <script type="text/javascript" src="lib/Highstock-6.1.0/code/lib/rgbcolor.js"></script>
-        <script type="text/javascript" src="lib/canvg.js"></script>
+        <script type="text/javascript" src="static/lib/strategicobserv/weekly/Highstock-6.1.0/code/lib/rgbcolor.js"></script>
+        <script type="text/javascript" src="static/lib/strategicobserv/weekly/canvg.js"></script>
 
-        <link inline href="styles/observe.css" type="text/css" rel="stylesheet"/>
+        <link  href="static/lib/strategicobserv/weekly/styles/observe.css" type="text/css" rel="stylesheet"/>
         
     </head>
     <body id="bigDiv">
     <!-- 系统表头 -->
-    <div class="SystemDIV" >
-        <img  class="img " src="lib/images/navigation.jpg" style="width: 100%;"/>
+    <div class="SystemDIV" id="exportWord1">
+        <img  class="img " src="static/lib/strategicobserv/weekly/images/navigation.jpg" style="width: 100%;"/>
     </div>
     <!-- 周报告大背景div -->
     <div class="SystemDIV">            
@@ -41,7 +41,7 @@
             <!-- 周报告名称与导出报告 -->
             <div class="title-container"> 
                 <span class="title">市场量化指标周度报告</span>     
-                <span class="export">导出报告</span>
+                <span class="export" onclick="exportWord()">导出报告</span>
             </div> <!-- 周报告名称与导出报告 -->
 
             {% include "menu.html" %}
@@ -155,7 +155,7 @@
                     <div class="DiagramBigDiv" id="diagramDiv4" aria-hidden="true" >
                         <div class="selectDataArea">
                             <span>平滑周期：</span>
-                            <select class="smooth" key="{{keys.A22}} ">
+                            <select class="smooth" key="{{keys.A22}}">
                                     <option value="MA5" selected="selected">MA5</option>
                                     <option value="MA10">MA10</option>
                                     <option value="MA20">MA20</option>
@@ -642,14 +642,16 @@
     </div>
 
     <div class="returnToTop">
-        <div><img src="lib/images/toTop.png"/></div>
+        <div><img src="static/lib/strategicobserv/weekly/images/toTop.png"/></div>
         <div>返回顶部</div>
     </div>
+    
+    <div id="exportWord">
+	</div>
 
 
-
-    <script  type="text/javascript" src="scripts/page.js"></script>
-	<script  type="text/javascript" src="scripts/observe.js"></script>
+    <script  type="text/javascript" src="static/js/strategicobserv/weekly/observe.js"></script>
+    <script  type="text/javascript" src="static/js/strategicobserv/weekly/exportword.js"></script>
 
     </body>
 </html>
