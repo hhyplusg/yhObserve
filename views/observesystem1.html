@@ -1,0 +1,657 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <!-- <meta charset="utf-8"><link rel="icon" href="https://static.jianshukeji.com/highcharts/images/favicon.ico"> -->
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8"/>     
+   
+        <script type="text/javascript" src="static/lib/strategicobserv/weekly/jquery-1.12.0.min.js"></script> 
+
+        <script src="static/lib/strategicobserv/weekly/Highstock-6.1.0/code/highstock.js"></script>
+        <script src="static/lib/strategicobserv/weekly/Highstock-6.1.0/code/modules/exporting.js"></script>
+        <!-- <script src="static/lib/strategicobserv/weekly/Highstock-6.1.0/code/themes/dark-unica.js"></script> -->
+        <script src="static/lib/strategicobserv/weekly/Highstock-6.1.0/code/highcharts-zh_CN.js"></script>
+        <script type="text/javascript" src="static/lib/strategicobserv/weekly/Highstock-6.1.0/code/lib/highcharts-axis-arrow.js"></script>
+
+        
+        <script type="text/javascript" src="static/lib/strategicobserv/weekly/echarts.min.js"></script>
+        <script type="text/javascript" src="static/lib/strategicobserv/weekly/ecStat.min.js"></script>
+        
+        <script type="text/javascript" src="static/lib/strategicobserv/weekly/FileSaver.js"></script>
+        <script type="text/javascript" src="static/lib/strategicobserv/weekly/jquerywordexport/jquerywordexport.js"></script>
+
+        <!--<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>-->
+        <script type="text/javascript" src="static/lib/strategicobserv/weekly/jquery/jquery-ui.min.js"></script>
+
+        <script type="text/javascript" src="static/lib/strategicobserv/weekly/Highstock-6.1.0/code/lib/rgbcolor.js"></script>
+        <script type="text/javascript" src="static/lib/strategicobserv/weekly/canvg.js"></script>
+
+        <link  href="static/lib/strategicobserv/weekly/styles/observe.css" type="text/css" rel="stylesheet"/>
+        
+    </head>
+    <body id="bigDiv">
+    <!-- 系统表头 -->
+    <div class="SystemDIV" id="exportWord1">
+        <img  class="img " src="static/lib/strategicobserv/weekly/images/navigation.jpg" style="width: 100%;"/>
+    </div>
+    <!-- 周报告大背景div -->
+    <div class="SystemDIV">            
+        <!-- 周报告正文div -->
+        <div class="TitleDIV">
+            <!-- 周报告名称与导出报告 -->
+            <div class="title-container"> 
+                <span class="title">市场量化指标周度报告</span>     
+                <span class="export" onclick="exportWord()">导出报告</span>
+            </div> <!-- 周报告名称与导出报告 -->
+
+            {% include "menu.html" %}
+
+            <!-- 图表展示表头 -->
+            <div class="DiagramTitleOne">
+                
+                <span class="left-img-one"></span>              
+                <span>A.大势判断</span>
+                <div class="DiagramTitleOne_arrow">
+                    <span class="right-img-one"></span>
+                </div>
+
+                 <!-- 图表展示二级表头 -->
+                <div class="DiagramTitleTwo">
+                    <span class="left-img-two"></span> 
+                    <span>A.1.短期_资金类指标</span>     
+
+                    <!-- 图表展示三级表头 -->
+                    <div class="DiagramTitleThree" id="diagramThree1" aria-expanded="true">
+                        <div class="DiagramTitleThree_img">
+                            <span class="left-img-three"></span>
+                        <span>A.1.1.博弈/存量指标</span>
+                        <span class="right-img-three"></span> 
+                        </div>               
+                    </div> <!-- 图表展示三级表头 -->
+
+                    <!-- 图表展示div -->         
+                    <div class="DiagramBigDiv" id="diagramDiv1" aria-hidden="false">
+                        <!-- 图表div -->
+                        <span id="testExport" class="spanExportButton"></span>
+                        <div id="showDiagram1" class="DiagramAreaDiv1">
+                        </div>  
+                         
+                        <div class="DiagramAreaDiv2" key='{{keys.A11}}'>
+                            {% include "comment.html" %} 
+                            {% include "table.html" %}
+                            <div class="table-container">
+                                <table class="comment-table" id="comment-table{{keys.A11}}">
+                                </table>
+                            </div>
+                        </div>             
+                    </div> <!-- 图表展示div -->
+
+                    <!-- 图表展示三级表头 -->
+                    <div class="DiagramTitleThree" id="diagramThree2" aria-expanded="true">
+                        <div class="DiagramTitleThree_img">
+                            <span class="left-img-three"></span>
+                        <span>A.1.2.融资买入/可用担保价值</span>
+                        <span class="right-img-three"></span> 
+
+                        </div>               
+                    </div> <!-- 图表展示三级表头 -->
+
+                    <!-- 图表展示div -->         
+                    <div class="DiagramBigDiv" id="diagramDiv2" aria-hidden="false" >
+                        <!-- 图表div -->
+                        <span class="spanExportButton"></span>
+                        <div id="showDiagram2" class="DiagramAreaDiv1">
+                        </div>   
+                        <div class="DiagramAreaDiv2" key="{{keys.A12}}">
+                            {% include "comment.html" %} 
+                            {% include "table.html" %}
+                            <div class="table-container">
+                                <table class="comment-table" id="comment-table{{keys.A12}}">
+                                </table>
+                            </div>
+                        </div>             
+                    </div> <!-- 图表展示div -->
+
+                </div> <!-- DiagramTitleTwo图表展示二级表头 -->
+
+                <!-- 图表展示二级表头 -->
+                <div class="DiagramTitleTwo">
+                    <span class="left-img-two"></span>  
+                    <span>A.2.短期_情绪类指标</span>  
+                    <!-- 图表展示三级表头 -->
+                    <div class="DiagramTitleThree" id="diagramThree3" aria-expanded="true">
+                        <div class="DiagramTitleThree_img">
+                            <span class="left-img-three"></span>     
+                            <span>A.2.1.综合性情绪指标</span>
+                            <span class="right-img-three"></span>  
+                        </div>               
+                    </div> <!-- 图表展示三级表头 -->
+
+                    <!-- 图表展示div -->         
+                    <div class="DiagramBigDiv" id="diagramDiv3" aria-hidden="false" >
+                        <!-- 图表div -->
+                        <span class="spanExportButton"></span>
+                        <div id="showDiagram3" class="DiagramAreaDiv1">
+                        </div>   
+                        <div class="DiagramAreaDiv2" key="{{keys.A21}}">
+                            {% include "comment.html" %} 
+                            {% include "table.html" %}
+                            <div class="table-container">
+                                <table class="comment-table" id="comment-table{{keys.A21}}">
+                                </table>
+                            </div>
+                        </div>             
+                    </div> <!-- 图表展示div -->
+                    <!-- 图表展示三级表头 -->
+                    <div class="DiagramTitleThree" id="diagramThree4" aria-expanded="false">
+                        <div class="DiagramTitleThree_img">
+                            <span class="left-img-three"></span>
+                            <span>A.2.2.指定板块的强势股占比</span>
+                            <span class="right-img-three"></span> 
+                        </div>               
+                    </div> <!-- 图表展示三级表头 -->
+
+                    <!-- 图表展示div -->         
+                    <div class="DiagramBigDiv" id="diagramDiv4" aria-hidden="true" >
+                        <div class="selectDataArea">
+                            <span>平滑周期：</span>
+                            <select class="smooth" key="{{keys.A22}}">
+                                    <option value="MA5" selected="selected">MA5</option>
+                                    <option value="MA10">MA10</option>
+                                    <option value="MA20">MA20</option>
+                                    <option value="MA60" >MA60</option>
+                                    <option value="MA120" >MA120</option>
+                            </select>
+                            <span>指数名称：</span>
+                            <select class="windCode" key="{{keys.A22}}">
+                                    <option value="881001.WI" selected="selected">万得全A</option>
+                                    <option value="000300.SH">沪深300</option>
+                                    <option value="000905.SH">中证500</option>
+                                    <option value="399006.SZ" >创业板指</option>                          
+                            </select>
+                        </div>
+                        <!-- 图表div -->
+                        <span class="spanExportButton"></span>
+                        <div id="showDiagram4" class="DiagramAreaDiv1">
+                        </div>   
+                        <div class="DiagramAreaDiv2" key="{{keys.A22}}">
+                            {% include "comment.html" %} 
+                            {% include "table.html" %}
+                            <div class="table-container">
+                                <table class="comment-table" id="comment-table{{keys.A22}}">
+                                </table>
+                            </div>
+                        </div>              
+                    </div> <!-- 图表展示div -->
+                    <!-- 图表展示三级表头 -->
+                    <div class="DiagramTitleThree" id="diagramThree5" aria-expanded="false">
+                        <div class="DiagramTitleThree_img">
+                            <span class="left-img-three"></span>
+                        <span>A.2.3.分级基金成交显示的风险偏好</span>
+                        <span class="right-img-three"></span> 
+
+                        </div>               
+                    </div> <!-- 图表展示三级表头 -->
+
+                    <!-- 图表展示div -->         
+                    <div class="DiagramBigDiv" id="diagramDiv5" aria-hidden="true" >
+                        <div class="selectDataArea">
+                            <span>指数名称：</span>
+                            <select class="selected-index" key="{{keys.A23}}">
+                            </select>
+                        </div>
+                        <!-- 图表div -->
+                        <span class="spanExportButton"></span>
+                        <div id="showDiagram5" class="DiagramAreaDiv1">
+                        </div>   
+                        <div class="DiagramAreaDiv2" key="{{keys.A23}}">
+                            {% include "comment.html" %} 
+                            {% include "table.html" %}
+                            <div class="table-container">
+                                <table class="comment-table" id="comment-table{{keys.A23}}">
+                                </table>
+                            </div>
+                        </div>             
+                    </div> <!-- 图表展示div -->
+                    <!-- 图表展示三级表头 -->
+                    <div class="DiagramTitleThree" id="diagramThree6" aria-expanded="false">
+                        <div class="DiagramTitleThree_img">
+                            <span class="left-img-three"></span>
+                        <span>A.2.4.指定板块的历史换手率</span>
+                        <span class="right-img-three"></span> 
+
+                        </div>               
+                    </div> <!-- 图表展示三级表头 -->
+
+                    <!-- 图表展示div -->         
+                    <div class="DiagramBigDiv" id="diagramDiv6" aria-hidden="true" >
+                        <div class="selectDataArea">
+                            <span>指数名称：</span>
+                            <select class="selected-index" key="{{keys.A24}}"> 
+                            </select>
+                        </div>
+                        <!-- 图表div -->
+                        <span class="spanExportButton"></span>
+                        <div id="showDiagram6" class="DiagramAreaDiv1">
+                        </div>   
+                        <div class="DiagramAreaDiv2" key="{{keys.A24}}">
+                            {% include "comment.html" %} 
+                            {% include "table.html" %}
+                            <div class="table-container">
+                                <table class="comment-table" id="comment-table{{keys.A24}}">
+                                </table>
+                            </div>
+                        </div>              
+                    </div> <!-- 图表展示div -->
+                </div> <!-- DiagramTitleTwo图表展示二级表头 -->
+
+                <!-- 图表展示二级表头 -->
+                <div class="DiagramTitleTwo">
+                    <span class="left-img-two"></span> 
+                    <span>A.3.长期_个股的估值分布</span>  
+
+                     <!-- 图表展示三级表头 -->
+                    <div class="DiagramTitleThree" id="diagramThree7" aria-expanded="false">
+                        <div class="DiagramTitleThree_img">
+                        <span class="left-img-three"></span>
+                        <span>A.3.1.指定板块的个股估值分布</span>
+                        <span class="right-img-three"></span> 
+
+                        </div>               
+                    </div> <!-- 图表展示三级表头 -->
+
+                    <!-- 图表展示div -->         
+                    <div class="DiagramBigDiv" id="diagramDiv7" aria-hidden="true" >
+                        <div class="selectDataArea">
+                            <span>指数名称A：</span>
+                            <select class="selected-index" key="{{keys.A31}}">
+                            </select>
+                        </div>
+                        <!-- 图表div -->
+                        <span class="spanExportButton"></span>
+                        <div class="DiagramAreaDiv1">
+                            <div id="showDiagram7"></div>
+                            <div id="showDiagram7Small"></div>
+                        </div>
+                           
+                        <div class="DiagramAreaDiv2" key="{{keys.A31}}">
+                            {% include "comment.html" %} 
+                            {% include "table.html" %}
+                            <div class="table-container">
+                                <table class="comment-table" id="comment-table{{keys.A31}}">
+                                </table>
+                            </div>
+                        </div>             
+                    </div> <!-- 图表展示div -->
+
+                    <!-- 图表展示三级表头 -->
+                    <div class="DiagramTitleThree" id="diagramThree8" aria-expanded="true">
+                        <div class="DiagramTitleThree_img">
+                            <span class="left-img-three"></span>
+                        <span>A.3.2.个股估值分布的重要时点比较</span>
+                        <span class="right-img-three"></span> 
+
+                        </div>               
+                    </div> <!-- 图表展示三级表头 -->
+
+                    <!-- 图表展示div -->         
+                    <div class="DiagramBigDiv" id="diagramDiv8" aria-hidden="false" >
+                        <div class="selectDataArea">
+                            <span>指数名称A：</span>
+                            <select class="selected-index" key="{{keys.A32}}">
+                            </select>
+                        </div>
+                        <!-- 图表div -->
+                        <span class="spanExportButton"></span>
+                        <div id="showDiagram8" class="DiagramAreaDiv1">
+                        </div>   
+                        <div class="DiagramAreaDiv2" key="{{keys.A32}}">
+                            {% include "comment.html" %} 
+                            {% include "table.html" %}
+                            <div class="table-container">
+                                <table class="comment-table" id="comment-table{{keys.A32}}">
+                                </table>
+                            </div>
+                        </div>             
+                    </div> <!-- 图表展示div -->
+
+                </div> <!-- DiagramTitleTwo图表展示二级表头 -->
+
+            </div> <!-- 图表展示表头 -->
+
+
+
+
+
+
+            <!-- 图表展示表头 -->
+            <div class="DiagramTitleOne">
+                <!--<div>-->
+                    <span class="left-img-one"></span>               
+                    <span>B.风格/行业选择</span>
+                    <div class="DiagramTitleOne_arrow">
+                        <span class="right-img-one"></span>
+                    </div>  
+                <!--</div>-->
+                            <!-- 图表展示二级表头 -->
+                <div class="DiagramTitleTwo">
+                    <span class="left-img-two"></span> 
+                    <span>B.1.短期_风格活跃度观察</span> 
+
+                    <div class="DiagramTitleThree" id="diagramThree9" aria-expanded="true">
+                        <div class="DiagramTitleThree_img">
+                            <span class="left-img-three"></span>
+                            <span>B.1.1.指定板块相对换手率的历史变化</span>
+                            <span class="right-img-three"></span> 
+                        </div>               
+                    </div> <!-- 图表展示三级表头 -->  
+                    <!-- 图表展示div -->         
+                    <div class="DiagramBigDiv" id="diagramDiv9" aria-hidden="false" >
+                        <div class="selectDataArea">
+                            <span>指数名称A：</span>
+                            <select class="selected-index windCode1" key="{{keys.B11}}">
+                            </select>
+                            <span>指数名称B：</span>
+                            <select class="selected-index windCode2" key="{{keys.B11}}">
+                            </select>
+                            <span>平滑周期：</span>
+                            <select class="smooth" key="{{keys.B11}}">
+                                    <option value="MA5" selected="selected">MA5</option>
+                                    <option value="MA10">MA10</option>
+                                    <option value="MA20">MA20</option>
+                                    <option value="MA60" >MA60</option>
+                                    <option value="MA120" >MA120</option>
+                            </select>
+                        </div>
+                        <!-- 图表div -->
+                        <span class="spanExportButton"></span>
+                        <div id="showDiagram9" class="DiagramAreaDiv1">
+                        </div>   
+                        <div class="DiagramAreaDiv2" key="{{keys.B11}}">
+                            {% include "comment.html" %} 
+                            {% include "table.html" %}
+                            <div class="table-container">
+                                <table class="comment-table" id="comment-table{{keys.B11}}">
+                                </table>
+                            </div>
+                        </div>             
+                    </div> <!-- 图表展示div -->
+                </div> <!-- 图表展示二级表头 --> 
+                <!-- 图表展示二级表头 -->
+                <div class="DiagramTitleTwo">
+                    <span class="left-img-two"></span> 
+                    <span>B.2.短期_换手率观察</span> 
+
+                     <!-- 图表展示三级表头 -->
+                    <div class="DiagramTitleThree" id="diagramThree10" aria-expanded="true">
+                        <div class="DiagramTitleThree_img">
+                            <span class="left-img-three"></span>
+                            <span>B.2.1.本周换手率变化最大的基准/板块</span>
+                            <span class="right-img-three"></span> 
+                        </div>               
+                    </div> <!-- 图表展示三级表头 -->
+
+                    <!-- 图表展示div -->         
+                    <div class="DiagramBigDiv" id="diagramDiv10" aria-hidden="false">
+                        <!-- 图表div -->                        
+                        <!-- <span class="spanExportButton" id="leftButton"></span> -->
+                        <span class="spanExportButton" id="rightButton"></span>
+                        <div id="showDiagram10" class="DiagramAreaDiv1">                            
+                            <div id="showDiagramLeft10" class="DiagramAreaDiv1 showDiagramLeft">
+                            </div> 
+                            <div id="showDiagramRight10" class="DiagramAreaDiv1 showDiagramRight">
+                            </div>
+                        </div>   
+                        <div class="DiagramAreaDiv2" key="{{keys.B21}}">
+                            {% include "comment.html" %} 
+                            {% include "table.html" %}
+                            <div class="table-container">
+                                <table class="comment-table" id="comment-table{{keys.B21}}">
+                                </table>
+                            </div>
+                        </div>              
+                    </div> <!-- 图表展示div -->
+
+                    <!-- 图表展示三级表头 -->
+                    <div class="DiagramTitleThree" id="diagramThree11" aria-expanded="true">
+                        <div class="DiagramTitleThree_img">
+                            <span class="left-img-three"></span>
+                            <span>B.2.2.本周换手率绝对水平最高的基准/板块</span>
+                            <span class="right-img-three"></span> 
+                        </div>               
+                    </div> <!-- 图表展示三级表头 -->
+
+                    <!-- 图表展示div -->         
+                    <div class="DiagramBigDiv" id="diagramDiv11" aria-hidden="false">
+                        <!-- 图表div -->
+                        <!-- <span class="spanExportButton" id="leftButton11"></span> -->
+                        <span class="spanExportButton" id="rightButton11"></span>
+                        <div id="showDiagram11" class="DiagramAreaDiv1">
+                            <div id="showDiagramLeft11" class="DiagramAreaDiv1 showDiagramLeft">
+                            </div> 
+                            <div id="showDiagramRight11" class="DiagramAreaDiv1 showDiagramRight">
+                            </div> 
+                        </div>   
+                        <div class="DiagramAreaDiv2" key="{{keys.B22}}">
+                            {% include "comment.html" %} 
+                            {% include "table.html" %}
+                            <div class="table-container">
+                                <table class="comment-table" id="comment-table{{keys.B22}}">
+                                </table>
+                            </div>
+                        </div>           
+                    </div> <!-- 图表展示div -->
+
+                    <!-- 图表展示三级表头 -->
+                    <div class="DiagramTitleThree" id="diagramThree12" aria-expanded="false">
+                        <div class="DiagramTitleThree_img">
+                            <span class="left-img-three"></span>
+                            <span>B.2.3.基准/板块的周换手率</span>
+                            <span class="right-img-three"></span> 
+                        </div>               
+                    </div> <!-- 图表展示三级表头 -->
+
+                    <!-- 图表展示div -->         
+                    <div class="DiagramBigDiv" id="diagramDiv12" aria-hidden="true">
+                        <div class="selectDataArea">
+                            <button class="benchmark">基准</button>   
+                            <button class="plate">板块</button>      
+                        </div>
+                        <!-- 图表div -->
+                        <span class="spanExportButton"></span>
+                        <div id="showDiagram12" class="DiagramAreaDiv1">
+                        <table id="showTable" class="diagramTable"></table>
+                        </div>   
+                        <div class="DiagramAreaDiv2" key="{{keys.B23}}">
+                            {% include "comment.html" %} 
+                            {% include "table.html" %}
+                            <div class="table-container">
+                                <table class="comment-table" id="comment-table{{keys.B23}}">
+                                </table>
+                            </div>
+                        </div>             
+                    </div> <!-- 图表展示div -->
+
+                    <!-- 图表展示三级表头 -->
+                    <div class="DiagramTitleThree" id="diagramThree13" aria-expanded="true">
+                        <div class="DiagramTitleThree_img">
+                            <span class="left-img-three"></span>
+                            <span>B.2.4.指定板块周换手率的历史变化</span>
+                            <span class="right-img-three"></span> 
+                        </div>               
+                    </div> <!-- 图表展示三级表头 -->
+
+                    <!-- 图表展示div -->    
+                    <div class="DiagramBigDiv" id="diagramDiv13" aria-hidden="false">
+                        <div class="selectDataArea">
+                            <span>指数名称：</span>
+                            <select class="selected-index" key="{{keys.B24}}">
+                            </select>
+                        </div>
+
+                        <!-- 图表div -->
+                        <span class="spanExportButton"></span>
+                        <div id="showDiagram13" class="DiagramAreaDiv1">
+                        </div>   
+                        <div class="DiagramAreaDiv2" key="{{keys.B24}}">
+                            {% include "comment.html" %} 
+                            {% include "table.html" %}
+                            <div class="table-container">
+                                <table class="comment-table" id="comment-table{{keys.B24}}">
+                                </table>
+                            </div>
+                        </div>             
+                    </div> <!-- 图表展示div -->               
+                </div> <!-- DiagramTitleTwo图表展示二级表头 -->
+
+                <!-- 图表展示二级表头 -->
+                <div class="DiagramTitleTwo">
+                    <span class="left-img-two"></span> 
+                    <span>B.3.短期_行业循环模型</span>  
+                    <!-- 图表展示三级表头 -->
+                    <div class="DiagramTitleThree" id="diagramThree14" aria-expanded="true">
+                        <div class="DiagramTitleThree_img">
+                            <span class="left-img-three"></span>
+                            <span>B.3.1.本周新增“速度/加速度”加强/衰竭的行业</span>
+                            <span class="right-img-three"></span> 
+                        </div>               
+                    </div> <!-- 图表展示三级表头 -->
+
+                    <!-- 图表展示div -->         
+                    <div class="DiagramBigDiv" id="diagramDiv14" aria-hidden="false">
+                        <!-- 图表div -->
+                        <!-- <span class="spanExportButton" id="leftButton14"></span> -->
+                        <span class="spanExportButton" id="rightButton14"></span>
+                        <div id="showDiagram14" class="DiagramAreaDiv1">
+                            <div id="showDiagramLeft14" class="DiagramAreaDiv1 showDiagramLeft">
+                            </div> 
+                            <div id="showDiagramRight14" class="DiagramAreaDiv1 showDiagramRight">
+                            </div> 
+                        </div>   
+                        <div class="DiagramAreaDiv2" key="{{keys.B31}}">
+                            {% include "comment.html" %} 
+                            {% include "table.html" %}
+                            <div class="table-container">
+                                <table class="comment-table" id="comment-table{{keys.B31}}">
+                                </table>
+                            </div>
+                        </div>            
+                    </div> <!-- 图表展示div -->
+
+                    <!-- 图表展示三级表头 -->
+                    <div class="DiagramTitleThree" id="diagramThree15" aria-expanded="true">
+                        <div class="DiagramTitleThree_img">
+                            <span class="left-img-three"></span>
+                            <span>B.3.2.所有行业“速度/加速度”的最新分布</span>
+                            <span class="right-img-three"></span> 
+                        </div>               
+                    </div> <!-- 图表展示三级表头 -->
+
+                    <!-- 图表展示div -->         
+                    <div class="DiagramBigDiv" id="diagramDiv15" aria-hidden="false">
+                        <!-- 图表div -->
+                        <span class="spanExportButton"></span>
+                        <div id="showDiagram15" class="DiagramAreaDiv1">
+                        </div>   
+                        <div class="DiagramAreaDiv2" key="{{keys.B32}}">
+                            {% include "comment.html" %} 
+                            {% include "table.html" %}
+                            <div class="table-container">
+                                <table class="comment-table" id="comment-table{{keys.B32}}">
+                                </table>
+                            </div>
+                        </div>            
+                    </div> <!-- 图表展示div -->
+
+                    <!-- 图表展示三级表头 -->
+                    <div class="DiagramTitleThree" id="diagramThree16" aria-expanded="false">
+                        <div class="DiagramTitleThree_img">
+                            <span class="left-img-three"></span>
+                            <span>B.3.3.指定行业“速度/加速度”的历史变化路径</span>
+                            <span class="right-img-three"></span> 
+                        </div>               
+                    </div> <!-- 图表展示三级表头 -->
+
+                    <!-- 图表展示div -->         
+                    <div class="DiagramBigDiv" id="diagramDiv16" aria-hidden="true">
+                        <div class="selectDataArea">
+                            <span>指数名称：</span>
+                            <select class="selected-citic-index" key="{{keys.B33}}">
+                            </select>
+                        </div>
+                        <!-- 图表div -->
+                        <span class="spanExportButton"></span>
+                        <div id="showDiagram16" class="DiagramAreaDiv1">
+                        </div>   
+                        <div class="DiagramAreaDiv2" key="{{keys.B33}}">
+                            {% include "comment.html" %} 
+                            {% include "table.html" %}
+                            <div class="table-container">
+                                <table class="comment-table" id="comment-table{{keys.B33}}">
+                                </table>
+                            </div>
+                        </div>             
+                    </div> <!-- 图表展示div -->
+
+                </div> <!-- 图表展示二级表头 -->
+
+                 <!-- 图表展示二级表头 -->
+                <div class="DiagramTitleTwo">
+                    <span class="left-img-two"></span> 
+                    <span>B.4.中期_HP滤波后的行业估值</span>  
+
+                    <!-- 图表展示三级表头 -->
+                    <div class="DiagramTitleThree" id="diagramThree17" aria-expanded="true">
+                        <div class="DiagramTitleThree_img">
+                            <span class="left-img-three"></span>
+                            <span>B.4.1中期_HP滤波后的行业估值</span>
+                            <span class="right-img-three"></span> 
+                        </div>               
+                    </div> <!-- 图表展示三级表头 -->
+
+                    <!-- 图表展示div -->         
+                    <div class="DiagramBigDiv" id="diagramDiv17" aria-hidden="false">
+                        <div class="selectDataArea">
+                            <span>指数名称：</span>
+                            <select class="selected-index" key="{{keys.B41}}">
+                            </select>
+                        </div>
+                        <!-- 图表div -->
+                        <span class="spanExportButton"></span>
+                        <div id="showDiagram17" class="DiagramAreaDiv1">
+                        </div>   
+                        <div class="DiagramAreaDiv2" key="{{keys.B41}}">
+                            {% include "comment.html" %} 
+                            {% include "table.html" %}
+                            <div class="table-container">
+                                <table class="comment-table" id="comment-table{{keys.B41}}">
+                                </table>
+                            </div>
+                        </div>              
+                    </div> <!-- 图表展示div -->              
+                </div> <!-- 图表展示二级表头 -->
+                              
+            </div> <!-- 图表展示表头 -->
+
+
+
+        </div><!-- 周报告正文div -->
+       
+
+
+    </div>
+
+    <div class="returnToTop">
+        <div><img src="static/lib/strategicobserv/weekly/images/toTop.png"/></div>
+        <div>返回顶部</div>
+    </div>
+    
+    <div id="exportWord">
+	</div>
+
+
+    <script  type="text/javascript" src="static/js/strategicobserv/weekly/observe.js"></script>
+    <script  type="text/javascript" src="static/js/strategicobserv/weekly/exportword.js"></script>
+
+    </body>
+</html>

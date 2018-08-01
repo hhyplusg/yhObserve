@@ -3865,7 +3865,6 @@ $("#diagramDiv9 .windCode2").change(function(){
 		});
 		$("#menuThreeCheck"+i).click(function(e) {	
 			let menuThreeCheck = $(this);
-			// expand1(menuThreeCheck,i);
 			let currentState = menuThreeCheck.attr('checked');
 			if (currentState) {
 				menuThreeCheck.attr('checked',false); 
@@ -3898,7 +3897,23 @@ $("#diagramDiv9 .windCode2").change(function(){
 				nextSbl.setAttribute('aria-hidden','true');
 				nextSbl.style.maxHeight = '0px';
 				nextSbl.style.transition = "max-height 0.25s ease";
-			}			
+			}	
+			// 需要遍历同级的元素，来确定上一级标题是否被选中
+			let menuLTwoS  = $(this).parent().parent().find('.MenuLThree');
+			let menuLTwoInputS = menuLTwoS.find('input');
+			let menuThreeChecks = menuLTwoS.find('input[type=checkbox]:checked');
+			let menuTwoCheck = $(this).parent().parent().find('.menuTwoCheck');
+			let menuThreeNotChecks = menuLTwoS.find('input[type=checkbox]:not(:checked)');
+	
+			if(menuLTwoInputS.length === menuThreeChecks.length){
+				menuTwoCheck.prop("checked","checked");
+				menuTwoCheck.attr('checked',true);
+			}
+			if(menuLTwoInputS.length === menuThreeNotChecks.length){
+				menuTwoCheck.removeAttr("checked");
+				menuTwoCheck.attr('checked',false);
+			}
+		
 		});
 	}
 
@@ -3906,7 +3921,7 @@ $("#diagramDiv9 .windCode2").change(function(){
     $(".create-comment-btn").click(function(){
 		$(this).parent().parent().parent().find('.create-comment-container').css('display','block');
     });
-    let isFirst = true;
+
    $(".menuOneCheck,.menuTwoCheck").click(function(){
 	    
 	    let menuLOne = $(this).parent().parent();
@@ -3919,11 +3934,10 @@ $("#diagramDiv9 .windCode2").change(function(){
 			menuLOne.find('input').prop("checked","checked");
 		}
 		// 展开和折叠，选到对应的位置。过滤出包含menuThreeCheck。默认选中的折叠相反。因为默认扩展，假如是第一次点击，有默认扩展，就执行上面的。第一次分开，后面都不分开。
+		// 当子集全部默认选中；当子集部分默认选中（部分默认选中，可以分别根据2个长度）
 		
 		let inputs = menuLOne.find('input').not('.menuTwoCheck,.menuOneCheck')  ;
 		inputs = Array.from(inputs); 
-		console.log(Array.from(inputs));
-		console.log( inputs instanceof Array);
 		let idIndex = [];
 		let defaultExpand = [];
 		let defaultNotExpand = [];
@@ -3938,44 +3952,72 @@ $("#diagramDiv9 .windCode2").change(function(){
 			}
 			
 		}
-		console.log(defaultExpand);
-		console.log(defaultNotExpand);
-		if(defaultNotExpand.length!=0&&defaultExpand.length!=0){
+		if(defaultExpand.length!==0 && defaultNotExpand.length == 0 ){
 			for(let i=0; i<defaultExpand.length; i++){		
-				let	nextSbl = $("#diagramDiv"+defaultExpand[i]).get(0);
-				let ariaHidden = $("#diagramDiv"+defaultExpand[i]).attr('aria-hidden');
-				console.log('defaultExpand ariaHidden:'+ariaHidden);	
-				if (ariaHidden == 'false'){       
-					nextSbl.setAttribute('aria-hidden','false'); 
-					nextSbl.style.maxHeight = '715px';
-					nextSbl.style.transition = "max-height 0.25s ease";
+				let	nextSbl = $("#diagramDiv"+defaultExpand[i]);
+				let ariaHidden = $("#diagramDiv"+defaultExpand[i]).attr('aria-hidden');	
+				if (ariaHidden == 'false'){  
+					nextSbl.attr('aria-hidden','true'); 
+					nextSbl.css('maxHeight','0px');
+					nextSbl.css('transition','max-height 0.25s ease');     
 				}else{
-					nextSbl.setAttribute('aria-hidden','true');
-					nextSbl.style.maxHeight = '0px';
-					nextSbl.style.transition = "max-height 0.25s ease";
+					nextSbl.attr('aria-hidden','true');
+					nextSbl.css('maxHeight','715px');
+					nextSbl.css('transition','max-height 0.25s ease');   
 				}
-					
+			}
+			// console.log('expandconsole defaultExpand length:'+defaultExpand.length);	
+		}else if(defaultNotExpand.length!=0 && defaultExpand.length!=0){
+			for(let i=0; i<defaultExpand.length; i++){		
+				let	nextSbl = $("#diagramDiv"+defaultExpand[i]);
+				let ariaHidden = $("#diagramDiv"+defaultExpand[i]).attr('aria-hidden');	
+				if (ariaHidden == 'false'){  
+					nextSbl.attr('aria-hidden','false'); 
+					nextSbl.css('maxHeight','715px');
+					nextSbl.css('transition','max-height 0.25s ease');     
+				}else{
+					nextSbl.attr('aria-hidden','true');
+					nextSbl.css('maxHeight','0px');
+					nextSbl.css('transition','max-height 0.25s ease');   
+				}
 			}
 			for(let i=0; i<defaultNotExpand.length; i++){
-				let	nextSbl = $("#diagramDiv"+defaultNotExpand[i]).get(0);
+				let	nextSbl = $("#diagramDiv"+defaultNotExpand[i]);
 				let ariaHidden = $("#diagramDiv"+defaultNotExpand[i]).attr('aria-hidden');
-				console.log('defaultNotExpand ariaHidden:'+ariaHidden);	
+				
 				if (ariaHidden == 'true'){       
-					nextSbl.setAttribute('aria-hidden','false'); 
-					nextSbl.style.maxHeight = '715px';
-					nextSbl.style.transition = "max-height 0.25s ease";
+					nextSbl.attr('aria-hidden','false');
+					nextSbl.css('maxHeight','715px');
+					nextSbl.css('transition','max-height 0.25s ease'); 
 				}else{
-					nextSbl.setAttribute('aria-hidden','true');
-					nextSbl.style.maxHeight = '0px';
-					nextSbl.style.transition = "max-height 0.25s ease";
+					nextSbl.attr('aria-hidden','true');
+					nextSbl.css('maxHeight','0px');
+					nextSbl.css('transition','max-height 0.25s ease');  
 				}	
 			}
-   		}else{
+			// console.log(defaultExpand.length+'expandconsole defaultExpand length+defaultNotExpand.length:'+defaultNotExpand.length);	
+   		}else{ 		
+			// console.log('expandconsole defaultNotExpand length:'+defaultNotExpand.length);	
 		    for(let i=0; i<idIndex.length; i++){
 				expandBig($("#menuThreeCheck"+idIndex[i]),idIndex[i]);	
 			} 
 		}
-		
+
+		// 需要遍历同级的元素，来确定上一级标题是否被选中
+		let MenuLOne  = $(this).parent().parent().parent();
+		let menuTwoInputS = MenuLOne.find('.menuTwoCheck');
+		let menuTwoChecks = MenuLOne.find('.MenuLTwo').find('p').find('input[type=checkbox]:checked');
+		let menuTwoNotChecks = MenuLOne.find('.MenuLTwo').find('p').find('input[type=checkbox]:not(:checked)');
+		let menuOneCheck = MenuLOne.find('.menuOneCheck');
+		console.log('MenuLOne'+menuTwoInputS.length);
+		console.log('menuTwoChecks'+menuTwoChecks.length);
+		console.log('menuTwoNotChecks'+menuTwoNotChecks.length);
+		if(menuTwoInputS.length === menuTwoChecks.length){
+			menuOneCheck.prop("checked","checked");
+		}
+		if(menuTwoInputS.length !== menuTwoChecks.length){
+			menuOneCheck.removeAttr("checked");
+		}
     });
 	let isExpanded = false;
 	$(".DiagramTitleOne").click(function(e){
