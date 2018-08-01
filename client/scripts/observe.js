@@ -207,7 +207,7 @@ $(function(){
 	drawChart_A23(keys.A23,'000001.SH','上证综指'); 
 	drawChart_A24(keys.A24,'000001.SH','上证综指');  //换手率
 	drawChart_A31(keys.A31,'000300.SH','沪深300');  //指定版块的个股估值分布
-	drawSmallDiagram('000300.SH','沪深300');
+	// drawSmallDiagram('000300.SH','沪深300');
 
 	drawChart_A32(keys.A32,'000001.SH','上证综指');
 	drawChart_B11(keys.B11,'000001.SH','000016.SH','MA5','上证综指','上证50','MA5');  //指定版块的相对换手率历史变化 key,windCode1,windCode2,smooth
@@ -1274,35 +1274,6 @@ $('#diagramDiv6').find('.spanExportButton').click(function(event){
     });
 });
 
-
-$('#diagramDiv7').find('.spanExportButton').click(function(event){
-	console.log("点击了导出图片A31！");
-	var chart = $('#showDiagram7').highcharts();
-	var curTime=getCurrentTime(1);
-	
-	chart.title.update({ text: '指定板块的个股估值分布'});
-	chart.legend.update(GlobalPNGLegend);
-	
-	var svg = chart.getSVG().replace(/</g, '\n<').replace(/>/g, '>'); 							
-	var pngName='指定板块的个股估值分布'+curTime;
-	svgToPng(svg,800,600,pngName);
-	
-	chart.title.update({ text: ''});
-	chart.legend.update({
-        enabled: true,
-	    align: 'right',
-	    verticalAlign: 'top',
-	    x: -50,
-		y: 20,
-		floating: false,
-		itemStyle:{
-			"color": "black", 
-			"cursor": "pointer", 
-			"fontSize": "12px", 
-		},
-	    margin:0,
-    });
-});
 function drawChart_A31(key,selectedVal,selectedText){
 	// 第一次获取selectItem为null，因为还没请求到值。设置默认值
 	
@@ -1323,6 +1294,21 @@ function drawChart_A31(key,selectedVal,selectedText){
 		}
 		console.log("图7A31的obj数据为：\n");
 		console.log(dataObj);
+
+		var lastDateSecond=dataObj[dataObj.length-1][0];
+		console.log("图7A31的obj最后一个数据为：\n");
+		console.log(lastDateSecond);
+		var date0=new Date(lastDateSecond);
+		var year = date0.getFullYear();
+		var month = date0.getMonth()+1;
+		if (month<10) {month='0'+month;}
+		var day = date0.getDate();
+		if (day<10) {day='0'+day;}
+        var lastDate=year+month+day;
+        console.log(lastDate);
+
+        drawSmallDiagram(selectedVal,selectedText,lastDate);
+
 
 		
 		var mychart =Highcharts.stockChart('showDiagram7', {
@@ -1739,35 +1725,63 @@ function drawChart_A31(key,selectedVal,selectedText){
     	});
 
 	});
-	$('#diagramDiv7').find('.spanExportButton').click(function(event){
-		console.log("点击了导出图片A31！");
-		var chart = $('#showDiagram7').highcharts();
-		var curTime=getCurrentTime(1);
-		
-		chart.title.update({ text: '指定板块的个股估值分布'});
-		chart.legend.update(GlobalPNGLegend);
-		
-		var svg = chart.getSVG().replace(/</g, '\n<').replace(/>/g, '>'); 							
-		var pngName='指定板块的个股估值分布'+curTime;
-		svgToPng(svg,800,600,pngName);
-		
-		chart.title.update({ text: ''});
-		chart.legend.update({
-	        enabled: true,
-		    align: 'right',
-		    verticalAlign: 'top',
-		    x: -50,
-			y: 20,
-			floating: false,
-			itemStyle:{
-				"color": "black", 
-				"cursor": "pointer", 
-				"fontSize": "12px", 
-			},
-		    margin:0,
-	    });
-	});
 }
+
+$('#diagramDiv7').find('.spanExportButton').unbind('click').click(function(event){
+	console.log("点击了导出图片A31！");
+	var chartBig = $('#showDiagram7').highcharts();
+	var chartSmall = $('#showDiagram7Small').highcharts();
+	var curTime=getCurrentTime(1);
+	var pngName='指定板块的个股估值分布'+curTime;
+	
+	chartBig.title.update({ text: '指定板块的个股估值分布'});
+	chartBig.legend.update(GlobalPNGLegend);
+	
+	var svgBig = chartBig.getSVG().replace(/</g, '\n<').replace(/>/g, '>');
+	var svgSmall = chartSmall.getSVG().replace(/</g, '\n<').replace(/>/g, '>'); 
+	var imageBig = new Image();
+	imageBig.crossOrigin = 'anonymous';
+	imageBig.src = 'data:image/svg+xml;base64,' + window.btoa(unescape(encodeURIComponent(svgBig)));
+	var imageSmall= new Image();
+	imageSmall.crossOrigin = 'anonymous';
+	imageSmall.src = 'data:image/svg+xml;base64,' + window.btoa(unescape(encodeURIComponent(svgSmall))); 
+
+	var canvas = document.createElement('canvas');  
+	canvas.width = 800;  
+    canvas.height = 800;    
+			 
+	var context = canvas.getContext('2d'); 
+	context.fillStyle = "#fff";   
+	context.fillRect(0, 0, canvas.width, canvas.height);
+
+	imageBig.onload=function(){
+		context.drawImage(imageBig, 0, 0);				
+	};
+	imageSmall.onload=function(){
+		context.drawImage(imageSmall, 0, 600);
+		var a = document.createElement("a"); 
+			a.href = canvas.toDataURL('image/png');
+			a.download = pngName+".png"; 
+			a.click(); 
+			a = null;				
+	};
+	
+	chartBig.title.update({ text: ''});
+	chartBig.legend.update({
+        enabled: true,
+	    align: 'right',
+	    verticalAlign: 'top',
+	    x: -50,
+		y: 20,
+		floating: false,
+		itemStyle:{
+			"color": "black", 
+			"cursor": "pointer", 
+			"fontSize": "12px", 
+		},
+	    margin:0,
+    });
+});
 // 点线
 function drawChart_A32(key,selectedVal,selectedText){
 
@@ -2097,14 +2111,14 @@ function drawChart_B21(){
 			var chartLeft = $('#showDiagramLeft10').highcharts();
 			var chartRight = $('#showDiagramRight10').highcharts();
 			var curTime=getCurrentTime(1);
-			var pngName='本周换手率变化最大的的基准/板块'+curTime;
+			var pngName='本周换手率变化最大的基准/板块'+curTime;
 
-			chartLeft.title.update({ text: '本周换手率变化最大的的基准'+dataObj.date});
+			chartLeft.title.update({ text: '本周换手率变化最大的基准'+dataObj.date});
 			chartLeft.exporting.update({ enabled: false,scale: 1,sourceWidth: 500,sourceHeight: 450});			
 			var svgLeft = chartLeft.getSVG().replace(/</g, '\n<').replace(/>/g, '>'); 
 			
 			
-			chartRight.title.update({ text: '本周换手率变化最大的的板块'+dataObj.date});
+			chartRight.title.update({ text: '本周换手率变化最大的板块'+dataObj.date});
 			chartRight.exporting.update({ enabled: false,scale: 1,sourceWidth: 500,sourceHeight: 450});			
 			var svgRight = chartRight.getSVG().replace(/</g, '\n<').replace(/>/g, '>'); 
 			var imageLeft = new Image();
@@ -3382,15 +3396,15 @@ function calculateQuantity(row_items){
 		return caculateResult;
 }
 
-function drawSmallDiagram(selectedVal,selectedText){
+function drawSmallDiagram(selectedVal,selectedText,lastDate){
 
 	//获取点击数据的时间
-    var dateYMD=getCurrentTime(2);
-    console.log(dateYMD);
+    // var dateYMD=getCurrentTime(2);
+    // console.log(dateYMD);
     //传递点击数据，获取小图数据
 	$.ajax({
 		method: "GET",
-		url: '/weekly/IndicatorQuery?indicatorId=0011&windCode='+selectedVal+'&startDate='+dateYMD+'&endDate='+dateYMD,								
+		url: '/weekly/IndicatorQuery?indicatorId=0011&windCode='+selectedVal+'&startDate='+lastDate+'&endDate='+lastDate,								
 	})
 	.done(function( msg ) {
 		console.log( "固定小图返回的Data " + msg );
@@ -3413,11 +3427,15 @@ function drawSmallDiagram(selectedVal,selectedText){
 					enabled: false
 				},
 				title: {
-						text: selectedText +' '+dateYMD+' '+'PE分布',
+						text: selectedText +' '+lastDate+' '+'PE分布',
 				},
-				exporting:{
-					enabled: false
+				exporting:{	
+				    enabled: false,
+				    scale: 1,
+				    sourceWidth: 500,
+	        		sourceHeight: 200	
 				},
+
 				xAxis: {
 					type: 'category',
 					labels: {
@@ -3475,10 +3493,13 @@ function drawSmallDiagram(selectedVal,selectedText){
 					enabled: false
 				},
 				title: {
-						text: selectedText +' '+dateYMD+' '+'PE分布',
+						text: selectedText +' '+lastDate+' '+'PE分布',
 				},
 				exporting:{
-					enabled: false
+					enabled: false,
+				    scale: 1,
+				    sourceWidth: 500,
+	        		sourceHeight: 200	
 				},
 				xAxis: {
 					type: 'category',
@@ -3546,10 +3567,13 @@ function drawSmallDiagram(selectedVal,selectedText){
 					enabled: false
 				},
 				title: {
-						text: selectedText +' '+dateYMD+' '+'PE分布',
+						text: selectedText +' '+lastDate+' '+'PE分布',
 				},
 				exporting:{
-					enabled: false
+					enabled: false,
+				    scale: 1,
+				    sourceWidth: 500,
+	        		sourceHeight: 200	
 				},
 				xAxis: {
 					type: 'category',
@@ -3615,7 +3639,8 @@ $(".selected-index").change(function(){
 				drawChart_A24(key,selectedVal,selectedText); break;
 			case keys.A31:
 				// $('#showDiagram7').html='' ;
-				drawChart_A31(key,selectedVal,selectedText);drawSmallDiagram(selectedVal,selectedText);break;
+				drawChart_A31(key,selectedVal,selectedText);break;
+				// drawSmallDiagram(selectedVal,selectedText);
 			case keys.A32: 
 				drawChart_A32(key,selectedVal,selectedText); break;
 			case keys.B24: 
