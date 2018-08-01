@@ -1712,7 +1712,7 @@ function drawChart_A31(key,selectedVal,selectedText){
 				},
 			},
 			series: [{
-				name: selectedText+'的个股估值分布',
+				name: selectedText+'的个股收盘价',
 				data: dataObj,
 				lineWidth:2,
 				color:globalColorBlue
