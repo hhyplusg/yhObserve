@@ -1892,7 +1892,7 @@ function drawChart_A32(key,selectedVal,selectedText){
 				color:'red'
 			},
 			{
-				name: selectedText+'20121201',
+				name: selectedText+'20160612',
 				data: dataOrderSecond,
 				dashStyle:'Dot'
 			}]
@@ -3222,13 +3222,21 @@ function getCurrentTime(lengthChoose){
 	}
 	if (lengthChoose==3) {  //前一天
 		day = date.getDate()-1;
-		if (day<10) {day='0'+day;}
+// 		var new_date = new Date(year,month,1); //取当年当月中的第一天         
+//  var date_count = (new Date(new_date.getTime()-1000*60*60*24)).getDate();//获取当月的天数       
+//  var last_date = new Date(new_date.getTime()-1000*60*60*24);//获得当月最后一天的日期
+//  console.log('day'+last_date + date_count);
+		if (0<day<10) {
+			day='0'+day;
+			console.log('day'+day);
+		}
+
 		currentTime=year+month+day;		
 	}
 	console.log("-------"+currentTime);
 	return currentTime;
 }
-
+getCurrentTime(3);
 function drawHistogram(showDiagramID,title,xAxisData,seriesData){
 	var chart = Highcharts.chart(showDiagramID,{
 	    chart: {
