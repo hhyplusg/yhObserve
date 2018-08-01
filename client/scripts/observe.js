@@ -3817,7 +3817,39 @@ $("#diagramDiv9 .windCode2").change(function(){
 		}
 	}
 
+	function expandBig(menuThreeCheck,i){
+		// 应该判断默认选中，因为默认选中的逻辑正好相反，或者首先同意设置好属性。应该选出2种，一种是默认打开的，一种是没默认打开的。找出默认打开的，把属性设置初始化。
 
+		let diagramThree = $("#diagramThree"+i);
+		let img = diagramThree.find('.right-img-three').get(0);
+		let ariaExpanded= diagramThree.attr('aria-expanded');
+		if (ariaExpanded == 'true'){
+			diagramThree.attr('aria-expanded',false);
+		}
+		if (img){
+			if (ariaExpanded == 'false'){
+				diagramThree.attr('aria-expanded',true);
+				img.style.animation = "arrowRotateDown 0.25s 1 forwards ease-in";
+			}else{
+				diagramThree.attr('aria-expanded',false);
+				img.style.animation = "arrowRotateUp 0.25s forwards ease-out";
+			}
+		}
+
+		let	nextSbl = $("#diagramDiv"+i).get(0);
+		let ariaHidden = $("#diagramDiv"+i).attr('aria-hidden');
+		
+		if (ariaHidden == 'true'){       
+			nextSbl.setAttribute('aria-hidden','false'); 
+			nextSbl.style.maxHeight = '715px';
+			nextSbl.style.transition = "max-height 0.25s ease";
+		}else{
+			nextSbl.setAttribute('aria-hidden','true');
+			nextSbl.style.maxHeight = '0px';
+			nextSbl.style.transition = "max-height 0.25s ease";
+		}			
+		
+	}
 
 
     let diagramTitleThreeTength = expanders.length;
@@ -3830,8 +3862,9 @@ $("#diagramDiv9 .windCode2").change(function(){
 			}, {duration: 500,easing: "swing"});
 
 		});
-		$("#menuThreeCheck"+i).click(function(e) {
+		$("#menuThreeCheck"+i).click(function(e) {	
 			let menuThreeCheck = $(this);
+			// expand1(menuThreeCheck,i);
 			let currentState = menuThreeCheck.attr('checked');
 			if (currentState) {
 				menuThreeCheck.attr('checked',false); 
@@ -3872,8 +3905,9 @@ $("#diagramDiv9 .windCode2").change(function(){
     $(".create-comment-btn").click(function(){
 		$(this).parent().parent().parent().find('.create-comment-container').css('display','block');
     });
-    
+    let isFirst = true;
    $(".menuOneCheck,.menuTwoCheck").click(function(){
+	    
 	    let menuLOne = $(this).parent().parent();
 	    let currentState = $(this).attr('checked');
 		if (currentState) {			
@@ -3883,6 +3917,64 @@ $("#diagramDiv9 .windCode2").change(function(){
 			menuLOne.find('input').attr('checked',true);
 			menuLOne.find('input').prop("checked","checked");
 		}
+		// 展开和折叠，选到对应的位置。过滤出包含menuThreeCheck。默认选中的折叠相反。因为默认扩展，假如是第一次点击，有默认扩展，就执行上面的。第一次分开，后面都不分开。
+		
+		let inputs = menuLOne.find('input').not('.menuTwoCheck,.menuOneCheck')  ;
+		inputs = Array.from(inputs); 
+		console.log(Array.from(inputs));
+		console.log( inputs instanceof Array);
+		let idIndex = [];
+		let defaultExpand = [];
+		let defaultNotExpand = [];
+
+		for(let i=0; i<inputs.length; i++){
+			let menuThreeCheckIndex = $(inputs[i]).attr('id').replace('menuThreeCheck','');
+			idIndex.push(menuThreeCheckIndex);
+			if($("#diagramDiv"+menuThreeCheckIndex).attr('aria-hidden') == 'true'){
+				defaultNotExpand.push(menuThreeCheckIndex);
+			}else{
+				defaultExpand.push(menuThreeCheckIndex);
+			}
+			
+		}
+		console.log(defaultExpand);
+		console.log(defaultNotExpand);
+		if(defaultNotExpand.length!=0&&defaultExpand.length!=0){
+			for(let i=0; i<defaultExpand.length; i++){		
+				let	nextSbl = $("#diagramDiv"+defaultExpand[i]).get(0);
+				let ariaHidden = $("#diagramDiv"+defaultExpand[i]).attr('aria-hidden');
+				console.log('defaultExpand ariaHidden:'+ariaHidden);	
+				if (ariaHidden == 'false'){       
+					nextSbl.setAttribute('aria-hidden','false'); 
+					nextSbl.style.maxHeight = '715px';
+					nextSbl.style.transition = "max-height 0.25s ease";
+				}else{
+					nextSbl.setAttribute('aria-hidden','true');
+					nextSbl.style.maxHeight = '0px';
+					nextSbl.style.transition = "max-height 0.25s ease";
+				}
+					
+			}
+			for(let i=0; i<defaultNotExpand.length; i++){
+				let	nextSbl = $("#diagramDiv"+defaultNotExpand[i]).get(0);
+				let ariaHidden = $("#diagramDiv"+defaultNotExpand[i]).attr('aria-hidden');
+				console.log('defaultNotExpand ariaHidden:'+ariaHidden);	
+				if (ariaHidden == 'true'){       
+					nextSbl.setAttribute('aria-hidden','false'); 
+					nextSbl.style.maxHeight = '715px';
+					nextSbl.style.transition = "max-height 0.25s ease";
+				}else{
+					nextSbl.setAttribute('aria-hidden','true');
+					nextSbl.style.maxHeight = '0px';
+					nextSbl.style.transition = "max-height 0.25s ease";
+				}	
+			}
+   		}else{
+		    for(let i=0; i<idIndex.length; i++){
+				expandBig($("#menuThreeCheck"+idIndex[i]),idIndex[i]);	
+			} 
+		}
+		
     });
 	let isExpanded = false;
 	$(".DiagramTitleOne").click(function(e){
