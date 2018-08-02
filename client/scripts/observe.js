@@ -162,6 +162,7 @@ var GlobalPNGLegend={
     margin:0,
 };
 
+
 var GlobalTitleStyle={
 				// text: '博弈/存量指标',
 				style: {
@@ -226,7 +227,7 @@ $(function(){
 	});
 	
 	$('.selectDataArea .benchmark').css('backgroundColor','#d7d7d7');
-	$('.selectDataArea .plate').css('backgroundColor','white');
+	$('.selectDataArea .plate').css('backgroundColor','white');	
 
 });
 
@@ -2859,11 +2860,15 @@ $('#diagramDiv15').find('.spanExportButton').click(function(event){
         );
       }
 
+      $('#diagramDiv16').find('.myPath').remove();
+
       series.chart.renderer.path(path)
         .attr({
-          fill: series.color
+          fill: series.color,
+          class:'myPath'
         })
         .add(series.group);
+        // .add(series.chart.renderer.g().add());
 
 
       }
@@ -3009,22 +3014,36 @@ function drawChart_B33(key,selectedVal,selectedText){
 	});
 
 }
-
 $('#diagramDiv16').find('.spanExportButton').click(function(event){
 	console.log("点击了导出图片B33！");
 	var chart = $('#showDiagram16').highcharts();
 	var curTime=getCurrentTime(1);
-	
-	chart.title.update({ text: '指定行业“速度/加速度”的历史变化路径'});
+	var pngName='指定行业“速度/加速度”的历史变化路径'+curTime;	
+	// chart.title.update({ text: '指定行业“速度/加速度”的历史变化路径'});
 	// chart.legend.update(GlobalPNGLegend);
-	
-	var svg = chart.getSVG().replace(/</g, '\n<').replace(/>/g, '>'); 							
-	var pngName='指定行业“速度/加速度”的历史变化路径'+curTime;
-	svgToPng(svg,800,600,pngName);
-	
-	chart.title.update({ text: ''});
+
+	// var svg = chart.getSVG().replace(/</g, '\n<').replace(/>/g, '>'); 
+	// svgToPng(svg,800,600,pngName);
+
+	var newNodeTop = document.createElement("div");
+    newNodeTop.innerHTML = pngName;
+    newNodeTop.style.font = '微软雅黑 Regular';
+    newNodeTop.style.fontSize = '18px';
+    newNodeTop.style.textAlign = "center";
+	$("#showDiagram16").prepend(newNodeTop);
+
+	html2canvas(document.getElementById("showDiagram16")).then(function(canvas) { 
+	    var imgUri = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream"); // 获取生成的图片的url 　
+	　　var saveLink = document.createElement( 'a');
+	　　saveLink.href =imgUri;
+	　　saveLink.download = pngName+'.png';
+	    saveLink.click();
+	    newNodeTop.remove();
+    });
+	// chart.title.update({ text: ''});
 
 });
+
 function drawChart_B41(key,selectedVal,selectedText){
 	console.log("开始drawChart-B41");
 	
@@ -4003,25 +4022,32 @@ $("#diagramDiv9 .windCode2").change(function(){
 			} 
 		}
 
-		// 需要遍历同级的元素，来确定上一级标题是否被选中
-		let MenuLOne  = $(this).parent().parent().parent();
-		let menuTwoInputS = MenuLOne.find('.menuTwoCheck');
-		let menuTwoChecks = MenuLOne.find('.MenuLTwo').find('p').find('input[type=checkbox]:checked');
-		let menuTwoNotChecks = MenuLOne.find('.MenuLTwo').find('p').find('input[type=checkbox]:not(:checked)');
-		let menuOneCheck = MenuLOne.find('.menuOneCheck');
-		console.log('MenuLOne'+menuTwoInputS.length);
-		console.log('menuTwoChecks'+menuTwoChecks.length);
-		console.log('menuTwoNotChecks'+menuTwoNotChecks.length);
-		if(menuTwoInputS.length === menuTwoChecks.length){
-			menuOneCheck.prop("checked","checked");
+		if($(this).attr('class','menuTwoCheck')){
+			// 需要遍历同级的元素，来确定上一级标题是否被选中
+			let MenuLOne  = $(this).parent().parent().parent();
+			let menuTwoInputS = MenuLOne.find('.menuTwoCheck');
+			let menuTwoChecks = MenuLOne.find('.MenuLTwo').find('p').find('input[type=checkbox]:checked');
+			let menuTwoNotChecks = MenuLOne.find('.MenuLTwo').find('p').find('input[type=checkbox]:not(:checked)');
+			let menuOneCheck = MenuLOne.find('.menuOneCheck');
+
+			if(menuTwoInputS.length === menuTwoChecks.length){
+				menuOneCheck.prop("checked","checked");
+			}
+			if(menuTwoInputS.length !== menuTwoChecks.length){
+				menuOneCheck.removeAttr("checked");
+			}
 		}
-		if(menuTwoInputS.length !== menuTwoChecks.length){
-			menuOneCheck.removeAttr("checked");
-		}
+		
     });
 	let isExpanded = false;
 	$(".DiagramTitleOne").click(function(e){
-		e.stopPropagation();
+		if (e && e.stopPropagation) {
+    		e.stopPropagation();
+		} else if (window.event) {
+		    window.event.cancelBubble = true;
+		}
+
+
 		let img = $(this).find('.right-img-one').get(0);
 		if (img){
 			if (isExpanded == false){
@@ -4037,11 +4063,19 @@ $("#diagramDiv9 .windCode2").change(function(){
     });
 
 	$(".DiagramTitleTwo").click(function(e){
-		e.stopPropagation();
+		if (e && e.stopPropagation) {
+    		e.stopPropagation();
+		} else if (window.event) {
+		    window.event.cancelBubble = true;
+		}
 		$(this).find('.DiagramTitleThree').slideToggle(500);
     });
 	$(".DiagramTitleThree,.DiagramBigDiv").click(function(e){
-		e.stopPropagation();
+		if (e && e.stopPropagation) {
+    		e.stopPropagation();
+		} else if (window.event) {
+		    window.event.cancelBubble = true;
+		}
     });
 
 	$('.returnToTop').click(function(){
