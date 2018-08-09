@@ -1381,7 +1381,7 @@ function drawChart_A31(key,selectedVal,selectedText){
 										console.log("图7A31小图的obj数据为：\n");
 										console.log(dataObj);
 
-										var finalResult=calculateQuantity(dataObj);
+										//var finalResult=calculateQuantity(dataObj);
 										
 										let cdiv=document.getElementById('ChildDiv');
 					                    if(cdiv!=null){  
@@ -1425,50 +1425,89 @@ function drawChart_A31(key,selectedVal,selectedText){
 
 										//在div中创建图表
 										var chart = Highcharts.chart('ChildDiv', {
-										chart: {
-												type: 'column'
-										},
-										credits: {
-											enabled: false
-										},
-										title: {
-												text: selectedText +' '+dateYMD+' '+'PE分布'
-										},
-										exporting:{
-											enabled: false
-										},
-										xAxis: {
-											type: 'category',
-											labels: {
-												rotation: -45,  
-												style:{
- 
-													"fontSize": "10px", 
-												},
-											}
-										},
-										yAxis: {
-												min: 0,
-												
-										},
-										legend: {
+											/*chart: {
+													type: 'column'
+											},
+											credits: {
 												enabled: false
-										},
-										tooltip: {
-												pointFormat: 'PE频率: <b>{point.y:.1f}</b>'
-										},
-										series: [{
-											name: 'PE频率',
-											data: finalResult,
-											dataLabels: {
-												enabled: true,
-												rotation: -90,
-												color: '#FFFFFF',
-												align: 'right',
-												format: '{point.y:.1f}', // :.1f 为保留 1 位小数
-												y: 10
-											}
-										}]
+											},
+											title: {
+													text: selectedText +' '+dateYMD+' '+'PE分布'
+											},
+											exporting:{
+												enabled: false
+											},
+											xAxis: {
+												type: 'category',
+												labels: {
+													rotation: -45,  
+													style:{
+	 
+														"fontSize": "10px", 
+													},
+												}
+											},
+											yAxis: {
+													min: 0,
+													
+											},
+											legend: {
+													enabled: false
+											},
+											tooltip: {
+													pointFormat: 'PE频率: <b>{point.y:.1f}</b>'
+											},
+											series: [{
+												name: 'PE频率',
+												data: finalResult,
+												dataLabels: {
+													enabled: true,
+													rotation: -90,
+													color: '#FFFFFF',
+													align: 'right',
+													format: '{point.y:.1f}', // :.1f 为保留 1 位小数
+													y: 10
+												}
+											}]*/
+											chart: {
+												type: 'column'
+											},
+											credits: {
+												enabled: false
+											},
+											plotOptions: {
+										        column: {
+										            pointPlacement: 'between'
+										        }
+										    },
+											xAxis: {
+										        tickmarkPlacement: 'on',
+										        labels: {
+										            align: 'left',
+										            rotation: 0
+										        },
+										        gridLineWidth: 0.5,
+										        tickInterval: dataObj.data_interval
+										    },
+										    title: {
+												text: selectedText +' '+dateYMD+' '+'PE分布',
+											},
+											exporting:{
+												enabled: false
+											},
+										    legend: {
+												enabled: false
+											},
+											tooltip: {
+												pointFormat: 'PE频率: <b>{point.y}</b>'
+											},
+										    series: [{
+										        name: 'PE频率',
+										        data: dataObj.data,
+										        pointStart: dataObj.data_start,
+										        pointInterval: dataObj.data_interval,
+										        type: 'column'
+										    }]
 										});
 										globalClicked=true;
 
@@ -1478,51 +1517,51 @@ function drawChart_A31(key,selectedVal,selectedText){
 
 									var jsonObject =$.parseJSON(msg);
 									var dataObj=jsonObject.obj;	
-									var finalResult=calculateQuantity(dataObj);
+									//var finalResult=calculateQuantity(dataObj);
 									
-										let cdiv=document.getElementById('ChildDiv');
-					                    if(cdiv!=null){  
-									        let p = cdiv.parentNode;  
+									let cdiv=document.getElementById('ChildDiv');
+				                    if(cdiv!=null){  
+								        let p = cdiv.parentNode;  
+								        p.removeChild(cdiv);  
+								    }  
+
+				                    var mouseX;//记录鼠标点击位置。  
+									var mouseY;//记录鼠标点击位置
+
+				                    var ev = ev||event;   
+								    if(ev.pageX || ev.pageY){   
+								        mouseX = ev.pageX+'px';   
+								        mouseY = ev.pageY+'px';  
+								    }else{   
+								        mouseX = ev.clientX+document.body.scrollLeft - document.body.clientLeft+'px';  
+								      mouseY = ev.clientY+document.documentElement.scrollTop+'px';  
+								    } 
+								    var my = document.createElement("ChildDiv");   
+								    document.body.appendChild(my);        
+								    my.style.position="absolute";      
+								    my.style.top= mouseY;     
+								    my.style.left= mouseX;     
+								    my.style.border='1px solid #FF0000';   
+								    my.style.width='400px';  
+									my.style.height='200px';    
+									my.style.backgroundColor="#ffffcc";    
+									var alpha = 90;  
+									my.style.filter='alpha(opacity:'+alpha+')';  
+									my.style.opacity=alpha/100;  
+									my.id = "ChildDiv";//设置ID 
+									my.style.zIndex=1000;
+
+									 
+									my.onclick = function(){
+									   if(  (cdiv=document.getElementById('ChildDiv'))!=null){  
+									        p = cdiv.parentNode;  
 									        p.removeChild(cdiv);  
-									    }  
-
-					                    var mouseX;//记录鼠标点击位置。  
-										var mouseY;//记录鼠标点击位置
-
-					                    var ev = ev||event;   
-									    if(ev.pageX || ev.pageY){   
-									        mouseX = ev.pageX+'px';   
-									        mouseY = ev.pageY+'px';  
-									    }else{   
-									        mouseX = ev.clientX+document.body.scrollLeft - document.body.clientLeft+'px';  
-									      mouseY = ev.clientY+document.documentElement.scrollTop+'px';  
 									    } 
-									    var my = document.createElement("ChildDiv");   
-									    document.body.appendChild(my);        
-									    my.style.position="absolute";      
-									    my.style.top= mouseY;     
-									    my.style.left= mouseX;     
-									    my.style.border='1px solid #FF0000';   
-									    my.style.width='400px';  
-										my.style.height='200px';    
-										my.style.backgroundColor="#ffffcc";    
-										var alpha = 90;  
-										my.style.filter='alpha(opacity:'+alpha+')';  
-										my.style.opacity=alpha/100;  
-										my.id = "ChildDiv";//设置ID 
-										my.style.zIndex=1000;
+									 };
 
-										 
-										my.onclick = function(){
-										   if(  (cdiv=document.getElementById('ChildDiv'))!=null){  
-										        p = cdiv.parentNode;  
-										        p.removeChild(cdiv);  
-										    } 
-										 };
-
-										//在div中创建图表
-										var chart = Highcharts.chart('ChildDiv', {
-										chart: {
+									//在div中创建图表
+									var chart = Highcharts.chart('ChildDiv', {
+										/*chart: {
 												type: 'column'
 										},
 										credits: {
@@ -1564,15 +1603,49 @@ function drawChart_A31(key,selectedVal,selectedText){
 												format: '{point.y:.1f}', // :.1f 为保留 1 位小数
 												y: 10
 											}
-										}]
-										});
-										globalClicked=true;
-
-
+										}]*/
+										chart: {
+											type: 'column'
+										},
+										credits: {
+											enabled: false
+										},
+										plotOptions: {
+									        column: {
+									            pointPlacement: 'between'
+									        }
+									    },
+										xAxis: {
+									        tickmarkPlacement: 'on',
+									        labels: {
+									            align: 'left',
+									            rotation: 0
+									        },
+									        gridLineWidth: 0.5,
+									        tickInterval: dataObj.data_interval
+									    },
+									    title: {
+											text: selectedText +' '+dateYMD+' '+'PE分布',
+										},
+										exporting:{
+											enabled: false
+										},
+									    legend: {
+											enabled: false
+										},
+										tooltip: {
+											pointFormat: 'PE频率: <b>{point.y}</b>'
+										},
+									    series: [{
+									        name: 'PE频率',
+									        data: dataObj.data,
+									        pointStart: dataObj.data_start,
+									        pointInterval: dataObj.data_interval,
+									        type: 'column'
+									    }]
+									});
+									globalClicked=true;
 								}
-
-
-
 							})
 							.fail(function( jqXHR, textStatus ) {
 								console.log( "Request failed: " + textStatus );
@@ -1585,7 +1658,7 @@ function drawChart_A31(key,selectedVal,selectedText){
 										console.log("图7A31小图的obj数据为：\n");
 										console.log(dataObj);
 
-										var finalResult=calculateQuantity(dataObj);
+										//var finalResult=calculateQuantity(dataObj);
 										
 										let cdiv=document.getElementById('ChildDiv');
 					                    if(cdiv!=null){  
@@ -1623,48 +1696,87 @@ function drawChart_A31(key,selectedVal,selectedText){
 
 										//在div中创建图表
 										var chart = Highcharts.chart('ChildDiv', {
-										chart: {
-												type: 'column'
-										},
-										credits: {
-											enabled: false
-										},
-										title: {
-												text: selectedText +' '+dateYMD+' '+'PE分布'
-										},
-										exporting:{
-											enabled: false
-										},
-										xAxis: {
-											type: 'category',
-											labels: {
-												rotation: -45,  // 设置轴标签旋转角度
-												style:{
-													"fontSize": 5, 
-												},
-											}
-										},
-										yAxis: {
-												min: 0,											
-										},
-										legend: {
+											/*chart: {
+													type: 'column'
+											},
+											credits: {
 												enabled: false
-										},
-										tooltip: {
+											},
+											title: {
+													text: selectedText +' '+dateYMD+' '+'PE分布'
+											},
+											exporting:{
+												enabled: false
+											},
+											xAxis: {
+												type: 'category',
+												labels: {
+													rotation: -45,  // 设置轴标签旋转角度
+													style:{
+														"fontSize": 5, 
+													},
+												}
+											},
+											yAxis: {
+													min: 0,											
+											},
+											legend: {
+													enabled: false
+											},
+											tooltip: {
+													pointFormat: 'PE频率: <b>{point.y}</b>'
+											},
+											series: [{
+												name: 'PE频率',
+												data: finalResult,
+												dataLabels: {
+													enabled: true,
+													rotation: -90,
+													color: '#FFFFFF',
+													align: 'right',
+													
+													y: 10
+												}
+											}]*/
+											chart: {
+												type: 'column'
+											},
+											credits: {
+												enabled: false
+											},
+											plotOptions: {
+										        column: {
+										            pointPlacement: 'between'
+										        }
+										    },
+											xAxis: {
+										        tickmarkPlacement: 'on',
+										        labels: {
+										            align: 'left',
+										            rotation: 0
+										        },
+										        gridLineWidth: 0.5,
+										        tickInterval: dataObj.data_interval
+										    },
+										    title: {
+												text: selectedText +' '+dateYMD+' '+'PE分布',
+											},
+											exporting:{
+												enabled: false
+											},
+										    legend: {
+												enabled: false
+											},
+											tooltip: {
 												pointFormat: 'PE频率: <b>{point.y}</b>'
-										},
-										series: [{
-											name: 'PE频率',
-											data: finalResult,
-											dataLabels: {
-												enabled: true,
-												rotation: -90,
-												color: '#FFFFFF',
-												align: 'right',
-												
-												y: 10
-											}
-										}]
+											},
+										    series: [{
+										        name: 'PE频率',
+										        data: dataObj.data,
+										        pointStart: dataObj.data_start,
+										        pointInterval: dataObj.data_interval,
+										        type: 'column'
+										    }]
 										});
 										globalClicked=true;
 
@@ -1813,10 +1925,10 @@ function drawChart_A32(key,selectedVal,selectedText){
 		var dataObjFirst=dataObj.data_first;
 		var dataObjSecond=dataObj.data_second;
 
-		var dataOrderBefore=calculateQuantity(dataObjBefore);
+		/*var dataOrderBefore=calculateQuantity(dataObjBefore);
 		var dataOrderFirst=calculateQuantity(dataObjFirst);
 		var dataOrderSecond=calculateQuantity(dataObjSecond);
-
+		 */
 		
 		var mychart = Highcharts.chart('showDiagram8', {
 			chart: {
@@ -1849,20 +1961,17 @@ function drawChart_A32(key,selectedVal,selectedText){
 				text: '',//个股估值分布的重要时点比较
 			},
 	
-		    tooltip: {
+		    /*tooltip: {
 				headerFormat: '',
 				pointFormat: '<b>{series.name}</b><br>{point.x}, {point.y}',
-			},
+			},*/
 		    xAxis: {				
 		        title: {
 		            enabled: true,
 		            // text: '2本周换手率历史分位'
 		        },
 		        type: 'category',
-		        tickInterval: 50,
-		        
-		        
-		        
+		    	categories: dataObj.data_X
 		    },
 			yAxis: {
 				opposite: false,
@@ -1872,31 +1981,36 @@ function drawChart_A32(key,selectedVal,selectedText){
 				},
 			},
 			plotOptions:{
-				line:{
+				/*line:{
 					states:{
 						hover:{
 							lineWidthPlus:0
 						}
 					}
+				},*/
+				series: {
+					allowPointSelect: false
 				}
 			},
 			series: [{
-				name: selectedText+dateLastDay,
-				data: dataOrderBefore,
-				dashStyle:'line',
+				name: selectedText + dataObj.data_before_date,
+				data: dataObjBefore,
+				//dashStyle:'line',
 				color:'blue'
 			},
 			{
 				name: selectedText+'20150616',
-				data: dataOrderFirst,
-				dashStyle:'line',
+				data: dataObjFirst,
+				//dashStyle:'line',
 				color:'red'
 			},
 			{
 				name: selectedText+'20160612',
-				data: dataOrderSecond,
+				data: dataObjSecond,
 				dashStyle:'Dot'
 			}]
+			
+			
 		});
 
 	});
@@ -2604,8 +2718,6 @@ function drawChart_B32(){
 		}
 		console.log("图d15B32的obj数据为：\n");
 		console.log(dataObj);
-
-
 	
 
 		//dataSet数组转化为json对象
@@ -2726,7 +2838,7 @@ function drawChart_B32(){
 			}
 		},
 		series: [{
-			name: '速度/加速度'+getCurrentTime(2),
+			name: '速度/加速度' + dataObj.data_date,
 			// color: 'rgba(223, 83, 83, .5)',
 			data: dataJsonArray,
 			zIndex: 1000,
@@ -3034,9 +3146,9 @@ $('#diagramDiv16').find('.spanExportButton').click(function(event){
 
 	html2canvas(document.getElementById("showDiagram16")).then(function(canvas) { 
 	    var imgUri = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream"); // 获取生成的图片的url 　
-	　　var saveLink = document.createElement( 'a');
-	　　saveLink.href =imgUri;
-	　　saveLink.download = pngName+'.png';
+	    var saveLink = document.createElement( 'a');
+	    saveLink.href =imgUri;
+	    saveLink.download = pngName+'.png';
 	    saveLink.click();
 	    newNodeTop.remove();
     });
@@ -3133,7 +3245,7 @@ function drawChart_B41(key,selectedVal,selectedText){
 						},
 						zIndex:200,
 
-				}, {
+				},{
 						value: dataObjDataY[1],
 						color: 'red',
 						dashStyle: 'shortdash',
@@ -3142,8 +3254,16 @@ function drawChart_B41(key,selectedVal,selectedText){
 								 text: '2Sigma('+dataObjDataY[1]+')'
 						},
 						zIndex:200,
-				},
-				{
+				},{
+					value: 0,
+					color: 'black',
+					//dashStyle: 'shortdash',
+					width: 1,
+					/*label: {
+						text: '0Sigma(0)'
+					},*/
+					zIndex:200,
+				},{
 						value: -dataObjDataY[0],
 						color: 'blue',
 						dashStyle: 'shortdash',
@@ -3440,59 +3560,102 @@ function drawSmallDiagram(selectedVal,selectedText,lastDate){
 
 				//在div中创建图表
 				var chart = Highcharts.chart('showDiagram7Small', {
-				chart: {
-						type: 'column'
-				},
-				credits: {
-					enabled: false
-				},
-				title: {
-						text: selectedText +' '+lastDate+' '+'PE分布',
-				},
-				exporting:{	
-				    enabled: false,
-				    scale: 1,
-				    sourceWidth: 500,
-	        		sourceHeight: 200	
-				},
-
-				xAxis: {
-					type: 'category',
-					labels: {
-						rotation: -45,  // 设置轴标签旋转角度
-						style:{
-							// "color": "black", 
-							// "cursor": "pointer", 
-							"fontSize": "10px", 
-						},
-						
-					}
-				},
-				yAxis: {
-						min: 0,
-						lineWidth:1
-						// title: {
-						// 		// text: '人口 (百万)'
-						// }
-				},
-				legend: {
+					/*chart: {
+							type: 'column'
+					},
+					credits: {
 						enabled: false
-				},
-				tooltip: {
-						pointFormat: 'PE频率: <b>{point.y:.1f}</b>'
-				},
-				series: [{
-					name: 'PE频率',
-					data: finalResult,
-					dataLabels: {
-						enabled: true,
-						rotation: -90,
-						color: '#FFFFFF',
-						align: 'right',
-						format: '{point.y:.1f}', // :.1f 为保留 1 位小数
-						y: 10
-					}
-				}]
+					},
+					title: {
+							text: selectedText +' '+lastDate+' '+'PE分布',
+					},
+					exporting:{	
+					    enabled: false,
+					    scale: 1,
+					    sourceWidth: 500,
+		        		sourceHeight: 200	
+					},
+	
+					xAxis: {
+						type: 'category',
+						labels: {
+							rotation: -45,  // 设置轴标签旋转角度
+							style:{
+								// "color": "black", 
+								// "cursor": "pointer", 
+								"fontSize": "10px", 
+							},
+							
+						}
+					},
+					yAxis: {
+							min: 0,
+							lineWidth:1
+							// title: {
+							// 		// text: '人口 (百万)'
+							// }
+					},
+					legend: {
+							enabled: false
+					},
+					tooltip: {
+							pointFormat: 'PE频率: <b>{point.y:.1f}</b>'
+					},
+					series: [{
+						name: 'PE频率',
+						data: finalResult,
+						dataLabels: {
+							enabled: true,
+							rotation: -90,
+							color: '#FFFFFF',
+							align: 'right',
+							format: '{point.y:.1f}', // :.1f 为保留 1 位小数
+							y: 10
+						}
+					}]*/
+					
+					chart: {
+						type: 'column'
+					},
+					credits: {
+						enabled: false
+					},
+					plotOptions: {
+				        column: {
+				            pointPlacement: 'between'
+				        }
+				    },
+					xAxis: {
+				        tickmarkPlacement: 'on',
+				        labels: {
+				            align: 'left',
+				            rotation: 0
+				        },
+				        gridLineWidth: 0.5,
+				        tickInterval: dataObj.data_interval
+				    },
+				    title: {
+						text: selectedText +' '+lastDate+' '+'PE分布',
+					},
+					exporting:{
+						enabled: false,
+					    scale: 1,
+					    sourceWidth: 800,
+		        		sourceHeight: 200
+					},
+				    legend: {
+						enabled: false
+					},
+					tooltip: {
+						pointFormat: 'PE频率: <b>{point.y}</b>'
+					},
+				    series: [{
+				        name: 'PE频率',
+				        data: dataObj.data,
+				        pointStart: dataObj.data_start,
+				        pointInterval: dataObj.data_interval,
+				        type: 'column'
+				    }]
 				});
 				// globalClicked=true;
 
@@ -3502,11 +3665,11 @@ function drawSmallDiagram(selectedVal,selectedText,lastDate){
 			console.log( "进入在线画小图：-" + msg );
 			var jsonObject =$.parseJSON(msg);
 			var dataObj=jsonObject.obj;	
-			var finalResult=calculateQuantity(dataObj);			
+			//var finalResult=calculateQuantity(dataObj);			
 
 			//在div中创建图表
 			var chart = Highcharts.chart('showDiagram7Small', {
-				chart: {
+				/*chart: {
 						type: 'column'
 				},
 				credits: {
@@ -3555,7 +3718,49 @@ function drawSmallDiagram(selectedVal,selectedText,lastDate){
 						format: '{point.y:.1f}', // :.1f 为保留 1 位小数
 						y: 10
 					}
-				}]
+				}]*/
+				chart: {
+					type: 'column'
+				},
+				credits: {
+					enabled: false
+				},
+				plotOptions: {
+			        column: {
+			            pointPlacement: 'between'
+			        }
+			    },
+				xAxis: {
+			        tickmarkPlacement: 'on',
+			        labels: {
+			            align: 'left',
+			            rotation: 0
+			        },
+			        gridLineWidth: 0.5,
+			        tickInterval: dataObj.data_interval
+			    },
+			    title: {
+					text: selectedText +' '+lastDate+' '+'PE分布',
+				},
+				exporting:{
+					enabled: false,
+				    scale: 1,
+				    sourceWidth: 800,
+	        		sourceHeight: 200
+				},
+			    legend: {
+					enabled: false
+				},
+				tooltip: {
+					pointFormat: 'PE频率: <b>{point.y}</b>'
+				},
+			    series: [{
+			        name: 'PE频率',
+			        data: dataObj.data,
+			        pointStart: dataObj.data_start,
+			        pointInterval: dataObj.data_interval,
+			        type: 'column'
+			    }]
 			});
 		}
 
@@ -3580,52 +3785,94 @@ function drawSmallDiagram(selectedVal,selectedText,lastDate){
 				
 				//在div中创建图表
 				var chart = Highcharts.chart('showDiagram7Small', {
-				chart: {
-						type: 'column'
-				},
-				credits: {
-					enabled: false
-				},
-				title: {
-						text: selectedText +' '+lastDate+' '+'PE分布',
-				},
-				exporting:{
-					enabled: false,
-				    scale: 1,
-				    sourceWidth: 500,
-	        		sourceHeight: 200	
-				},
-				xAxis: {
-					type: 'category',
-					labels: {
-						rotation: -45,  // 设置轴标签旋转角度
-						style:{
-							"fontSize": 5, 
-						},
-					}
-				},
-				yAxis: {
-						min: 0,
-						lineWidth:1
-	
-				},
-				legend: {
+					/*chart: {
+							type: 'column'
+					},
+					credits: {
 						enabled: false
-				},
-				tooltip: {
+					},
+					title: {
+							text: selectedText +' '+lastDate+' '+'PE分布',
+					},
+					exporting:{
+						enabled: false,
+					    scale: 1,
+					    sourceWidth: 500,
+		        		sourceHeight: 200	
+					},
+					xAxis: {
+						type: 'category',
+						labels: {
+							rotation: -45,  // 设置轴标签旋转角度
+							style:{
+								"fontSize": 5, 
+							},
+						}
+					},
+					yAxis: {
+							min: 0,
+							lineWidth:1
+		
+					},
+					legend: {
+							enabled: false
+					},
+					tooltip: {
+							pointFormat: 'PE频率: <b>{point.y}</b>'
+					},
+					series: [{
+						name: 'PE频率',
+						data: finalResult,
+						dataLabels: {
+							enabled: true,
+							rotation: -90,
+							color: '#FFFFFF',
+							align: 'right',
+							y: 10
+						}
+					}]*/
+					chart: {
+						type: 'column'
+					},
+					credits: {
+						enabled: false
+					},
+					plotOptions: {
+				        column: {
+				            pointPlacement: 'between'
+				        }
+				    },
+					xAxis: {
+				        tickmarkPlacement: 'on',
+				        labels: {
+				            align: 'left',
+				            rotation: 0
+				        },
+				        gridLineWidth: 0.5,
+				        tickInterval: dataObj.data_interval
+				    },
+				    title: {
+						text: selectedText +' '+lastDate+' '+'PE分布',
+					},
+					exporting:{
+						enabled: false,
+					    scale: 1,
+					    sourceWidth: 800,
+		        		sourceHeight: 200
+					},
+				    legend: {
+						enabled: false
+					},
+					tooltip: {
 						pointFormat: 'PE频率: <b>{point.y}</b>'
-				},
-				series: [{
-					name: 'PE频率',
-					data: finalResult,
-					dataLabels: {
-						enabled: true,
-						rotation: -90,
-						color: '#FFFFFF',
-						align: 'right',
-						y: 10
-					}
-				}]
+					},
+				    series: [{
+				        name: 'PE频率',
+				        data: dataObj.data,
+				        pointStart: dataObj.data_start,
+				        pointInterval: dataObj.data_interval,
+				        type: 'column'
+				    }]
 				});
 
 			});
@@ -3785,7 +4032,7 @@ $("#diagramDiv9 .windCode2").change(function(){
 			let ariaHidden = nextSbl.getAttribute('aria-hidden');
 			if (ariaHidden == 'true'){       
 				nextSbl.setAttribute('aria-hidden','false'); 
-				nextSbl.style.maxHeight = '715px';
+				nextSbl.style.maxHeight = '815px';
 				nextSbl.style.transition = "max-height 0.25s ease";
 			}else{
 				nextSbl.setAttribute('aria-hidden','true');
@@ -3826,7 +4073,7 @@ $("#diagramDiv9 .windCode2").change(function(){
 	        	let ariaHidden = nextSbl.getAttribute('aria-hidden');
 	            if (ariaHidden == 'false'){       
 	                nextSbl.setAttribute('aria-hidden','false'); 
-	                nextSbl.style.maxHeight = '715px';
+	                nextSbl.style.maxHeight = '815px';
 	                nextSbl.style.transition = "max-height 0.25s ease";
 	            }else{
 	                nextSbl.setAttribute('aria-hidden','true');
@@ -3861,7 +4108,7 @@ $("#diagramDiv9 .windCode2").change(function(){
 		
 		if (ariaHidden == 'true'){       
 			nextSbl.setAttribute('aria-hidden','false'); 
-			nextSbl.style.maxHeight = '715px';
+			nextSbl.style.maxHeight = '815px';
 			nextSbl.style.transition = "max-height 0.25s ease";
 		}else{
 			nextSbl.setAttribute('aria-hidden','true');
@@ -3910,7 +4157,7 @@ $("#diagramDiv9 .windCode2").change(function(){
 			
 			if (ariaHidden == 'true'){       
 				nextSbl.setAttribute('aria-hidden','false'); 
-				nextSbl.style.maxHeight = '715px';
+				nextSbl.style.maxHeight = '815px';
 				nextSbl.style.transition = "max-height 0.25s ease";
 			}else{
 				nextSbl.setAttribute('aria-hidden','true');
@@ -3981,7 +4228,7 @@ $("#diagramDiv9 .windCode2").change(function(){
 					nextSbl.css('transition','max-height 0.25s ease');     
 				}else{
 					nextSbl.attr('aria-hidden','true');
-					nextSbl.css('maxHeight','715px');
+					nextSbl.css('maxHeight','815px');
 					nextSbl.css('transition','max-height 0.25s ease');   
 				}
 			}
@@ -3992,7 +4239,7 @@ $("#diagramDiv9 .windCode2").change(function(){
 				let ariaHidden = $("#diagramDiv"+defaultExpand[i]).attr('aria-hidden');	
 				if (ariaHidden == 'false'){  
 					nextSbl.attr('aria-hidden','false'); 
-					nextSbl.css('maxHeight','715px');
+					nextSbl.css('maxHeight','815px');
 					nextSbl.css('transition','max-height 0.25s ease');     
 				}else{
 					nextSbl.attr('aria-hidden','true');
@@ -4006,7 +4253,7 @@ $("#diagramDiv9 .windCode2").change(function(){
 				
 				if (ariaHidden == 'true'){       
 					nextSbl.attr('aria-hidden','false');
-					nextSbl.css('maxHeight','715px');
+					nextSbl.css('maxHeight','815px');
 					nextSbl.css('transition','max-height 0.25s ease'); 
 				}else{
 					nextSbl.attr('aria-hidden','true');

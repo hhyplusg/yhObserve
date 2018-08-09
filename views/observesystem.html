@@ -5,37 +5,36 @@
         <meta name="viewport" content="width=device-width, initial-scale=1"/>
         <meta http-equiv="content-type" content="text/html; charset=utf-8"/>     
    
-        <script type="text/javascript" src="static/lib/strategicobserv/weekly/jquery-1.12.0.min.js"></script> 
+        <script type="text/javascript" src="static/lib/strategic/weekly/jquery-1.12.0.min.js"></script> 
 
-        <script src="static/lib/strategicobserv/weekly/Highstock-6.1.0/code/highstock.js"></script>
-        <script src="static/lib/strategicobserv/weekly/Highstock-6.1.0/code/modules/exporting.js"></script>
-        <script src="static/lib/strategicobserv/weekly/Highstock-6.1.0/code/modules/offline-exporting.js"></script>
-        <script src="static/lib/strategicobserv/weekly/html2canvas.js"></script>
-        <!-- <script src="static/lib/strategicobserv/weekly/Highstock-6.1.0/code/themes/dark-unica.js"></script> -->
-        <script src="static/lib/strategicobserv/weekly/Highstock-6.1.0/code/highcharts-zh_CN.js"></script>
-        <script type="text/javascript" src="static/lib/strategicobserv/weekly/Highstock-6.1.0/code/lib/highcharts-axis-arrow.js"></script>
-
+        <script src="static/lib/strategic/weekly/Highstock-6.1.0/code/highstock.js"></script>
+        <script src="static/lib/strategic/weekly/Highstock-6.1.0/code/modules/exporting.js"></script>
+        <script src="static/lib/strategic/weekly/Highstock-6.1.0/code/modules/offline-exporting.js"></script>
+        <script src="static/lib/strategic/weekly/html2canvas.js"></script>
+        <!-- <script src="static/lib/strategic/weekly/Highstock-6.1.0/code/themes/dark-unica.js"></script> -->
+        <script src="static/lib/strategic/weekly/Highstock-6.1.0/code/highcharts-zh_CN.js"></script>
+        <script type="text/javascript" src="static/lib/strategic/weekly/Highstock-6.1.0/code/lib/highcharts-axis-arrow.js"></script>
 
         
-        <script type="text/javascript" src="static/lib/strategicobserv/weekly/echarts.min.js"></script>
-        <script type="text/javascript" src="static/lib/strategicobserv/weekly/ecStat.min.js"></script>
+        <script type="text/javascript" src="static/lib/strategic/weekly/echarts.min.js"></script>
+        <script type="text/javascript" src="static/lib/strategic/weekly/ecStat.min.js"></script>
         
-        <script type="text/javascript" src="static/lib/strategicobserv/weekly/FileSaver.js"></script>
-        <script type="text/javascript" src="static/lib/strategicobserv/weekly/jquerywordexport/jquerywordexport.js"></script>
+        <script type="text/javascript" src="static/lib/strategic/weekly/FileSaver.js"></script>
+        <script type="text/javascript" src="static/lib/strategic/weekly/jquerywordexport/jquerywordexport.js"></script>
 
         <!--<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>-->
-        <script type="text/javascript" src="static/lib/strategicobserv/weekly/jquery/jquery-ui.min.js"></script>
+        <script type="text/javascript" src="static/lib/strategic/weekly/jquery/jquery-ui.min.js"></script>
 
-        <script type="text/javascript" src="static/lib/strategicobserv/weekly/Highstock-6.1.0/code/lib/rgbcolor.js"></script>
-        <script type="text/javascript" src="static/lib/strategicobserv/weekly/canvg.js"></script>
+        <script type="text/javascript" src="static/lib/strategic/weekly/Highstock-6.1.0/code/lib/rgbcolor.js"></script>
+        <script type="text/javascript" src="static/lib/strategic/weekly/canvg.js"></script>
 
-        <link  href="static/lib/strategicobserv/weekly/styles/observe.css" type="text/css" rel="stylesheet"/>
+        <link  href="static/lib/strategic/weekly/styles/observe.css" type="text/css" rel="stylesheet"/>
         
     </head>
     <body id="bigDiv">
     <!-- 系统表头 -->
     <div class="SystemDIV" id="exportWord1">
-        <img  class="img " src="static/lib/strategicobserv/weekly/images/navigation.jpg" style="width: 100%;"/>
+        <img  class="img " src="static/lib/strategic/weekly/images/navigation.jpg" style="width: 100%;"/>
     </div>
     <!-- 周报告大背景div -->
     <div class="SystemDIV">            
@@ -44,7 +43,7 @@
             <!-- 周报告名称与导出报告 -->
             <div class="title-container"> 
                 <span class="title">市场量化指标周度报告</span>     
-                <a href="javascript:;"><span class="export" onclick="exportWord()">导出报告</span></a>
+                <a href="javascript:;"><span class="export">导出报告</span></a>
             </div> <!-- 周报告名称与导出报告 -->
 
             <!-- 目录div -->
@@ -278,7 +277,11 @@
             </div>
         </div> 
                                                         <div>
-                                <div class="table-title">指标说明：业务提供</div>
+                                <div class="table-title">
+                                	指标说明：<br />
+                                	1.存量资金市场假设下跟踪博弈资金的活跃度，可用于大盘的短期择时。<br />
+                                	2.历史经验表明该指标在存量博弈的市场中有良好的区间震荡特性，在0.25~0.40之间波动。
+                                </div>
                                 <div class="table-input">
                                     <label>开始：</label><input  type="date" name="11"   class="input-date start-date" />
                                     <label>结束：</label><input type="date" name="22"  class="input-date end-date"/>
@@ -330,7 +333,11 @@
             </div>
         </div> 
                                                         <div>
-                                <div class="table-title">指标说明：业务提供</div>
+                                <div class="table-title">
+                                	指标说明：<br/>
+                                	1.基于融资数据计算出的一个类似“博弈/存量指标”逻辑的资金类指标，数据为日度频率，波动更为频繁，可用于大盘短期择时的辅助类指标。<br/>
+                                	2.历史经验观察表明，该比值的主要波动区间在0.35-0.65之间。<br/>
+                                </div>
                                 <div class="table-input">
                                     <label>开始：</label><input  type="date" name="11"   class="input-date start-date" />
                                     <label>结束：</label><input type="date" name="22"  class="input-date end-date"/>
@@ -387,7 +394,15 @@
             </div>
         </div> 
                                                         <div>
-                                <div class="table-title">指标说明：业务提供</div>
+                                <div class="table-title">
+                                	指标说明：<br/>
+									1.结合强势股数量、两市成交换手情况、杠杆型产品的成交占比等指标，综合计算得出对市场交易情绪现状描述的指标，可用于大盘的短期择时。<br/>
+									2.历史经验观察表明，该指标低于20%通常提示市场情绪处于低点附近该指标高于80%通常提示市场情绪处于过热状态。<br/>
+									3.分项子指标说明：<br/>
+									a)强势股数量占比指标：指定指数成分股中强势股的数量占比；<br/>
+									b)风险偏好指标：被动型股票分级基金产品的B类日成交额之和与A类日成交额之和的比值；<br/>
+									c)换手率指标：指定板块的年化日换手率。<br/>
+                                </div>
                                 <div class="table-input">
                                     <label>开始：</label><input  type="date" name="11"   class="input-date start-date" />
                                     <label>结束：</label><input type="date" name="22"  class="input-date end-date"/>
@@ -454,7 +469,7 @@
             </div>
         </div> 
                                                         <div>
-                                <div class="table-title">指标说明：业务提供</div>
+                                <!-- <div class="table-title">指标说明：业务提供</div> -->
                                 <div class="table-input">
                                     <label>开始：</label><input  type="date" name="11"   class="input-date start-date" />
                                     <label>结束：</label><input type="date" name="22"  class="input-date end-date"/>
@@ -510,7 +525,7 @@
             </div>
         </div> 
                                                         <div>
-                                <div class="table-title">指标说明：业务提供</div>
+                                <!-- <div class="table-title">指标说明：业务提供</div> -->
                                 <div class="table-input">
                                     <label>开始：</label><input  type="date" name="11"   class="input-date start-date" />
                                     <label>结束：</label><input type="date" name="22"  class="input-date end-date"/>
@@ -566,7 +581,11 @@
             </div>
         </div> 
                                                         <div>
-                                <div class="table-title">指标说明：业务提供</div>
+                                <div class="table-title">
+                                	指标说明：<br/>
+                                	1.指定行业或板块或指数的年化日换手率。<br/>
+                                	2.历史经验表明，当指定行业平滑后的日换手率分位超过90%的时候，一般代表该行业短期涨幅突出、交易拥挤、处于过热状态、下跌的概率大，是短期卖点的及时提示。<br/>
+                                </div>
                                 <div class="table-input">
                                     <label>开始：</label><input  type="date" name="11"   class="input-date start-date" />
                                     <label>结束：</label><input type="date" name="22"  class="input-date end-date"/>
@@ -632,7 +651,11 @@
             </div>
         </div> 
                                                         <div>
-                                <div class="table-title">指标说明：业务提供</div>
+                                <div class="table-title">
+                                	指标说明：<br/>
+                                	1.指定日期时指定板块中个股的静态估值分布，可用于和历史极端情况进行对比。<br/>
+                                	2.历史上极端情况的个股估值分布形态具有极强的参考意义：市场绝对高点对应的分布整体更平，右尾更厚；市场绝对低点对应的分布整体更尖，更偏左。<br/>
+                                </div>
                                 <div class="table-input">
                                     <label>开始：</label><input  type="date" name="11"   class="input-date start-date" />
                                     <label>结束：</label><input type="date" name="22"  class="input-date end-date"/>
@@ -689,7 +712,7 @@
             </div>
         </div> 
                                                         <div>
-                                <div class="table-title">指标说明：业务提供</div>
+                                <!-- <div class="table-title">指标说明：业务提供</div> -->
                                 <div class="table-input">
                                     <label>开始：</label><input  type="date" name="11"   class="input-date start-date" />
                                     <label>结束：</label><input type="date" name="22"  class="input-date end-date"/>
@@ -777,7 +800,11 @@
             </div>
         </div> 
                                                         <div>
-                                <div class="table-title">指标说明：业务提供</div>
+                                <div class="table-title">
+                                	指标说明：<br/>
+                                	1.指定两个板块间的日换手率的比值，可用于观察市场风格的持续性。<br/>
+									2.换手率的相对低位意味着市场对该行业或板块的关注度降到了低位，存在关注度上升的可能性；换手率的相对高位则意味着交易过于拥挤。<br/>                                	
+                                </div>
                                 <div class="table-input">
                                     <label>开始：</label><input  type="date" name="11"   class="input-date start-date" />
                                     <label>结束：</label><input type="date" name="22"  class="input-date end-date"/>
@@ -838,7 +865,7 @@
             </div>
         </div> 
                                                         <div>
-                                <div class="table-title">指标说明：业务提供</div>
+                                <!-- <div class="table-title">指标说明：业务提供</div> -->
                                 <div class="table-input">
                                     <label>开始：</label><input  type="date" name="11"   class="input-date start-date" />
                                     <label>结束：</label><input type="date" name="22"  class="input-date end-date"/>
@@ -894,7 +921,7 @@
             </div>
         </div> 
                                                         <div>
-                                <div class="table-title">指标说明：业务提供</div>
+                                <!-- <div class="table-title">指标说明：业务提供</div> -->
                                 <div class="table-input">
                                     <label>开始：</label><input  type="date" name="11"   class="input-date start-date" />
                                     <label>结束：</label><input type="date" name="22"  class="input-date end-date"/>
@@ -950,7 +977,7 @@
             </div>
         </div> 
                                                         <div>
-                                <div class="table-title">指标说明：业务提供</div>
+                                <!-- <div class="table-title">指标说明：业务提供</div> -->
                                 <div class="table-input">
                                     <label>开始：</label><input  type="date" name="11"   class="input-date start-date" />
                                     <label>结束：</label><input type="date" name="22"  class="input-date end-date"/>
@@ -1007,7 +1034,7 @@
             </div>
         </div> 
                                                         <div>
-                                <div class="table-title">指标说明：业务提供</div>
+                                <!-- <div class="table-title">指标说明：业务提供</div> -->
                                 <div class="table-input">
                                     <label>开始：</label><input  type="date" name="11"   class="input-date start-date" />
                                     <label>结束：</label><input type="date" name="22"  class="input-date end-date"/>
@@ -1068,7 +1095,12 @@
             </div>
         </div> 
                                                         <div>
-                                <div class="table-title">指标说明：业务提供</div>
+                                <div class="table-title">
+                                	指标说明：<br/>
+                                	1.刻画各行业指数价格相对走势的动能变化情况，可用于行业选择的短期择时。<br/>
+                                	2.逻辑上选择刚从第4象限进入第1象限、并且上涨动能最高的行业，给予买入建议；同时对刚从第2象限进入第3象限、并且下跌动能最大的行业，给予卖出建议；从而获得超额收益。<br/>
+                                	3.历史经验观察，在趋势明确的市场中，对行业轮动的捕捉效果较好；在大幅震荡市中表现一般。<br/>
+                                </div>
                                 <div class="table-input">
                                     <label>开始：</label><input  type="date" name="11"   class="input-date start-date" />
                                     <label>结束：</label><input type="date" name="22"  class="input-date end-date"/>
@@ -1119,7 +1151,12 @@
             </div>
         </div> 
                                                         <div>
-                                <div class="table-title">指标说明：业务提供</div>
+                                <div class="table-title">
+									指标说明：<br/>
+                                	1.刻画各行业指数价格相对走势的动能变化情况，可用于行业选择的短期择时。<br/>
+                                	2.逻辑上选择刚从第4象限进入第1象限、并且上涨动能最高的行业，给予买入建议；同时对刚从第2象限进入第3象限、并且下跌动能最大的行业，给予卖出建议；从而获得超额收益。<br/>
+                                	3.历史经验观察，在趋势明确的市场中，对行业轮动的捕捉效果较好；在大幅震荡市中表现一般。<br/>
+								</div>
                                 <div class="table-input">
                                     <label>开始：</label><input  type="date" name="11"   class="input-date start-date" />
                                     <label>结束：</label><input type="date" name="22"  class="input-date end-date"/>
@@ -1175,7 +1212,12 @@
             </div>
         </div> 
                                                         <div>
-                                <div class="table-title">指标说明：业务提供</div>
+                                <div class="table-title">
+                                	指标说明：<br/>
+                                	1.刻画各行业指数价格相对走势的动能变化情况，可用于行业选择的短期择时。<br/>
+                                	2.逻辑上选择刚从第4象限进入第1象限、并且上涨动能最高的行业，给予买入建议；同时对刚从第2象限进入第3象限、并且下跌动能最大的行业，给予卖出建议；从而获得超额收益。<br/>
+                                	3.历史经验观察，在趋势明确的市场中，对行业轮动的捕捉效果较好；在大幅震荡市中表现一般。<br/>
+                                </div>
                                 <div class="table-input">
                                     <label>开始：</label><input  type="date" name="11"   class="input-date start-date" />
                                     <label>结束：</label><input type="date" name="22"  class="input-date end-date"/>
@@ -1238,7 +1280,11 @@
             </div>
         </div> 
                                                         <div>
-                                <div class="table-title">指标说明：业务提供</div>
+                                <div class="table-title">
+                                	指标说明：<br/>
+									1.该指标重点关注各行业当前估值相对于各自行业长期趋势的偏离程度，用标准差刻画，可用于中长视角下的风格/行业选择。<br/>
+									2.中长期来看，基于均值回归逻辑，低估值在不同经济和市场环境下是大概率有效的投资策略，并且极值情况是非常有意义的。<br/>
+                                </div>
                                 <div class="table-input">
                                     <label>开始：</label><input  type="date" name="11"   class="input-date start-date" />
                                     <label>结束：</label><input type="date" name="22"  class="input-date end-date"/>
@@ -1259,20 +1305,21 @@
 
 
 
-            </div>
+        	</div>
         </div><!-- 周报告正文div -->
 
 
     </div>
 
     <div class="returnToTop">
-        <div><img src="static/lib/strategicobserv/weekly/images/toTop.png"/></div>
+        <div><img src="static/lib/strategic/weekly/images/toTop.png"/></div>
         <div>返回顶部</div>
     </div>
     <div id="loading"></div>
     <div id="exportWord" style="display: none"></div>
 
-    <script  type="text/javascript" src="static/js/strategicobserv/weekly/observe.js"></script>
-    <script  type="text/javascript" src="static/js/strategicobserv/weekly/exportword.js"></script>
+    <script  type="text/javascript" src="static/js/strategic/weekly/observe.js"></script>
+    <script  type="text/javascript" src="static/js/strategic/weekly/exportword.js"></script>
+
     </body>
 </html>
