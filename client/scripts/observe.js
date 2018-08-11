@@ -112,9 +112,10 @@ var pickOption = {
 			dateFormat: 'yy-mm-dd',
 			// firstDay: 1,
 			defaultDate:'2011-03-10',
-			
-			// minDate: -1,
-			// maxDate: +17
+		    onSelect: function () {
+		        this.onchange();
+		        this.onblur();
+		    }
 }
 
 // import * as SandSignika from '../lib/Highstock-6.1.0/code/themes/sand-signika';
@@ -218,7 +219,7 @@ $(function(){
 	drawChart_B24(keys.B24,'000001.SH','上证综指');   //双轴  指定板块周换手率的历史变化
 	drawChart_B31();   //柱状图
 	drawChart_B32();   //象限图
-	drawChart_B33(keys.B33,'CI005001.WI','石油石化(中信)');  // 反转图 	
+	drawChart_B33(keys.B33,'CI005001.WI','石油石化想（中信）');  // 反转图 	
 	drawChart_B41(keys.B41,'000001.SH','上证综指');
 
 	$("#exportButton").click(function(event){
@@ -231,14 +232,7 @@ $(function(){
 
 });
 
-// 设置图表中的函数
-$.datepicker.setDefaults({
-    dateFormat: 'yy-mm-dd',
-    onSelect: function () {
-        this.onchange();
-        this.onblur();
-    },
-});
+
 // $.datepicker.setDefaults($.datepicker.regional['zh-CN']);
 //基础表单轴
 function drawChart_A11(){
@@ -372,7 +366,7 @@ function drawChart_A11(){
 				plotLines: [{
 						zIndex: 999,
 						value: 0.25,
-						color: '#6A6A6A',
+						color: '#bab6b6',
 						dashStyle: 'shortdash',
 						width: 2,
 						label: {
@@ -597,7 +591,7 @@ function drawChart_A12(){
 					color:globalColorBlue
 				},
 				{
-					name: '沪深300(右轴)',
+					name: '沪深300（右轴）',
 					data: dataObj.index_data,	
 					yAxis:1,
 					lineWidth:2,
@@ -757,7 +751,7 @@ function drawChart_A21(){
 					color:globalColorBlue
 				},
 				{
-					name: '沪指300(右轴)',
+					name: '沪指300（右轴）',
 					data: dataObj.index_data,	
 					yAxis:1,
 					lineWidth:2,
@@ -896,7 +890,7 @@ function drawChart_A22(key,windCode,smooth,windCodeText,smoothText){
 					color:globalColorBlue
 				},
 				{
-					name: '沪深300(右轴)',
+					name: '沪深300（右轴）',
 					data: dataObj.index_data,	
 					yAxis:1,
 					lineWidth:2,
@@ -1056,14 +1050,14 @@ function drawChart_A23(key,selectedVal,selectedText){
 					color:globalColorBlue
 				},
 				{
-					name: '成交额：分级B/A(MA10)',
+					name: '成交额：分级B/A（MA10）',
 					data: dataObj.data_MA10,	
 					yAxis:0,
 					lineWidth:2,
 					color:globalColorRed			
 				},
 				{
-					name: selectedText+'(右轴)',
+					name: selectedText+'（右轴）',
 					data: dataObj.index_data,	
 					yAxis:1,
 					lineWidth:2,
@@ -1989,7 +1983,10 @@ function drawChart_A32(key,selectedVal,selectedText){
 					}
 				},*/
 				series: {
-					allowPointSelect: false
+					allowPointSelect: false,
+					marker: {
+						enabled: false
+					}
 				}
 			},
 			series: [{
@@ -2145,14 +2142,14 @@ function drawChart_B11(key,windCode1,windCode2,smooth,windCode1Text,windCode2Tex
 			},
 			series: [
 				{
-					name: '换手率：'+windCode1Text+'/'+windCode2Text+'('+smoothText+')',//'换手率：上证50/中证500(MA20)',
+					name: '换手率：'+windCode1Text+'/'+windCode2Text+'（'+smoothText+'）',//'换手率：上证50/中证500(MA20)',
 					data: dataObj.data,
 					yAxis:0,
 					lineWidth:2,
 					color:globalColorBlue
 				},
 				{
-					name: windCode1Text+'/'+windCode2Text+'(右轴)',//'上证50/中证500(右轴)',
+					name: windCode1Text+'/'+windCode2Text+'（右轴）',//'上证50/中证500（右轴）',
 					data: dataObj.index_data,	
 					yAxis:1,
 					lineWidth:2,
@@ -2578,7 +2575,7 @@ function drawChart_B24(key,selectedVal,selectedText){
 					color:globalColorBlue
 				},
 				{
-					name: selectedText+'收盘价(右轴)',
+					name: selectedText+'收盘价（右轴）',
 					data: dataObj.index_data,	
 					yAxis:1,
 					lineWidth:2,
@@ -3236,7 +3233,7 @@ function drawChart_B41(key,selectedVal,selectedText){
 				},
 				plotLines: [{
 						value: dataObjDataY[0],
-						color: '#6A6A6A',
+						color: '#bab6b6',
 						dashStyle: 'shortdash',
 						width: 2,
 						label: {
@@ -3264,7 +3261,7 @@ function drawChart_B41(key,selectedVal,selectedText){
 					zIndex:200,
 				},{
 						value: -dataObjDataY[0],
-						color: '#6A6A6A',
+						color: '#bab6b6',
 						dashStyle: 'shortdash',
 						width: 2,
 						label: {
@@ -3363,6 +3360,9 @@ function getCurrentTime(lengthChoose){
 	}
 	if (lengthChoose==3) {  //前一天
 		currentTime=year+month+day;		
+	}
+	if (lengthChoose==4) {  
+		currentTime=year+'-'+month+'-'+day;		
 	}
 	console.log("-------"+currentTime);
 	return currentTime;
@@ -3990,7 +3990,26 @@ $("#diagramDiv9 .windCode2").change(function(){
 });
 
 
-// $(".table-input .input-date").datepicker(pickOption); 
+var pickOptionInInput = {
+		showAnim: 'slideDown',
+		nextText : '>',
+		prevText : '<',
+		showButtonPanel: false,
+		duration : 'fast',
+		monthNames: ['一月','二月','三月','四月','五月','六月',
+'七月','八月','九月','十月','十一月','十二月'],
+		monthNamesShort: ['一','二','三','四','五','六',
+		'七','八','九','十','十一','十二'],
+		dayNames: ['星期日','星期一','星期二','星期三','星期四','星期五','星期六'],
+		dayNamesShort: ['周日','周一','周二','周三','周四','周五','周六'],
+		dayNamesMin: ['日','一','二','三','四','五','六'],
+		closeText: '关闭',
+		dateFormat: 'yy-mm-dd',
+		defaultDate:'2011-03-10'		
+}
+
+$(".table-input .input-date").datepicker(pickOptionInInput); 
+$(".table-input .input-date").val(getCurrentTime(4)); 
 
 // $(".table-input .start-date").val(getFormatTimeWithLine());
 
