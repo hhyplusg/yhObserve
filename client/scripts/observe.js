@@ -4202,7 +4202,7 @@ $("#diagramDiv9 .windCode2").change(function(){
 		// 当子集全部默认选中；当子集部分默认选中（部分默认选中，可以分别根据2个长度）
 		
 		let inputs = menuLOne.find('input').not('.menuTwoCheck,.menuOneCheck')  ;
-		inputs = Array.from(inputs); 
+		// inputs = Array.from(inputs); 
 		let idIndex = [];
 		let defaultExpand = [];
 		let defaultNotExpand = [];
