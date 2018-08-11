@@ -430,11 +430,14 @@ $background-color: white;
     }
 }
 
+
 .input-date{
     border:1px solid rgba(215, 215, 215, 1);
     height: 30px;
     vertical-align: middle;
-    width: 120px;
+    width: 100px;
+    text-align: center;
+    font-size: 12px;
 }
 .input-btn{
     border:1px solid rgba(215, 215, 215, 1);
@@ -605,7 +608,7 @@ $background-color: white;
 }
 
 .highcharts-range-selector ,.hasDatepicker{
-        color: blue;
+        color: black;
 }
 .ui-datepicker{
     background-color: #e0d1d5;
