@@ -372,7 +372,7 @@ function drawChart_A11(){
 				plotLines: [{
 						zIndex: 999,
 						value: 0.25,
-						color: 'blue',
+						color: '#6A6A6A',
 						dashStyle: 'shortdash',
 						width: 2,
 						label: {
@@ -381,7 +381,7 @@ function drawChart_A11(){
 				}, {
 						zIndex: 999,
 						value: 0.4,
-						color: 'red',
+						color: '#F2A570',
 						dashStyle: 'shortdash',
 						width: 2,
 						label: {
@@ -1369,7 +1369,7 @@ function drawChart_A31(key,selectedVal,selectedText){
 		                    //传递点击数据，获取小图数据
 							$.ajax({
 								method: "GET",
-								url: '/weekly/IndicatorQuery?indicatorId=0011&windCode='+selectedVal+'&startDate='+dateYMD+'&endDate='+dateYMD,							
+								url: 'weekly/IndicatorQuery?indicatorId=0011&windCode='+selectedVal+'&startDate='+dateYMD+'&endDate='+dateYMD,							
 							})
 							.done(function( msg ) {
 								console.log( "小图返回的Data " + msg );
@@ -2007,7 +2007,6 @@ function drawChart_A32(key,selectedVal,selectedText){
 			{
 				name: selectedText+'20160612',
 				data: dataObjSecond,
-				dashStyle:'Dot'
 			}]
 			
 			
@@ -3109,7 +3108,7 @@ function drawChart_B33(key,selectedVal,selectedText){
 		        spline: {
 		            marker: {
 		                enable: true,
-		                radius:3,
+		                radius: 4,
 		                symbol: 'circle',
 		            }
 		        }
@@ -3237,7 +3236,7 @@ function drawChart_B41(key,selectedVal,selectedText){
 				},
 				plotLines: [{
 						value: dataObjDataY[0],
-						color: 'blue',
+						color: '#6A6A6A',
 						dashStyle: 'shortdash',
 						width: 2,
 						label: {
@@ -3247,7 +3246,7 @@ function drawChart_B41(key,selectedVal,selectedText){
 
 				},{
 						value: dataObjDataY[1],
-						color: 'red',
+						color: '#F2A570',
 						dashStyle: 'shortdash',
 						width: 2,
 						label: {
@@ -3265,7 +3264,7 @@ function drawChart_B41(key,selectedVal,selectedText){
 					zIndex:200,
 				},{
 						value: -dataObjDataY[0],
-						color: 'blue',
+						color: '#6A6A6A',
 						dashStyle: 'shortdash',
 						width: 2,
 						label: {
@@ -3274,7 +3273,7 @@ function drawChart_B41(key,selectedVal,selectedText){
 						zIndex:200,
 				}, {
 						value: -dataObjDataY[1],
-						color: 'red',
+						color: '#F2A570',
 						dashStyle: 'shortdash',
 						width: 2,
 						label: {
@@ -3544,7 +3543,7 @@ function drawSmallDiagram(selectedVal,selectedText,lastDate){
     //传递点击数据，获取小图数据
 	$.ajax({
 		method: "GET",
-		url: '/weekly/IndicatorQuery?indicatorId=0011&windCode='+selectedVal+'&startDate='+lastDate+'&endDate='+lastDate,								
+		url: 'weekly/IndicatorQuery?indicatorId=0011&windCode='+selectedVal+'&startDate='+lastDate+'&endDate='+lastDate,								
 	})
 	.done(function( msg ) {
 		console.log( "固定小图返回的Data " + msg );
@@ -4221,12 +4220,15 @@ $("#diagramDiv9 .windCode2").change(function(){
 		if(defaultExpand.length!==0 && defaultNotExpand.length == 0 ){
 			for(let i=0; i<defaultExpand.length; i++){		
 				let	nextSbl = $("#diagramDiv"+defaultExpand[i]);
+				let	nextSblT = $("#diagramThree"+defaultExpand[i]);
 				let ariaHidden = $("#diagramDiv"+defaultExpand[i]).attr('aria-hidden');	
 				if (ariaHidden == 'false'){  
+					nextSblT.attr('aria-expanded','false');
 					nextSbl.attr('aria-hidden','true'); 
 					nextSbl.css('maxHeight','0px');
 					nextSbl.css('transition','max-height 0.25s ease');     
 				}else{
+					nextSblT.attr('aria-expanded','false');
 					nextSbl.attr('aria-hidden','true');
 					nextSbl.css('maxHeight','815px');
 					nextSbl.css('transition','max-height 0.25s ease');   
@@ -4236,12 +4238,15 @@ $("#diagramDiv9 .windCode2").change(function(){
 		}else if(defaultNotExpand.length!=0 && defaultExpand.length!=0){
 			for(let i=0; i<defaultExpand.length; i++){		
 				let	nextSbl = $("#diagramDiv"+defaultExpand[i]);
+				let	nextSblT = $("#diagramThree"+defaultExpand[i]);
 				let ariaHidden = $("#diagramDiv"+defaultExpand[i]).attr('aria-hidden');	
-				if (ariaHidden == 'false'){  
+				if (ariaHidden == 'false'){
+					nextSblT.attr('aria-expanded','true');
 					nextSbl.attr('aria-hidden','false'); 
 					nextSbl.css('maxHeight','815px');
 					nextSbl.css('transition','max-height 0.25s ease');     
 				}else{
+					nextSblT.attr('aria-expanded','false');
 					nextSbl.attr('aria-hidden','true');
 					nextSbl.css('maxHeight','0px');
 					nextSbl.css('transition','max-height 0.25s ease');   
@@ -4249,13 +4254,16 @@ $("#diagramDiv9 .windCode2").change(function(){
 			}
 			for(let i=0; i<defaultNotExpand.length; i++){
 				let	nextSbl = $("#diagramDiv"+defaultNotExpand[i]);
+				let	nextSblT = $("#diagramThree"+defaultNotExpand[i]);
 				let ariaHidden = $("#diagramDiv"+defaultNotExpand[i]).attr('aria-hidden');
 				
-				if (ariaHidden == 'true'){       
+				if (ariaHidden == 'true'){ 
+					nextSblT.attr('aria-expanded','true');
 					nextSbl.attr('aria-hidden','false');
 					nextSbl.css('maxHeight','815px');
 					nextSbl.css('transition','max-height 0.25s ease'); 
 				}else{
+					nextSblT.attr('aria-expanded','false');
 					nextSbl.attr('aria-hidden','true');
 					nextSbl.css('maxHeight','0px');
 					nextSbl.css('transition','max-height 0.25s ease');  
@@ -4315,7 +4323,7 @@ $("#diagramDiv9 .windCode2").change(function(){
 		} else if (window.event) {
 		    window.event.cancelBubble = true;
 		}
-		$(this).find('.DiagramTitleThree').slideToggle(500);
+		$(this).find('.DiagramTitleThree,.DiagramBigDiv').slideToggle(500);
     });
 	$(".DiagramTitleThree,.DiagramBigDiv").click(function(e){
 		if (e && e.stopPropagation) {
@@ -4348,13 +4356,16 @@ $("#diagramDiv9 .windCode2").change(function(){
 		}
 		$.ajax({
 			method: "POST",
-			url: '/weekly/saveReview',
+			url: 'weekly/saveReview',
 			data: data
 		})
 		.done(function( data ) {
-			
-			getCommentTable(key);
-			console.log( "Data " + data );
+			if ("NO_ENABLE" == data) {
+				alert("没有点评权限，请联系管理员。");
+			} else {
+				getCommentTable(key);
+				console.log( "Data " + data );
+			}
 		})
 		.fail(function( jqXHR, textStatus ) {
 			console.log( "Request failed: " + textStatus );
@@ -4384,7 +4395,7 @@ $("#diagramDiv9 .windCode2").change(function(){
 
 		$.ajax({
 			method: "get",
-			url: '/weekly/review?indicatorId='+key,
+			url: 'weekly/review?indicatorId='+key,
 			data: data
 		})
 		.done(function( data ) {
@@ -4427,7 +4438,7 @@ function getCommentTable(key){
 	if (onlineOrLocal) {
 		globalDataURL='../lib/commentA11.json';
 	}else{
-		globalDataURL='/weekly/review?indicatorId='+key;
+		globalDataURL='weekly/review?indicatorId='+key;
 	}
 	
 	$.getJSON(globalDataURL,function (data) {	
@@ -4499,7 +4510,7 @@ function getSelectedData(key,className){
 			globalDataURL='../lib/citicIndex.json';
 		}
 	}else{
-		globalDataURL='/weekly/IndexQuery?indexType='+key;
+		globalDataURL='weekly/IndexQuery?indexType='+key;
 	}
 	
 	$.getJSON(globalDataURL,function (data) {	
