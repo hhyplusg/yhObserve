@@ -216,7 +216,7 @@ gulp.task('scripts', async () => {
 gulp.task('comJs', () => {
   return gulp.src('.tmp/static/js/strategic/weekly/*.js')
     .pipe($.uglify())
-    .pipe(webpack(webpackConfig))
+    // .pipe(webpack(webpackConfig))
     .pipe(gulp.dest('.tmp/static/js/strategic/weekly/'));
 });
 // gulp.task('comJsWebpack', () => {
@@ -227,7 +227,7 @@ gulp.task('comJs', () => {
 
 gulp.task('comCss', () => {
   return gulp.src('.tmp/styles/*.css')
-    .pipe($.cssnano())
+    // .pipe($.cssnano())  //临时注释
     .pipe(gulp.dest('.tmp/static/lib/strategic/weekly/styles/'));
 });
 
@@ -272,7 +272,7 @@ gulp.task('serve', gulp.series('build-page','copystatic','copylib','styles', 'sc
   );
 
   gulp.watch(['client/**/*.scss'],
-    gulp.parallel('styles')
+    gulp.parallel('styles','comCss')
   );
 
   gulp.watch(['client/**/*.js'],
