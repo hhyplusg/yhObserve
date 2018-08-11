@@ -427,6 +427,7 @@ $background-color: white;
     font-size: 13px;
     label{
         vertical-align: middle;
+        margin-right: 2px;
     }
 }
 
@@ -442,7 +443,7 @@ $background-color: white;
 .input-btn{
     border:1px solid rgba(215, 215, 215, 1);
     height: 30px;
-    padding: 0px 10px;
+    padding: 0px 15px;
     vertical-align: middle;
 }
 
@@ -639,9 +640,27 @@ $background-color: white;
             padding: 2px;
     }
 }
+.indicator-title{
+    label{
+        display: inline-block;
+        width: 0px;
+        height: 0px;
+        border-top:10px solid #d7d7d7;
+        border-left: 5px solid transparent;
+        border-right: 5px solid transparent; 
+    }
+}
 
-// .table-input input{
-//     font-family: "Lucida Grande", "Lucida Sans Unicode", Arial, Helvetica, sans-serif;
-//     color: black;
-//     fill: black;
-// }
+.indicator-title:hover + .indicator-content{
+    
+        display: block;
+   
+}
+.indicator-content{
+    display: none;
+    position: absolute;
+    background-color:#e0d1d5; 
+    padding: 10px;
+    letter-spacing: 2px;
+}
+
