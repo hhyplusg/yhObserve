@@ -437,7 +437,12 @@ function drawChart_A11(){
 				.replace(/>/g, '>');				
 		
 		var pngName='博弈_存量指标'+curTime;
-		svgToPng(svg,800,500,pngName);
+		// svgToPng(svg,800,500,pngName);
+
+		chart.exportChartLocal({
+			type:'image/png',
+			filename: pngName
+		});
 
 		chart.title.update({ text: ''});
 		chart.legend.update({
@@ -635,7 +640,11 @@ $('#diagramDiv2').find('.spanExportButton').click(function(event){
 	var svg = chart.getSVG();
 	// .replace(/</g, '\n<').replace(/>/g, '>'); 							
 	var pngName='融资买入/可用担保价值'+curTime;
-	svgToPng(svg,800,600,pngName);
+	// svgToPng(svg,800,600,pngName);
+	chart.exportChartLocal({
+		type:'image/png',
+		filename: pngName
+	});
 	
 	chart.title.update({ text: ''});
 	chart.legend.update({
@@ -780,7 +789,11 @@ $('#diagramDiv3').find('.spanExportButton').click(function(event){
 
 	var svg = chart.getSVG().replace(/</g, '\n<').replace(/>/g, '>'); 								
 	var pngName='综合性情绪指标'+curTime;
-	svgToPng(svg,800,600,pngName);
+	// svgToPng(svg,800,600,pngName);
+	chart.exportChartLocal({
+		type:'image/png',
+		filename: pngName
+	});
 
 	chart.title.update({ text: ''});
 	chart.legend.update({
@@ -917,7 +930,11 @@ $('#diagramDiv4').find('.spanExportButton').click(function(event){
 	
 	var svg = chart.getSVG().replace(/</g, '\n<').replace(/>/g, '>'); 							
 	var pngName='指定板块的强势股占比'+curTime;
-	svgToPng(svg,800,600,pngName);
+	// svgToPng(svg,800,600,pngName);
+	chart.exportChartLocal({
+		type:'image/png',
+		filename: pngName
+	});
 	
 	chart.title.update({ text: ''});
 	chart.legend.update({
@@ -1101,7 +1118,11 @@ $('#diagramDiv5').find('.spanExportButton').click(function(event){
 	
 	var svg = chart.getSVG().replace(/</g, '\n<').replace(/>/g, '>'); 							
 	var pngName='分级基金成交显示的风险偏好'+curTime;
-	svgToPng(svg,800,600,pngName);
+	// svgToPng(svg,800,600,pngName);
+	chart.exportChartLocal({
+		type:'image/png',
+		filename: pngName
+	});
 	
 	chart.title.update({ text: ''});
 	chart.legend.update({
@@ -1250,7 +1271,11 @@ $('#diagramDiv6').find('.spanExportButton').click(function(event){
 	
 	var svg = chart.getSVG().replace(/</g, '\n<').replace(/>/g, '>'); 							
 	var pngName='指定板块的历史换手率'+curTime;
-	svgToPng(svg,800,600,pngName);
+	// svgToPng(svg,800,600,pngName);
+	chart.exportChartLocal({
+		type:'image/png',
+		filename: pngName
+	});
 	
 	chart.title.update({ text: ''});
 	chart.legend.update({
@@ -1410,59 +1435,34 @@ function drawChart_A31(key,selectedVal,selectedText){
 										my.style.zIndex=1000;
 
 										 
-										my.onclick = function(){
-										   if(  (cdiv=document.getElementById('ChildDiv'))!=null){  
-										       var p = cdiv.parentNode;  
-										        p.removeChild(cdiv);  
-										    } 
-										 };
+										//
+										var myB = document.createElement('div');   
+										myB.innerHTML = '<img src="static/lib/strategic/weekly/images/download.png"/>';
+										myB.style.position="absolute"; 
+									    myB.style.top= Number(ev.pageY)+8+'px';     
+									    myB.style.left= Number(ev.pageX)+360+'px';
+									    myB.id = "ChildDivB";
+									    myB.style.zIndex=1001; 
+									    myB.style.width='20px';  
+										myB.style.height='20px'; 
+									    document.body.appendChild(myB);
+									    $('#ChildDivB').unbind('click').click(function(event){
+
+									    	console.log("点击了导出XIAOXIAO图片！");
+											var chart = $('#ChildDiv').highcharts();
+											var curTime=getCurrentTime(1);										
+											var svg = chart.getSVG().replace(/</g, '\n<').replace(/>/g, '>'); 							
+											var pngName=selectedText +' '+dateYMD+' '+'PE分布';
+											// svgToPng(svg,800,600,pngName);
+											chart.exportChartLocal({
+												type:'image/png',
+												filename: pngName
+											});									
+
+									    });
 
 										//在div中创建图表
 										var chart = Highcharts.chart('ChildDiv', {
-											/*chart: {
-													type: 'column'
-											},
-											credits: {
-												enabled: false
-											},
-											title: {
-													text: selectedText +' '+dateYMD+' '+'PE分布'
-											},
-											exporting:{
-												enabled: false
-											},
-											xAxis: {
-												type: 'category',
-												labels: {
-													rotation: -45,  
-													style:{
-	 
-														"fontSize": "10px", 
-													},
-												}
-											},
-											yAxis: {
-													min: 0,
-													
-											},
-											legend: {
-													enabled: false
-											},
-											tooltip: {
-													pointFormat: 'PE频率: <b>{point.y:.1f}</b>'
-											},
-											series: [{
-												name: 'PE频率',
-												data: finalResult,
-												dataLabels: {
-													enabled: true,
-													rotation: -90,
-													color: '#FFFFFF',
-													align: 'right',
-													format: '{point.y:.1f}', // :.1f 为保留 1 位小数
-													y: 10
-												}
-											}]*/
 											chart: {
 												type: 'column'
 											},
@@ -1555,49 +1555,6 @@ function drawChart_A31(key,selectedVal,selectedText){
 
 									//在div中创建图表
 									var chart = Highcharts.chart('ChildDiv', {
-										/*chart: {
-												type: 'column'
-										},
-										credits: {
-											enabled: false
-										},
-										title: {
-												text: selectedText +' '+dateYMD+' '+'PE分布'
-										},
-										exporting:{
-											enabled: false
-										},
-										xAxis: {
-											type: 'category',
-											labels: {
-												rotation: -45,  // 设置轴标签旋转角度
-												style:{
-													"fontSize": "10px", 
-												},
-											}
-										},
-										yAxis: {
-												min: 0,
-											
-										},
-										legend: {
-												enabled: false
-										},
-										tooltip: {
-												pointFormat: 'PE频率: <b>{point.y:.1f}</b>'
-										},
-										series: [{
-											name: 'PE频率',
-											data: finalResult,
-											dataLabels: {
-												enabled: true,
-												rotation: -90,
-												color: '#FFFFFF',
-												align: 'right',
-												format: '{point.y:.1f}', // :.1f 为保留 1 位小数
-												y: 10
-											}
-										}]*/
 										chart: {
 											type: 'column'
 										},
@@ -1658,6 +1615,11 @@ function drawChart_A31(key,selectedVal,selectedText){
 					                    if(cdiv!=null){  
 									        let p = cdiv.parentNode;  
 									        p.removeChild(cdiv);  
+									    } 
+									    let cdivB=document.getElementById('ChildDivB');
+					                    if(cdivB!=null){  
+									        let pB = cdivB.parentNode;  
+									        pB.removeChild(cdivB);  
 									    }  
 
 					                    var mouseX;//记录鼠标点击位置。  
@@ -1671,7 +1633,7 @@ function drawChart_A31(key,selectedVal,selectedText){
 									        mouseX = ev.clientX+document.body.scrollLeft - document.body.clientLeft+'px';  
 									      mouseY = ev.clientY+document.documentElement.scrollTop+'px';  
 									    } 
-									    var my = document.createElement("ChildDiv");   //创建一个div    
+									    var my = document.createElement("div");   //创建一个div    
 									    document.body.appendChild(my);   //添加到页面     
 									    my.style.position="absolute";      
 									    my.style.top= mouseY;     
@@ -1686,6 +1648,52 @@ function drawChart_A31(key,selectedVal,selectedText){
 										my.id = "ChildDiv";
 										my.style.zIndex=1000; 
 
+										//
+										var myB = document.createElement('div');   
+										myB.innerHTML = '<img src="static/lib/strategic/weekly/images/download.png"/>';
+										myB.style.position="absolute"; 
+									    myB.style.top= Number(ev.pageY)+8+'px';     
+									    myB.style.left= Number(ev.pageX)+360+'px';    
+									    // myB.style.border='4px solid green'; 
+									    myB.id = "ChildDivB";
+									    myB.style.zIndex=1001; 
+									    myB.style.width='20px';  
+										myB.style.height='20px'; 
+									    document.body.appendChild(myB);
+									    $('#ChildDivB').unbind('click').click(function(event){
+
+									    	console.log("点击了导出XIAOXIAO图片！");
+											var chart = $('#ChildDiv').highcharts();
+											var curTime=getCurrentTime(1);
+											
+											// chart.title.update({ text: '指定板块的历史换手率'});
+											// chart.legend.update(GlobalPNGLegend);
+											
+											var svg = chart.getSVG().replace(/</g, '\n<').replace(/>/g, '>'); 							
+											var pngName=selectedText +' '+dateYMD+' '+'PE分布';
+											// svgToPng(svg,800,600,pngName);
+											chart.exportChartLocal({
+												type:'image/png',
+												filename: pngName
+											});
+											
+											// chart.title.update({ text: ''});
+											// chart.legend.update({
+										 //        enabled: true,
+											//     align: 'right',
+											//     verticalAlign: 'top',
+											//     x: -55,
+											// 	y: 20,
+											// 	floating: false,
+											// 	itemStyle:{
+											// 		"color": "black", 
+											// 		"cursor": "pointer", 
+											// 		"fontSize": "12px", 
+											// 	},
+											//     margin:0,
+										 //    });
+
+									    });
 										 
 
 										//在div中创建图表
@@ -1790,6 +1798,11 @@ function drawChart_A31(key,selectedVal,selectedText){
 			            	 	if(cdiv!=null){  
 							        var p = cdiv.parentNode;  
 							        p.removeChild(cdiv);  
+							    }
+							    var cdivB=document.getElementById('ChildDivB');
+			            	 	if(cdivB!=null){  
+							        var p = cdivB.parentNode;  
+							        p.removeChild(cdivB);  
 							    }
 			            	}		            	
 			            }
@@ -2024,7 +2037,11 @@ $('#diagramDiv8').find('.spanExportButton').click(function(event){
 		
 		var svg = chart.getSVG().replace(/</g, '\n<').replace(/>/g, '>'); 							
 		var pngName='个股估值分布的重要时点比较'+curTime;
-		svgToPng(svg,800,600,pngName);
+		// svgToPng(svg,800,600,pngName);
+		chart.exportChartLocal({
+			type:'image/png',
+			filename: pngName
+		});
 		
 		chart.title.update({ text: ''});
 		chart.legend.update({
@@ -2175,7 +2192,11 @@ $('#diagramDiv9').find('.spanExportButton').click(function(event){
 	
 	var svg = chart.getSVG().replace(/</g, '\n<').replace(/>/g, '>'); 							
 	var pngName='指定板块相对换手率的历史变化'+curTime;
-	svgToPng(svg,800,600,pngName);
+	// svgToPng(svg,800,600,pngName);
+	chart.exportChartLocal({
+		type:'image/png',
+		filename: pngName
+	});
 	
 	chart.title.update({ text: ''});
 	chart.legend.update({
@@ -2284,8 +2305,8 @@ function drawChart_B22(){
 
 
 		// 基于准备好的dom，初始化echarts实例
-	    let myChartLeft = echarts.init(document.getElementById('showDiagramLeft11'));
-		let myChartRight = echarts.init(document.getElementById('showDiagramRight11'));
+	    // let myChartLeft = echarts.init(document.getElementById('showDiagramLeft11'));
+		// let myChartRight = echarts.init(document.getElementById('showDiagramRight11'));
 	
 		let xAxisDataLeft = dataObj.data_base[0];
 		let xAxisDataRight = dataObj.data_index[0];
@@ -2601,7 +2622,11 @@ $('#diagramDiv13').find('.spanExportButton').click(function(event){
 	
 	var svg = chart.getSVG().replace(/</g, '\n<').replace(/>/g, '>'); 							
 	var pngName='指定板块周换手率的历史变化'+curTime;
-	svgToPng(svg,800,600,pngName);
+	// svgToPng(svg,800,600,pngName);
+	chart.exportChartLocal({
+		type:'image/png',
+		filename: pngName
+	});
 	
 	chart.title.update({ text: ''});
 	chart.legend.update({
@@ -2639,8 +2664,8 @@ function drawChart_B31(){
 
 
 		// 基于准备好的dom，初始化echarts实例
-	    let myChartLeft = echarts.init(document.getElementById('showDiagramLeft14'));
-		let myChartRight = echarts.init(document.getElementById('showDiagramRight14'));
+	    // let myChartLeft = echarts.init(document.getElementById('showDiagramLeft14'));
+		// let myChartRight = echarts.init(document.getElementById('showDiagramRight14'));
 		let xAxisDataLeft = dataObj.data_decay[0];
 		let xAxisDataRight = dataObj.data_grow[0];
 
@@ -2871,7 +2896,11 @@ $('#diagramDiv15').find('.spanExportButton').click(function(event){
 	
 	var svg = chart.getSVG().replace(/</g, '\n<').replace(/>/g, '>'); 							
 	var pngName='所有行业“速度/加速度”的最新分布'+curTime;
-	svgToPng(svg,800,600,pngName);
+	// svgToPng(svg,800,600,pngName);
+	chart.exportChartLocal({
+		type:'image/png',
+		filename: pngName
+	});
 	
 	chart.title.update({ text: ''});
 	chart.legend.update({
@@ -3116,8 +3145,6 @@ function drawChart_B33(key,selectedVal,selectedText){
 		        lineWidth:2,
 				color:globalColorBlue
 		    }]
-		}, function(chart){
-		
 		});
 	});
 
@@ -3144,9 +3171,11 @@ $('#diagramDiv16').find('.spanExportButton').click(function(event){
 	    var imgUri = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream"); // 获取生成的图片的url 　
 	    var saveLink = document.createElement( 'a');
 	    saveLink.href =imgUri;
+	    // console.log("imgUri-----"+imgUri);
 	    saveLink.download = pngName+'.png';
 	    saveLink.click();
 	    newNodeTop.remove();
+
     });
 	// chart.title.update({ text: ''});
 
@@ -3316,7 +3345,11 @@ $('#diagramDiv17').find('.spanExportButton').click(function(event){
 	
 	var svg = chart.getSVG().replace(/</g, '\n<').replace(/>/g, '>'); 							
 	var pngName='中期_HP滤波后的行业估值'+curTime;
-	svgToPng(svg,800,600,pngName);
+	// svgToPng(svg,800,600,pngName);
+	chart.exportChartLocal({
+		type:'image/png',
+		filename: pngName
+	});
 	
 	chart.title.update({ text: ''});
 	chart.legend.update({
