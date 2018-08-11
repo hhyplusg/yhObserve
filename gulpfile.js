@@ -200,7 +200,7 @@ gulp.task('scripts', async () => {
       });
       await bundle.write({
         // file: `.tmp/scripts/${js}`,
-        file: `.tmp/static/js/strategicobserv/weekly/${js}`,
+        file: `.tmp/static/js/strategic/weekly/${js}`,
         format: 'iife',
         sourcemap: false
       });
@@ -214,21 +214,21 @@ gulp.task('scripts', async () => {
 });
 
 gulp.task('comJs', () => {
-  return gulp.src('.tmp/static/js/strategicobserv/weekly/*.js')
+  return gulp.src('.tmp/static/js/strategic/weekly/*.js')
     .pipe($.uglify())
     .pipe(webpack(webpackConfig))
-    .pipe(gulp.dest('.tmp/static/js/strategicobserv/weekly/'));
+    .pipe(gulp.dest('.tmp/static/js/strategic/weekly/'));
 });
 // gulp.task('comJsWebpack', () => {
-//   return gulp.src('.tmp/static/js/strategicobserv/weekly/*.js')
+//   return gulp.src('.tmp/static/js/strategic/weekly/*.js')
 //     .pipe(webpack(webpackConfig))
-//     .pipe(gulp.dest('.tmp/static/js/strategicobserv/weekly/'));
+//     .pipe(gulp.dest('.tmp/static/js/strategic/weekly/'));
 // });
 
 gulp.task('comCss', () => {
   return gulp.src('.tmp/styles/*.css')
     .pipe($.cssnano())
-    .pipe(gulp.dest('.tmp/static/lib/strategicobserv/weekly/styles/'));
+    .pipe(gulp.dest('.tmp/static/lib/strategic/weekly/styles/'));
 });
 
 
