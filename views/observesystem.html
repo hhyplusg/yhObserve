@@ -959,22 +959,31 @@
                         <!-- 图表div -->
                         <span class="spanExportButton"><img src="static/lib/strategic/weekly/images/download.png"/></span>
                         <div id="showDiagram12" class="DiagramAreaDiv1">
-                            <!--<div>-->
-                                <table  cellspacing="0" cellpadding="0" class="table-head-title">  
+                            <div class="table-head-container">
+                                <table  cellspacing="0" cellpadding="0" class="table-head-title"> 
+                                    <colgroup>
+                                        <col style="width: 80px;" />
+                                        <col />
+                                    </colgroup>
+                                    <thead> 
                                     <tr>  
-                                    <th width="200px" id="column0">基准指数 </th>  
-                                    <th width="80px" id="column1"> 本周涨跌幅 </th>  
-                                    <th width="80px" id="column2"> 上周涨跌幅 </th>  
-                                    <th width="90px" id="column3">本周年化换手率 </th> 
-                                    <th width="90px" id="column4">上周年化换手率</th>  
-                                    <th width="90px" id="column5"> 本周换手率分位 </th>  
-                                    <th width="90px" id="column6"> 上周换手率分位 </th>  
+                                    <th  id="column0">基准指数 </th>  
+                                    <th  id="column1"> 本周涨跌幅 </th>  
+                                    <th  id="column2"> 上周涨跌幅 </th>  
+                                    <th  id="column3">本周年化换手率 </th> 
+                                    <th  id="column4">上周年化换手率</th>  
+                                    <th  id="column5"> 本周换手率分位 </th>  
+                                    <th  id="column6"> 上周换手率分位 </th>  
                                  
                                     </tr>  
+                                    </thead>
                                 </table> 
-                            <!--</div>-->
+                            </div>
                             <div class="table_title">
-                                <table id="showTable" class="diagramTable"></table>
+                                <table id="showTable" class="diagramTable"><colgroup>
+                                        <col style="width: 80px;" />
+                                        <col />
+                                    </colgroup></table>
                             </div>
                         </div>   
                         <div class="DiagramAreaDiv2" key="1022">

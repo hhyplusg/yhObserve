@@ -664,41 +664,57 @@ $background-color: white;
     letter-spacing: 2px;
 }
 
-.table-head-title{
-    margin: 10px 0px 0px 30px;
-}
 
-.table-head-title th{  
-    text-align: center;  
-    padding:2px;  
-}  
+
+.table-head-container{
+    overflow-x: hidden; 
+    overflow-y: scroll;
+} 
 .table_title {  
     height:420px;  
-    overflow-x: hidden;//不加此属性，在IE7下会出现横向滚动条   
-    // overflow-y: scroll;
+    overflow-x: hidden; //不加此属性，在IE7下会出现横向滚动条   
+    overflow-y: scroll;
 }  
 .table-head-title{
+    margin: 0px 0px 0px 30px;
+    th{  
+        text-align: right;  
+        padding:2px;  
+    }
      th:nth-child(1){
         width: 200px;
+        text-align: left; 
      }
      th:nth-child(2),th:nth-child(3){
-        width: 80px;
+        width: 13%;
      }
      th:nth-child(4),th:nth-child(5),th:nth-child(6),th:nth-child(7){
-        width: 90px;
+        width: 13%;
+     }
+     tr{
+         background: #fafcfd;
      }
 }
 #showTable{
     td{
-        text-align: center; 
+        text-align: right; 
     }
      td:nth-child(1){
         width: 200px;
+        text-align: left;
      }
      td:nth-child(2),td:nth-child(3){
-        width: 80px;
+        // width: 80px;
+        width: 13%;
      }
      td:nth-child(4),td:nth-child(5),td:nth-child(6),td:nth-child(7){
-        width: 90px;
+        // width: 90px;
+        width: 13%;
      }
+     tr:nth-child(even){
+        background: #fafcfd;
+     }
+     tr:nth-child(odd) {
+        background: White;
+    }
 }
