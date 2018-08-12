@@ -2399,27 +2399,29 @@ function drawChart_B22(){
 // });
 function getB23Table(dataBase){
 		$('#showTable').empty();
-		var row_obj=$("<tr></tr>");
-		var col_td=$("<td style='width:80px;font-Weight:bold'></td>");
-		col_td.html('基准指数');row_obj.append(col_td);
-		col_td=$("<td style='width:80px;font-Weight:bold'></td>");
-		col_td.html('本周涨跌幅');row_obj.append(col_td);
-		col_td=$("<td style='width:80px;font-Weight:bold'></td>");
-		col_td.html('上周涨跌幅');row_obj.append(col_td);
-		col_td=$("<td style='width:120px;font-Weight:bold'></td>");
-		col_td.html('本周年化换手率');row_obj.append(col_td);
-		col_td=$("<td style='width:120px;font-Weight:bold'></td>");
-		col_td.html('上周年化换手率');row_obj.append(col_td);
-		col_td=$("<td style='width:120px;font-Weight:bold'></td>");
-		col_td.html('本周换手率分位');row_obj.append(col_td);
-		col_td=$("<td style='width:120px;font-Weight:bold'></td>");
-		col_td.html('上周换手率分位');row_obj.append(col_td);
+		var row_obj='';
+		var col_td='';
+		// var row_obj=$("<tr></tr>");
+		// var col_td=$("<td style='width:80px;font-Weight:bold'></td>");
+		// col_td.html('基准指数');row_obj.append(col_td);
+		// col_td=$("<td style='width:80px;font-Weight:bold'></td>");
+		// col_td.html('本周涨跌幅');row_obj.append(col_td);
+		// col_td=$("<td style='width:80px;font-Weight:bold'></td>");
+		// col_td.html('上周涨跌幅');row_obj.append(col_td);
+		// col_td=$("<td style='width:120px;font-Weight:bold'></td>");
+		// col_td.html('本周年化换手率');row_obj.append(col_td);
+		// col_td=$("<td style='width:120px;font-Weight:bold'></td>");
+		// col_td.html('上周年化换手率');row_obj.append(col_td);
+		// col_td=$("<td style='width:120px;font-Weight:bold'></td>");
+		// col_td.html('本周换手率分位');row_obj.append(col_td);
+		// col_td=$("<td style='width:120px;font-Weight:bold'></td>");
+		// col_td.html('上周换手率分位');row_obj.append(col_td);
 
 		$('#showTable').append(row_obj);
 		for (let m = 0; m < dataBase.length; m++) {
 			var row_obj2=$("<tr></tr>");
 			for (let i = 0; i < dataBase[m].length; i++) {		
-				col_td=$("<td align='center' bgcolor='#FFFFFF'></td>");
+				col_td=$("<td  align='center' bgcolor='#FFFFFF'></td>");
 				col_td.html(dataBase[m][i]);
 				row_obj2.append(col_td);				
 			}

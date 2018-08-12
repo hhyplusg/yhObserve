@@ -306,9 +306,9 @@ $background-color: white;
     #showDiagram4,#showDiagram5,#showDiagram6,#showDiagram7,#showDiagram8,#showDiagram9,#showDiagram12,#showDiagram13,#showDiagram16,#showDiagram17{
         margin-top: 30px;
     }
-    #showDiagram12{
-        overflow-y: scroll;
-    }
+    // #showDiagram12{
+        // overflow-y: scroll;
+    // }
     
 }
 
@@ -393,7 +393,7 @@ $background-color: white;
     height: 450px;
 }
 .diagramTable{
-    margin:15px 0px 0px 30px ;
+    margin:0px 0px 0px 30px ;
     border-collapse:collapse; 
     tr td{
         border-bottom: 1px solid #CCCCCC;  
@@ -664,3 +664,32 @@ $background-color: white;
     letter-spacing: 2px;
 }
 
+.tb_title{
+    margin: 10px 0px 0px 30px;
+}
+
+.tb_title th{  
+    text-align: center;  
+    padding:2px;  
+}  
+.table_title {  
+    // overflow-y:scroll;  
+    height:420px;  
+    overflow-x: hidden;//不加此属性，在IE7下会出现横向滚动条   
+    
+}  
+
+#showTable{
+    td{
+        text-align: center; 
+    }
+     td:nth-child(1){
+        width: 200px;
+     }
+     td:nth-child(2),td:nth-child(3){
+        width: 80px;
+     }
+     td:nth-child(4),td:nth-child(5),td:nth-child(6),td:nth-child(7){
+        width: 90px;
+     }
+}
