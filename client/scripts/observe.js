@@ -1419,7 +1419,7 @@ function drawChart_A31(key,selectedVal,selectedText){
 									        mouseX = ev.clientX+document.body.scrollLeft - document.body.clientLeft+'px';  
 									      mouseY = ev.clientY+document.documentElement.scrollTop+'px';  
 									    } 
-									    var my = document.createElement("ChildDiv");    
+									    var my = document.createElement("div");    
 									    document.body.appendChild(my);        
 									    my.style.position="absolute";      
 									    my.style.top= mouseY;     
@@ -1530,7 +1530,7 @@ function drawChart_A31(key,selectedVal,selectedText){
 								        mouseX = ev.clientX+document.body.scrollLeft - document.body.clientLeft+'px';  
 								      mouseY = ev.clientY+document.documentElement.scrollTop+'px';  
 								    } 
-								    var my = document.createElement("ChildDiv");   
+								    var my = document.createElement("div");   
 								    document.body.appendChild(my);        
 								    my.style.position="absolute";      
 								    my.style.top= mouseY;     
@@ -1546,12 +1546,31 @@ function drawChart_A31(key,selectedVal,selectedText){
 									my.style.zIndex=1000;
 
 									 
-									my.onclick = function(){
-									   if(  (cdiv=document.getElementById('ChildDiv'))!=null){  
-									        p = cdiv.parentNode;  
-									        p.removeChild(cdiv);  
-									    } 
-									 };
+									//
+									var myB = document.createElement('div');   
+									myB.innerHTML = '<img src="static/lib/strategic/weekly/images/download.png"/>';
+									myB.style.position="absolute"; 
+									myB.style.top= Number(ev.pageY)+8+'px';     
+									myB.style.left= Number(ev.pageX)+360+'px';
+									myB.id = "ChildDivB";
+									myB.style.zIndex=1001; 
+									myB.style.width='20px';  
+									myB.style.height='20px'; 
+									document.body.appendChild(myB);
+									$('#ChildDivB').unbind('click').click(function(event){
+
+										console.log("点击了导出XIAOXIAO图片！");
+										var chart = $('#ChildDiv').highcharts();
+										var curTime=getCurrentTime(1);										
+										var svg = chart.getSVG().replace(/</g, '\n<').replace(/>/g, '>'); 							
+										var pngName=selectedText +' '+dateYMD+' '+'PE分布';
+										// svgToPng(svg,800,600,pngName);
+										chart.exportChartLocal({
+											type:'image/png',
+											filename: pngName
+										});									
+
+									});
 
 									//在div中创建图表
 									var chart = Highcharts.chart('ChildDiv', {
@@ -2388,15 +2407,13 @@ function drawChart_B22(){
 
 }
 
-// var isBenchmark = true;
-// $('.selectDataArea .benchmark').click(function(){	
-// 	isBenchmark = true;
-// 	drawChart_B23();
-// });
-// $('.selectDataArea .plate').click(function(){	
-// 	isBenchmark = false;
-// 	drawChart_B23();
-// });
+var isBenchmark = true;
+$('.selectDataArea .benchmark').click(function(){	
+	isBenchmark = true;
+});
+$('.selectDataArea .plate').click(function(){	
+	isBenchmark = false;
+});
 function getB23Table(dataBase){
 		$('#showTable').empty();
 		var row_obj='';
@@ -2461,6 +2478,10 @@ function drawChart_B23(){
 	});
 
 }
+// {
+// 	'column':'column2',
+// 	'selectedVal':'benchmark '
+// }
 
 $('.selectDataArea .benchmark').click(function(){
 	var dataBase = dataObjForB23.data_base;
@@ -4476,6 +4497,33 @@ function getFormatTime(){
 
 	return time
 }
+$('.table-head-title th').click(function(){	
+	var idNum = $(this).attr('id').replace('column','');
+	var model = '';
+	
+	if (isBenchmark){
+		model = 'base';
+	}else{
+		model = 'index';
+	}
+	var globalDataURL='weekly/IndicatorQuery?indicatorId=1022&model='+model+'&column='+idNum;
+	console.log(globalDataURL);	
+	var dataObj= undefined;
+	var dataBase = undefined;
+	$.getJSON(globalDataURL,function (dataYH) {			
+		if (onlineOrLocal) {
+			var dataObj=dataYH.obj;
+			dataBase = dataObj.data_base; 
+			dataObjForB23 = dataObj;
+		}else{
+			var jsonObject =$.parseJSON(dataYH);
+			var dataObj=jsonObject.obj;	
+			dataBase = dataObj.data_base; 
+			dataObjForB23 = dataObj;
+		}
+		getB23Table(dataBase);
+	});
+});
 
 
 /**

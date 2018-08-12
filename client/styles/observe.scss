@@ -664,21 +664,30 @@ $background-color: white;
     letter-spacing: 2px;
 }
 
-.tb_title{
+.table-head-title{
     margin: 10px 0px 0px 30px;
 }
 
-.tb_title th{  
+.table-head-title th{  
     text-align: center;  
     padding:2px;  
 }  
 .table_title {  
-    // overflow-y:scroll;  
     height:420px;  
     overflow-x: hidden;//不加此属性，在IE7下会出现横向滚动条   
-    
+    // overflow-y: scroll;
 }  
-
+.table-head-title{
+     th:nth-child(1){
+        width: 200px;
+     }
+     th:nth-child(2),th:nth-child(3){
+        width: 80px;
+     }
+     th:nth-child(4),th:nth-child(5),th:nth-child(6),th:nth-child(7){
+        width: 90px;
+     }
+}
 #showTable{
     td{
         text-align: center; 
