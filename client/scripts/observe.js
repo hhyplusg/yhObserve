@@ -4197,13 +4197,13 @@ $(".table-input .input-date").val(getCurrentTime(4));
     
 
 	for(let i=1;i<=diagramTitleThreeTength;i++){
-		$("#menuThreeSelected"+i).click(function(e) {
+		let j = i;
+		$("#menuThreeSelected"+j).click(function(e) {
 			$("html, body").animate({
-				scrollTop: $("#diagramThree"+i).offset().top 
+				scrollTop: $("#diagramThree"+j).offset().top 
 			}, {duration: 500,easing: "swing"});
-
 		});
-		$("#menuThreeCheck"+i).click(function(e) {	
+		$("#menuThreeCheck"+j).click(function(e) {	
 			let menuThreeCheck = $(this);
 			let currentState = menuThreeCheck.attr('checked');
 			if (currentState) {
@@ -4213,7 +4213,7 @@ $(".table-input .input-date").val(getCurrentTime(4));
 			}
 
 
-			let diagramThree = $("#diagramThree"+i);
+			let diagramThree = $("#diagramThree"+j);
 			let img = diagramThree.find('.right-img-three').get(0);
 			let ariaExpanded= diagramThree.attr('aria-expanded');
 	        if (img){
@@ -4226,8 +4226,8 @@ $(".table-input .input-date").val(getCurrentTime(4));
 	            }
 	        }
 
-			let	nextSbl = $("#diagramDiv"+i).get(0);
-			let ariaHidden = $("#diagramDiv"+i).attr('aria-hidden');
+			let	nextSbl = $("#diagramDiv"+j).get(0);
+			let ariaHidden = $("#diagramDiv"+j).attr('aria-hidden');
 			
 			if (ariaHidden == 'true'){       
 				nextSbl.setAttribute('aria-hidden','false'); 
