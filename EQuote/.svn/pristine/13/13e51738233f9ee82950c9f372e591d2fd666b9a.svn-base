@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wave.common.dao.SLogsMapper" >
+  <resultMap id="BaseResultMap" type="com.wave.common.vo.SLogsVo" >
+    <id column="LOGID" property="logid" jdbcType="VARCHAR" />
+    <result column="USERNO" property="userno" jdbcType="VARCHAR" />
+    <result column="OPT_CODE" property="optCode" jdbcType="VARCHAR" />
+    <result column="OPT_TYPE" property="optType" jdbcType="VARCHAR" />
+    <result column="OPT_INFO" property="optInfo" jdbcType="VARCHAR" />
+    <result column="OPT_TIME" property="optTime" jdbcType="VARCHAR" />
+    <result column="USER_IP" property="userIp" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    LOGID, USERNO, OPT_CODE, OPT_TYPE, OPT_INFO, OPT_TIME, USER_IP
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from S_LOGS
+    where LOGID = #{logid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from S_LOGS
+    where LOGID = #{logid,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.wave.common.vo.SLogsVo" >
+    insert into S_LOGS (LOGID, USERNO, OPT_CODE, 
+      OPT_TYPE, OPT_INFO, OPT_TIME, 
+      USER_IP)
+    values (#{logid,jdbcType=VARCHAR}, #{userno,jdbcType=VARCHAR}, #{optCode,jdbcType=VARCHAR}, 
+      #{optType,jdbcType=VARCHAR}, #{optInfo,jdbcType=VARCHAR}, #{optTime,jdbcType=VARCHAR}, 
+      #{userIp,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.wave.common.vo.SLogsVo" >
+    insert into S_LOGS
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="logid != null" >
+        LOGID,
+      </if>
+      <if test="userno != null" >
+        USERNO,
+      </if>
+      <if test="optCode != null" >
+        OPT_CODE,
+      </if>
+      <if test="optType != null" >
+        OPT_TYPE,
+      </if>
+      <if test="optInfo != null" >
+        OPT_INFO,
+      </if>
+      <if test="optTime != null" >
+        OPT_TIME,
+      </if>
+      <if test="userIp != null" >
+        USER_IP,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="logid != null" >
+        #{logid,jdbcType=VARCHAR},
+      </if>
+      <if test="userno != null" >
+        #{userno,jdbcType=VARCHAR},
+      </if>
+      <if test="optCode != null" >
+        #{optCode,jdbcType=VARCHAR},
+      </if>
+      <if test="optType != null" >
+        #{optType,jdbcType=VARCHAR},
+      </if>
+      <if test="optInfo != null" >
+        #{optInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="optTime != null" >
+        #{optTime,jdbcType=VARCHAR},
+      </if>
+      <if test="userIp != null" >
+        #{userIp,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.wave.common.vo.SLogsVo" >
+    update S_LOGS
+    <set >
+      <if test="userno != null" >
+        USERNO = #{userno,jdbcType=VARCHAR},
+      </if>
+      <if test="optCode != null" >
+        OPT_CODE = #{optCode,jdbcType=VARCHAR},
+      </if>
+      <if test="optType != null" >
+        OPT_TYPE = #{optType,jdbcType=VARCHAR},
+      </if>
+      <if test="optInfo != null" >
+        OPT_INFO = #{optInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="optTime != null" >
+        OPT_TIME = #{optTime,jdbcType=VARCHAR},
+      </if>
+      <if test="userIp != null" >
+        USER_IP = #{userIp,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where LOGID = #{logid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.wave.common.vo.SLogsVo" >
+    update S_LOGS
+    set USERNO = #{userno,jdbcType=VARCHAR},
+      OPT_CODE = #{optCode,jdbcType=VARCHAR},
+      OPT_TYPE = #{optType,jdbcType=VARCHAR},
+      OPT_INFO = #{optInfo,jdbcType=VARCHAR},
+      OPT_TIME = #{optTime,jdbcType=VARCHAR},
+      USER_IP = #{userIp,jdbcType=VARCHAR}
+    where LOGID = #{logid,jdbcType=VARCHAR}
+  </update>
+</mapper>

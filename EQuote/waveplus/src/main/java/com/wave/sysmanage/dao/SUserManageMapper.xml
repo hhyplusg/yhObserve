@@ -1,0 +1,743 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wave.sysmanage.dao.SUserManageMapper">
+<resultMap id="BaseResultMap" type="com.wave.sysmanage.vo.SUserInfoVo">
+	<id column="USER_ID" property="userId" jdbcType="VARCHAR" />
+	<result column="AREA_CODE" property="areaCode" jdbcType="VARCHAR" />
+	<result column="ORG_ID" property="orgId" jdbcType="VARCHAR" />
+	<result column="USER_LONGIN_NAME" property="userLonginName" jdbcType="VARCHAR" />
+	<result column="USER_NAME" property="userName" jdbcType="VARCHAR" />
+	<result column="PASSWORD" property="password" jdbcType="VARCHAR" />
+	<result column="TEL" property="tel" jdbcType="VARCHAR" />
+	<result column="SEX" property="sex" jdbcType="VARCHAR" />
+	<result column="LAST_LOGIN_TIME" property="lastLoginTime" jdbcType="VARCHAR" />
+	<result column="LOGIN_COUNT" property="loginCount" jdbcType="DECIMAL" />
+	<result column="STATUS" property="status" jdbcType="VARCHAR" />
+	<result column="CREATER" property="creater" jdbcType="VARCHAR" />
+	<result column="CREATETIME" property="createTime" jdbcType="VARCHAR" />
+	<result column="UPDATER" property="updater" jdbcType="VARCHAR" />
+	<result column="UPDATE_TIME" property="updateTime" jdbcType="VARCHAR" />
+	<result column="ORG_SHORT_NAME" property="orgName" jdbcType="VARCHAR" />
+	<result column="AREA_NAME" property="areaName" jdbcType="VARCHAR" />
+	<result column="SYS_TYPE_NAME" property="sysTypeName" jdbcType="VARCHAR" />
+	<collection property="sysRoleList" resultMap="sysRoleMap" />
+	<collection property="orgRoleList" resultMap="orgRoleMap" />
+</resultMap>
+<resultMap type="com.wave.sysmanage.vo.SRoleVo" id="sysRoleMap">
+	<result column="SYS_ROLE_CODE" property="roleCode" jdbcType="VARCHAR" />
+	<result column="SYS_ROLE_NAME" property="roleName" jdbcType="VARCHAR" />
+</resultMap>
+<resultMap type="com.wave.sysmanage.vo.SRoleVo" id="orgRoleMap">
+	<result column="ORG_ROLE_CODE" property="roleCode" jdbcType="VARCHAR" />
+	<result column="ORG_ROLE_NAME" property="roleName" jdbcType="VARCHAR" />
+</resultMap>
+<sql id="Base_Column_List">
+	USER_ID, AREA_CODE, ORG_ID, USER_LONGIN_NAME, USER_NAME,
+	PASSWORD, TEL, SEX,
+	LAST_LOGIN_TIME,
+	LOGIN_COUNT, STATUS, CREATER,
+	CREATETIME, UPDATER, UPDATE_TIME
+</sql>
+
+<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+	parameterType="java.lang.String">
+	select
+	<include refid="Base_Column_List" />
+	from S_USER
+	where USER_ID = #{userId,jdbcType=VARCHAR}
+</select>
+
+<select id="selectByUserIdAndPass" resultMap="BaseResultMap" parameterType="com.wave.sysmanage.vo.SUserInfoVo">
+    select
+    <include refid="Base_Column_List" />
+    from S_USER
+    where USER_ID = #{userId,jdbcType=VARCHAR} and PASSWORD = #{password,jdbcType=VARCHAR}
+</select>
+<select id="selectByUserNameAndArea" resultMap="BaseResultMap" parameterType="com.wave.sysmanage.vo.SUserInfoVo">
+    select
+    <include refid="Base_Column_List" />
+    from S_USER
+    where USER_LONGIN_NAME = #{userLonginName,jdbcType=VARCHAR}
+</select>
+
+<select id="getSystemByAreaCode" resultType="map" parameterType="java.lang.String">
+	select * from VIEW_AREA_SYSTEM t WHERE pid = #{treeCode,jdbcType=VARCHAR} ORDER BY data_id
+</select>
+
+<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+	delete from S_USER
+	where USER_ID = #{userId,jdbcType=VARCHAR}
+</delete>
+<insert id="insert" parameterType="com.wave.sysmanage.vo.SUserInfoVo">
+	insert into S_USER (USER_ID,
+	USER_LONGIN_NAME, USER_NAME, PASSWORD,
+	TEL, SEX,
+	LAST_LOGIN_TIME,
+	LOGIN_COUNT, STATUS, CREATER,
+	CREATETIME, UPDATER,
+	UPDATE_TIME
+	)
+	values (#{userId,jdbcType=VARCHAR},
+	#{userLonginName,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR},
+	#{password,jdbcType=VARCHAR},
+	#{tel,jdbcType=VARCHAR},
+	#{sex,jdbcType=VARCHAR},
+	#{lastLoginTime,jdbcType=VARCHAR},
+	#{loginCount,jdbcType=DECIMAL}, #{status,jdbcType=VARCHAR},
+	#{creater,jdbcType=VARCHAR},
+	#{createTime,jdbcType=VARCHAR},
+	#{updater,jdbcType=VARCHAR},
+	#{updateTime,jdbcType=VARCHAR}
+	)
+</insert>
+<insert id="insertSelective" parameterType="com.wave.sysmanage.vo.SUserInfoVo">
+	insert into S_USER
+	<trim prefix="(" suffix=")" suffixOverrides=",">
+		<if test="userId != null">
+			USER_ID,
+		</if>
+		<if test="areaCode != null">
+			AREA_CODE,
+		</if>
+		<if test="orgId != null">
+			ORG_ID,
+		</if>
+		<if test="userLonginName != null">
+			USER_LONGIN_NAME,
+		</if>
+		<if test="userName != null">
+			USER_NAME,
+		</if>
+		<if test="password != null">
+			PASSWORD,
+		</if>
+		<if test="tel != null">
+			TEL,
+		</if>
+		<if test="sex != null">
+			SEX,
+		</if>
+		<if test="lastLoginTime != null">
+			LAST_LOGIN_TIME,
+		</if>
+		<if test="loginCount != null">
+			LOGIN_COUNT,
+		</if>
+		<if test="status != null">
+			STATUS,
+		</if>
+		<if test="creater != null">
+			CREATER,
+		</if>
+		<if test="createtime != null">
+			CREATETIME,
+		</if>
+		<if test="updater != null">
+			UPDATER,
+		</if>
+		<if test="updateTime != null">
+			UPDATE_TIME,
+		</if>
+	</trim>
+	<trim prefix="values (" suffix=")" suffixOverrides=",">
+		<if test="userId != null">
+			#{userId,jdbcType=VARCHAR},
+		</if>
+		<if test="areaCode != null">
+			#{areaCode,jdbcType=VARCHAR},
+		</if>
+		<if test="orgId != null">
+			#{orgId,jdbcType=VARCHAR},
+		</if>
+		<if test="userLonginName != null">
+			#{userLonginName,jdbcType=VARCHAR},
+		</if>
+		<if test="userName != null">
+			#{userName,jdbcType=VARCHAR},
+		</if>
+		<if test="password != null">
+			#{password,jdbcType=VARCHAR},
+		</if>
+		<if test="tel != null">
+			#{tel,jdbcType=VARCHAR},
+		</if>
+		<if test="sex != null">
+			#{sex,jdbcType=VARCHAR},
+		</if>
+		<if test="lastLoginTime != null">
+			#{lastLoginTime,jdbcType=VARCHAR},
+		</if>
+		<if test="loginCount != null">
+			#{loginCount,jdbcType=DECIMAL},
+		</if>
+		<if test="status != null">
+			#{status,jdbcType=VARCHAR},
+		</if>
+		<if test="creater != null">
+			#{creater,jdbcType=VARCHAR},
+		</if>
+		<if test="createTime != null">
+			#{createTime,jdbcType=VARCHAR},
+		</if>
+		<if test="updater != null">
+			#{updater,jdbcType=VARCHAR},
+		</if>
+		<if test="updateTime != null">
+			#{updateTime,jdbcType=VARCHAR},
+		</if>
+	</trim>
+</insert>
+
+<update id="updateAreaCode" >
+    update S_USER set AREA_CODE = #{areaCode,jdbcType=VARCHAR} WHERE ORG_ID = #{orgId,jdbcType=VARCHAR}
+</update>
+
+<update id="updateByPrimaryKeySelective" parameterType="com.wave.sysmanage.vo.SUserInfoVo">
+	update S_USER
+	<set>
+        <if test="userLonginName != null and userLonginName != ''">
+            USER_LONGIN_NAME = #{userLonginName,jdbcType=VARCHAR},
+        </if>
+        <if test="userName != null and userName != ''">
+            USER_NAME = #{userName,jdbcType=VARCHAR},
+        </if>
+        <if test="password != null and password !=''">
+            PASSWORD = #{password,jdbcType=VARCHAR},
+        </if>
+        <if test="tel != null and tel != ''">
+            TEL = #{tel,jdbcType=VARCHAR},
+        </if>
+        <if test="sex != null and sex != ''">
+            SEX = #{sex,jdbcType=VARCHAR},
+        </if>
+        <if test="lastLoginTime != null and lastLoginTime != ''">
+            LAST_LOGIN_TIME = #{lastLoginTime,jdbcType=VARCHAR},
+        </if>
+        <if test="loginCount != null and loginCount != ''">
+            LOGIN_COUNT = #{loginCount,jdbcType=DECIMAL},
+        </if>
+        <if test="status != null and status != ''">
+            STATUS = #{status,jdbcType=VARCHAR},
+        </if>
+        <if test="creater != null and creater != ''">
+            CREATER = #{creater,jdbcType=VARCHAR},
+        </if>
+        <if test="createTime != null and createTime != ''">
+            CREATETIME = #{createTime,jdbcType=VARCHAR},
+        </if>
+        <if test="updater != null and updater != ''">
+            UPDATER = #{updater,jdbcType=VARCHAR},
+        </if>
+        <if test="updateTime != null and updateTime != ''">
+            UPDATE_TIME = #{updateTime,jdbcType=VARCHAR},
+        </if>
+	</set>
+	where USER_ID = #{userId,jdbcType=VARCHAR}
+</update>
+<update id="updateByPrimaryKey" parameterType="com.wave.sysmanage.vo.SUserInfoVo">
+	update S_USER
+	set
+	AREA_CODE = #{areaCode,jdbcType=VARCHAR},
+	ORG_ID =
+	#{orgId,jdbcType=VARCHAR},
+	USER_LONGIN_NAME =
+	#{userLonginName,jdbcType=VARCHAR},
+	USER_NAME =
+	#{userName,jdbcType=VARCHAR},
+	PASSWORD = #{password,jdbcType=VARCHAR},
+	TEL = #{tel,jdbcType=VARCHAR},
+	SEX = #{sex,jdbcType=VARCHAR},
+	LAST_LOGIN_TIME = #{lastLoginTime,jdbcType=VARCHAR},
+	LOGIN_COUNT =
+	#{loginCount,jdbcType=DECIMAL},
+	STATUS = #{status,jdbcType=VARCHAR},
+	CREATER = #{creater,jdbcType=VARCHAR},
+	CREATETIME =
+	#{createTime,jdbcType=VARCHAR},
+	UPDATER = #{updater,jdbcType=VARCHAR},
+	UPDATE_TIME = #{updateTime,jdbcType=VARCHAR}
+	where USER_ID =
+	#{userId,jdbcType=VARCHAR}
+</update>
+
+<resultMap type="com.wave.sysmanage.vo.AreaUserTreeVo" id="AreaUserTree">
+	<result column="ID" property="treeId" jdbcType="VARCHAR" />
+	<result column="PID" property="treePid" jdbcType="VARCHAR" />
+	<result column="NODE_CODE" property="treeCode" jdbcType="VARCHAR" />
+	<result column="NODE_NAME" property="treeName" jdbcType="VARCHAR" />
+	<result column="ORG_TYPE" property="orgType" jdbcType="VARCHAR" />
+	<result column="NODE_NAME_PY" property="treeNamePy" jdbcType="VARCHAR" />
+	<result column="NODE_TYPE" property="treeType" jdbcType="VARCHAR" />
+	<result column="ORG_ID" property="orgId" jdbcType="VARCHAR" />
+</resultMap>
+
+<select id="selectNextAllByAreaCode" resultMap="AreaUserTree">
+    WITH TM_AREA_SYSTEM_TREE AS /*取得定节点的所有子节点*/
+ (SELECT '' AS SORT_SERIAL_NO,
+         '' AS ORG_SORT_ID,
+         '' AS ORG_ENCODE,
+         PID,
+         ID,
+         DATA_ID,
+         NODE_CODE,
+         NODE_NAME,
+         NODE_TYPE
+    FROM VIEW_AREA_SYSTEM
+   START WITH ID = #{treeCode,jdbcType=VARCHAR}
+  CONNECT BY PRIOR ID = PID),
+TM_AREA_SYSTEM_ORG_TREE AS
+ (SELECT  ' ' AS SORT_SERIAL_NO,
+          ' ' AS ORG_SORT_ID,
+          ' ' AS ORG_ENCODE,
+         PID,
+         ID,
+         DATA_ID,
+         NODE_CODE,
+         NODE_NAME,
+         NODE_TYPE
+    FROM TM_AREA_SYSTEM_TREE
+  UNION ALL /*取得系统下的机构信息*/
+  SELECT JOI.SORT_SERIAL_NO,
+         JOI.ORG_SORT_ID,
+         JOI.ORG_ENCODE,
+         NVL(PARENT_ORG_ID, JOI.AREA_CODE || JOI.SYSTEM_TYPE_ID) AS PID,
+         JOI.ORG_ID AS ID,
+         JOI.ORG_ID AS DATA_ID,
+         '{"node_type":"org"' || ',"area_code":"' || JOI.AREA_CODE ||
+         '","area_name":"' || CAI.AREA_NAME || '","system_type_id":"' ||
+         JOI.SYSTEM_TYPE_ID || '","org_id":"' || JOI.ORG_ID || '"}' AS NODE_CODE,
+         JOI.ORG_SHORT_NAME AS NODE_NAME,
+         'org' AS NODE_TYPE
+    FROM J_ORG_INFO JOI, TM_AREA_SYSTEM_TREE TAST, C_AREA_INFO CAI
+   WHERE JOI.AREA_CODE = TAST.PID
+     AND JOI.SYSTEM_TYPE_ID = TAST.DATA_ID
+     AND JOI.AREA_CODE = CAI.AREA_CODE
+     AND TAST.NODE_TYPE = 'sys')
+SELECT PID, ID, DATA_ID, NODE_CODE, NODE_NAME, NODE_TYPE
+  FROM TM_AREA_SYSTEM_ORG_TREE T order by SORT_SERIAL_NO,ID ASC
+</select>
+<select id="selectAreaSysAndOrgWithPid" resultMap="AreaUserTree">
+<if test="isNetRelease == 'yes'">
+	WITH TM_AREA_SYSTEM_TREE AS /*取得定节点的所有子节点*/
+ 	(SELECT '' AS SORT_SERIAL_NO,
+         '' AS ORG_SORT_ID,
+         '' AS ORG_ENCODE,
+         PID,
+         ID,
+         DATA_ID,
+         NODE_CODE,
+         NODE_NAME,
+         NODE_TYPE
+    FROM VIEW_AREA_SYSTEM
+   	START WITH ID = #{treeCode,jdbcType=VARCHAR}
+  	CONNECT BY PRIOR ID = PID), /* 由于jqwtee中，懒加载时，让末端节点可点击。以以需要给他生成一个空节点。*/ /*用于在系统下生成一个空的机构节点*/
+	TE_EMPTY_SYSTEM_ORG AS
+ 	(SELECT '1' AS ID, '加载中...' AS NODE_NAME FROM DUAL),
+	TM_AREA_SYSTEM_ORG_TREE AS
+ 	(SELECT  ' ' AS SORT_SERIAL_NO,
+          ' ' AS ORG_SORT_ID,
+          ' ' AS ORG_ENCODE,
+         PID,
+         ID,
+         DATA_ID,
+         NODE_CODE,
+         NODE_NAME,
+         NODE_TYPE
+    FROM TM_AREA_SYSTEM_TREE
+  UNION ALL /*取得系统下的机构信息*/
+  SELECT JOI.SORT_SERIAL_NO,
+         JOI.ORG_SORT_ID,
+         JOI.ORG_ENCODE,
+         NVL(PARENT_ORG_ID, JOI.AREA_CODE || JOI.SYSTEM_TYPE_ID) AS PID,
+         JOI.ORG_ID AS ID,
+         JOI.ORG_ID AS DATA_ID,
+         '{"node_type":"org"' || ',"area_code":"' || JOI.AREA_CODE ||
+         '","area_name":"' || CAI.AREA_NAME || '","system_type_id":"' ||
+         JOI.SYSTEM_TYPE_ID || '","org_id":"' || JOI.ORG_ID || '","org_type":"' || JOI.Org_Type || '","Cangong_Status":"' || JOI.Cangong_Status || '"}' AS NODE_CODE,
+         JOI.ORG_SHORT_NAME AS NODE_NAME,
+         'org' AS NODE_TYPE
+    FROM J_ORG_INFO JOI, TM_AREA_SYSTEM_TREE TAST, C_AREA_INFO CAI
+   WHERE JOI.AREA_CODE = TAST.PID
+     AND JOI.SYSTEM_TYPE_ID = TAST.DATA_ID
+     AND JOI.AREA_CODE = CAI.AREA_CODE
+     AND TAST.NODE_TYPE = 'sys'
+  UNION ALL
+  SELECT
+         ' ' AS SORT_SERIAL_NO,
+         ' ' AS ORG_SORT_ID,
+         ' ' AS ORG_ENCODE, 
+        TT.ID AS PID,
+         TEO.ID AS ID,
+         TEO.ID AS DATA_ID,
+         'loding' || '_' || TT.PID || '_' || TT.ID || '_' || TEO.ID AS NODE_CODE,
+         TEO.NODE_NAME AS NODE_NAME,
+         'loding' AS NODE_TYPE
+    FROM TM_AREA_SYSTEM_TREE TT, TE_EMPTY_SYSTEM_ORG TEO
+   WHERE NODE_TYPE = 'sys') 
+SELECT PID, ID, DATA_ID, NODE_CODE, NODE_NAME, NODE_TYPE
+  FROM TM_AREA_SYSTEM_ORG_TREE T
+
+</if>	
+<if test="isNetRelease == 'no'">
+SELECT PID, ID, DATA_ID, NODE_CODE, NODE_NAME, NODE_TYPE from (
+    SELECT PID, ID, DATA_ID, NODE_CODE,
+    NODE_NAME, NODE_TYPE
+    FROM (
+       SELECT PID, ID, DATA_ID,
+           NODE_CODE, NODE_NAME, NODE_TYPE
+           FROM VIEW_AREA_SYSTEM 
+           <where> 
+                   <if test="cityCode != null and cityCode != ''">
+                     and CITY_CODE = #{cityCode,jdbcType=VARCHAR} 
+                   </if>
+                    <if test="countyCode != null and countyCode == ''">
+                    and COUNTY_CODE = #{countyCode,jdbcType=VARCHAR}
+                    </if> 
+          </where>
+       )as vas
+    UNION ALL
+    SELECT PARENT_ORG_ID || JOI.AREA_CODE || JOI.SYSTEM_TYPE_ID AS PID,
+    JOI.ORG_ID AS ID,
+    JOI.ORG_ID AS DATA_ID,
+    '{"node_type":"org"' || ',"area_code":"' || JOI.AREA_CODE,'", "area_name":"' || CAI.AREA_NAME || '","system_type_id":"' || JOI.SYSTEM_TYPE_ID || '","org_id":"' || JOI.ORG_ID || '","org_type":"' || JOI.Org_Type || '","Cangong_Status":"' || JOI.Cangong_Status || '"}'  AS NODE_CODE,
+    JOI.ORG_SHORT_NAME AS NODE_NAME,
+    'org'
+    AS NODE_TYPE
+    FROM J_ORG_INFO JOI, (
+		SELECT PID, ID, DATA_ID,
+		    NODE_CODE, NODE_NAME, NODE_TYPE
+		    FROM VIEW_AREA_SYSTEM 
+		        WHERE SUBSTR(id,1,2)  =  42 
+		            and SUBSTR(id,3,2)  =  01  
+		 )  TAST, C_AREA_INFO
+    CAI
+    WHERE JOI.AREA_CODE = TAST.PID
+    AND JOI.SYSTEM_TYPE_ID = TAST.DATA_ID
+    AND JOI.AREA_CODE = CAI.AREA_CODE
+    AND TAST.NODE_TYPE = 'sys'
+    UNION ALL
+    SELECT TT.ID AS PID,
+    TEO.ID AS ID,
+    TEO.ID AS DATA_ID,
+    '加载中...' || '_' || TT.PID , '_' || TT.ID || '_' || TEO.ID AS NODE_CODE,
+    TEO.NODE_NAME AS
+    NODE_NAME,
+    '加载中...' AS NODE_TYPE
+    FROM (
+        SELECT PID, ID, DATA_ID,
+    NODE_CODE, NODE_NAME, NODE_TYPE
+    FROM VIEW_AREA_SYSTEM 
+     <where>
+         <if test="cityCode != null and cityCode != ''">
+           and CITY_CODE = #{cityCode,jdbcType=VARCHAR} 
+         </if>
+          <if test="countyCode != null and countyCode != ''">
+          and COUNTY_CODE = #{countyCode,jdbcType=VARCHAR}
+          </if>
+     </where>
+	 )as TT,
+	(SELECT '1' AS ID, '加载中...' AS NODE_NAME) as  TEO 
+	WHERE NODE_TYPE = 'sys'
+) as T 
+</if>
+    WHERE T.NODE_TYPE IN( 'sys','area','org')
+    ORDER BY SORT_SERIAL_NO asc,ORG_SORT_ID asc,ORG_ENCODE asc,DATA_ID asc
+</select>
+<select id="selectAreaSysAndOrgByPid" resultMap="AreaUserTree">
+<if test="isNetRelease == 'yes'">
+	WITH TM_AREA_SYSTEM_TREE AS /*取得定节点的所有子节点*/
+ (SELECT '' AS SORT_SERIAL_NO,
+         '' AS ORG_SORT_ID,
+         '' AS ORG_ENCODE,
+         PID,
+         ID,
+         DATA_ID,
+         NODE_CODE,
+         NODE_NAME,
+         NODE_TYPE
+    FROM VIEW_AREA_SYSTEM
+   START WITH ID = #{treeCode,jdbcType=VARCHAR}
+  CONNECT BY PRIOR ID = PID), /* 由于jqwtee中，懒加载时，让末端节点可点击。以以需要给他生成一个空节点。*/ /*用于在系统下生成一个空的机构节点*/
+TE_EMPTY_SYSTEM_ORG AS
+ (SELECT '1' AS ID, '加载中...' AS NODE_NAME FROM DUAL),
+TM_AREA_SYSTEM_ORG_TREE AS
+ (SELECT  ' ' AS SORT_SERIAL_NO,
+          ' ' AS ORG_SORT_ID,
+          ' ' AS ORG_ENCODE,
+         PID,
+         ID,
+         DATA_ID,
+         NODE_CODE,
+         NODE_NAME,
+         NODE_TYPE
+    FROM TM_AREA_SYSTEM_TREE
+  UNION ALL /*取得系统下的机构信息*/
+  SELECT JOI.SORT_SERIAL_NO,
+         JOI.ORG_SORT_ID,
+         JOI.ORG_ENCODE,
+         NVL(PARENT_ORG_ID, JOI.AREA_CODE || JOI.SYSTEM_TYPE_ID) AS PID,
+         JOI.ORG_ID AS ID,
+         JOI.ORG_ID AS DATA_ID,
+         '{"node_type":"org"' || ',"area_code":"' || JOI.AREA_CODE ||
+         '","area_name":"' || CAI.AREA_NAME || '","system_type_id":"' ||
+         JOI.SYSTEM_TYPE_ID || '","org_id":"' || JOI.ORG_ID || '"}' AS NODE_CODE,
+         JOI.ORG_SHORT_NAME AS NODE_NAME,
+         'org' AS NODE_TYPE
+    FROM J_ORG_INFO JOI, TM_AREA_SYSTEM_TREE TAST, C_AREA_INFO CAI
+   WHERE JOI.AREA_CODE = TAST.PID
+     AND JOI.SYSTEM_TYPE_ID = TAST.DATA_ID
+     AND JOI.AREA_CODE = CAI.AREA_CODE
+     AND TAST.NODE_TYPE = 'sys'
+  UNION ALL
+  SELECT
+         ' ' AS SORT_SERIAL_NO,
+         ' ' AS ORG_SORT_ID,
+         ' ' AS ORG_ENCODE, 
+        TT.ID AS PID,
+         TEO.ID AS ID,
+         TEO.ID AS DATA_ID,
+         'loding' || '_' || TT.PID || '_' || TT.ID || '_' || TEO.ID AS NODE_CODE,
+         TEO.NODE_NAME AS NODE_NAME,
+         'loding' AS NODE_TYPE
+    FROM TM_AREA_SYSTEM_TREE TT, TE_EMPTY_SYSTEM_ORG TEO
+   WHERE NODE_TYPE = 'sys') 
+SELECT PID, ID, DATA_ID, NODE_CODE, NODE_NAME, NODE_TYPE
+  FROM TM_AREA_SYSTEM_ORG_TREE T
+
+</if>	
+<if test="isNetRelease == 'no'">
+SELECT PID, ID, DATA_ID, NODE_CODE, NODE_NAME, NODE_TYPE from (
+    SELECT PID, ID, DATA_ID, NODE_CODE,
+    NODE_NAME, NODE_TYPE
+    FROM (
+       SELECT PID, ID, DATA_ID,
+           NODE_CODE, NODE_NAME, NODE_TYPE
+           FROM VIEW_AREA_SYSTEM 
+           <where> 
+                   <if test="cityCode != null and cityCode != ''">
+                     and CITY_CODE = #{cityCode,jdbcType=VARCHAR} 
+                   </if>
+                    <if test="countyCode != null and countyCode == ''">
+                    and COUNTY_CODE = #{countyCode,jdbcType=VARCHAR}
+                    </if> 
+          </where>
+       )as vas
+    UNION ALL
+    SELECT PARENT_ORG_ID || JOI.AREA_CODE || JOI.SYSTEM_TYPE_ID AS PID,
+    JOI.ORG_ID AS ID,
+    JOI.ORG_ID AS DATA_ID,
+    '{"node_type":"org"' || ',"area_code":"' || JOI.AREA_CODE,'", "area_name":"' || CAI.AREA_NAME || '","system_type_id":"' || JOI.SYSTEM_TYPE_ID || '","org_id":"' || JOI.ORG_ID || '"}'  AS NODE_CODE,
+    JOI.ORG_SHORT_NAME AS NODE_NAME,
+    'org'
+    AS NODE_TYPE
+    FROM J_ORG_INFO JOI, (
+		SELECT PID, ID, DATA_ID,
+		    NODE_CODE, NODE_NAME, NODE_TYPE
+		    FROM VIEW_AREA_SYSTEM 
+		        WHERE SUBSTR(id,1,2)  =  42 
+		            and SUBSTR(id,3,2)  =  01  
+		 )  TAST, C_AREA_INFO
+    CAI
+    WHERE JOI.AREA_CODE = TAST.PID
+    AND JOI.SYSTEM_TYPE_ID = TAST.DATA_ID
+    AND JOI.AREA_CODE = CAI.AREA_CODE
+    AND TAST.NODE_TYPE = 'sys'
+    UNION ALL
+    SELECT TT.ID AS PID,
+    TEO.ID AS ID,
+    TEO.ID AS DATA_ID,
+    '加载中...' || '_' || TT.PID , '_' || TT.ID || '_' || TEO.ID AS NODE_CODE,
+    TEO.NODE_NAME AS
+    NODE_NAME,
+    '加载中...' AS NODE_TYPE
+    FROM (
+        SELECT PID, ID, DATA_ID,
+    NODE_CODE, NODE_NAME, NODE_TYPE
+    FROM VIEW_AREA_SYSTEM 
+     <where>
+         <if test="cityCode != null and cityCode != ''">
+           and CITY_CODE = #{cityCode,jdbcType=VARCHAR} 
+         </if>
+          <if test="countyCode != null and countyCode != ''">
+          and COUNTY_CODE = #{countyCode,jdbcType=VARCHAR}
+          </if>
+     </where>
+	 )as TT,
+	(SELECT '1' AS ID, '加载中...' AS NODE_NAME) as  TEO 
+	WHERE NODE_TYPE = 'sys'
+) as T 
+</if>
+    <if test="treeType == null or treeType == ''">
+        WHERE T.NODE_TYPE IN( 'sys','area','loding')
+    </if>
+    <if test="treeType != null and treeType != ''">
+        WHERE T.NODE_TYPE = 'org'
+    </if>
+    ORDER BY SORT_SERIAL_NO asc,ORG_SORT_ID asc,ORG_ENCODE asc,DATA_ID asc
+</select>
+<select id="selectChildsByPid" resultMap="AreaUserTree">
+	WITH TM_AREA_SYSTEM_TREE AS --取得定节点的所有子节点
+	(SELECT PID, ID, DATA_ID, NODE_CODE, NODE_NAME, NODE_TYPE
+	FROM VIEW_AREA_SYSTEM
+	START WITH ID = #{treeArea,jdbcType=VARCHAR}
+	CONNECT BY PRIOR ID = PID),
+	TV_ORG_CHILD_COUNT AS
+	(SELECT ORG.PARENT_ORG_ID, COUNT(ORG.PARENT_ORG_ID) AS CHILD_COUNT
+	FROM J_ORG_INFO ORG
+	WHERE ORG.PARENT_ORG_ID IS NOT NULL
+	GROUP BY ORG.PARENT_ORG_ID),
+	TM_AREA_SYSTEM_ORG_TREE AS
+	(SELECT '' AS SORT_SERIAL_NO,
+	'' AS ORG_ENCODE,
+	PID,
+	ID,
+	DATA_ID,
+	NODE_CODE,
+	NODE_NAME,
+	GET_PINYIN(NODE_NAME) AS NODE_NAME_PY,
+	NODE_TYPE
+	FROM TM_AREA_SYSTEM_TREE
+	UNION ALL --取得系统下的机构信息
+	SELECT JOI.SORT_SERIAL_NO,
+	JOI.ORG_ENCODE,
+	NVL(JOI.PARENT_ORG_ID, JOI.AREA_CODE || JOI.SYSTEM_TYPE_ID) AS PID,
+	JOI.ORG_ID AS ID,
+	JOI.ORG_ID AS DATA_ID,
+	'{"node_type":"org"' || ',"area_code":"' || JOI.AREA_CODE ||
+	'","area_name":"' || CAI.AREA_NAME || '","org_encode":"' ||
+	JOI.ORG_ENCODE || '","system_type_id":"' || JOI.SYSTEM_TYPE_ID ||
+	'","org_id":"' || JOI.ORG_ID || '","org_short_name":"' ||
+	JOI.ORG_SHORT_NAME || '"}' AS NODE_CODE,
+	JOI.ORG_SHORT_NAME ||
+	NVL2(TOCC.CHILD_COUNT, '（' || TOCC.CHILD_COUNT || '）', '') AS NODE_NAME,
+	JOI.ORG_SHORT_NAME_PY AS NODE_NAME_PY,
+	'org' AS NODE_TYPE
+	FROM J_ORG_INFO JOI,
+	TM_AREA_SYSTEM_TREE TAST,
+	C_AREA_INFO CAI,
+	TV_ORG_CHILD_COUNT TOCC
+	WHERE JOI.AREA_CODE = TAST.PID
+	AND JOI.SYSTEM_TYPE_ID = TAST.DATA_ID
+	AND JOI.AREA_CODE = CAI.AREA_CODE
+	AND JOI.ORG_ID = TOCC.PARENT_ORG_ID(+)
+	<if test="orgType != null and orgType != ''">
+		AND JOI.Org_Type = #{orgType,jdbcType=VARCHAR}
+	</if>
+	<if test="orgId != null and orgId != '' and orgId !='null'">
+		AND JOI.ORG_ID <![CDATA[<>]]>
+		#{orgId,jdbcType=VARCHAR}
+	</if>
+	AND TAST.NODE_TYPE = 'sys')
+	SELECT PID,
+	ID,
+	DATA_ID,
+	NODE_CODE,
+	NODE_NAME,
+	NODE_NAME_PY,
+	NODE_TYPE
+	FROM TM_AREA_SYSTEM_ORG_TREE T
+	WHERE T.NODE_TYPE IN ('sys', 'area', 'org')
+	AND PID = #{treeId,jdbcType=VARCHAR}
+	ORDER BY SORT_SERIAL_NO ASC, ORG_ENCODE ASC, DATA_ID ASC
+   </select>
+
+<select id="selectUserByCondition" parameterType="com.wave.sysmanage.vo.SelectUserConditionVo" resultMap="BaseResultMap">
+   SELECT
+	U.USER_ID,
+    U.USER_LONGIN_NAME,
+    U.USER_NAME,
+    O.ORG_SHORT_NAME,
+    DICT.DICT_VALUE    SYS_TYPE_NAME,
+    SR.ROLE_CODE       SYS_ROLE_CODE,
+    SR.ROLE_NAME       SYS_ROLE_NAME
+	FROM S_USER U
+    LEFT JOIN J_ORG_INFO O ON U.ORG_ID = O.ORG_ID
+    LEFT JOIN C_DICT DICT ON O.SYSTEM_TYPE_ID = DICT.DICT_KEY AND DICT.DICT_TYPE = '010'
+    LEFT JOIN S_ROLE_USER RU ON RU.USER_ID = U.USER_ID
+    LEFT JOIN S_ROLE SR ON SR.ROLE_CODE = RU.ROLE_ID AND SR.ROLE_TYPE = '1' AND SR.STATUS = '20'
+    LEFT JOIN S_ROLE ORGROLE ON ORGROLE.ROLE_CODE = RU.ROLE_ID AND ORGROLE.ROLE_TYPE = '2' AND ORGROLE.STATUS = '20'
+	WHERE U.USER_ID IS NOT NULL
+    <if test="userName != null and userName !=''">
+        AND U.USER_NAME LIKE '%'||#{userName,jdbcType=VARCHAR}||'%'
+    </if>
+    <if test="userLoginName != null and userLoginName !=''">
+        AND U.USER_LONGIN_NAME LIKE '%'||#{userLoginName,jdbcType=VARCHAR}||'%'
+    </if>
+    <if test="status != null and status !=''">
+        AND U.STATUS = #{status,jdbcType=VARCHAR}
+    </if>
+</select>
+<select id="selectUserById" parameterType="string" resultMap="BaseResultMap">
+	SELECT U.USER_ID,
+	U.AREA_CODE,
+	U.ORG_ID,
+	U.USER_LONGIN_NAME,
+	U.USER_NAME,
+	U.PASSWORD,
+	U.TEL,
+	U.SEX,
+	ORG.ORG_SHORT_NAME,
+	AREA.AREA_NAME,
+	U.LAST_LOGIN_TIME,
+	U.LOGIN_COUNT,
+	U.STATUS,
+	SR.ROLE_CODE SYS_ROLE_CODE,
+	SR.ROLE_NAME SYS_ROLE_NAME,
+	ORGROLE.ROLE_CODE ORG_ROLE_CODE,
+	ORGROLE.ROLE_NAME ORG_ROLE_NAME
+	FROM S_USER U
+	LEFT JOIN J_ORG_INFO ORG
+	ON ORG.ORG_ID = U.ORG_ID
+	LEFT JOIN C_AREA_INFO AREA
+	ON AREA.AREA_CODE = U.AREA_CODE
+	LEFT JOIN S_ROLE_USER RU
+	ON RU.USER_ID = U.USER_ID
+	LEFT JOIN S_ROLE SR
+	ON SR.ROLE_CODE = RU.ROLE_ID
+	AND SR.ROLE_TYPE = '1' and sr.status = '20'
+	LEFT JOIN S_ROLE ORGROLE
+	ON ORGROLE.ROLE_CODE = RU.ROLE_ID
+	AND ORGROLE.ROLE_TYPE = '2' and ORGROLE.status = '20'
+	where U.USER_ID = #{userId,jdbcType=VARCHAR}
+</select>
+
+<!-- 数据同步 -->
+ <select id="insertByImport"  >
+insert into S_USER (USER_ID, AREA_CODE, ORG_ID, 
+USER_LONGIN_NAME, USER_NAME, PASSWORD, 
+TEL, SEX, LAST_LOGIN_TIME, 
+LOGIN_COUNT, STATUS, CREATER, 
+CREATETIME, UPDATER, UPDATE_TIME
+)
+<if test="isNetRelease == 'no'">
+ VALUES 
+<foreach collection="sUserInfoVoList" item="vo" index="index" separator="," >  
+(
+'${vo.userId}', '${vo.areaCode}', '${vo.orgId}', 
+'${vo.userLonginName}', '${vo.userName}', '${vo.password}', 
+'${vo.tel}', '${vo.sex}', '${vo.lastLoginTime}', 
+'${vo.loginCount}', '${vo.status}', '${vo.creater}', 
+'${vo.createTime}', '${vo.updater}', '${vo.updateTime}'
+)
+</foreach>  
+ </if>
+ <if test="isNetRelease == 'yes'">
+<foreach collection="sUserInfoVoList" item="vo" index="index" separator=" union all " >  
+SELECT 
+#{vo.userId,jdbcType=VARCHAR}, #{vo.areaCode,jdbcType=VARCHAR}, #{vo.orgId,jdbcType=VARCHAR}, 
+  #{vo.userLonginName,jdbcType=VARCHAR}, #{vo.userName,jdbcType=VARCHAR}, #{vo.password,jdbcType=VARCHAR}, 
+  #{vo.tel,jdbcType=VARCHAR}, #{vo.sex,jdbcType=VARCHAR}, #{vo.lastLoginTime,jdbcType=VARCHAR}, 
+  #{vo.loginCount,jdbcType=DECIMAL}, #{vo.status,jdbcType=VARCHAR}, #{vo.creater,jdbcType=VARCHAR}, 
+  #{vo.createTime,jdbcType=VARCHAR}, #{vo.updater,jdbcType=VARCHAR}, #{vo.updateTime,jdbcType=VARCHAR}
+  FROM DUAL 
+</foreach>  
+ </if>
+</select>
+<select id="selectByExport" resultMap="BaseResultMap">
+ select
+<include refid="Base_Column_List" />
+from S_USER
+where USER_LONGIN_NAME = #{userLonginName,jdbcType=VARCHAR}
+ </select>
+  
+</mapper>

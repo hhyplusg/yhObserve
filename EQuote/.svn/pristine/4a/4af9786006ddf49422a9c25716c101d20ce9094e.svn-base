@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wave.sysmanage.dao.ScutcheonMapper">
+  <resultMap id="BaseResultMap" type="com.wave.sysmanage.vo.ScutcheonVo" >
+    <result column="ALL_CHECKED" property="allChecked" jdbcType="VARCHAR"></result>
+    <result column="SHIPNAME" property="shipName" jdbcType="VARCHAR"></result>
+    <result column="MMIS" property="MMIS" jdbcType="VARCHAR"></result>
+    <result column="GEOPOX" property="geoPoX" jdbcType="VARCHAR"></result>
+    <result column="GEOPOY" property="geoPoY" jdbcType="VARCHAR"></result>
+    <result column="SHIPSPEED" property="shipSpeed" jdbcType="VARCHAR"></result>
+    <result column="SHIPCOURES" property="shipCoures" jdbcType="VARCHAR"></result>
+    <result column="SHIPLENGTH" property="shipLength" jdbcType="VARCHAR"></result>
+    <result column="SHIPWIDTH" property="shipWidth" jdbcType="VARCHAR"></result>
+    <result column="SHIPSTATE" property="shipState" jdbcType="VARCHAR"></result>
+    <result column="SHIPTYPE" property="shipType" jdbcType="VARCHAR"></result>
+    <result column="SHIPTIME" property="shipTime" jdbcType="VARCHAR"></result>
+    <result column="FONTTYPE" property="fontType" jdbcType="VARCHAR"></result>
+    <result column="FONTSIZE" property="fontSize" jdbcType="VARCHAR"></result>
+    <result column="COLOR" property="color" jdbcType="VARCHAR"></result>
+    <result column="CREATER" property="creater" jdbcType="VARCHAR" />
+    <result column="CREATETIME" property="createTime" jdbcType="VARCHAR" />
+    <result column="UPDATER" property="updater" jdbcType="VARCHAR" />
+    <result column="UPDATE_TIME" property="updateTime" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+  	ALL_CHECKED,
+	SHIPNAME,
+	MMSI,
+	GEOPOX,
+	GEOPOY,
+	SHIPSPEED,
+	SHIPCOURES,
+	SHIPLENGTH,
+	SHIPWIDTH,
+	SHIPSTATE,
+	SHIPTYPE,
+	SHIPTIME,
+	FONTTYPE,
+	FONTSIZE,
+	COLOR,
+	CREATER,
+	CREATE_TIME,
+	UPDATER,
+	UPDATE_TIME
+  </sql>
+  
+  <select id="selectScutcheons" resultMap="BaseResultMap">
+  	SELECT <include refid="Base_Column_List" /> FROM DZHT_SCUTCHEON
+  </select>
+  
+  <select id="selectScutcheon" resultType="com.wave.sysmanage.vo.ScutcheonVo">
+  	SELECT <include refid="Base_Column_List" /> FROM DZHT_SCUTCHEON
+  </select>
+  
+  <insert id="insert" parameterType="com.wave.sysmanage.vo.ScutcheonVo">
+  	INSERT INTO DZHT_SCUTCHEON (
+  	    ID,
+	  	ALL_CHECKED,
+		SHIPNAME,
+		MMSI,
+		GEOPOX,
+		GEOPOY,
+		SHIPSPEED,
+		SHIPCOURES,
+		SHIPLENGTH,
+		SHIPWIDTH,
+		SHIPSTATE,
+		SHIPTYPE,
+		SHIPTIME,
+		FONTTYPE,
+		FONTSIZE,
+		COLOR,
+		CREATER,
+		CREATE_TIME,
+		UPDATER,
+		UPDATE_TIME)
+	VALUES (
+		#{id,jdbcType=VARCHAR},
+		#{allChecked,jdbcType=VARCHAR},
+		#{shipName,jdbcType=VARCHAR},
+		#{MMSI,jdbcType=VARCHAR},
+		#{geoPoX,jdbcType=VARCHAR},
+		#{geoPoY,jdbcType=VARCHAR},
+		#{shipSpeed,jdbcType=VARCHAR},
+		#{shipCoures,jdbcType=VARCHAR},
+		#{shipLength,jdbcType=VARCHAR},
+		#{shipWidth,jdbcType=VARCHAR},
+		#{shipState,jdbcType=VARCHAR},
+		#{shipType,jdbcType=VARCHAR},
+		#{shipTime,jdbcType=VARCHAR},
+		#{fontType,jdbcType=VARCHAR},
+		#{fontSize,jdbcType=VARCHAR},
+		#{color,jdbcType=VARCHAR},
+		#{creater,jdbcType=VARCHAR},
+		#{createTime,jdbcType=VARCHAR},
+		#{updater,jdbcType=VARCHAR},
+		#{updateTime,jdbcType=VARCHAR}
+	)
+  </insert>
+  
+  <update id="update" parameterType="com.wave.sysmanage.vo.ScutcheonVo">
+  	UPDATE DZHT_SCUTCHEON 
+  	<set>
+  		<if test="allChecked != null">
+  			ALL_CHECKED = #{allChecked,jdbcType=VARCHAR},
+  		</if>
+  		<if test="shipName != null">
+  			SHIPNAME = #{shipName,jdbcType=VARCHAR},
+  		</if>
+  		<if test="MMSI != null">
+  			MMSI = #{MMSI,jdbcType=VARCHAR},
+  		</if>
+  		<if test="geoPoX != null">
+  			GEOPOX = #{geoPoX,jdbcType=VARCHAR},
+  		</if>
+  		<if test="geoPoY != null">
+  			GEOPOY = #{geoPoY,jdbcType=VARCHAR},
+  		</if>
+  		<if test="shipSpeed != null">
+  			SHIPSPEED = #{shipSpeed,jdbcType=VARCHAR},
+  		</if>
+  		<if test="shipCoures != null">
+  			SHIPCOURES = #{shipCoures,jdbcType=VARCHAR},
+  		</if>
+  		<if test="shipLength != null">
+  			SHIPLENGTH = #{shipLength,jdbcType=VARCHAR},
+  		</if>
+  		<if test="shipWidth != null">
+  			SHIPWIDTH = #{shipWidth,jdbcType=VARCHAR},
+  		</if>
+  		<if test="shipState != null">
+  			SHIPSTATE = #{shipState,jdbcType=VARCHAR},
+  		</if>
+  		<if test="shipType != null">
+  			SHIPTYPE = #{shipType,jdbcType=VARCHAR},
+  		</if>
+  		<if test="shipTime != null">
+  			SHIPTIME = #{shipTime,jdbcType=VARCHAR},
+  		</if>
+  		<if test="fontType != null">
+  			FONTTYPE = #{fontType,jdbcType=VARCHAR},
+  		</if>
+  		<if test="fontSize != null">
+  			FONTSIZE = #{fontSize,jdbcType=VARCHAR},
+  		</if>
+  		<if test="color != null">
+  			COLOR = #{color,jdbcType=VARCHAR},
+  		</if>
+  		<if test="updater != null">
+  			UPDATER = #{updater,jdbcType=VARCHAR},
+  		</if>
+  		<if test="updateTime != null">
+  			UPDATE_TIME = #{updateTime,jdbcType=VARCHAR}
+  		</if>
+  	</set>
+  </update>
+</mapper>

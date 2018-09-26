@@ -1,0 +1,5 @@
+form label.error, label.error {
+	color: red;
+	font-style: italic;
+	font-weight:normal;
+}

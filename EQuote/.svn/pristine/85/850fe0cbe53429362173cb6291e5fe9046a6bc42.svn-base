@@ -1,0 +1,145 @@
+-- ----------------------------
+-- Table structure for `tab_faxserver_config`
+-- ----------------------------
+DROP TABLE IF EXISTS `sysCorpInfor`;
+CREATE TABLE `sysCorpInfor` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '唯一标识',
+  `corpCode` varchar(128) DEFAULT NULL COMMENT '机构编码',
+  `corpName` varchar(128) DEFAULT NULL COMMENT '机构全称',
+  `corpShortName` varchar(128) DEFAULT NULL COMMENT '机构简称',
+  `corpType` varchar(128) DEFAULT NULL COMMENT '机构类型',
+  `password` varchar(128) DEFAULT '1' COMMENT '密码',
+  `status` varchar(128) DEFAULT NULL COMMENT '审核标志',
+  `attribute1` varchar(128) DEFAULT NULL COMMENT '扩展属性',
+  `attribute2` varchar(128) DEFAULT NULL COMMENT '扩展属性',
+  `attribute3` varchar(128) DEFAULT NULL COMMENT '扩展属性',
+  `createdBy` varchar(128) ,
+  `creationDate` datetime,
+  `lastUpdateBy` varchar(128),
+  `lastUpdateDate` datetime,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Table structure for `sysCorpFiles`
+-- ----------------------------
+DROP TABLE IF EXISTS `sysCorpFiles`;
+CREATE TABLE `sysCorpFiles` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '唯一标识',
+  `corpId` int(11) DEFAULT NULL COMMENT '机构id',
+  `fileName` varchar(128) DEFAULT NULL COMMENT '文件名字',
+  `fileStorageUrl` varchar(128) DEFAULT NULL COMMENT '存储路径',
+  `attribute1` varchar(128) DEFAULT NULL COMMENT '扩展属性',
+  `attribute2` varchar(128) DEFAULT NULL COMMENT '扩展属性',
+  `attribute3` varchar(128) DEFAULT NULL COMMENT '扩展属性',
+  `createdBy` varchar(128) ,
+  `creationDate` datetime,
+  `lastUpdateBy` varchar(128),
+  `lastUpdateDate` datetime,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Table structure for `sysCorpContact`
+-- ----------------------------
+DROP TABLE IF EXISTS `sysCorpContact`;
+CREATE TABLE `sysCorpContact` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '唯一标识',
+  `corpId` int(11) DEFAULT NULL COMMENT '机构id',
+  `contactName` varchar(128) DEFAULT NULL COMMENT '联系人姓名',
+  `contactPhone` varchar(128) DEFAULT NULL COMMENT '联系人电话',
+  `contactMailAddress` varchar(128) DEFAULT NULL COMMENT '邮箱地址',
+  `identityCardNo` varchar(128) DEFAULT NULL COMMENT '联系人身份证号',
+  `status` varchar(128) DEFAULT NULL COMMENT '状态',
+  `attribute1` varchar(128) DEFAULT NULL COMMENT '扩展属性',
+  `attribute2` varchar(128) DEFAULT NULL COMMENT '扩展属性',
+  `attribute3` varchar(128) DEFAULT NULL COMMENT '扩展属性',
+  `createdBy` varchar(128) ,
+  `creationDate` datetime,
+  `lastUpdateBy` varchar(128),
+  `lastUpdateDate` datetime,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Table structure for `EQInquiry`
+-- ----------------------------
+DROP TABLE IF EXISTS `EQInquiry`;
+CREATE TABLE `EQInquiry` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '唯一标识',
+  `corpId` int(11) DEFAULT NULL COMMENT '询价机构Id',
+  `inquiryContent` varchar(2048) DEFAULT NULL COMMENT '询价内容',
+  `inquiryStartDate` datetime DEFAULT NULL COMMENT '询价有效期始',
+  `inquiryEndDate` datetime DEFAULT NULL COMMENT '询价有效期至',
+  `attribute1` varchar(128) DEFAULT NULL COMMENT '扩展属性',
+  `attribute2` varchar(128) DEFAULT NULL COMMENT '扩展属性',
+  `attribute3` varchar(128) DEFAULT NULL COMMENT '扩展属性',
+  `createdBy` varchar(128) ,
+  `creationDate` datetime,
+  `lastUpdateBy` varchar(128),
+  `lastUpdateDate` datetime,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Table structure for `EQInquiryTarget`
+-- ----------------------------
+DROP TABLE IF EXISTS `EQInquiryTarget`;
+CREATE TABLE `EQInquiryTarget` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '唯一标识',
+  `inquiryId` int(11) DEFAULT NULL COMMENT '询价ID',
+  `corpId` int(11) DEFAULT NULL COMMENT '银行Id',
+  `attribute1` varchar(128) DEFAULT NULL COMMENT '扩展属性',
+  `attribute2` varchar(128) DEFAULT NULL COMMENT '扩展属性',
+  `attribute3` varchar(128) DEFAULT NULL COMMENT '扩展属性',
+  `createdBy` varchar(128) ,
+  `creationDate` datetime,
+  `lastUpdateBy` varchar(128),
+  `lastUpdateDate` datetime,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Table structure for `EQuote`
+-- ----------------------------
+DROP TABLE IF EXISTS `EQuote`;
+CREATE TABLE `EQuote` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '唯一标识',
+  `inquiryId` int(11) DEFAULT NULL COMMENT '询价ID',
+  `corpId` int(11) DEFAULT NULL COMMENT '银行Id',
+  `quoteDate` datetime  DEFAULT NULL COMMENT '报价日期',
+	`rateSevenday` decimal DEFAULT NULL COMMENT '7D',
+  `rateFourteenday` decimal DEFAULT NULL COMMENT '14D',
+  `rateOneMonth` decimal DEFAULT NULL COMMENT '1M',
+  `rateTwoMonth` decimal DEFAULT NULL COMMENT '2M',
+  `rateThreeMonth` decimal DEFAULT NULL COMMENT '3M',
+  `rateSixMonth` decimal DEFAULT NULL COMMENT '6M',
+  `1Y` decimal DEFAULT NULL COMMENT '1Y',
+  `quoteType` varchar(128) DEFAULT NULL COMMENT '报价类型公开/对私/对询价 public/private/toInquiry',
+  `attribute1` varchar(128) DEFAULT NULL COMMENT '扩展属性',
+  `attribute2` varchar(128) DEFAULT NULL COMMENT '扩展属性',
+  `attribute3` varchar(128) DEFAULT NULL COMMENT '扩展属性',
+  `createdBy` varchar(128) ,
+  `creationDate` datetime,
+  `lastUpdateBy` varchar(128),
+  `lastUpdateDate` datetime,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Table structure for `EQuoteTarget`
+-- ----------------------------
+DROP TABLE IF EXISTS `EQuoteTarget`;
+CREATE TABLE `EQuoteTarget` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '唯一标识',
+  `quoteId` int(11) DEFAULT NULL COMMENT '报价ID',
+  `corpId` int(11) DEFAULT NULL COMMENT '机构Id：机构类型为corp的机构',
+  `attribute1` varchar(128) DEFAULT NULL COMMENT '扩展属性',
+  `attribute2` varchar(128) DEFAULT NULL COMMENT '扩展属性',
+  `attribute3` varchar(128) DEFAULT NULL COMMENT '扩展属性',
+  `createdBy` varchar(128) ,
+  `creationDate` datetime,
+  `lastUpdateBy` varchar(128),
+  `lastUpdateDate` datetime,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;

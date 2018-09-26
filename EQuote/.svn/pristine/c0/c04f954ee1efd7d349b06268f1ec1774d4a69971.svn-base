@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wave.user.dao.SUserMapper" >
+  <resultMap id="BaseUserResultMap" type="SUserVo" >
+    <result column="USER_ID" property="userId" jdbcType="VARCHAR" />
+    <result column="AREA_CODE" property="areaCode" jdbcType="VARCHAR" />
+    <result column="ORG_ID" property="orgId" jdbcType="VARCHAR" />
+    <result column="USER_LONGIN_NAME" property="userLonginName" jdbcType="VARCHAR" />
+    <result column="USER_NAME" property="userName" jdbcType="VARCHAR" />
+    <result column="PASSWORD" property="password" jdbcType="VARCHAR" />
+    <result column="TEL" property="tel" jdbcType="VARCHAR" />
+    <result column="SEX" property="sex" jdbcType="VARCHAR" />
+    <result column="LAST_LOGIN_TIME" property="lastLoginTime" jdbcType="VARCHAR" />
+    <result column="LOGIN_COUNT" property="loginCount" jdbcType="DECIMAL" />
+    <result column="STATUS" property="status" jdbcType="VARCHAR" />
+    <result column="CREATER" property="creater" jdbcType="VARCHAR" />
+    <result column="CREATETIME" property="createTime" jdbcType="VARCHAR" />
+    <result column="UPDATER" property="updater" jdbcType="VARCHAR" />
+    <result column="UPDATE_TIME" property="updateTime" jdbcType="VARCHAR" />
+  </resultMap>
+  <!-- 用户登陆，并返回用户信息 -->
+  <select id="login" parameterType="SUserVo"  resultMap="BaseUserResultMap">
+      SELECT USER_ID,
+       AREA_CODE,
+       ORG_ID,
+       USER_LONGIN_NAME,
+       USER_NAME,
+       PASSWORD,
+       TEL,
+       SEX,
+       LAST_LOGIN_TIME,
+       LOGIN_COUNT,
+       STATUS
+  FROM S_USER
+  WHERE USER_LONGIN_NAME = #{userLonginName,jdbcType=VARCHAR} 
+        AND PASSWORD =  #{password,jdbcType=VARCHAR}
+        AND STATUS = '20' 
+  </select>
+  
+  <!-- 根据用户名查询用户信息 -->
+  <select id="selectUserByLoginUserName" parameterType="SUserVo"  resultMap="BaseUserResultMap">
+      SELECT USER_ID,
+       AREA_CODE,
+       ORG_ID,
+       USER_LONGIN_NAME,
+       USER_NAME,
+       PASSWORD,
+       TEL,
+       SEX,
+       LAST_LOGIN_TIME,
+       LOGIN_COUNT,
+       STATUS
+  FROM S_USER
+  WHERE USER_LONGIN_NAME = #{userLonginName,jdbcType=VARCHAR} 
+        AND STATUS = '20' 
+  </select>
+  <!--  根据用户名更新失败登录次数和状态-->
+  <update id="updateLoginCountByLoginUserName">
+   UPDATE S_USER SET LOGIN_COUNT = #{loginCount,jdbcType=DECIMAL}
+   <if test="status != null">
+   ,STATUS = #{status,jdbcType=VARCHAR}
+   </if>
+   WHERE USER_LONGIN_NAME = #{userLonginName,jdbcType=VARCHAR} 
+  </update>
+  
+  <insert id="insert" parameterType="SUserVo" >
+    insert into S_USER (USER_ID, AREA_CODE, ORG_ID, 
+      USER_LONGIN_NAME, USER_NAME, PASSWORD, 
+      TEL, SEX, LAST_LOGIN_TIME, 
+      LOGIN_COUNT, STATUS, CREATER, 
+      CREATETIME, UPDATER, UPDATE_TIME
+      )
+    values (#{userId,jdbcType=VARCHAR}, #{areaCode,jdbcType=VARCHAR}, #{orgId,jdbcType=VARCHAR}, 
+      #{userLonginName,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
+      #{tel,jdbcType=VARCHAR}, #{sex,jdbcType=VARCHAR}, #{lastLoginTime,jdbcType=VARCHAR}, 
+      #{loginCount,jdbcType=DECIMAL}, #{status,jdbcType=VARCHAR}, #{creater,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=VARCHAR}, #{updater,jdbcType=VARCHAR}, #{updateTime,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="SUserVo" >
+    insert into S_USER
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="userId != null" >
+        USER_ID,
+      </if>
+      <if test="areaCode != null" >
+        AREA_CODE,
+      </if>
+      <if test="orgId != null" >
+        ORG_ID,
+      </if>
+      <if test="userLonginName != null" >
+        USER_LONGIN_NAME,
+      </if>
+      <if test="userName != null" >
+        USER_NAME,
+      </if>
+      <if test="password != null" >
+        PASSWORD,
+      </if>
+      <if test="tel != null" >
+        TEL,
+      </if>
+      <if test="sex != null" >
+        SEX,
+      </if>
+      <if test="lastLoginTime != null" >
+        LAST_LOGIN_TIME,
+      </if>
+      <if test="loginCount != null" >
+        LOGIN_COUNT,
+      </if>
+      <if test="status != null" >
+        STATUS,
+      </if>
+      <if test="creater != null" >
+        CREATER,
+      </if>
+      <if test="createTime != null" >
+        CREATETIME,
+      </if>
+      <if test="updater != null" >
+        UPDATER,
+      </if>
+      <if test="updateTime != null" >
+        UPDATE_TIME,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="userId != null" >
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="areaCode != null" >
+        #{areaCode,jdbcType=VARCHAR},
+      </if>
+      <if test="orgId != null" >
+        #{orgId,jdbcType=VARCHAR},
+      </if>
+      <if test="userLonginName != null" >
+        #{userLonginName,jdbcType=VARCHAR},
+      </if>
+      <if test="userName != null" >
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="tel != null" >
+        #{tel,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null" >
+        #{sex,jdbcType=VARCHAR},
+      </if>
+      <if test="lastLoginTime != null" >
+        #{lastLoginTime,jdbcType=VARCHAR},
+      </if>
+      <if test="loginCount != null" >
+        #{loginCount,jdbcType=DECIMAL},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="creater != null" >
+        #{creater,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="updater != null" >
+        #{updater,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+</mapper>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wave.sysmanage.dao.SFunctionInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.wave.sysmanage.vo.SFunctionInfoVo" >
+    <result column="PID" property="pid" jdbcType="DECIMAL" />
+    <result column="ID" property="id" jdbcType="DECIMAL" />
+    <result column="FUNCTION_NAME" property="functionName" jdbcType="VARCHAR" />
+    <result column="FUNCTION_TYPE" property="functionType" jdbcType="VARCHAR" />
+    <result column="SORT" property="sort" jdbcType="DECIMAL" />
+    <result column="MAP_ID" property="mapId" jdbcType="VARCHAR" />
+    <result column="REMARK" property="remark" jdbcType="VARCHAR" />
+    <result column="IS_SHOW" property="isShow" jdbcType="DECIMAL" />
+    <result column="STATUS" property="status" jdbcType="VARCHAR" /> 
+  </resultMap>
+  
+  
+  
+  <!--  -->
+  <select id="getSFunctionByUserID"  parameterType="String" resultMap="BaseResultMap">
+   SELECT sfi.PID,
+        sfi.ID,
+        sfi.FUNCTION_NAME,
+        sfi.FUNCTION_TYPE,
+        sfi.SORT,
+        sfi.MAP_ID,
+        sfi.REMARK,
+        sfi.IS_SHOW
+ FROM s_role_user sru
+ LEFT JOIN s_role_function srf ON sru.role_id = srf.role_id
+ LEFT JOIN s_function_info sfi ON srf.function_id  = sfi.id
+ WHERE sru.user_id =#{userID,jdbcType=VARCHAR}
+  </select>
+  
+  <!-- 数据同步 -->
+   <select id="insertByImport"  >
+ insert into S_FUNCTION_INFO (ID, PID, FUNCTION_NAME, 
+FUNCTION_TYPE, SORT, MAP_ID, 
+REMARK, IS_SHOW)
+<if test="isNetRelease == 'no'">
+   VALUES 
+  <foreach collection="sFunctionInfoVoList" item="vo" index="index" separator="," >  
+(
+'${id}', '${pid}', '${functionName}', 
+'${functionType}', '${sort}', '${mapId}', 
+'${remark}', '${isShow}'
+)
+</foreach>  
+ </if>
+ <if test="isNetRelease == 'yes'">
+<foreach collection="sFunctionInfoVoList" item="vo" index="index" separator=" union all " >  
+SELECT 
+#{id,jdbcType=VARCHAR}, #{pid,jdbcType=VARCHAR}, #{functionName,jdbcType=VARCHAR}, 
+  #{functionType,jdbcType=VARCHAR}, #{sort,jdbcType=DECIMAL}, #{mapId,jdbcType=VARCHAR}, 
+  #{remark,jdbcType=VARCHAR}, #{isShow,jdbcType=DECIMAL}
+  FROM DUAL 
+</foreach>  
+ </if>
+  </select>
+</mapper>

@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd" id="WebApp_ID" version="3.1">
+   <display-name>wave</display-name>
+
+  <!-- log4j2-begin  
+        动态的改变记录级别和策略，不需要重启Web应用
+        把web目录的路径压入一个叫webapp.root的系统变量。这样写log文件路径时不用写绝对路径了 
+        如：log4j.appender.logfile.File=${webapp.root}/WEB-INF/logs/debug.log 
+       如果不指定，那么可配置成：web:rootDir
+       如：log4j.appender.logfile.File=${webapp.wave}/WEB-INF/logs/debug.log 
+  -->
+    <context-param>
+        <param-name>webAppRootKey</param-name>
+	    <param-value>webapp.wave</param-value>
+    </context-param>
+    
+    <!-- Spring Context -->
+    <!-- <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>classpath:conf/spring/applicationAspect.xml</param-value>
+    </context-param>  -->
+    
+   <!-- 项目根目录Listener 
+        如果不配置此项目，那么webAppRootKey取不到值
+   -->
+   <!-- Spring 刷新Introspector防止内存泄露 请求多了会内存泄露，加上他就好了-->
+  <listener>
+        <listener-class>org.springframework.web.util.IntrospectorCleanupListener</listener-class>
+   </listener>
+   <listener>
+      <listener-class>org.springframework.web.util.WebAppRootListener</listener-class>
+   </listener>
+   <!--把log文件定在 /WEB-INF/logs/ 而不需要写绝对路径。
+           可以把log4j2.xml和其他properties一起放在/WEB-INF/ ，而不是Class-Path。 
+           log4jConfigLocation：log4j 1.x
+           log4jConfiguration：log4j 2.x
+         如果不配置og4jConfiguration，那么 log4j2.xml或og4j.xml必须在src目录下。
+        且名称只能是这两个（log4j 1.x 名为：log4j.xml,log4j 2.x名为：log4j2.xml）
+   -->
+	<context-param>
+	  <param-name>log4jConfiguration</param-name> 
+	  <param-value>classpath:conf/log4j/log4j2.xml</param-value>
+	</context-param>
+	<!-- log4jRefreshInterval为6000表示 开一条watchdog线程每6秒扫描一下配置文件的变化;  -->
+	<context-param>
+	  <param-name>log4jRefreshInterval</param-name>
+	  <param-value>6000</param-value>
+	</context-param> 
+   <context-param>
+       <!-- parameter name for the flag that disables Log4j's auto-initialization in Servlet 3.0+ web applications. 
+       Set a context parameter with this name to "true" to disable auto-initialization. -->
+       <param-name>isLog4jAutoInitializationDisabled</param-name>
+       <param-value>true</param-value>
+   </context-param> 
+ 
+   <!-- <listener>
+       <listener-class>org.apache.logging.log4j.web.Log4jServletContextListener</listener-class>
+   </listener>   -->
+   
+   <!-- 编码过滤器 -->
+	<filter>
+		<filter-name>encoding</filter-name>
+		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+		<init-param>
+			<param-name>encoding</param-name>
+			<param-value>UTF-8</param-value>
+		</init-param>
+		<init-param> 
+           <param-name>forceEncoding</param-name> 
+           <param-value>true</param-value> 
+         </init-param> 
+	</filter>
+	<filter-mapping>
+		<filter-name>encoding</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+   
+   <filter>
+       <filter-name>log4jServletFilter</filter-name>
+       <!--his is responsible for the following:
+	Clearing the logger context when the application has finished starting up.
+	Setting the logger context before processing a request and clearing it after processing a request.
+	Setting the logger context when the application is starting to shut down.
+	This filter is a once-per-request filter. It is capable of filtering all the different types of requests
+	(standard, asynchronous, error, etc.) but will not apply processing if the filter matches multiple times on the same
+	logical request. -->
+       <filter-class>org.apache.logging.log4j.web.Log4jServletFilter</filter-class>
+   </filter>
+   <filter-mapping>
+       <filter-name>log4jServletFilter</filter-name>
+       <url-pattern>/*</url-pattern>
+       <dispatcher>REQUEST</dispatcher>
+       <dispatcher>FORWARD</dispatcher>
+       <dispatcher>INCLUDE</dispatcher>
+       <dispatcher>ERROR</dispatcher>
+   </filter-mapping>
+   <!-- log4j2-end -->
+   <!-- html中form表单只支持GET与POST请求，而DELETE、PUT等method并不支持，spring3.0添加HiddenHttpMethodFilter过滤器，
+           可以将这些请求转换为标准的http方法，
+           使得支持GET、POST、PUT与DELETE请求。 -->
+   <filter>
+       <filter-name>HiddenHttpMethodFilter</filter-name>
+       <filter-class>org.springframework.web.filter.HiddenHttpMethodFilter</filter-class>
+   </filter>   
+   <filter-mapping>
+       <filter-name>HiddenHttpMethodFilter</filter-name>
+       <url-pattern>/*</url-pattern>
+   </filter-mapping>
+	<!--  字符编码转换-->
+	<filter>
+		<display-name>encodingFilter</display-name>
+		<filter-name>encodingFilter</filter-name>
+		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+		<init-param>
+			<param-name>encoding</param-name>
+			<param-value>UTF-8</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>encodingFilter</filter-name>
+		<url-pattern>/</url-pattern>
+	</filter-mapping> 
+	
+	<!--添加session配置120分钟 -->  
+	<session-config>  
+		<session-timeout>120</session-timeout>  
+	</session-config> 
+	<!-- 防止sql注入的sql拦截器 -->
+	<filter>  
+       <filter-name>Sqlurl</filter-name>  
+       <filter-class>com.wave.core.filter.UrlFilter</filter-class>  
+       <init-param>  
+           <param-name>forward</param-name>  
+           <param-value>/forbid.html</param-value>  
+       </init-param>  
+       <init-param>  
+           <param-name>sql</param-name>  
+           <param-value>
+           	<![CDATA[
+           	INSERT#SELECT#DELETE#UPDATE#DROP#MID#TRUNCATE#DECLARE#EXEC#'#<INPUT#<TABLE#<TR#<TD#*#<FORM#</FORM>#<SCRIPT#<#XSS#ALERT#
+			]]>
+		</param-value>  
+       </init-param>
+   </filter>  
+   <filter-mapping>  
+       <filter-name>Sqlurl</filter-name>  
+       <url-pattern>/</url-pattern>  
+   </filter-mapping>
+   
+ <servlet-mapping>    
+    <servlet-name>default</servlet-name>    
+    <url-pattern>*.js</url-pattern>    
+    <url-pattern>*.css</url-pattern>
+    <url-pattern>*.woff</url-pattern>    
+    <url-pattern>*.ttf</url-pattern>    
+    <url-pattern>*.woff2</url-pattern>    
+    <url-pattern>/bootstrap/*"</url-pattern>    
+    <url-pattern>/bootstrap-3.3.7/*</url-pattern>    
+    <url-pattern>/jquery/*</url-pattern>    
+</servlet-mapping>
+   
+   <!-- Spring MVC配置 -->
+   <servlet>
+      <servlet-name>Dispatcher</servlet-name>
+      <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+      <!-- 自定义spring mvc的配置文件名称和路径 -->
+      <init-param>
+               <param-name>contextConfigLocation</param-name>  
+              <!-- 加定时器 -->
+            <!--  <param-value>classpath:conf/spring/applicationContext.xml;classpath:conf/spring/applicationContext-scheduler.xml</param-value> -->
+            <param-value>classpath:conf/spring/applicationContext.xml</param-value>
+      </init-param>
+      <load-on-startup>1</load-on-startup>
+   </servlet>
+   <!-- spring mvc 请求后缀 -->
+   <servlet-mapping>
+             <servlet-name>Dispatcher</servlet-name>
+             <url-pattern>/</url-pattern>
+   </servlet-mapping> 
+</web-app>

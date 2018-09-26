@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xmlns:c="http://www.springframework.org/schema/c"
+    xmlns:cache="http://www.springframework.org/schema/cache"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+    xmlns:jee="http://www.springframework.org/schema/jee"
+    xmlns:lang="http://www.springframework.org/schema/lang"
+    xmlns:mvc="http://www.springframework.org/schema/mvc"
+    xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
+    xmlns:oxm="http://www.springframework.org/schema/oxm"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:security="http://www.springframework.org/schema/security"
+    xmlns:task="http://www.springframework.org/schema/task"
+    xmlns:tx="http://www.springframework.org/schema/tx"
+    xmlns:util="http://www.springframework.org/schema/util"
+    xmlns:websocket="http://www.springframework.org/schema/websocket"
+    xsi:schemaLocation="http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-4.3.xsd
+        http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-4.3.xsd
+        http://www.springframework.org/schema/lang http://www.springframework.org/schema/lang/spring-lang-4.3.xsd
+        http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd
+        http://www.springframework.org/schema/oxm http://www.springframework.org/schema/oxm/spring-oxm-4.3.xsd
+        http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-4.3.xsd
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+        http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache-4.3.xsd
+        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd
+        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
+        http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-4.0.xsd
+        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.3.xsd
+        http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd 
+        http://www.springframework.org/schema/websocket http://www.springframework.org/schema/websocket/spring-websocket-4.3.xsd
+        http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-4.3.xsd">
+    <!--  典型化注解(stereotype annotations)： @Component、@Service和 @Controller。
+     @Component是所有受Spring管理组件的通用形式；而@Repository、@Service和 @Controller则是@Component的细化，
+     用来表示更具体的用例(例如，分别对应了持久化层、服务层和表现层)。也就是说，你能用@Component来注解你的组件类，
+     但如果用@Repository、@Service 或@Controller来注解它们，你的类也许能更好地被工具处理，或与切面进行关联。
+     例如，这些典型化注解可以成为理想的切入点目标。当然，在Spring Framework以后的版本中， @Repository、@Service和 @Controller也许还能携带更多语义。
+     如此一来，如果你正在考虑服务层中是该用@Component还是@Service，那@Service显然是更好的选择。
+     同样的，就像前面说的那样， @Repository已经能在持久化层中进行异常转换时被作为标记使用了。 -->
+     
+     <!-- 启动对@AspectJ注解的支持 -->  
+    <aop:aspectj-autoproxy/>  
+     <!-- 最重要:::如果放在spring-context.xml中，这里的aop设置将不会生效,必须放在springMVC配置文件中 -->
+    <aop:aspectj-autoproxy proxy-target-class="false"/>
+    
+     <!-- 扫描符合@Controller、@Service、@Repository、@Component的类 -->
+    <mvc:annotation-driven>
+    	<mvc:message-converters>     
+        	<bean class = "org.springframework.http.converter.StringHttpMessageConverter">    
+               <property name = "supportedMediaTypes">    
+                    <list>    
+                        <value>text/plain;charset=UTF-8</value>    
+                    </list>       
+               </property>    
+            </bean>     
+        </mvc:message-converters>  
+    </mvc:annotation-driven>
+    
+    <!-- 激活组件扫描功能,在包com.wave及其子包下面自动扫描通过注解配置的组件 -->
+    <context:component-scan base-package="com.wave" use-default-filters="false">
+           <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller" />
+            <context:include-filter type="annotation" expression="org.springframework.stereotype.Service" />
+            <context:include-filter type="annotation" expression="org.springframework.stereotype.Repository" />
+            <context:include-filter type="annotation" expression="org.springframework.stereotype.Component" />
+    </context:component-scan>
+    <mvc:default-servlet-handler/>
+
+     <!-- 数据库连接属性的设置 -->
+     <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+         <property name="location">
+             <value>classpath:/conf/spring/config.properties</value>         
+         </property>
+     </bean>  
+     <!-- 登陆拦截--> 
+         <!-- 配置拦截器 -->  
+	 <mvc:interceptors>  
+	      <!-- 配置登陆拦截器 -->  
+	      <mvc:interceptor>  
+	          <mvc:mapping path="/**"/>  
+			  <mvc:exclude-mapping path="/index.jsp"/>
+	          <bean class="com.wave.base.interceptor.LoginInterceptor"></bean>  
+	      </mvc:interceptor>  
+	 </mvc:interceptors> 
+     
+    <!-- token拦截器 防止重复提交 
+    <mvc:interceptors>  
+		<bean class="com.wave.core.Interceptor.CustomInterceptor"/>
+    </mvc:interceptors> 
+-->
+    <!-- 数据源的配置 以后数据库密码要进行加密 -->
+    <!-- oracle 数据源 -->
+     <!-- 定义数据源Bean，使用C3P0数据源实现 -->  
+    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"  
+        destroy-method="close">  
+        <!-- 指定连接数据库的驱动 -->  
+        <property name="driverClass" value="com.mysql.jdbc.Driver" />  
+        <!-- 指定连接数据库的URL -->  
+        <property name="jdbcUrl" value="jdbc:mysql://localhost:3306/waveplus?useUnicode=true&amp;characterEncoding=UTF-8" />  
+        <!-- 指定连接数据库的用户名 -->  
+        <property name="user" value="root" />  
+        <!-- 指定连接数据库的密码 -->  
+        <property name="password" value="123456" />  
+        <!--连接池中保留的最大连接数。Default: 15 -->  
+        <property name="maxPoolSize" value="40" />  
+        <!-- 指定连接数据库连接池的最小连接数 -->  
+        <property name="minPoolSize" value="10" />  
+        <!-- 指定连接数据库连接池的初始化连接数 取值应在minPoolSize与maxPoolSize之间。Default: 3 -->  
+        <property name="initialPoolSize" value="5" />  
+        <!--最大空闲时间,25000秒内未使用则连接被丢弃。若为0则永不丢弃。Default: 0 -->  
+        <property name="maxIdleTime" value="25000" />  
+        <!--如果设为true那么在取得连接的同时将校验连接的有效性。Default: false -->  
+        <property name="testConnectionOnCheckin" value="true" />  
+        <!--每18000秒检查所有连接池中的空闲连接。Default: 0 -->  
+        <property name="idleConnectionTestPeriod" value="18000" />  
+    </bean>  
+ 
+    <!-- 线程池
+    1、收集用户操作日志。
+    -->
+    <bean id="threadPoolExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+        <property name="corePoolSize" value="10" /><!-- 线程池维护线程的最少数量 -->        
+        <property name="keepAliveSeconds" value="200" /><!-- 线程池维护线程所允许的空闲时间  -->       
+        <property name="maxPoolSize" value="10" /><!-- 线程池维护线程的最大数量 -->     
+        <property name="queueCapacity" value="60" /><!--线程池所使用的缓冲队列  -->
+    </bean>
+ 
+       
+   
+    <!-- ====================================此配处是基础配置 勿动======================================== -->        
+ 
+    <!-- MyBatis configer Start --> 
+    <!-- 用于处理blob -->
+     <!-- define the SqlSessionFactory, notice that configLocation is not needed when you use MapperFactoryBean -->
+     <!-- 创建SqlSessionFactory，同时指定数据源-->  
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource" />
+         <!-- 指定sqlMapConfig总配置文件，订制的environment在spring容器中不在生效   
+            该属性用来指定MyBatis的XML配置文件路径,跟Spring整合时，编写MyBatis映射文件的目的无非是配置一下typeAlias、setting之类的
+            元素。不用在其中指定数据源，或者事务处理方式。就算配置了也会被忽略。因为这些都是使用Spring中的配置
+            。当然如果你不打算添加typeAlias 之类的设置的话，你连MyBatis的配置文件都不用写，更不用配置这个属性了
+        -->
+        <property name="configLocation" value="classpath:conf/mybatis/mybatis-config.xml" /> 
+         <!--指定实体类映射文件，可以指定同时指定某一包以及子包下面的所有配置文件，
+         mapperLocations和configLocation有一个即可，
+         当需要为实体类指定别名时，
+         可指定configLocation属性，再在mybatis总配置文件中采用mapper引入实体类映射文件 -->  
+        <!-- <property name="mapperLocations" value="classpath*:net/waveplus/*/dao/*.xml"/> -->
+        <!--  <property name="mapperLocations" value="classpath*:net/waveplus/**/dao/*.xml"></property>  -->
+        <!-- 该配置用来指定Mapper映射文件的位置 ，如果映射文件与相应的接口同名，且在同一路径下，那么可以不配置该选项-->
+    </bean>  
+    
+    <!-- 配置扫描器 -->
+     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+      <!--  扫描net.waveplus.user.dao这个包以及它的子包下的所有映射接口类 -->
+       <property name="basePackage" value="com.wave" />
+       <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
+   </bean>  
+ 
+    <!-- MyBatis configer end -->
+    
+    <!-- 配置上传文件 -->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+          <property name="defaultEncoding" value="UTF-8"></property>
+          <property name="maxInMemorySize" value="10000000"></property>
+    </bean>
+    <mvc:default-servlet-handler/>
+
+</beans>

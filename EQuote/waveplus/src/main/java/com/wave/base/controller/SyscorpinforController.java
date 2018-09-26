@@ -1,0 +1,291 @@
+package com.wave.base.controller;
+
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+
+import org.omg.CORBA.portable.ApplicationException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.wave.base.action.BaseController;
+import com.wave.base.vo.entity.Syscorpinfor;
+import com.wave.common.service.SyscorpinforService;
+import com.wave.core.util.StringUtil;
+
+@Controller
+@RequestMapping(value = "syscorpinforManager")
+public class SyscorpinforController extends BaseController{
+
+	@Autowired
+	@Qualifier("syscorpinforServices")
+	private SyscorpinforService syscorpinforService;
+
+	/**
+	 * 查询所有的用户信息
+	 * 
+	 * @return
+	 * @throws ApplicationException
+	 */
+	@RequestMapping("/showSyscorpinforList")
+	@ResponseBody
+	public List<Syscorpinfor> showSyscorpinforList() throws ApplicationException {
+
+		List<Syscorpinfor> list = syscorpinforService.getAllCorps();
+		return list;
+	}
+
+	/**
+	 * 新增用户
+	 * 
+	 * @return
+	 * @throws ApplicationException
+	 * @throws UnsupportedEncodingException
+	 */
+	@RequestMapping("/addSyscorpinfor")
+	@ResponseBody
+	public Boolean addSyscorpinfor(@RequestBody Syscorpinfor syscorpinfor) throws ApplicationException, UnsupportedEncodingException {
+
+		Boolean flag = syscorpinforService.saveSyscorpinfor(syscorpinfor);
+		return flag;
+	}
+	/**
+	 * 修改用户
+	 * 
+	 * @return
+	 * @throws ApplicationException
+	 * @throws UnsupportedEncodingException
+	 */
+	@RequestMapping("/updateSyscorpinfor")
+	@ResponseBody
+	public Boolean updateSyscorpinfor(@RequestBody Syscorpinfor syscorpinfor) throws ApplicationException, UnsupportedEncodingException {
+
+		Boolean flag = syscorpinforService.updateSyscorpinfor(syscorpinfor);
+		return flag;
+	}
+	/**
+	 * 删除用户
+	 * 
+	 * @return
+	 * @throws ApplicationException
+	 */
+	@RequestMapping(value = "deleteSyscorpinfor/{id}", method = RequestMethod.GET)
+	@ResponseBody
+	public Boolean deleteSyscorpinfor(@PathVariable("id") Integer id) throws ApplicationException {
+
+		Boolean flag = false;
+		if (id != null && id != 0) {
+			flag = syscorpinforService.delSyscorpinfor(id);
+		}
+		return flag;
+	}
+	
+	/**
+	 * 校验用户密码
+	 * 
+	 * @return
+	 * @throws ApplicationException
+	 * @throws JsonProcessingException 
+	 */
+	@RequestMapping(value = "checkPassword", method = RequestMethod.POST)
+	@ResponseBody
+	public String checkPassword(@RequestParam  String id,@RequestParam  String oldPassword) throws  JsonProcessingException, ApplicationException {
+		Boolean isValid = syscorpinforService.checkPassword(id,oldPassword);
+		Map<String, Boolean> map = new HashMap<>();
+		if (isValid) {
+			map.put("valid", true);
+		} else {
+			map.put("valid", false);
+		}
+		ObjectMapper mapper = new ObjectMapper();
+		String resultString = "";
+		resultString = mapper.writeValueAsString(map);
+		return resultString;
+		
+	}
+	
+	/**
+	 * 校验用户密码
+	 * 
+	 * @return
+	 * @throws ApplicationException
+	 * @throws JsonProcessingException 
+	 */
+	@RequestMapping(value = "checkPassword2", method = RequestMethod.POST)
+	@ResponseBody
+	public String checkPassword2( @RequestBody Syscorpinfor syscorpinfor,HttpServletRequest request) throws  JsonProcessingException, ApplicationException {
+		
+		Boolean isValid = syscorpinforService.checkPassword(syscorpinfor.getId().toString(),syscorpinfor.getPassword());
+
+		Map<String, Boolean> map = new HashMap<>();
+		if (isValid) {
+			map.put("valid", true);
+		} else {
+			map.put("valid", false);
+		}
+		ObjectMapper mapper = new ObjectMapper();
+		String resultString = "";
+		resultString = mapper.writeValueAsString(map);
+		return resultString;
+	}
+	
+	
+	/**
+	 * 删除用户批量
+	 * 
+	 * @return
+	 * @throws ApplicationException
+	 */
+	@RequestMapping(value = "deleteSyscorpinforByIds/{ids}", method = RequestMethod.GET)
+	@ResponseBody
+	public Boolean deleteSyscorpinforByIds(@PathVariable("ids") String ids) throws ApplicationException {
+
+ 		Boolean flag = false;
+		if (StringUtil.isNotEmpty(ids)) {
+			
+			flag = syscorpinforService.delSyscorpinfor(ids);
+		}
+		return flag;
+	}
+
+
+	/**
+	 * 校验用户
+	 * 
+	 * @return
+	 * @throws ApplicationException
+	 * @throws JsonProcessingException
+	 */
+	@RequestMapping(value = "/checkUserLoginName", method = RequestMethod.POST)
+	@ResponseBody
+	public String checkUserLoginName(String userloginname) throws ApplicationException, JsonProcessingException {
+
+		Boolean isValid = syscorpinforService.checkUserLoginName(userloginname);
+		Map<String, Boolean> map = new HashMap<>();
+		if (isValid) {
+			map.put("valid", false);
+		} else {
+			map.put("valid", true);
+		}
+		ObjectMapper mapper = new ObjectMapper();
+		String resultString = "";
+		resultString = mapper.writeValueAsString(map);
+		return resultString;
+	}
+	
+	/**
+	 * 校验登录用户名是否存在
+	 * 
+	 * @return
+	 * @throws ApplicationException
+	 * @throws JsonProcessingException
+	 */
+	@RequestMapping(value = "checkUserLoginNameIsExist", method = RequestMethod.POST)
+	@ResponseBody
+	public String checkUserLoginNameIsExist(String userloginname) throws ApplicationException, JsonProcessingException {
+
+		Boolean isValid = syscorpinforService.checkUserLoginName(userloginname);
+		Map<String, Boolean> map = new HashMap<>();
+		if (isValid) {
+			map.put("valid", true);
+		} else {
+			map.put("valid", false);
+		}
+		ObjectMapper mapper = new ObjectMapper();
+		String resultString = "";
+		resultString = mapper.writeValueAsString(map);
+		return resultString;
+	}
+	
+	/**
+	 * 登录
+	 * 
+	 * @return
+	 * @throws IOException 
+	 * @throws ServletException 
+	 * @throws ApplicationException
+	 */
+	@RequestMapping(value = "/login", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String,String> login(@RequestBody Syscorpinfor syscorpinfor,HttpServletRequest request) {
+		Syscorpinfor userInfo = syscorpinforService.login(syscorpinfor);
+		Map<String, String> hashMap = new HashMap<String,String>();
+		if(userInfo != null){
+			hashMap.put("page", userInfo.getCorptype());
+			request.getSession().setAttribute("userInfo", userInfo);
+		}else{
+			hashMap.put("msg", "用户名或密码错误");
+		}
+		return hashMap;
+	}
+	
+	
+	/**
+	 * 登出
+	 * 
+	 * @return
+	 * @throws IOException 
+	 * @throws ServletException 
+	 * @throws ApplicationException
+	 */
+	@RequestMapping(value = "/loginOut")
+	@ResponseBody
+	public void loginOut(HttpServletRequest request) {
+			request.getSession().invalidate();
+	}
+	/**
+	 * 查询银行信息
+	 * 
+	 * @return
+	 * @throws ApplicationException
+	 * @throws UnsupportedEncodingException 
+	 */
+	@RequestMapping(value = "/showBankList", produces = "application/json; charset=utf-8",method = RequestMethod.GET)
+	@ResponseBody
+	public  List<Syscorpinfor> showBankList(@RequestParam String bankName) throws ApplicationException, UnsupportedEncodingException {
+		return syscorpinforService.getBankList(bankName);
+	}
+	
+	/**
+	 * 查询机构信息
+	 * 
+	 * @return
+	 * @throws ApplicationException
+	 */
+	@RequestMapping(value = "/showCollectionList", produces = "application/json; charset=utf-8",method = RequestMethod.GET)
+	@ResponseBody
+	public  List<Syscorpinfor> showCollectionList(@RequestParam String Collection) throws ApplicationException {
+		List<Syscorpinfor> ret = null;
+		ret = syscorpinforService.getCollectionList(Collection);
+		return ret;
+	}
+	
+	/**
+	 * 修改用户密码
+	 * 
+	 * @return
+	 * @throws ApplicationException
+	 * @throws UnsupportedEncodingException
+	 */
+	@RequestMapping(value = "/editPassword", produces = "application/json; charset=utf-8",method = RequestMethod.POST)
+	@ResponseBody
+	public Boolean editPassword(@RequestBody Syscorpinfor syscorpinfor) throws ApplicationException, UnsupportedEncodingException {
+
+		Boolean flag = syscorpinforService.editPassword(syscorpinfor);
+		return flag;
+	}
+}

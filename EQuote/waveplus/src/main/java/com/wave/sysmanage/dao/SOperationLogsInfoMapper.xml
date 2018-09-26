@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wave.sysmanage.dao.SOperationLogsInfoMapper" >
+  <resultMap id="BaseResultMap" type="SOperationLogsInfoVo" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="USER_NAME" property="userName" jdbcType="VARCHAR" />
+    <result column="USER_IP" property="userIp" jdbcType="VARCHAR" />
+    <result column="BIZ_NAME" property="bizName" jdbcType="VARCHAR" />
+    <result column="OPT_FUNCTION_NAME" property="optFunctionName" jdbcType="VARCHAR" />
+    <result column="OPT_INFO" property="optInfo" jdbcType="VARCHAR" />
+    <result column="OPT_TIME" property="optTime" jdbcType="VARCHAR" />
+    <result column="LOG_TYPE" property="logType" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, SU.USER_NAME AS USER_NAME, USER_IP, BIZ_NAME, OPT_FUNCTION_NAME, OPT_INFO, OPT_TIME, LOG_TYPE
+  </sql> 
+  
+  <sql id="query_Column_List" >
+    SI.ID, SU.USER_NAME AS USER_NAME, SI.USER_IP, SI.BIZ_NAME, SI.OPT_FUNCTION_NAME, SI.OPT_INFO, SI.OPT_TIME, SI.LOG_TYPE
+  </sql> 
+  
+   
+  
+  <select id="getLogListInfo" resultMap="BaseResultMap">
+        SELECT 
+        <include refid="Base_Column_List" />
+         from S_OPERATION_LOGS_INFO SI
+            LEFT JOIN S_USER SU ON SI.USER_NAME = SU.USER_ID 
+         WHERE LOG_TYPE = #{logType,jdbcType=VARCHAR}
+         <if test="startTime != null  and startTime != '' ">
+                 AND  SI.OPT_TIME<![CDATA[>=]]> #{startTime,jdbcType=VARCHAR}  
+          </if>  
+          <if test="endTime != null  and  endTime != ''">
+                 AND  SI.OPT_TIME <![CDATA[<=]]> #{endTime,jdbcType=VARCHAR}
+          </if> 
+          
+          <if test="userName != null and userName != '' ">
+               AND  SU.USER_NAME LIKE '%'  || #{userName,jdbcType=VARCHAR} || '%'
+          </if>
+          <if test="keyWord != null and keyWord != '' ">
+                AND (OPT_INFO LIKE '%'  || #{keyWord,jdbcType=VARCHAR} || '%' OR BIZ_NAME LIKE '%' || #{keyWord,jdbcType=VARCHAR} || '%') 
+          </if>
+          order by si.opt_time desc
+  </select>
+  <insert id="insert" parameterType="SOperationLogsInfoVo" >
+    insert into S_OPERATION_LOGS_INFO (ID, USER_NAME, USER_IP, 
+      BIZ_NAME, OPT_FUNCTION_NAME, OPT_INFO, 
+      OPT_TIME, LOG_TYPE)
+    values (#{id,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR}, #{userIp,jdbcType=VARCHAR}, 
+      #{bizName,jdbcType=VARCHAR}, #{optFunctionName,jdbcType=VARCHAR}, #{optInfo,jdbcType=VARCHAR}, 
+      #{optTime,jdbcType=VARCHAR}, #{logType,jdbcType=VARCHAR})
+  </insert>
+  
+  <!-- 数据同步 -->
+  <select id="insertByImport"  >
+insert into S_FUNCTION_INFO (ID, PID, FUNCTION_NAME, 
+FUNCTION_TYPE, SORT, MAP_ID, 
+REMARK, IS_SHOW)
+<if test="isNetRelease == 'no'">
+ VALUES 
+<foreach collection="sOperationLogsInfoVoList" item="vo" index="index" separator="," >  
+(
+'${vo.id}', '${vo.pid}', '${vo.functionName}', 
+'${vo.functionType}', '${vo.sort}', '${vo.mapId}', 
+'${vo.remark}', '${vo.isShow}'
+)
+</foreach>  
+ </if>
+ <if test="isNetRelease == 'yes'">
+<foreach collection="sOperationLogsInfoVoList" item="vo" index="index" separator=" union all " >  
+SELECT 
+#{vo.id,jdbcType=VARCHAR}, #{vo.pid,jdbcType=VARCHAR}, #{vo.functionName,jdbcType=VARCHAR}, 
+#{vo.functionType,jdbcType=VARCHAR}, #{vo.sort,jdbcType=DECIMAL}, #{vo.mapId,jdbcType=VARCHAR}, 
+#{vo.remark,jdbcType=VARCHAR}, #{vo.isShow,jdbcType=DECIMAL}
+FROM DUAL 
+</foreach>  
+ </if>
+  </select>
+</mapper>

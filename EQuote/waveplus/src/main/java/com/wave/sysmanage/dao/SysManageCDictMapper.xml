@@ -1,0 +1,330 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wave.sysmanage.dao.SysManageCDictMapper" >
+  <resultMap id="BaseResultMap" type="com.wave.sysmanage.vo.SysManageCDictVo" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="PID" property="pid" jdbcType="VARCHAR" />
+    <result column="DICT_TYPE" property="dictType" jdbcType="VARCHAR" />
+    <result column="DICT_KEY" property="dictKey" jdbcType="VARCHAR" />
+    <result column="DICT_VALUE" property="dictValue" jdbcType="VARCHAR" />
+    <result column="DICT_VALUE2" property="dictValue2" jdbcType="VARCHAR" />
+    <result column="OTHER_SYS_KEY" property="otherSysKey" jdbcType="VARCHAR" />
+    <result column="OTHER_SYS_VALUE" property="otherSysValue" jdbcType="VARCHAR" />
+    <result column="OTHER_SYS_VALUE2" property="otherSysValue2" jdbcType="VARCHAR" />
+    <result column="REMARK" property="remark" jdbcType="VARCHAR" />
+    <result column="STATUS" property="status" jdbcType="VARCHAR" />
+    <result column="IS_SYS_USED" property="isSysUsed" jdbcType="VARCHAR" />
+    <result column="CREATER" property="creater" jdbcType="VARCHAR" />
+    <result column="CREATETIME" property="createTime" jdbcType="VARCHAR" />
+    <result column="UPDATER" property="updater" jdbcType="VARCHAR" />
+    <result column="UPDATE_TIME" property="updateTime" jdbcType="VARCHAR" />
+    <result column="UPDATE_TIME_SHOW" property="updateTimeShow" jdbcType="VARCHAR" />
+    <result column="SORT_SERIAL_NO" property="sortSerialNo" jdbcType="DECIMAL" />
+    
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, PID, DICT_TYPE, DICT_KEY, DICT_VALUE,DICT_VALUE2, OTHER_SYS_KEY, OTHER_SYS_VALUE,OTHER_SYS_VALUE2, 
+    REMARK, STATUS, IS_SYS_USED, CREATER, CREATETIME, UPDATER, UPDATE_TIME,SORT_SERIAL_NO
+  </sql>
+  
+
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from C_DICT
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="getDictParentInfo"  resultMap="BaseResultMap">
+         select 
+    <include refid="Base_Column_List" />
+    from C_DICT
+    where ID = #{pid,jdbcType=VARCHAR}
+  </select>
+  <select id="getTreeInfo" resultMap="BaseResultMap">
+    select 
+   di.ID, di.PID, di.DICT_TYPE, di.DICT_KEY, di.DICT_VALUE,di.DICT_VALUE AS VALUE,di.DICT_VALUE2, di.OTHER_SYS_KEY, di.OTHER_SYS_VALUE,di.OTHER_SYS_VALUE2, 
+    di.REMARK, di.STATUS, di.IS_SYS_USED, di.CREATER, di.CREATETIME, u.user_name AS UPDATER,di.UPDATE_TIME
+    from c_dict di
+     LEFT JOIN s_user u ON u.user_id = di.updater
+      WHERE 1=1
+    <if test="dictValue != null and dictValue != '' "  >
+        AND di.dict_value = #{dictValue,jdbcType=VARCHAR}
+        CONNECT BY PRIOR di.id = di.pid 
+      </if>
+      <if test="dictType != null and dictType != '' " >
+        AND di.dict_type in (#{dictType,jdbcType=VARCHAR})
+      </if>
+      <if test="dictKey != null and dictKey != ''" >
+        AND di.dict_key in (#{dictKey,jdbcType=VARCHAR})
+      </if>
+      <if test="status != null and status != '' " >
+        AND di.status in (#{status,jdbcType=VARCHAR})
+      </if>
+      <if test="isSysUsed != null and isSysUsed != '' " >
+        AND di.is_sys_used = #{isSysUsed,jdbcType=VARCHAR}
+      </if>
+      ORDER BY di.dict_type 
+  </select>
+  
+  <select id="checkDictKeyInfo" resultType="int">
+       select count(id)
+            from c_dict
+            where pid = #{checkId,jdbcType=VARCHAR}
+            AND (dict_key = #{dictKey,jdbcType=VARCHAR} or other_sys_key = #{otherSysKey,jdbcType=VARCHAR})
+  </select>
+  
+  <select id="checkOtherSysKeyInfo" resultType="int">
+       select count(id)
+            from c_dict
+            where pid = #{id,jdbcType=VARCHAR}
+            AND other_sys_key = #{otherSysKey,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="checkDictKey" resultType="int">
+        select COUNT(ID) from c_dict where dict_type = #{dictType,jdbcType=VARCHAR}
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from C_DICT
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.wave.sysmanage.vo.SysManageCDictVo" >
+    insert into C_DICT (ID, PID, DICT_TYPE, 
+      DICT_KEY, DICT_VALUE,DICT_VALUE2, OTHER_SYS_KEY, 
+      OTHER_SYS_VALUE, OTHER_SYS_VALUE2, REMARK, STATUS, 
+      IS_SYS_USED, CREATER, CREATETIME, 
+      UPDATER, UPDATE_TIME)
+    values (#{id,jdbcType=VARCHAR}, #{pid,jdbcType=VARCHAR}, #{dictType,jdbcType=VARCHAR}, 
+      #{dictKey,jdbcType=VARCHAR}, #{dictValue,jdbcType=VARCHAR},  #{dictValue2,jdbcType=VARCHAR}, #{otherSysKey,jdbcType=VARCHAR}, 
+      #{otherSysValue,jdbcType=VARCHAR},#{otherSysValue2,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, 
+      #{isSysUsed,jdbcType=VARCHAR}, #{creater,jdbcType=VARCHAR}, #{createTime,jdbcType=VARCHAR}, 
+      #{updater,jdbcType=VARCHAR}, #{updateTime,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.wave.sysmanage.vo.SysManageCDictVo" >
+    insert into C_DICT
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="pid != null" >
+        PID,
+      </if>
+      <if test="dictType != null" >
+        DICT_TYPE,
+      </if>
+      <if test="dictKey != null" >
+        DICT_KEY,
+      </if>
+      <if test="dictValue != null" >
+        DICT_VALUE,
+      </if>
+      <if test="dictValue2 != null" >
+        DICT_VALUE2,
+      </if>
+      <if test="otherSysKey != null" >
+        OTHER_SYS_KEY,
+      </if>
+      <if test="otherSysValue != null" >
+        OTHER_SYS_VALUE,
+      </if>
+      <if test="otherSysValue2 != null" >
+        OTHER_SYS_VALUE2,
+      </if>
+      <if test="remark != null" >
+        REMARK,
+      </if>
+      <if test="status != null" >
+        STATUS,
+      </if>
+      <if test="isSysUsed != null" >
+        IS_SYS_USED,
+      </if>
+      <if test="creater != null" >
+        CREATER,
+      </if>
+      <if test="createTime != null" >
+        CREATETIME,
+      </if>
+      <if test="updater != null" >
+        UPDATER,
+      </if>
+      <if test="updateTime != null" >
+        UPDATE_TIME,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="pid != null" >
+        #{pid,jdbcType=VARCHAR},
+      </if>
+      <if test="dictType != null" >
+        #{dictType,jdbcType=VARCHAR},
+      </if>
+      <if test="dictKey != null" >
+        #{dictKey,jdbcType=VARCHAR},
+      </if>
+      <if test="dictValue != null" >
+        #{dictValue,jdbcType=VARCHAR},
+      </if>
+      <if test="dictValue2 != null" >
+        #{dictValue2,jdbcType=VARCHAR},
+      </if>
+      <if test="otherSysKey != null" >
+        #{otherSysKey,jdbcType=VARCHAR},
+      </if>
+      <if test="otherSysValue != null" >
+        #{otherSysValue,jdbcType=VARCHAR},
+      </if>
+      <if test="otherSysValue2 != null" >
+        #{otherSysValue2,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="isSysUsed != null" >
+        #{isSysUsed,jdbcType=VARCHAR},
+      </if>
+      <if test="creater != null" >
+        #{creater,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="updater != null" >
+        #{updater,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <delete id="deleteDictInfo">
+   DELETE FROM C_DICT
+  </delete>
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.wave.sysmanage.vo.SysManageCDictVo" >
+    update C_DICT
+    <set >
+      <if test="pid != null" >
+        PID = #{pid,jdbcType=VARCHAR},
+      </if>
+      <if test="dictType != null" >
+        DICT_TYPE = #{dictType,jdbcType=VARCHAR},
+      </if>
+      <if test="dictKey != null" >
+        DICT_KEY = #{dictKey,jdbcType=VARCHAR},
+      </if>
+      <if test="dictValue != null" >
+        DICT_VALUE = #{dictValue,jdbcType=VARCHAR},
+      </if>
+      <if test="dictValue2 != null" >
+        DICT_VALUE2 = #{dictValue2,jdbcType=VARCHAR},
+      </if>
+      <if test="otherSysKey != null" >
+        OTHER_SYS_KEY = #{otherSysKey,jdbcType=VARCHAR},
+      </if>
+      <if test="otherSysValue != null" >
+        OTHER_SYS_VALUE = #{otherSysValue,jdbcType=VARCHAR},
+      </if>
+      <if test="otherSysValue2 != null" >
+        OTHER_SYS_VALUE2 = #{otherSysValue2,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        REMARK = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        STATUS = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="isSysUsed != null" >
+        IS_SYS_USED = #{isSysUsed,jdbcType=VARCHAR},
+      </if>
+      <if test="creater != null" >
+        CREATER = #{creater,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        CREATETIME = #{createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="updater != null" >
+        UPDATER = #{updater,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        UPDATE_TIME = #{updateTime,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.wave.sysmanage.vo.SysManageCDictVo" >
+    update C_DICT
+    set PID = #{pid,jdbcType=VARCHAR},
+      DICT_TYPE = #{dictType,jdbcType=VARCHAR},
+      DICT_KEY = #{dictKey,jdbcType=VARCHAR},
+      DICT_VALUE = #{dictValue,jdbcType=VARCHAR},
+      DICT_VALUE2 = #{dictValue2,jdbcType=VARCHAR},
+      OTHER_SYS_KEY = #{otherSysKey,jdbcType=VARCHAR},
+      OTHER_SYS_VALUE = #{otherSysValue,jdbcType=VARCHAR},
+      OTHER_SYS_VALUE2 = #{otherSysValue2,jdbcType=VARCHAR},
+      REMARK = #{remark,jdbcType=VARCHAR},
+      STATUS = #{status,jdbcType=VARCHAR},
+      IS_SYS_USED = #{isSysUsed,jdbcType=VARCHAR},
+      CREATER = #{creater,jdbcType=VARCHAR},
+      CREATETIME = #{createTime,jdbcType=VARCHAR},
+      UPDATER = #{updater,jdbcType=VARCHAR},
+      UPDATE_TIME = #{updateTime,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+<select id="selectByExport" resultMap="BaseResultMap">
+  SELECT 
+<include refid="Base_Column_List" />
+FROM C_DICT T
+<if test="exportType == 'increments'">
+INNER JOIN S_DATA_SYNCHRON_TIME SDST ON T.UPDATE_TIME <![CDATA[>=]]> SDST.SYN_DATE_TIME AND SDST.SYN_ORG_ID='SYS'
+</if>
+</select>
+
+<!-- 数据同步 -->
+<select id="insertByImport"  >
+ insert into C_DICT (ID, PID, DICT_TYPE, 
+DICT_KEY, DICT_VALUE, DICT_VALUE2, OTHER_SYS_KEY, 
+OTHER_SYS_VALUE, OTHER_SYS_VALUE2, REMARK, STATUS, 
+IS_SYS_USED, CREATER, CREATETIME, 
+UPDATER, UPDATE_TIME,SORT_SERIAL_NO)
+<if test="isNetRelease == 'no'">
+   VALUES 
+<foreach collection="sysManageCDictVoList" item="vo" index="index" separator="," >  
+(
+'${vo.id}', '${vo.pid}', '${vo.dictType}', 
+'${vo.dictKey}', '${vo.dictValue}','${vo.dictValue2}', '${vo.otherSysKey}', 
+'${vo.otherSysValue}','${vo.otherSysValue2}', '${vo.remark}', '${vo.status}', 
+'${vo.isSysUsed}', '${vo.creater}', '${vo.createTime}', 
+'${vo.updater}', '${vo.updateTime}','${vo.sortSerialNo}'
+)
+</foreach>  
+</if>
+ <if test="isNetRelease == 'yes'">
+<foreach collection="sysManageCDictVoList"  item="vo"  index="index"  separator=" union all " >  
+SELECT 
+'${vo.id}', '${vo.pid}', '${vo.dictType}', 
+'${vo.dictKey}', '${vo.dictValue}', '${vo.dictValue2}','${vo.otherSysKey}', 
+'${vo.otherSysValue}','${vo.otherSysValue2}', '${vo.remark}', '${vo.status}', 
+'${vo.isSysUsed}', '${vo.creater}', '${vo.createTime}', 
+'${vo.updater}', '${vo.updateTime}','${vo.sortSerialNo}'
+  FROM DUAL 
+</foreach>  
+ </if>
+ </select>
+<delete id="deleteByImport">
+DELETE FROM C_DICT WHERE ID IN
+<foreach collection="sysManageCDictVoList" item="vo" index="index" open="(" separator="," close=")">  
+'${vo.id}'
+</foreach>
+</delete>
+
+</mapper>

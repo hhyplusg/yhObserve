@@ -1,0 +1,128 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<c:set var="content"  value="${pageContext.request.contextPath}"/>
+<script type="text/javascript">
+	var projectPath = 'http://' + location.host + '${content}'; 
+	var basePath = 'http://' + location.host + '${content}' + "/syscorpinforManager"; 
+</script>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+	<head >  
+		<title>用户登录</title>
+		<link rel="stylesheet" href="${content }/bootstrap/css/bootstrap.min.css">
+		<link rel="stylesheet" href="${content }/bootstrap/plugins/bootstrap-table/bootstrap-table.css">
+		<link rel="stylesheet" href="${content }/bootstrap/plugins/validator/css/bootstrapValidator.min.css">
+		<link rel="stylesheet" href="${content }/bootstrap-3.3.7/css/login.css">
+		<script src="${content }/jquery/jquery-3.3.1.min.js"></script>
+		<script src="${content }/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+		<script src="${content }/bootstrap/plugins/bootstrap-table/bootstrap-table.js"></script>
+		<script src="${content }/bootstrap/js/ga.js"></script>
+		<script src="${content }/bootstrap/plugins/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"></script>
+		<script src="${content }/bootstrap/plugins/validator/js/bootstrapValidator.min.js"></script>
+		<script src="${content }/bootstrap/plugins/validator/js/language/zh_CN.js"></script>
+	</head>
+	<body>
+	<div class="container">
+	    <div class="row">
+	        <div class="col-md-offset-3 col-md-6">
+	            <form class="form-horizontal"  action="/login" method="post" id="">
+	                <span class="heading">用户登录</span>
+	                <div class="form-group">
+	                    <input type="text" class="form-control" id="userloginname" name="userloginname" placeholder="用户名">
+	                    <i class="fa fa-user"></i>
+	                </div>
+	                <div class="form-group help">
+	                    <input type="password" class="form-control" id="password"  name="password" placeholder="密　码">
+	                    <i class="fa fa-lock"></i>
+	                    <a href="#" class="fa fa-question-circle"></a>
+	                    <font color="red" style="text-align: left;margin-top: 5px;display: none;"  size="2px" id="msg">用户名或密码有误，请核对</font>
+	                </div>
+	                <div class="form-group">
+	                    <div class="main-checkbox">
+	                        <input type="checkbox" value="None" id="remember" name="check"/>
+	                        <label for="remember"></label>
+	                    </div>
+	                    <span class="text">记住密码</span>
+	                    <button type="button" class="btn btn-primary submit" id="login">登录</button>
+	                </div>
+	            </form>
+	        </div>
+	    </div>
+	</div>
+	</body>
+<script type="text/javascript">
+$('form').bootstrapValidator({
+	//  live: 'disabled',
+	message : 'This value is not valid',
+	feedbackIcons: {
+		valid : 'glyphicon glyphicon-ok',
+		invalid: 'glyphicon glyphicon-remove',
+		validating: 'glyphicon glyphicon-refresh'
+		},
+		fields : {
+			userloginname : {
+				//message : 'The username is not valid',
+				validators : {
+					notEmpty : {
+						message : '登陆名不能为空'
+					},
+					regexp : {
+						regexp : /^[a-zA-Z0-9_\.]+$/,
+						message : '用户名只能包含大写、小写、数字和下划线'
+					}/* ,
+					 remote : {
+						url : basePath+'/checkUserLoginNameIsExist',
+						message : '用户名不存在'
+					} */
+				}
+			},
+			password : {
+				validators : {
+					notEmpty : {
+						message : '密码不能为空'
+					}
+				}
+			}
+		}
+	});
+</script>
+<script type="text/javascript">
+$("form").submit(function(ev){ev.preventDefault();});
+$("#login").on("click", function(){
+
+   var bootstrapValidator = $("form").data('bootstrapValidator');
+   bootstrapValidator.validate();
+   if(bootstrapValidator.isValid()) 
+	   login();
+   else return;
+
+});
+function login(){
+	var row = {};
+    $('.row').find('input[name]').each(function () {
+          row[$(this).attr('name')] = $(this).val();
+    });
+	$.ajax({
+        url: basePath+'/login',
+        type: 'POST',
+        contentType: 'application/json;charset=utf-8',
+        data:  JSON.stringify(row),
+        success: function (data) {
+        	if(data.page == "1"){
+        		 window.location.href = projectPath + "/equote.jsp";
+        	}else if(data.page == "2" ){
+        		window.location.href = projectPath + "/inquiry.jsp";
+        	}else if(data.page == "3"){
+        		window.location.href = projectPath + "/manager.jsp";
+        	}else{
+        		$("#msg").show();
+        	}
+        },
+        error: function () {
+        }
+    });
+};
+
+</script>
+</html>

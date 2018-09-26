@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wave.common.dao.CDictMapper" >
+  <resultMap id="BaseResultMap" type="com.wave.common.vo.CDictVo" >
+    <result column="PID" property="pid" jdbcType="VARCHAR" />
+    <result column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="DICT_TYPE" property="dictType" jdbcType="VARCHAR" />
+    <result column="DICT_KEY" property="dictKey" jdbcType="VARCHAR" />
+    <result column="DICT_VALUE" property="dictValue" jdbcType="VARCHAR" />
+    <result column="CENTRALITY_SYS_KEY" property="centralitySysKey" jdbcType="VARCHAR" />
+    <result column="CENTRALITY_SYS_VALUE" property="centralitySysValue" jdbcType="VARCHAR" />
+  </resultMap>
+  <select id="getCDictVoByType"  parameterType="String" resultMap="BaseResultMap"  >
+     SELECT PID,
+           ID,
+           DICT_TYPE,
+           DICT_KEY,
+           DICT_VALUE,
+           CENTRALITY_SYS_KEY,
+           CENTRALITY_SYS_VALUE
+      FROM C_DICT 
+ WHERE DICT_TYPE = #{cDictType,jdbcType=VARCHAR} 
+    AND  PID <![CDATA[ <> ]]> #{cDictType,jdbcType=VARCHAR} 
+    AND STATUS = '20' 
+    ORDER BY SORT_SERIAL_NO ASC
+  </select>
+  
+  <select id="getCDictVoByPid"  parameterType="String" resultMap="BaseResultMap"  >
+       SELECT PID,
+           ID,
+           DICT_TYPE,
+           DICT_KEY,
+           DICT_VALUE,
+           CENTRALITY_SYS_KEY,
+           CENTRALITY_SYS_VALUE
+      FROM C_DICT 
+        WHERE PID = #{PID,jdbcType=VARCHAR} 
+        AND STATUS = '20'
+        ORDER BY SORT_SERIAL_NO ASC
+  </select> 
+  
+  <select id="getCDictVoByKey"  parameterType="com.wave.common.vo.CDictVo" resultType="com.wave.common.vo.CDictVo"  >
+       SELECT PID,
+           ID,
+           DICT_TYPE as dictType,
+           DICT_KEY as dictKey,
+           DICT_VALUE as dictValue
+      FROM C_DICT 
+        WHERE DICT_TYPE = #{dictType,jdbcType=VARCHAR}  AND DICT_KEY = #{dictKey,jdbcType=VARCHAR} 
+        AND STATUS = '20' 
+        ORDER BY SORT_SERIAL_NO ASC
+  </select> 
+  
+</mapper>

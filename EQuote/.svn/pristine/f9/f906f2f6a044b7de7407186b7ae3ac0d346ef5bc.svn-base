@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+    <settings>
+        <!-- 全局映射器启用缓存 -->
+        <setting name="cacheEnabled" value="true" />
+        <!-- 查询时，关闭关联对象即时加载以提高性能 -->
+        <setting name="lazyLoadingEnabled" value="true" />
+        <!-- 设置关联对象加载的形态，此处为按需加载字段(加载字段由SQL指定)，不会加载关联表的所有字段，以提高性能 -->
+        <setting name="aggressiveLazyLoading" value="true" />
+        <!-- 对于未知的SQL查询，允许返回不同的结果集以达到通用的效果 -->
+        <setting name="multipleResultSetsEnabled" value="true" />
+        <!-- 允许使用列标签代替列名 -->
+        <setting name="useColumnLabel" value="true" />
+        <!-- 允许使用自定义的主键值(比如由程序生成的UUID 32位编码作为键值)，数据表的PK生成策略将被覆盖 -->
+        <setting name="useGeneratedKeys" value="true" />
+         <!-- 给予被嵌套的resultMap以字段-属性的映射支持 -->
+        <setting name="autoMappingBehavior" value="FULL" />
+        <!-- 在null时也调用 setter,适应于返回Map,3.2版本以上可用 -->  
+        <setting name="callSettersOnNulls" value="true"/>  
+        <!-- 设置但JDBC类型为空时,某些驱动程序 要指定值,default:OTHER --> 
+        <setting name="jdbcTypeForNull" value="NULL"/>  
+         <!-- 对于批量更新操作缓存SQL以提高性能  SIMPLE：普通返回。 REUSE：重复。 BATCH:批量更新。更新与删除时，BATCH反回值都是"-2147482646"-->
+        <setting name="defaultExecutorType" value="SIMPLE" />
+         <!-- 数据库超过25000秒仍未响应则超时 -->
+        <setting name="defaultStatementTimeout" value="36000000" />
+        <!-- log4j2实例名 --> 
+        <!-- SLF4J、LOG4J、LOG4J2、JDK_LOGGING、COMMONS_LOGGING、STDOUT_LOGGING、NO_LOGGING -->
+        <setting name="logImpl" value="LOG4J2" /> 
+    </settings>
+    
+    <typeAliases>    
+       <typeAlias alias="SOperationLogsInfoVo" type="com.wave.sysmanage.vo.SOperationLogsInfoVo"/> 
+       <!-- common接口用字段VO -->
+      <!--  <typeAlias alias="CDictVo" type="com.wave.common.vo.CDictVo"/>  -->
+       <!-- 系统用户登陆接口用字段VO -->
+        <typeAlias alias="SUserVo" type="com.wave.user.vo.SUserVo"/>  
+       </typeAliases>
+     
+    <plugins>
+        <plugin interceptor="com.wave.core.plugin.mybatis.MybatisPagePlugin">
+            <!-- 数据库类型，目前支持mysql与oracle -->
+            <!-- <property name="dialect" value="oracle"/>  -->
+           <property name="dialect" value="mysql"/>
+            <!-- <property name="dialect" value="sqlite"/>-->
+            <!-- 需要分页的sqlMapＩＤ -->
+            <property name="pageSqlId" value=".*select.*"/>
+            <!-- Vo中的Page属性名称 -->
+            <property name="pageVoName" value="pageVo"/>
+            <!-- Vo中的totalResultsCount属性名称，总记录数，jqwidgets组件的总记录数还需要直接反。 -->
+            <property name="totalResultsCountName" value="totalResultsCount"/>
+            
+        </plugin>
+    </plugins> 
+</configuration>
+<!-- 
+别名                  类型
+事务管理器类型  
+JDBC                    com.ibatis.sqlmap.engine.transaction.jdbc.JdbcTransactionConfig
+JTA                     com.ibatis.sqlmap.engine.transaction.jta.JtaTransactionConfig
+EXTERNAL                com.ibatis.sqlmap.engine.transaction.external.ExternalTransactionConfig
+数据类型     
+string                  java.lang.String
+byte                    java.lang.Byte
+long                    java.lang.Long
+short                   java.lang.Short
+int                     java.lang.Integer
+integer                 java.lang.Integer
+double                  java.lang.Double
+float                   java.lang.Float
+boolean                 java.lang.Boolean
+date                    java.util.Date
+decimal                 java.math.BigDecimal
+object                  java.lang.Object
+map                     java.util.Map
+hashmap                 java.util.HashMap
+list                    java.util.List
+arraylist               java.util.ArrayList
+collection              java.util.Collection
+iterator                java.util.Iterator
+数据源工厂类型  
+SIMPLE                  com.ibatis.sqlmap.engine.datasource.SimpleDataSourceFactory
+DBCP                    com.ibatis.sqlmap.engine.datasource.DbcpDataSourceFactory
+JNDI                    com.ibatis.sqlmap.engine.datasource.JndiDataSourceFactory
+高速缓存控制器类型    
+FIFO                    com.ibatis.sqlmap.engine.cache.fifo.FifoCacheController
+LRU                     com.ibatis.sqlmap.engine.cache.lru.LruCacheController
+MEMORY                  com.ibatis.sqlmap.engine.cache.memory.MemoryCacheController
+OSCACHE                 com.ibatis.sqlmap.engine.cache.oscache.OSCacheController
+XML结果类型  
+Dom                     com.ibatis.sqlmap.engine.type.DomTypeMarker
+domCollection           com.ibatis.sqlmap.engine.type.DomCollectionTypeMarker
+Xml                     com.ibatis.sqlmap.engine.type.XmlTypeMarker
+XmlCollection           com.ibatis.sqlmap.engine.type.XmlCollectionTypeMarker
+ -->

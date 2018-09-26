@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wave.sysmanage.dao.SRoleMapper">
+  <resultMap id="BaseResultMap" type="com.wave.sysmanage.vo.SRoleVo" >
+    <result column="ROLE_CODE" property="roleCode" jdbcType="VARCHAR" />
+    <result column="ROLE_NAME" property="roleName" jdbcType="VARCHAR" />
+    <result column="REMARK" property="remark" jdbcType="VARCHAR" />
+    <result column="STATUS" property="status" jdbcType="VARCHAR" />
+    <result column="AREA_CODE" property="areaCode" jdbcType="VARCHAR" />
+    <result column="ROLE_TYPE" property="roleType" jdbcType="DECIMAL" />
+    <result column="CREATER" property="creater" jdbcType="VARCHAR" />
+    <result column="CREATETIME" property="createTime" jdbcType="VARCHAR" />
+    <result column="UPDATER" property="updater" jdbcType="VARCHAR" />
+    <result column="UPDATE_TIME" property="updateTime" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ROLE_CODE, ROLE_NAME, REMARK, STATUS, AREA_CODE, ROLE_TYPE, CREATER, CREATETIME, UPDATER, UPDATE_TIME
+  </sql>
+  
+   <resultMap id="AreaRoleTreeMap" type="com.wave.sysmanage.vo.AreaRoleTreeVo">
+      <result column="TREE_ID" property="treeCode" jdbcType="VARCHAR"/>
+      <result column="TREE_PID" property="treePid" jdbcType="VARCHAR"/>
+      <result column="TREE_NAME" property="treeName" jdbcType="VARCHAR"/>
+      <result column="ROLE_TYPE" property="roleType" jdbcType="VARCHAR"/>
+      <result column="REMARK" property="remark" jdbcType="VARCHAR"/>
+      <result column="UPDATER" property="updater" jdbcType="VARCHAR"/>
+      <result column="UPDATE_TIME" property="updatetime" jdbcType="VARCHAR"/>
+  </resultMap>
+  <select id="getRoleByRoleTypeAndAreaCode" resultMap="AreaRoleTreeMap" parameterType="com.wave.sysmanage.vo.SRoleVo">
+	SELECT   
+	         SR.ROLE_CODE   AS TREE_ID,
+	         SR.ROLE_NAME   AS TREE_NAME,
+	         SR.ROLE_TYPE   ,
+	         SR.REMARK      AS REMARK,
+	         SR.UPDATER     AS UPDATER,
+	         SR.UPDATE_TIME AS UPDATE_TIME
+    FROM S_ROLE SR
+ 
+  </select>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from S_ROLE where ROLE_CODE = #{roleCode,jdbcType=VARCHAR}
+  </select>
+  <select id="selectByRoleName" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from S_ROLE where ROLE_NAME = #{roleName,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from S_ROLE where ROLE_CODE = #{roleCode,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.wave.sysmanage.vo.SRoleVo" >
+    insert into S_ROLE (ROLE_CODE, ROLE_NAME, REMARK, 
+      STATUS, CREATER, CREATETIME, 
+      UPDATER, UPDATE_TIME, AREA_CODE, 
+      ROLE_TYPE)
+    values (#{roleCode,jdbcType=VARCHAR}, #{roleName,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
+      #{status,jdbcType=VARCHAR}, #{creater,jdbcType=VARCHAR}, #{createTime,jdbcType=VARCHAR}, 
+      #{updater,jdbcType=VARCHAR}, #{updateTime,jdbcType=VARCHAR}, #{areaCode,jdbcType=VARCHAR}, 
+      #{roleType,jdbcType=DECIMAL})
+  </insert>
+  <insert id="insertSelective" parameterType="com.wave.sysmanage.vo.SRoleVo" >
+    insert into S_ROLE
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="roleCode != null" >
+        ROLE_CODE,
+      </if>
+      <if test="roleName != null" >
+        ROLE_NAME,
+      </if>
+      <if test="remark != null" >
+        REMARK,
+      </if>
+      <if test="status != null" >
+        STATUS,
+      </if>
+      <if test="creater != null" >
+        CREATER,
+      </if>
+      <if test="createTime != null" >
+        CREATETIME,
+      </if>
+      <if test="updater != null" >
+        UPDATER,
+      </if>
+      <if test="updateTime != null" >
+        UPDATE_TIME,
+      </if>
+      <if test="areaCode != null" >
+        AREA_CODE,
+      </if>
+      <if test="roleType != null and roleType>0" >
+        ROLE_TYPE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="roleCode != null" >
+        #{roleCode,jdbcType=VARCHAR},
+      </if>
+      <if test="roleName != null" >
+        #{roleName,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="creater != null" >
+        #{creater,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="updater != null" >
+        #{updater,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=VARCHAR},
+      </if>
+      <if test="areaCode != null" >
+        #{areaCode,jdbcType=VARCHAR},
+      </if>
+      <if test="roleType != null" >
+        #{roleType,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.wave.sysmanage.vo.SRoleVo" >
+    update S_ROLE
+    <set >
+      <if test="roleName != null" >
+        ROLE_NAME = #{roleName,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        REMARK = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        STATUS = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="creater != null" >
+        CREATER = #{creater,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        CREATETIME = #{createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="updater != null" >
+        UPDATER = #{updater,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        UPDATE_TIME = #{updateTime,jdbcType=VARCHAR},
+      </if>
+      <if test="areaCode != null" >
+        AREA_CODE = #{areaCode,jdbcType=VARCHAR},
+      </if>
+      <if test="roleType != null and roleType>0">
+        ROLE_TYPE = #{roleType,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where ROLE_CODE = #{roleCode,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.wave.sysmanage.vo.SRoleVo" >
+    update S_ROLE
+    set ROLE_NAME = #{roleName,jdbcType=VARCHAR},
+      REMARK = #{remark,jdbcType=VARCHAR},
+      STATUS = #{status,jdbcType=VARCHAR},
+      CREATER = #{creater,jdbcType=VARCHAR},
+      CREATETIME = #{createTime,jdbcType=VARCHAR},
+      UPDATER = #{updater,jdbcType=VARCHAR},
+      UPDATE_TIME = #{updateTime,jdbcType=VARCHAR},
+      AREA_CODE = #{areaCode,jdbcType=VARCHAR},
+      ROLE_TYPE = #{roleType,jdbcType=DECIMAL}
+    where ROLE_CODE = #{roleCode,jdbcType=VARCHAR}
+  </update>
+  <select id="getRolesByAreaAndType" resultMap="BaseResultMap">
+    SELECT ROLE_CODE, ROLE_NAME
+    FROM S_ROLE
+    WHERE STATUS = '20'
+  </select>
+  <select id="getAreaRoleByRoleName" resultMap="BaseResultMap">
+	select  
+	<include refid="Base_Column_List" />
+	from S_ROLE
+	where ROLE_NAME = #{roleName,jdbcType=VARCHAR} AND AREA_CODE = #{areaCode,jdbcType=VARCHAR} AND ROLE_TYPE=1 AND STATUS = '20'
+  </select> 
+</mapper>

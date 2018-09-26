@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wave.sysmanage.dao.SRoleUserMapper" >
+  <resultMap id="BaseResultMap" type="com.wave.sysmanage.vo.SRoleUserVo" >
+    <id column="ROLE_ID" property="roleId" jdbcType="VARCHAR" />
+    <id column="USER_ID" property="userId" jdbcType="VARCHAR" />
+  </resultMap>
+  
+
+  
+  <delete id="deleteByPrimaryKey" parameterType="com.wave.sysmanage.vo.SRoleUserVo" >
+    delete from S_ROLE_USER
+    where ROLE_ID = #{roleId,jdbcType=VARCHAR}
+      and USER_ID = #{userId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.wave.sysmanage.vo.SRoleUserVo" >
+    insert into S_ROLE_USER (ROLE_ID, USER_ID)
+    values (#{roleId,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.wave.sysmanage.vo.SRoleUserVo" >
+    insert into S_ROLE_USER
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="roleId != null" >
+        ROLE_ID,
+      </if>
+      <if test="userId != null" >
+        USER_ID,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="roleId != null" >
+        #{roleId,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <delete id="deleteRoleByUserId" parameterType="string">
+    delete from S_ROLE_USER where USER_ID = #{userId,jdbcType=VARCHAR}
+  </delete>
+  
+<!-- 数据同步 -->
+<select id="insertByImport"  >
+insert into S_ROLE_USER (ROLE_ID, USER_ID)
+<if test="isNetRelease == 'no'">
+   VALUES 
+  <foreach collection="sRoleUserVoList" item="vo" index="index" separator="," >  
+  ('${vo.roleId}', '${vo.userId}')
+</foreach>  
+ </if>
+ <if test="isNetRelease == 'yes'">
+<foreach collection="sRoleUserVoList" item="vo" index="index" separator=" union all " >  
+SELECT 
+#{vo.roleId,jdbcType=VARCHAR}, #{vo.userId,jdbcType=VARCHAR}
+  FROM DUAL 
+</foreach>  
+ </if>
+  </select>
+<select id="selectByExport" resultMap="BaseResultMap">
+SELECT r.ROLE_ID, r.USER_ID FROM S_ROLE_USER r ,S_USER u 
+WHERE r.USER_ID = u.USER_ID
+AND u.USER_LONGIN_NAME = #{userLonginName,jdbcType=VARCHAR}
+ </select> 
+  
+</mapper>

@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xmlns:c="http://www.springframework.org/schema/c"
+    xmlns:cache="http://www.springframework.org/schema/cache"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+    xmlns:jee="http://www.springframework.org/schema/jee"
+    xmlns:lang="http://www.springframework.org/schema/lang"
+    xmlns:mvc="http://www.springframework.org/schema/mvc"
+    xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
+    xmlns:oxm="http://www.springframework.org/schema/oxm"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:security="http://www.springframework.org/schema/security"
+    xmlns:task="http://www.springframework.org/schema/task"
+    xmlns:tx="http://www.springframework.org/schema/tx"
+    xmlns:util="http://www.springframework.org/schema/util"
+    xsi:schemaLocation="http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-4.3.xsd
+        http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-4.3.xsd
+        http://www.springframework.org/schema/lang http://www.springframework.org/schema/lang/spring-lang-4.3.xsd
+        http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd
+        http://www.springframework.org/schema/oxm http://www.springframework.org/schema/oxm/spring-oxm-4.3.xsd
+        http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-4.3.xsd
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+        http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache-4.3.xsd
+        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd
+        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
+        http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-4.0.xsd
+        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.3.xsd
+        http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd 
+        http://www.springframework.org/schema/websocket http://www.springframework.org/schema/websocket/spring-websocket-4.3.xsd
+        http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-4.3.xsd">
+   <!-- 
+Quartz是一个开放源码项目，专注于任务调度器，提供了极为广泛的特性如持久化任务，集群和分布式任务等。 Quartz核心是调度器，还采用多线程管理。
+1.持久化任务：当应用程序停止运行时，所有调度信息不被丢失，当你重新启动时，调度信息还存在，这就是持久化任务（保存到数据库表中）。
+2.集群和分布式处理：当在集群环境下，当有配置Quartz的多个客户端时（节点），采用Quartz的集群和分布式处理时，我们要了解几点好处
+1) 一个节点无法完成的任务，会被集群中拥有相同的任务的节点取代执行。
+2） Quartz调度是通过触发器的类别来识别不同的任务，在不同的节点定义相同的触发器的类别，这样在集群下能稳定的运行，一个节点无法完成的任务，会被集群中拥有相同的任务的节点取代执行。
+3）分布式体现在当相同的任务定时在一个时间点，在那个时间点，不会被两个节点同时执行。
+Quartz的 Task（11 张表）实例化采用数据库存储，基于数据库引擎及 High-Available 的策略（集群的一种策略）自动协调每个节点的 Quartz。
+    【秒】   【分】  【时】   【日】  【月】   【周】  【年】   
+    下面只例出几个式子
+    CRON表达式    含义 
+    "0 0 12 * * ?"    每天中午十二点触发 
+    "0 15 10 ? * *"    每天早上10：15触发 
+    "0 15 10 * * ?"    每天早上10：15触发 
+    "0 15 10 * * ? *"    每天早上10：15触发 
+    "0 15 10 * * ? 2005"    2005年的每天早上10：15触发 
+    "0 * 14 * * ?"    每天从下午2点开始到2点59分每分钟一次触发 
+    "0 0/5 14 * * ?"    每天从下午2点开始到2：55分结束每5分钟一次触发 
+    "0 0/5 14,18 * * ?"    每天的下午2点至2：55和6点至6点55分两个时间段内每5分钟一次触发 
+    "0 0-5 14 * * ?"    每天14:00至14:05每分钟一次触发 
+    "0 10,44 14 ? 3 WED"    三月的每周三的14：10和14：44触发 
+    "0 15 10 ? * MON-FRI"    每个周一、周二、周三、周四、周五的10：15触发 
+    cronExpression: 一个cron表达式有至少6个（也可能7个）有空格分隔的时间元素。从左到右：
+    1.秒2.分3.小时4.月份中的日期（1-31）5.月份（1-12或JAN-DEC)6.星期中的日期（1-7或SUN-SAT）7.年份（1970-2099） 
+            每个元素都显示的规定一个值（如6），一个区间（9-12），一个列表（9，11，13）或一个通配符（*）。
+            因为4和6这两个元素是互斥的，因此应该通过设置一个问号（？）来表明不想设置的那个字段，“/”如果值组合就表示重复次数（10/6表示每10秒重复6次）。 -->
+ <context:annotation-config /> 
+
+  <!-- 注册目标坐标推送业务处理job client 端数据推送 -->
+  <bean id="rollbackShipUpdateSchedule" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+    <property name="jobClass" value="com.wave.flexbletimer.CreateShipUpdateSchedule" />
+    <property name="durability" value="true" />
+  </bean>
+  
+  <!-- 配置目标坐标推送定时时器  client 端数据推送-->
+ <bean id="rollbackShipUpdateTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+    <property name="jobDetail" ref="rollbackShipUpdateSchedule" />
+    <property name="cronExpression"> 
+        <value>*/59 * * * * ?</value>
+    </property>
+    <property name="timeZone">
+      <value>GMT+8:00</value>
+    </property>
+  </bean> 
+   
+  <bean id="aisDataSynchronizationSchedule" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+    <property name="jobClass" value="com.wave.flexbletimer.AisDataSynchronizationSchedule" />
+    <property name="durability" value="true" />
+  </bean>
+   
+  <!-- 配置目标坐标推送定时时器  client 端数据推送-->
+  <bean id="rollbackAisDataSynchronizationTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+    <property name="jobDetail" ref="aisDataSynchronizationSchedule" />
+    <property name="cronExpression"> 
+        <value>*/59 * * * * ?</value>
+    </property>
+    <property name="timeZone">
+      <value>GMT+8:00</value>
+    </property>
+  </bean>
+  
+  <bean id="newDataSynchronizationSchedule" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+    <property name="jobClass" value="com.wave.flexbletimer.NewDataSynchronizationSchedule" />
+    <property name="durability" value="true" />
+  </bean>
+  
+  <bean id="rollbackNewDataSynchronizationTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+    <property name="jobDetail" ref="newDataSynchronizationSchedule" />
+    <property name="cronExpression"> 
+        <value>*/5 * * * * ?</value>
+    </property>
+    <property name="timeZone">
+      <value>GMT+8:00</value>
+    </property>
+  </bean>
+   
+  <bean id="quartzScheduler" parent="baseQuartzScheduler">
+    <property name="configLocation" value="classpath:conf/spring/quartz-job.properties" />
+    <property name="autoStartup" value="true" />
+    <!-- This name is persisted as SCHED_NAME in db. for local testing could change to unique name to avoid collision with dev server -->
+    <property name="schedulerName" value="apiQuartzScheduler" />
+    <!-- NOTE: Must add both the jobDetail and trigger to the scheduler! -->
+    <property name="triggers">
+      <list>
+        <ref bean="rollbackShipUpdateTrigger" />
+        <ref bean="rollbackAisDataSynchronizationTrigger" />
+        <ref bean="rollbackNewDataSynchronizationTrigger" /> 
+      </list>
+    </property>
+
+    <property name="jobDetails">
+      <list>
+        <ref bean="rollbackShipUpdateSchedule" />
+        <ref bean="aisDataSynchronizationSchedule" />
+        <ref bean="newDataSynchronizationSchedule" />
+      </list>
+    </property>
+  </bean>
+  <!-- 集群定时器基础配置 -->
+  <bean id="baseQuartzScheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+    <!-- 集群用数据库 -->
+    <property name="dataSource" ref="dataSource" />
+    <!-- 集群用事务 -->
+    <property name="transactionManager" ref="transactionManager" />
+
+    <!-- This name is persisted as SCHED_NAME in db. for local testing could change to unique name to avoid collision with dev server -->
+    <property name="schedulerName" value="quartzScheduler" />
+
+    <!-- Will update database cron triggers to what is in this jobs file on each deploy. Replaces all previous trigger and job data that was in the database. YMMV -->
+    <property name="overwriteExistingJobs" value="true" />
+    <!-- 延迟30秒启动 -->
+    <property name="startupDelay" value="30" /> 
+    <!-- 自动启动 -->
+    <property name="autoStartup" value="true" />
+    <property name="applicationContextSchedulerContextKey" value="applicationContext" />
+    <property name="jobFactory"> 
+        <bean class="com.wave.flexbletimer.factory.AutowiringSpringBeanJobFactory" />
+    </property> 
+  </bean>
+</beans>

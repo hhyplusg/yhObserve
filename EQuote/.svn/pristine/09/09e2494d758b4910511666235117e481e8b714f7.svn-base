@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wave.common.dao.CAreaInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.wave.common.vo.SysCAreaManageVo" >
+    <result column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="PID" property="pid" jdbcType="VARCHAR" />
+    <result column="PROVINCE_CODE" property="provinceCode" jdbcType="VARCHAR" />
+    <result column="CITY_CODE" property="cityCode" jdbcType="VARCHAR" />
+    <result column="COUNTY_CODE" property="countyCode" jdbcType="VARCHAR" />
+    <result column="AREA_CODE" property="areaCode" jdbcType="VARCHAR" />
+    <result column="AREA_NAME" property="areaName" jdbcType="VARCHAR" />
+    <result column="AREA_SHORT_NAME" property="areaShortName" jdbcType="VARCHAR" />
+    <result column="AREA_FULL_NAME" property="areaFullName" jdbcType="VARCHAR" />
+  </resultMap>
+  
+   <select id="insertByImport"  >
+        insert into C_AREA_INFO (ID, PID, PROVINCE_CODE, 
+      CITY_CODE, COUNTY_CODE, AREA_CODE, 
+      AREA_NAME, AREA_FULL_NAME, DESCRIPTION, 
+      SORT_SERIAL_NO, TOTAL_FUZZY_SWITCH, DINGBIANDAOREN_SWITCH, 
+      YONGBIAN_APPROVED_SWITCH, YONGBIAN_APPROVED_ACCEPTANCE, 
+      YONGBIAN_APPROVED_REVIEW, YONGBIAN_APPROVED_APPROVAL, 
+      ORG_APPROVED_SWITCH, ORG_APPROVED_ACCEPTANCE, 
+      ORG_APPROVED_REVIEW, ORG_APPROVED_APPROVAL, 
+      STAFF_APPROVED_SWITCH, STAFF_APPROVED_ACCEPTANCE, 
+      STAFF_APPROVED_REVIEW, STAFF_APPROVED_APPROVAL, 
+      REMARK, STATUS, CREATER, 
+      CREATETIME, UPDATER, UPDATE_TIME, 
+      STRICTNESS_POST_COUNT_WHITCH, AREA_SHORT_NAME, 
+      ORG_LEVEL_ID)
+      <if test="isNetRelease == 'no'">
+         VALUES 
+        <foreach collection="sysCAreaManageVoList" item="vo" index="index" separator="," >  
+        (#{vo.id,jdbcType=VARCHAR}, #{vo.pid,jdbcType=VARCHAR}, #{vo.provinceCode,jdbcType=VARCHAR}, 
+      #{vo.cityCode,jdbcType=VARCHAR}, #{vo.countyCode,jdbcType=VARCHAR}, #{vo.areaCode,jdbcType=VARCHAR}, 
+      #{vo.areaName,jdbcType=VARCHAR}, #{vo.areaFullName,jdbcType=VARCHAR}, #{vo.description,jdbcType=VARCHAR}, 
+      #{vo.sortSerialNo,jdbcType=DECIMAL}, #{vo.totalFuzzySwitch,jdbcType=VARCHAR}, #{vo.dingbiandaorenSwitch,jdbcType=VARCHAR}, 
+      #{vo.yongbianApprovedSwitch,jdbcType=VARCHAR}, #{vo.yongbianApprovedAcceptance,jdbcType=VARCHAR}, 
+      #{vo.yongbianApprovedReview,jdbcType=VARCHAR}, #{vo.yongbianApprovedApproval,jdbcType=VARCHAR}, 
+      #{vo.orgApprovedSwitch,jdbcType=VARCHAR}, #{vo.orgApprovedAcceptance,jdbcType=VARCHAR}, 
+      #{vo.orgApprovedReview,jdbcType=VARCHAR}, #{vo.orgApprovedApproval,jdbcType=VARCHAR}, 
+      #{vo.staffApprovedSwitch,jdbcType=VARCHAR}, #{vo.staffApprovedAcceptance,jdbcType=VARCHAR}, 
+      #{vo.staffApprovedReview,jdbcType=VARCHAR}, #{vo.staffApprovedApproval,jdbcType=VARCHAR}, 
+      #{vo.remark,jdbcType=VARCHAR}, #{vo.status,jdbcType=VARCHAR}, #{vo.creater,jdbcType=VARCHAR}, 
+      #{vo.createTime,jdbcType=VARCHAR}, #{vo.updater,jdbcType=VARCHAR}, #{vo.updateTime,jdbcType=VARCHAR}, 
+      #{vo.strictnessPostCountWhitch,jdbcType=VARCHAR}, #{vo.areaShortName,jdbcType=VARCHAR}, 
+      #{vo.orgLevelId,jdbcType=VARCHAR})
+      </foreach>  
+ </if>
+     <if test="isNetRelease == 'yes'">
+    <foreach collection="sysCAreaManageVoList" item="vo" index="index" separator=" union all " >  
+    SELECT 
+      #{vo.id,jdbcType=VARCHAR}, #{vo.pid,jdbcType=VARCHAR}, #{vo.provinceCode,jdbcType=VARCHAR}, 
+      #{vo.cityCode,jdbcType=VARCHAR}, #{vo.countyCode,jdbcType=VARCHAR}, #{vo.areaCode,jdbcType=VARCHAR}, 
+      #{vo.areaName,jdbcType=VARCHAR}, #{vo.areaFullName,jdbcType=VARCHAR}, #{vo.description,jdbcType=VARCHAR}, 
+      #{vo.sortSerialNo,jdbcType=DECIMAL}, #{vo.totalFuzzySwitch,jdbcType=VARCHAR}, #{vo.dingbiandaorenSwitch,jdbcType=VARCHAR}, 
+      #{vo.yongbianApprovedSwitch,jdbcType=VARCHAR}, #{vo.yongbianApprovedAcceptance,jdbcType=VARCHAR}, 
+      #{vo.yongbianApprovedReview,jdbcType=VARCHAR}, #{vo.yongbianApprovedApproval,jdbcType=VARCHAR}, 
+      #{vo.orgApprovedSwitch,jdbcType=VARCHAR}, #{vo.orgApprovedAcceptance,jdbcType=VARCHAR}, 
+      #{vo.orgApprovedReview,jdbcType=VARCHAR}, #{vo.orgApprovedApproval,jdbcType=VARCHAR}, 
+      #{vo.staffApprovedSwitch,jdbcType=VARCHAR}, #{vo.staffApprovedAcceptance,jdbcType=VARCHAR}, 
+      #{vo.staffApprovedReview,jdbcType=VARCHAR}, #{vo.staffApprovedApproval,jdbcType=VARCHAR}, 
+      #{vo.remark,jdbcType=VARCHAR}, #{vo.status,jdbcType=VARCHAR}, #{vo.creater,jdbcType=VARCHAR}, 
+      #{vo.createTime,jdbcType=VARCHAR}, #{vo.updater,jdbcType=VARCHAR}, #{vo.updateTime,jdbcType=VARCHAR}, 
+      #{vo.strictnessPostCountWhitch,jdbcType=VARCHAR}, #{vo.areaShortName,jdbcType=VARCHAR}, 
+      #{vo.orgLevelId,jdbcType=VARCHAR}
+      FROM DUAL 
+    </foreach>  
+     </if>
+  </select>
+    
+    <delete id="deleteByImport"  parameterType="java.lang.String">
+        DELETE FROM C_AREA_INFO
+        <where>
+             <if test="areaCodes != null and areaCodes.length > 0">
+                AND AREA_CODE IN 
+                <foreach item="areaCode"  collection="areaCodes"  open="(" separator="," close=")"> 
+                    '${areaCode}'
+                 </foreach>
+            </if>
+        </where>
+    </delete>
+    
+  <select id="getAreasById"  parameterType="String" resultMap="BaseResultMap">
+     SELECT ID, PID, PROVINCE_CODE, 
+      CITY_CODE, COUNTY_CODE, AREA_CODE, 
+      AREA_NAME,AREA_SHORT_NAME
+      FROM C_AREA_INFO 
+    WHERE ID = #{id,jdbcType=VARCHAR} 
+    AND STATUS = '20' 
+  </select>
+  
+    <select id="getAreasByAreaCode"  parameterType="String" resultMap="BaseResultMap">
+     SELECT ID, PID, PROVINCE_CODE, 
+      CITY_CODE, COUNTY_CODE, AREA_CODE, 
+      AREA_NAME,AREA_SHORT_NAME, AREA_FULL_NAME
+      FROM C_AREA_INFO 
+    WHERE AREA_CODE = #{areaCode,jdbcType=VARCHAR} 
+    AND STATUS = '20' 
+  </select> 
+  <select id="getAreasByPid"  parameterType="String" resultMap="BaseResultMap">
+     SELECT ID, PID, PROVINCE_CODE, 
+      CITY_CODE, COUNTY_CODE, AREA_CODE, 
+      AREA_NAME,AREA_SHORT_NAME
+      FROM C_AREA_INFO 
+    WHERE PID = #{pid,jdbcType=VARCHAR} 
+    AND STATUS = '20' 
+    order by AREA_CODE asc
+  </select> 
+  <select id="getCAreaInfoVoByChild"  parameterType="String" resultMap="BaseResultMap">
+	SELECT P.ID, P.PID, P.AREA_CODE, P.AREA_NAME
+	  FROM C_AREA_INFO C
+	  LEFT JOIN (SELECT ID, PID, AREA_CODE, AREA_NAME FROM C_AREA_INFO) P
+	    ON C.PID = P.ID
+	 WHERE C.AREA_CODE = #{CHILDAREACODE, jdbcType = VARCHAR}
+	   AND C.STATUS = '20'
+  </select>
+  
+  <select id="getAllNextAreaByPid" parameterType="String" resultMap="BaseResultMap">
+<if test="isNetRelease == 'no'">
+SELECT ai.pid,ai.id,ai.area_code,ai.area_name  
+FROM c_area_info ai
+LEFT JOIN c_area_info pai ON pai.id='420100'
+WHERE ai.city_code LIKE (case when pai.city_code = '00' and pai.county_code = '00' then '' else pai.city_code end)
+</if> 
+<if test="isNetRelease == 'yes'">
+SELECT pid,id,area_code,area_name FROM c_area_info START WITH ID=#{pid,jdbcType=VARCHAR} Connect BY  PRIOR ID=pid
+</if> 
+  </select>
+</mapper>

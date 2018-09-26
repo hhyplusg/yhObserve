@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wave.sysmanage.dao.SRoleFunctionMapper" >
+  <resultMap id="BaseResultMap" type="com.wave.sysmanage.vo.SRoleFunctionVo" >
+    <id column="FUNCTION_ID" property="functionId" jdbcType="VARCHAR" />
+    <id column="ROLE_ID" property="roleId" jdbcType="VARCHAR" />
+  </resultMap>
+  
+
+  
+  <delete id="deleteByPrimaryKey" parameterType="com.wave.sysmanage.vo.SRoleFunctionVo" >
+    delete from S_ROLE_FUNCTION
+    where FUNCTION_ID = #{functionId,jdbcType=VARCHAR}
+      and ROLE_ID = #{roleId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.wave.sysmanage.vo.SRoleFunctionVo" >
+    insert into S_ROLE_FUNCTION (FUNCTION_ID, ROLE_ID)
+    
+    values (#{functionId,jdbcType=VARCHAR}, #{roleId,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.wave.sysmanage.vo.SRoleFunctionVo" >
+    insert into S_ROLE_FUNCTION
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="functionId != null" >
+        FUNCTION_ID,
+      </if>
+      <if test="roleId != null" >
+        ROLE_ID,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="functionId != null" >
+        #{functionId,jdbcType=VARCHAR},
+      </if>
+      <if test="roleId != null" >
+        #{roleId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+<select id="addRoleFunctions" >
+insert into S_ROLE_FUNCTION (FUNCTION_ID, ROLE_ID) 
+<if test="isNetRelease == 'no'">
+ VALUES 
+<foreach collection="sRoleFunctionVoList" item="vo" index="index" separator="," >
+(#{vo.functionId,jdbcType=VARCHAR}, #{vo.roleId,jdbcType=VARCHAR})
+</foreach>
+</if>
+<if test="isNetRelease == 'yes'">
+<foreach collection="sRoleFunctionVoList" item="vo" index="index" separator=" union all " >   
+SELECT 
+#{vo.functionId,jdbcType=VARCHAR}, #{vo.roleId,jdbcType=VARCHAR}
+FROM DUAL 
+</foreach>  
+</if>
+</select>
+  
+  <select id="selectByRoleId" resultMap="BaseResultMap" parameterType="java.lang.String">
+    select FUNCTION_ID, ROLE_ID from S_ROLE_FUNCTION
+    where ROLE_ID = #{roleId,jdbcType=VARCHAR}
+  </select>
+  
+  <delete id="deleteByRoleId" parameterType="java.lang.String" >
+    delete from S_ROLE_FUNCTION
+    where ROLE_ID = #{roleId,jdbcType=VARCHAR}
+  </delete>
+  
+  <!-- 数据同步 -->
+<select id="insertByImport"  >
+    insert into S_ROLE_FUNCTION (ROLE_ID, FUNCTION_ID)
+ <if test="isNetRelease == 'no'">
+    VALUES 
+   <foreach collection="sRoleFunctionVoList" item="vo" index="index" separator="," >  
+   ('${vo.roleId}', '${vo.functionId}')
+ </foreach>  
+</if>
+ <if test="isNetRelease == 'yes'">
+<foreach collection="sRoleFunctionVoList" item="vo" index="index" separator=" union all " >  
+SELECT 
+  #{vo.roleId,jdbcType=VARCHAR}, #{vo.functionId,jdbcType=VARCHAR}
+  FROM DUAL 
+</foreach>  
+ </if>
+ </select>
+ <select id="selectByExport" resultMap="BaseResultMap">
+SELECT f.ROLE_ID, f.FUNCTION_ID FROM S_ROLE_FUNCTION f, S_ROLE_USER r ,S_USER u 
+WHERE f.ROLE_ID = r.ROLE_ID AND  r.USER_ID = u.USER_ID 
+AND u.USER_LONGIN_NAME = #{userLonginName,jdbcType=VARCHAR}
+ </select> 
+</mapper>

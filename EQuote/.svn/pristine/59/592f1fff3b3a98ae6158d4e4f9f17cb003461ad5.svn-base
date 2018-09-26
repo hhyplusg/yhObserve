@@ -1,0 +1,528 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>waveplus</groupId>
+	<artifactId>waveplus</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>jar</packaging>
+
+	<name>waveplus</name>
+	<url>http://repo.maven.apache.org/maven2</url>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<!-- spring相关依赖包 -->
+		<org.springframework.version>5.0.0.RELEASE</org.springframework.version>
+		<org.springframework.spring-webmvc.version>4.3.9.RELEASE</org.springframework.spring-webmvc.version>
+
+		<org.springframework.security.version>4.2.3.RELEASE</org.springframework.security.version>
+		<!-- Spring Session作为Spring社区官方推荐的一个比较简单快速的Java Web分布式session解决方案，帮我们搞定了长期以来比较蛋疼的session分布式的问题。 -->
+		<org.springframework.session.version>1.3.1.RELEASE</org.springframework.session.version>
+		<org.jbcrypt.version>0.4</org.jbcrypt.version>
+
+		<!-- Mybatis 开发包 -->
+		<org.mybatis.version>3.3.0</org.mybatis.version>
+		<org.mybatis.spring.version>1.2.3</org.mybatis.spring.version>
+		<org.mybatis.generator.version>1.3.5</org.mybatis.generator.version>
+		<org.mybatis.caches.version>1.0.0</org.mybatis.caches.version>
+		<!-- 下面两个包 commons-dbcp,commons-pool 是配置数据源的包 -->
+		<org.apache.commons.version>3.6</org.apache.commons.version>
+		<!-- Apache Commons DBCP software implements Database Connection Pooling -->
+		<commons-dbcp2.version>2.1.1</commons-dbcp2.version>
+		<!-- org.apache.commons.fileupload -->
+		<org.apache.commons.fileupload.version>1.2.2.LIFERAY-PATCHED-1</org.apache.commons.fileupload.version>
+		<!-- 下面的三个包是在配置事务的时候用到的 spring的依赖包 -->
+		<aopalliance.version>1.0</aopalliance.version>
+		<cglib-full.version>2.0.2</cglib-full.version>
+		<cglib.version>3.2.5</cglib.version>
+		<org.aspectj.aspectjweaver.version>1.8.9</org.aspectj.aspectjweaver.version>
+
+		<!-- fasterxml是一个SAX模式的XML解析器。它直接解析XML文本，调用注册的事件函数，快速访问XML中感兴趣的内容。 -->
+		<com.fasterxml.jackson.version>2.9.1</com.fasterxml.jackson.version>
+
+		<!-- j2ee -->
+		<javaee-api.version>8.0</javaee-api.version>
+		<!-- JSTL标签库 -->
+		<javax.servlet.jstl.version>1.2.2</javax.servlet.jstl.version>
+		<javax.servlet.jsp.jstl.version>1.2-rev-1</javax.servlet.jsp.jstl.version>
+		<javax.servlet-api.version>3.1.0</javax.servlet-api.version>
+		<!-- 添加mysql jdbc driver -->
+		<mysql-connector-java.version>5.1.1</mysql-connector-java.version>
+
+		<!-- 日志打印 log4j包 -->
+		<log4j.version>2.9.1</log4j.version>
+		<commons-logging.version>1.2</commons-logging.version>
+		<!-- Spring 文件上传的依赖包 -->
+		<commons-io.version>2.5</commons-io.version>
+		<!-- Apache Commons Net library contains a collection of network utilities 
+			and protocol implementations. Supported protocols include: Echo, Finger, 
+			FTP, NNTP, NTP, POP3(S), SMTP(S), Telnet, Whois -->
+		<commons-net.version>3.6</commons-net.version>
+
+		<!-- Commons codec，是项目中用来处理常用的编码方法的工具类包，例如DES、SHA1、MD5、Base64，URL，Soundx等等。不仅是编码，也可用于解码。 -->
+		<commons-codec.vsersion>1.9</commons-codec.vsersion>
+
+		<!-- dom4j 解析 XML文件的包 -->
+		<dom4j.version>1.6.1</dom4j.version>
+		<!-- JSON lib 开发包 以及它的依赖包 -->
+		<net.sf.json-lib.version>2.4</net.sf.json-lib.version>
+		<!-- Java port of Stefan Goessner JsonPath. -->
+		<com.jayway.jsonpath.version>2.4.0</com.jayway.jsonpath.version>
+		<commons-beanutils.vsersion>1.9.3</commons-beanutils.vsersion>
+
+		<net.sf.ezmorph.vsersion>1.0.6</net.sf.ezmorph.vsersion>
+		<xmlbeans.version>2.6.0</xmlbeans.version>
+
+		<!-- Quartz是一个开放源码项目，专注于任务调度器，提供了极为广泛的特性如持久化任务，集群和分布式任务等。 Quartz核心是调度器，还采用多线程管理。 
+			1.持久化任务：当应用程序停止运行时，所有调度信息不被丢失，当你重新启动时，调度信息还存在，这就是持久化任务（保存到数据库表中）。 2.集群和分布式处理：当在集群环境下，当有配置Quartz的多个客户端时（节点），采用Quartz的集群和分布式处理时，我们要了解几点好处 
+			1) 一个节点无法完成的任务，会被集群中拥有相同的任务的节点取代执行。 2） Quartz调度是通过触发器的类别来识别不同的任务，在不同的节点定义相同的触发器的类别，这样在集群下能稳定的运行，一个节点无法完成的任务，会被集群中拥有相同的任务的节点取代执行。 
+			3）分布式体现在当相同的任务定时在一个时间点，在那个时间点，不会被两个节点同时执行。 Quartz的 Task（11 张表）实例化采用数据库存储，基于数据库引擎及 
+			High-Available 的策略（集群的一种策略）自动协调每个节点的 Quartz。 -->
+		<org.quartz-scheduler.version>2.3.0</org.quartz-scheduler.version>
+
+		<!-- pinyin4j 汉语转换成拼音音 -->
+		<pinyin4j.version>2.5.1</pinyin4j.version>
+		<!-- Druid首先是一个数据库连接池。Druid是目前最好的数据库连接池，在功能、性能、扩展性方面，都超过其他数据库连接池，包括DBCP、C3P0、BoneCP、Proxool、JBoss 
+			DataSource。 -->
+		<!-- 本系统中使用sql解析功能 -->
+		<com.alibaba.druid.version>1.1.4</com.alibaba.druid.version>
+
+	</properties>
+
+
+	<dependencies>
+		<!-- spring 5 config start -->
+		<!-- 此处开始就是Spring 所有的jar了，spring4.0的jar包拆分了，所以很多 -->
+		<!-- Core utilities used by other modules. Define this if you use Spring 
+			Utility APIs (org.springframework.core.*/org.springframework.util.*) -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-core</artifactId>
+			<version>${org.springframework.version}</version>
+		</dependency>
+
+		<!-- Expression Language (depends on spring-core) Define this if you use 
+			Spring Expression APIs (org.springframework.expression.*) -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-expression</artifactId>
+			<version>${org.springframework.version}</version>
+		</dependency>
+
+		<!-- Bean Factory and JavaBeans utilities (depends on spring-core) Define 
+			this if you use Spring Bean APIs (org.springframework.beans.*) -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-beans</artifactId>
+			<version>${org.springframework.version}</version>
+		</dependency>
+
+		<!-- Aspect Oriented Programming (AOP) Framework (depends on spring-core, 
+			spring-beans) Define this if you use Spring AOP APIs (org.springframework.aop.*) -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-aop</artifactId>
+			<version>${org.springframework.version}</version>
+		</dependency>
+
+		<!-- Application Context (depends on spring-core, spring-expression, spring-aop, 
+			spring-beans) This is the central artifact for Spring’s Dependency Injection 
+			Container and is generally always defined -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<version>${org.springframework.version}</version>
+		</dependency>
+
+		<!-- Various Application Context utilities, including EhCache, JavaMail, 
+			Quartz, and Freemarker integration Define this if you need any of these integrations -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context-support</artifactId>
+			<version>${org.springframework.version}</version>
+		</dependency>
+
+		<!-- Transaction Management Abstraction (depends on spring-core, spring-beans, 
+			spring-aop, spring-context) Define this if you use Spring Transactions or 
+			DAO Exception Hierarchy (org.springframework.transaction.*/org.springframework.dao.*) -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-tx</artifactId>
+			<version>${org.springframework.version}</version>
+		</dependency>
+
+		<!-- JDBC Data Access Library (depends on spring-core, spring-beans, spring-context, 
+			spring-tx) Define this if you use Spring’s JdbcTemplate API (org.springframework.jdbc.*) -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-jdbc</artifactId>
+			<version>${org.springframework.version}</version>
+		</dependency>
+
+		<!-- Object-to-Relation-Mapping (ORM) integration with Hibernate, JPA, 
+			and iBatis. (depends on spring-core, spring-beans, spring-context, spring-tx) 
+			Define this if you need ORM (org.springframework.orm.*) -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-orm</artifactId>
+			<version>${org.springframework.version}</version>
+		</dependency>
+
+		<!-- Object-to-XML Mapping (OXM) abstraction and integration with JAXB, 
+			JiBX, Castor, XStream, and XML Beans. (depends on spring-core, spring-beans, 
+			spring-context) Define this if you need OXM (org.springframework.oxm.*) -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-oxm</artifactId>
+			<version>${org.springframework.version}</version>
+		</dependency>
+
+		<!-- Web application development utilities applicable to both Servlet and 
+			Portlet Environments (depends on spring-core, spring-beans, spring-context) 
+			Define this if you use Spring MVC, or wish to use Struts, JSF, or another 
+			web framework with Spring (org.springframework.web.*) -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-web</artifactId>
+			<version>${org.springframework.version}</version>
+		</dependency>
+
+		<!-- Spring MVC for Servlet Environments (depends on spring-core, spring-beans, 
+			spring-context, spring-web) Define this if you use Spring MVC with a Servlet 
+			Container such as Apache Tomcat (org.springframework.web.servlet.*) -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc</artifactId>
+			<version>${org.springframework.version}</version>
+		</dependency>
+
+		<!-- Spring MVC for Portlet Environments (depends on spring-core, spring-beans, 
+			spring-context, spring-web) Define this if you use Spring MVC with a Portlet 
+			Container (org.springframework.web.portlet.*) -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc-portlet</artifactId>
+			<version>${org.springframework.spring-webmvc.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-websocket</artifactId>
+			<version>${org.springframework.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-messaging</artifactId>
+			<version>${org.springframework.version}</version>
+		</dependency>
+		<!-- Support for testing Spring applications with tools such as JUnit and 
+			TestNG This artifact is generally always defined with a ‘test’ scope for 
+			the integration testing framework and unit testing stubs -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+			<version>${org.springframework.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-web</artifactId>
+			<version>${org.springframework.security.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-config</artifactId>
+			<version>${org.springframework.security.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-crypto</artifactId>
+			<version>${org.springframework.security.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-taglibs</artifactId>
+			<version>${org.springframework.security.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.mindrot</groupId>
+			<artifactId>jbcrypt</artifactId>
+			<version>${org.jbcrypt.version}</version>
+		</dependency>
+		<!-- Spring Session作为Spring社区官方推荐的一个比较简单快速的Java Web分布式session解决方案，帮我们搞定了长期以来比较蛋疼的session分布式的问题。 
+			Spring Session解决的基本思路很简单，即将用户的session信息全部存放到一个redis数据库中，所有的session都从这个数据库拿。由于redis是一个内存数据库，数据信息读写是非常快速的。如此一来，多个Tomcat，共用一个redis数据库，即实现了session的共享问题。 -->
+		<dependency>
+			<groupId>org.springframework.session</groupId>
+			<artifactId>spring-session-data-redis</artifactId>
+			<version>${org.springframework.session.version}</version>
+		</dependency>
+
+
+		<!-- Spring 文件上传的依赖包 -->
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>${commons-io.version}</version>
+		</dependency>
+		<!-- org.apache.commons.fileupload -->
+		<dependency>
+			<groupId>com.liferay</groupId>
+			<artifactId>org.apache.commons.fileupload</artifactId>
+			<version>${org.apache.commons.fileupload.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-net</groupId>
+			<artifactId>commons-net</artifactId>
+			<version>${commons-net.version}</version>
+		</dependency>
+
+		<!-- Commons codec，是项目中用来处理常用的编码方法的工具类包，例如DES、SHA1、MD5、Base64，URL，Soundx等等。不仅是编码，也可用于解码。 -->
+		<dependency>
+			<groupId>commons-codec</groupId>
+			<artifactId>commons-codec</artifactId>
+			<version>${commons-codec.vsersion}</version>
+		</dependency>
+
+		<!-- 下面的三个包是在配置事务的时候用到的 spring的依赖包 -->
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjweaver</artifactId>
+			<version>${org.aspectj.aspectjweaver.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>aopalliance</groupId>
+			<artifactId>aopalliance</artifactId>
+			<version>${aopalliance.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>cglib</groupId>
+			<artifactId>cglib-full</artifactId>
+			<version>${cglib-full.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>cglib</groupId>
+			<artifactId>cglib</artifactId>
+			<version>${cglib.version}</version>
+		</dependency>
+
+		<!-- spring 5 config end -->
+
+		<!--xml tool config start -->
+		<!-- fasterxml是一个SAX模式的XML解析器。它直接解析XML文本，调用注册的事件函数，快速访问XML中感兴趣的内容。 -->
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-core</artifactId>
+			<version>${com.fasterxml.jackson.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>${com.fasterxml.jackson.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-annotations</artifactId>
+			<version>${com.fasterxml.jackson.version}</version>
+		</dependency>
+		<!--xml tool config end -->
+		<!-- mybatis config start -->
+		<!-- Mybatis 开发包 -->
+		<dependency>
+			<groupId>org.mybatis</groupId>
+			<artifactId>mybatis</artifactId>
+			<version>${org.mybatis.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.mybatis</groupId>
+			<artifactId>mybatis-spring</artifactId>
+			<version>${org.mybatis.spring.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.mybatis.caches</groupId>
+			<artifactId>mybatis-memcached</artifactId>
+			<version>${org.mybatis.caches.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.mybatis.generator</groupId>
+			<artifactId>mybatis-generator-core</artifactId>
+			<version>${org.mybatis.generator.version}</version>
+		</dependency>
+
+		<!-- 下面两个包 commons-dbcp,commons-pool 是配置数据源的包 -->
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>${org.apache.commons.version}</version>
+		</dependency>
+		<dependency>
+			<!-- Apache Commons DBCP software implements Database Connection Pooling -->
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-dbcp2</artifactId>
+			<version>${commons-dbcp2.version}</version>
+		</dependency>
+		<!-- j2ee -->
+		<dependency>
+			<groupId>javax</groupId>
+			<artifactId>javaee-api</artifactId>
+			<version>${javaee-api.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		<!-- JSTL标签库 -->
+		<dependency>
+			<groupId>javax.servlet.jsp.jstl</groupId>
+			<artifactId>jstl-api</artifactId>
+			<version>${javax.servlet.jsp.jstl.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<version>${javax.servlet-api.version}</version>
+		</dependency>
+		<!-- mysql的数据库驱动包 -->
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>${mysql-connector-java.version}</version>
+		</dependency>
+
+		<!-- 日志打印 log4j包 -->
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-api</artifactId>
+			<version>${log4j.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-core</artifactId>
+			<version>${log4j.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-web</artifactId>
+			<version>${log4j.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-slf4j-impl</artifactId>
+			<version>${log4j.version}</version>
+		</dependency>
+		<!-- 日志记录依赖包，很多都依赖此包，像log4j,json-lib等等 -->
+		<dependency>
+			<groupId>commons-logging</groupId>
+			<artifactId>commons-logging</artifactId>
+			<version>${commons-logging.version}</version>
+		</dependency>
+
+		<!-- JSON lib 开发包 以及它的依赖包 -->
+		<dependency>
+			<groupId>net.sf.json-lib</groupId>
+			<artifactId>json-lib</artifactId>
+			<version>${net.sf.json-lib.version}</version>
+			<classifier>jdk15</classifier>
+		</dependency>
+		<dependency>
+			<groupId>com.jayway.jsonpath</groupId>
+			<artifactId>json-path</artifactId>
+			<version>${com.jayway.jsonpath.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-beanutils</groupId>
+			<artifactId>commons-beanutils</artifactId>
+			<version>${commons-beanutils.vsersion}</version>
+		</dependency>
+		<dependency>
+			<groupId>net.sf.ezmorph</groupId>
+			<artifactId>ezmorph</artifactId>
+			<version>${net.sf.ezmorph.vsersion}</version>
+		</dependency>
+		<!-- mybatis config end -->
+
+		<dependency>
+			<groupId>org.apache.xmlbeans</groupId>
+			<artifactId>xmlbeans</artifactId>
+			<version>${xmlbeans.version}</version>
+		</dependency>
+
+		<!-- Quartz是一个开放源码项目，专注于任务调度器，提供了极为广泛的特性如持久化任务，集群和分布式任务等。 Quartz核心是调度器，还采用多线程管理。 -->
+		<dependency>
+			<groupId>org.quartz-scheduler</groupId>
+			<artifactId>quartz</artifactId>
+			<version>${org.quartz-scheduler.version}</version>
+		</dependency>
+
+		<!-- 汉语转换成拼音音 Support Chinese character (both Simplified and Tranditional) 
+			to most popular Pinyin systems, including Hanyu Pinyin, Tongyong Pinyin, 
+			Wade-Giles, MPS2, Yale and Gwoyeu Romatzyh. Support multiple pronounciations 
+			and customized output. -->
+		<dependency>
+			<groupId>com.belerweb</groupId>
+			<artifactId>pinyin4j</artifactId>
+			<version>${pinyin4j.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>druid</artifactId>
+			<version>${com.alibaba.druid.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>3.8.1</version>
+			<scope>test</scope>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/com.github.miemiedev/mybatis-paginator -->
+		<dependency>
+			<groupId>com.github.miemiedev</groupId>
+			<artifactId>mybatis-paginator</artifactId>
+			<version>1.2.17</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.glassfish.web</groupId>
+			<artifactId>jstl-impl</artifactId>
+			<version>1.2</version>
+			<exclusions>
+				<exclusion>
+					<groupId>javax.servlet</groupId>
+					<artifactId>servlet-api</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>javax.servlet.jsp</groupId>
+					<artifactId>jsp-api</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>javax.servlet.jsp.jstl</groupId>
+					<artifactId>jstl-api</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>com.oracle</groupId>
+			<artifactId>ojdbc14</artifactId>
+			<version>10.2.0.3.0</version>
+		</dependency>
+	</dependencies>
+
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.mybatis.generator</groupId>
+				<artifactId>mybatis-generator-maven-plugin</artifactId>
+				<version>1.3.6</version>
+				<configuration>
+					<!-- mybatis用于生成代码的配置文件 -->
+					<configurationFile>/waveplus/src/main/resource/conf/mybatis/generatorConfig</configurationFile>
+					<verbose>true</verbose>
+					<overwrite>true</overwrite>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>
