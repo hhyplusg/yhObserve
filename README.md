@@ -20,3 +20,6 @@ import test from './page';
 test();
 exp.test0();
 ```
+
+
+后面加了-new是上传到svn中的最新版

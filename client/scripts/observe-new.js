@@ -216,20 +216,21 @@ $(function(){
 	drawChart_B21();   //柱状图  换手率变化最大的基准
 	drawChart_B22();   //柱状图  换手率绝对水平最高的基准
 	drawChart_B23();   //表格   基准/版块的周换手率
+	drawChart_B23_Hide();
 	drawChart_B24(keys.B24,'000001.SH','上证综指');   //双轴  指定板块周换手率的历史变化
 	drawChart_B31();   //柱状图
 	drawChart_B32();   //象限图
-	drawChart_B33(keys.B33,'CI005001.WI','石油石化想（中信）');  // 反转图 	
+	drawChart_B33(keys.B33,'CI005001.WI','石油石化（中信）');  // 反转图 	
 	drawChart_B41(keys.B41,'000001.SH','上证综指');
 
 	$("#exportButton").click(function(event){
 
 		$("#bigDiv").wordExport();
 	});
-	
-	$('.selectDataArea .benchmark').css('backgroundColor','#d7d7d7');
+	$('.selectDataArea .benchmark').css('color','white');
+	$('.selectDataArea .benchmark').css('backgroundColor','#349BE0');
 	$('.selectDataArea .plate').css('backgroundColor','white');	
-
+	$('.selectDataArea .plate').css('color','black');	
 });
 
 
@@ -276,9 +277,19 @@ function drawChart_A11(){
 				selected: 3,
 				buttonTheme: { 
 		            style: {
-		                fontSize:13,    
+		                fontSize:13, 
+						
 		            },
+					states:{
+						select:{
+							fill:'#349BE0',
+							style: {
+								color:'white', 
+							},
+						}
+					},
 		        },
+				
 		        inputBoxBorderColor: 'gray',
 		        inputBoxWidth: 90,
 		        inputBoxHeight: 18,
@@ -512,6 +523,14 @@ function drawChart_A12(){
 		                fontSize:13,
 		          
 		            },
+					states:{
+						select:{
+							fill:'#349BE0',
+							style: {
+								color:'white', 
+							},
+						}
+					},
 		        },
 		        inputBoxBorderColor: 'gray',
 		        inputBoxWidth: 80,
@@ -547,7 +566,11 @@ function drawChart_A12(){
 			yAxis: [
 			{
 					title: {
-						// text: '融资买入/可用担保价值',
+						text: '(%)',
+						align: 'high',
+						offset: 0,
+						rotation: 0,
+						y: -10
 					},
 					lineWidth:1,
 					opposite: false
@@ -698,6 +721,20 @@ function drawChart_A21(){
 		            fontWeight: 'bold',
 		            fontSize:13
 		        },
+				buttonTheme: { 
+		            style: {
+		                fontSize:13, 
+						
+		            },
+					states:{
+						select:{
+							fill:'#349BE0',
+							style: {
+								color:'white', 
+							},
+						}
+					},
+		        },
 			},
 			exporting: {
 			    enabled: false,
@@ -840,6 +877,20 @@ function drawChart_A22(key,windCode,smooth,windCodeText,smoothText){
 		            color: 'gray',
 		            fontWeight: 'bold',
 		            fontSize:13
+		        },
+				buttonTheme: { 
+		            style: {
+		                fontSize:13, 
+						
+		            },
+					states:{
+						select:{
+							fill:'#349BE0',
+							style: {
+								color:'white', 
+							},
+						}
+					},
 		        },
 			},
 			navigator: {
@@ -1002,6 +1053,20 @@ function drawChart_A23(key,selectedVal,selectedText){
 		            color: 'gray',
 		            fontWeight: 'bold',
 		            fontSize:13
+		        },
+				buttonTheme: { 
+		            style: {
+		                fontSize:13, 
+						
+		            },
+					states:{
+						select:{
+							fill:'#349BE0',
+							style: {
+								color:'white', 
+							},
+						}
+					},
 		        },
 			},
 			navigator: {
@@ -1171,6 +1236,20 @@ function drawChart_A24(key,selectedVal,selectedText){
 		            fontWeight: 'bold',
 		            fontSize:13
 		        },
+				buttonTheme: { 
+		            style: {
+		                fontSize:13, 
+						
+		            },
+					states:{
+						select:{
+							fill:'#349BE0',
+							style: {
+								color:'white', 
+							},
+						}
+					},
+		        },
 			},
 			navigator: {
 		        enabled: true,
@@ -1328,7 +1407,64 @@ function drawChart_A31(key,selectedVal,selectedText){
         console.log(lastDate);
 
         drawSmallDiagram(selectedVal,selectedText,lastDate);
+        
+        $('#leftButton7').click(function(event){
+        	console.log("点击了导出图片A31大图！");
+        	var chartBig = $('#showDiagram7').highcharts();
+        	var curTime=getCurrentTime(1);
+        	var pngName='指定板块的个股估值分布'+curTime;
+        	
+        	chartBig.title.update({ text: '指定板块的个股估值分布'});
+        	chartBig.legend.update(GlobalPNGLegend);
+        	
+        	chartBig.exportChartLocal({
+        		type:'image/png',
+        		filename: pngName
+        	});
+        	
+        	chartBig.title.update({ text: ''});
+        	/*chartBig.legend.update({
+                enabled: true,
+        	    align: 'right',
+        	    verticalAlign: 'top',
+        	    x: -50,
+        		y: 20,
+        		floating: false,
+        		itemStyle:{
+        			"color": "black", 
+        			"cursor": "pointer", 
+        			"fontSize": "12px", 
+        		},
+        	    margin:0,
+            });*/
+        });
 
+        $('#rightButton7').click(function(event){
+        	console.log("点击了导出图片A31小图！");
+        	var chartSmall = $('#showDiagram7Small').highcharts();
+        	var curTime=getCurrentTime(1);
+        	var pngName= selectedText + lastDate +'PE分布'+curTime;
+        	
+        	chartSmall.exportChartLocal({
+        		type:'image/png',
+        		filename: pngName
+        	});
+        	/*
+        	chartSmall.legend.update({
+                enabled: true,
+        	    align: 'right',
+        	    verticalAlign: 'top',
+        	    x: -50,
+        		y: 20,
+        		floating: false,
+        		itemStyle:{
+        			"color": "black", 
+        			"cursor": "pointer", 
+        			"fontSize": "12px", 
+        		},
+        	    margin:0,
+            });*/
+        });
 
 		
 		var mychart =Highcharts.stockChart('showDiagram7', {
@@ -1355,6 +1491,20 @@ function drawChart_A31(key,selectedVal,selectedText){
 		            color: 'gray',
 		            fontWeight: 'bold',
 		            fontSize:13
+		        },
+				buttonTheme: { 
+		            style: {
+		                fontSize:13, 
+						
+		            },
+					states:{
+						select:{
+							fill:'#349BE0',
+							style: {
+								color:'white', 
+							},
+						}
+					},
 		        },
 			},
 			navigator: {
@@ -1865,7 +2015,7 @@ function drawChart_A31(key,selectedVal,selectedText){
 
 	});
 }
-
+/*
 $('#diagramDiv7').find('.spanExportButton').unbind('click').click(function(event){
 	console.log("点击了导出图片A31！");
 	var chartBig = $('#showDiagram7').highcharts();
@@ -1921,6 +2071,9 @@ $('#diagramDiv7').find('.spanExportButton').unbind('click').click(function(event
 	    margin:0,
     });
 });
+*/
+
+
 // 点线
 function drawChart_A32(key,selectedVal,selectedText){
 
@@ -2109,6 +2262,20 @@ function drawChart_B11(key,windCode1,windCode2,smooth,windCode1Text,windCode2Tex
 		            fontWeight: 'bold',
 		            fontSize:13
 		        },
+				buttonTheme: { 
+		            style: {
+		                fontSize:13, 
+						
+		            },
+					states:{
+						select:{
+							fill:'#349BE0',
+							style: {
+								color:'white', 
+							},
+						}
+					},
+		        },
 			},
 			exporting: {
 			    enabled: false,
@@ -2257,45 +2424,73 @@ function drawChart_B21(){
 		drawHistogram(showDiagramLeft10,'基准'+dataObj.date,xAxisDataLeft,seriesData.left);
 		drawHistogram(showDiagramRight10,'板块'+dataObj.date,xAxisDataRight,seriesData.right);
 
-		$('#rightButton').click(function(event){
-			console.log("点击了导出图片B21两个图！");
+		$('#leftButton').click(function(event){
+			console.log("点击了导出图片B21左图！");
 			var chartLeft = $('#showDiagramLeft10').highcharts();
+			var curTime=getCurrentTime(1);
+			var pngName='本周换手率变化最大的基准'+curTime;
+			chartLeft.title.update({ text: '本周换手率变化最大的基准'+dataObj.date});
+			chartLeft.exporting.update({ enabled: false,scale: 1,sourceWidth: 500,sourceHeight: 450});
+			chartLeft.exportChartLocal({
+				type:'image/png',
+				filename: pngName
+			});			
+			chartLeft.title.update({ text: '基准'+dataObj.date});
+		});
+
+		$('#rightButton').click(function(event){
+			console.log("点击了导出图片B21you图！");
 			var chartRight = $('#showDiagramRight10').highcharts();
 			var curTime=getCurrentTime(1);
-			var pngName='本周换手率变化最大的基准/板块'+curTime;
-
-			chartLeft.title.update({ text: '本周换手率变化最大的基准'+dataObj.date});
-			chartLeft.exporting.update({ enabled: false,scale: 1,sourceWidth: 500,sourceHeight: 450});			
-			var svgLeft = chartLeft.getSVG().replace(/</g, '\n<').replace(/>/g, '>'); 
-			
-			
+			var pngName='本周换手率变化最大的板块'+curTime;
 			chartRight.title.update({ text: '本周换手率变化最大的板块'+dataObj.date});
-			chartRight.exporting.update({ enabled: false,scale: 1,sourceWidth: 500,sourceHeight: 450});			
-			var svgRight = chartRight.getSVG().replace(/</g, '\n<').replace(/>/g, '>'); 
-			var imageLeft = new Image();
-			imageLeft.crossOrigin = 'anonymous';
-			imageLeft.src = 'data:image/svg+xml;base64,' + window.btoa(unescape(encodeURIComponent(svgLeft)));
-			var imageRight = new Image();
-			imageRight.crossOrigin = 'anonymous';
-			imageRight.src = 'data:image/svg+xml;base64,' + window.btoa(unescape(encodeURIComponent(svgRight))); 
-			var canvas = document.createElement('canvas');  
-			canvas.width = 1000;  
-		    canvas.height = 450; 			 
-			var context = canvas.getContext('2d');  
-			imageLeft.onload=function(){
-				context.drawImage(imageLeft, 0, 0);				
-			};
-			imageRight.onload=function(){
-				context.drawImage(imageRight, 500, 0);
-				var a = document.createElement("a"); 
-					a.href = canvas.toDataURL('image/png');
-					a.download = pngName+".png"; 
-					a.click(); 
-					a = null;				
-			};
-			chartLeft.title.update({ text: '基准'+dataObj.date});
+			chartRight.exporting.update({ enabled: false,scale: 1,sourceWidth: 500,sourceHeight: 450});
+			chartRight.exportChartLocal({
+				type:'image/png',
+				filename: pngName
+			});			
 			chartRight.title.update({ text: '板块'+dataObj.date});
 		});
+
+		// $('#rightButton').click(function(event){
+		// 	console.log("点击了导出图片B21两个图！");
+		// 	var chartLeft = $('#showDiagramLeft10').highcharts();
+		// 	var chartRight = $('#showDiagramRight10').highcharts();
+		// 	var curTime=getCurrentTime(1);
+		// 	var pngName='本周换手率变化最大的基准/板块'+curTime;
+
+		// 	chartLeft.title.update({ text: '本周换手率变化最大的基准'+dataObj.date});
+		// 	chartLeft.exporting.update({ enabled: false,scale: 1,sourceWidth: 500,sourceHeight: 450});			
+		// 	var svgLeft = chartLeft.getSVG().replace(/</g, '\n<').replace(/>/g, '>'); 
+			
+			
+		// 	chartRight.title.update({ text: '本周换手率变化最大的板块'+dataObj.date});
+		// 	chartRight.exporting.update({ enabled: false,scale: 1,sourceWidth: 500,sourceHeight: 450});			
+		// 	var svgRight = chartRight.getSVG().replace(/</g, '\n<').replace(/>/g, '>'); 
+		// 	var imageLeft = new Image();
+		// 	imageLeft.crossOrigin = 'anonymous';
+		// 	imageLeft.src = 'data:image/svg+xml;base64,' + window.btoa(unescape(encodeURIComponent(svgLeft)));
+		// 	var imageRight = new Image();
+		// 	imageRight.crossOrigin = 'anonymous';
+		// 	imageRight.src = 'data:image/svg+xml;base64,' + window.btoa(unescape(encodeURIComponent(svgRight))); 
+		// 	var canvas = document.createElement('canvas');  
+		// 	canvas.width = 1000;  
+		//     canvas.height = 450; 			 
+		// 	var context = canvas.getContext('2d');  
+		// 	imageLeft.onload=function(){
+		// 		context.drawImage(imageLeft, 0, 0);				
+		// 	};
+		// 	imageRight.onload=function(){
+		// 		context.drawImage(imageRight, 500, 0);
+		// 		var a = document.createElement("a"); 
+		// 			a.href = canvas.toDataURL('image/png');
+		// 			a.download = pngName+".png"; 
+		// 			a.click(); 
+		// 			a = null;				
+		// 	};
+		// 	chartLeft.title.update({ text: '基准'+dataObj.date});
+		// 	chartRight.title.update({ text: '板块'+dataObj.date});
+		// });
 
 	});
 
@@ -2334,73 +2529,76 @@ function drawChart_B22(){
 		drawHistogram(showDiagramLeft11,'基准'+dataObj.date,xAxisDataLeft,seriesData.left);
 		drawHistogram(showDiagramRight11,'板块'+dataObj.date,xAxisDataRight,seriesData.right);
 
-		// $('#leftButton11').click(function(event){
-		// 	console.log("点击了导出图片B12左图！");
-		// 	var chart = $('#showDiagramLeft11').highcharts();
-		// 	var curTime=getCurrentTime(1);
+		$('#leftButton11').click(function(event){
+			console.log("点击了导出图片B12左图！");
+			var chart = $('#showDiagramLeft11').highcharts();
+			var curTime=getCurrentTime(1);
+			var pngName='本周换手率绝对水平最高的基准'+curTime;
 			
-		// 	chart.title.update({ text: '本周换手率绝对水平最高的基准'+dataObj.date});
-		// 	chart.exporting.update({ enabled: false,scale: 1,sourceWidth: 500,sourceHeight: 450});
-			
-		// 	var svg = chart.getSVG().replace(/</g, '\n<').replace(/>/g, '>'); 
-		// 	var pngName='本周换手率绝对水平最高的基准'+curTime;
-		// 	svgToPng(svg,500,450,pngName);
-		// 	chart.title.update({ text: '基准'+dataObj.date});
-		// });
-
-		// $('#rightButton11').click(function(event){
-		// 	console.log("点击了导出图片B12右图！");
-		// 	var chart = $('#showDiagramRight11').highcharts();
-		// 	var curTime=getCurrentTime(1);
-			
-		// 	chart.title.update({ text: '本周换手率绝对水平最高的板块'+dataObj.date});
-		// 	chart.exporting.update({ enabled: false,scale: 1,sourceWidth: 500,sourceHeight: 450});
-			
-		// 	var svg = chart.getSVG().replace(/</g, '\n<').replace(/>/g, '>'); 
-		// 	var pngName='本周换手率绝对水平最高的板块'+curTime;
-		// 	svgToPng(svg,500,450,pngName);
-		// 	chart.title.update({ text: '板块'+dataObj.date});
-		// });
+			chart.title.update({ text: '本周换手率绝对水平最高的基准'+dataObj.date});
+			chart.exporting.update({ enabled: false,scale: 1,sourceWidth: 500,sourceHeight: 450});			
+			chart.exportChartLocal({
+				type:'image/png',
+				filename: pngName
+			});
+			chart.title.update({ text: '基准'+dataObj.date});
+		});
 
 		$('#rightButton11').click(function(event){
-			console.log("点击了导出图片B22两个图！");
-			var chartLeft = $('#showDiagramLeft11').highcharts();
-			var chartRight = $('#showDiagramRight11').highcharts();
+			console.log("点击了导出图片B12右图！");
+			var chart = $('#showDiagramRight11').highcharts();
 			var curTime=getCurrentTime(1);
-			var pngName='本周换手率绝对水平最高的基准/板块'+curTime;
-
-			chartLeft.title.update({ text: '本周换手率绝对水平最高的基准'+dataObj.date});
-			chartLeft.exporting.update({ enabled: false,scale: 1,sourceWidth: 500,sourceHeight: 450});			
-			var svgLeft = chartLeft.getSVG().replace(/</g, '\n<').replace(/>/g, '>'); 
+			var pngName='本周换手率绝对水平最高的板块'+curTime;
 			
+			chart.title.update({ text: '本周换手率绝对水平最高的板块'+dataObj.date});
+			chart.exporting.update({ enabled: false,scale: 1,sourceWidth: 500,sourceHeight: 450});
 			
-			chartRight.title.update({ text: '本周换手率绝对水平最高的板块'+dataObj.date});
-			chartRight.exporting.update({ enabled: false,scale: 1,sourceWidth: 500,sourceHeight: 450});			
-			var svgRight = chartRight.getSVG().replace(/</g, '\n<').replace(/>/g, '>'); 
-			var imageLeft = new Image();
-			imageLeft.crossOrigin = 'anonymous';
-			imageLeft.src = 'data:image/svg+xml;base64,' + window.btoa(unescape(encodeURIComponent(svgLeft)));
-			var imageRight = new Image();
-			imageRight.crossOrigin = 'anonymous';
-			imageRight.src = 'data:image/svg+xml;base64,' + window.btoa(unescape(encodeURIComponent(svgRight))); 
-			var canvas = document.createElement('canvas');  
-			canvas.width = 1000;  
-		    canvas.height = 450; 			 
-			var context = canvas.getContext('2d');  
-			imageLeft.onload=function(){
-				context.drawImage(imageLeft, 0, 0);				
-			};
-			imageRight.onload=function(){
-				context.drawImage(imageRight, 500, 0);
-				var a = document.createElement("a"); 
-					a.href = canvas.toDataURL('image/png');
-					a.download = pngName+".png"; 
-					a.click(); 
-					a = null;				
-			};
-			chartLeft.title.update({ text: '基准'+dataObj.date});
-			chartRight.title.update({ text: '板块'+dataObj.date});
+			chart.exportChartLocal({
+				type:'image/png',
+				filename: pngName
+			});
+			chart.title.update({ text: '板块'+dataObj.date});
 		});
+
+		// $('#rightButton11').click(function(event){
+		// 	console.log("点击了导出图片B22两个图！");
+		// 	var chartLeft = $('#showDiagramLeft11').highcharts();
+		// 	var chartRight = $('#showDiagramRight11').highcharts();
+		// 	var curTime=getCurrentTime(1);
+		// 	var pngName='本周换手率绝对水平最高的基准/板块'+curTime;
+
+		// 	chartLeft.title.update({ text: '本周换手率绝对水平最高的基准'+dataObj.date});
+		// 	chartLeft.exporting.update({ enabled: false,scale: 1,sourceWidth: 500,sourceHeight: 450});			
+		// 	var svgLeft = chartLeft.getSVG().replace(/</g, '\n<').replace(/>/g, '>'); 
+			
+			
+		// 	chartRight.title.update({ text: '本周换手率绝对水平最高的板块'+dataObj.date});
+		// 	chartRight.exporting.update({ enabled: false,scale: 1,sourceWidth: 500,sourceHeight: 450});			
+		// 	var svgRight = chartRight.getSVG().replace(/</g, '\n<').replace(/>/g, '>'); 
+		// 	var imageLeft = new Image();
+		// 	imageLeft.crossOrigin = 'anonymous';
+		// 	imageLeft.src = 'data:image/svg+xml;base64,' + window.btoa(unescape(encodeURIComponent(svgLeft)));
+		// 	var imageRight = new Image();
+		// 	imageRight.crossOrigin = 'anonymous';
+		// 	imageRight.src = 'data:image/svg+xml;base64,' + window.btoa(unescape(encodeURIComponent(svgRight))); 
+		// 	var canvas = document.createElement('canvas');  
+		// 	canvas.width = 1000;  
+		//     canvas.height = 450; 			 
+		// 	var context = canvas.getContext('2d');  
+		// 	imageLeft.onload=function(){
+		// 		context.drawImage(imageLeft, 0, 0);				
+		// 	};
+		// 	imageRight.onload=function(){
+		// 		context.drawImage(imageRight, 500, 0);
+		// 		var a = document.createElement("a"); 
+		// 			a.href = canvas.toDataURL('image/png');
+		// 			a.download = pngName+".png"; 
+		// 			a.click(); 
+		// 			a = null;				
+		// 	};
+		// 	chartLeft.title.update({ text: '基准'+dataObj.date});
+		// 	chartRight.title.update({ text: '板块'+dataObj.date});
+		// });
 
 		
 	});
@@ -2445,6 +2643,36 @@ function getB23Table(dataBase){
 			$('#showTable').append(row_obj2);
 		}
 }
+
+function getB23TableHide(dataBase){
+		$('#showTableHide').empty();
+		var row_obj=$("<tr></tr>");
+		var col_td=$("<td style='width:80px;font-Weight:bold'></td>");
+		col_td.html('基准指数');row_obj.append(col_td);
+		col_td=$("<td style='width:80px;font-Weight:bold'></td>");
+		col_td.html('本周涨跌幅');row_obj.append(col_td);
+		col_td=$("<td style='width:80px;font-Weight:bold'></td>");
+		col_td.html('上周涨跌幅');row_obj.append(col_td);
+		col_td=$("<td style='width:120px;font-Weight:bold'></td>");
+		col_td.html('本周年化换手率');row_obj.append(col_td);
+		col_td=$("<td style='width:120px;font-Weight:bold'></td>");
+		col_td.html('上周年化换手率');row_obj.append(col_td);
+		col_td=$("<td style='width:120px;font-Weight:bold'></td>");
+		col_td.html('本周换手率分位');row_obj.append(col_td);
+		col_td=$("<td style='width:120px;font-Weight:bold'></td>");
+		col_td.html('上周换手率分位');row_obj.append(col_td);
+
+		$('#showTableHide').append(row_obj);
+		for (let m = 0; m < dataBase.length; m++) {
+			var row_obj2=$("<tr></tr>");
+			for (let i = 0; i < dataBase[m].length; i++) {		
+				col_td=$("<td></td>");
+				col_td.html(dataBase[m][i]);
+				row_obj2.append(col_td);				
+			}
+			$('#showTableHide').append(row_obj2);
+		}
+}
 var dataObjForB23 = {};
 //表格
 function drawChart_B23(){
@@ -2456,16 +2684,10 @@ function drawChart_B23(){
 	}
 	var dataObj= undefined;
 	var dataBase = undefined;
-	$.getJSON(globalDataURL,function (dataYH) {	
-		
-		
+	$.getJSON(globalDataURL,function (dataYH) {		
 		if (onlineOrLocal) {
 			var dataObj=dataYH.obj;
-			// if(isBenchmark){
-				 dataBase = dataObj.data_base; 
-			// }else{
-			// 	 dataBase = dataObj.data_index;
-			// }
+			dataBase = dataObj.data_base; 
 			dataObjForB23 = dataObj;
 		}else{
 			var jsonObject =$.parseJSON(dataYH);
@@ -2476,27 +2698,56 @@ function drawChart_B23(){
 		console.log("图12B23的obj数据为：\n"+dataObj);
 		getB23Table(dataBase);
 	});
+}
+var dataObjForB23Hide = {};
+function drawChart_B23_Hide(){
+	if (onlineOrLocal) {
+		globalDataURL='../lib/data12B23.json';
+	}else{
+		globalDataURL='weekly/IndicatorQuery?indicatorId=1022';
+	}
+	var dataObj= undefined;
+	var dataBase = undefined;
+	$.getJSON(globalDataURL,function (dataYH) {		
+		if (onlineOrLocal) {
+			var dataObj=dataYH.obj;
+			dataBase = dataObj.data_base; 
+			dataObjForB23Hide = dataObj;
+		}else{
+			var jsonObject =$.parseJSON(dataYH);
+			var dataObj=jsonObject.obj;	
+			dataBase = dataObj.data_base; 
+			dataObjForB23Hide = dataObj;
+		}
+		getB23TableHide(dataBase);
+	});
 
 }
-// {
-// 	'column':'column2',
-// 	'selectedVal':'benchmark '
-// }
+
 
 $('.selectDataArea .benchmark').click(function(){
 	var dataBase = dataObjForB23.data_base;
 	getB23Table(dataBase);	
-	//设置样式
-	this.style.backgroundColor='#d7d7d7';
-	$('.selectDataArea .plate').css('backgroundColor','white');
 
+	var dataBaseHide = dataObjForB23Hide.data_base;
+	getB23TableHide(dataBaseHide);	
+	//设置样式
+	this.style.backgroundColor='#349BE0';
+	this.style.color='white';
+	$('.selectDataArea .plate').css('backgroundColor','white');
+	$('.selectDataArea .plate').css('color','black');
 });
 $('.selectDataArea .plate').click(function(){	
 	var dataIndex = dataObjForB23.data_index;
 	getB23Table(dataIndex);
+
+	var dataIndexHide = dataObjForB23Hide.data_index;
+	getB23TableHide(dataIndexHide);	
 	//设置样式
-	this.style.backgroundColor='#d7d7d7';
+	this.style.backgroundColor='#349BE0';
+	this.style.color='white';
 	$('.selectDataArea .benchmark').css('backgroundColor','white');
+	$('.selectDataArea .benchmark').css('color','black');
 });
 
 //双轴双线
@@ -2530,6 +2781,20 @@ function drawChart_B24(key,selectedVal,selectedText){
 		            color: 'gray',
 		            fontWeight: 'bold',
 		            fontSize:13
+		        },
+				buttonTheme: { 
+		            style: {
+		                fontSize:13, 
+						
+		            },
+					states:{
+						select:{
+							fill:'#349BE0',
+							style: {
+								color:'white', 
+							},
+						}
+					},
 		        },
 			},
 			exporting: {
@@ -2689,52 +2954,84 @@ function drawChart_B31(){
 		// 基于准备好的dom，初始化echarts实例
 	    // let myChartLeft = echarts.init(document.getElementById('showDiagramLeft14'));
 		// let myChartRight = echarts.init(document.getElementById('showDiagramRight14'));
-		let xAxisDataLeft = dataObj.data_decay[0];
-		let xAxisDataRight = dataObj.data_grow[0];
+		let xAxisDataLeft = dataObj.data_grow[0];
+		let xAxisDataRight = dataObj.data_decay[0];
 
-		let seriesData = {'left':dataObj.data_decay[1],'right':dataObj.data_grow[1]};
+		let seriesData = {'left':dataObj.data_grow[1],'right':dataObj.data_decay[1]};
 		drawHistogram(showDiagramLeft14,'加强'+dataObj.date,xAxisDataLeft,seriesData.left);
 		drawHistogram(showDiagramRight14,'衰竭'+dataObj.date,xAxisDataRight,seriesData.right);
 
-		$('#rightButton14').click(function(event){
-			console.log("点击了导出图片B31两个图！");
-			var chartLeft = $('#showDiagramLeft14').highcharts();
-			var chartRight = $('#showDiagramRight14').highcharts();
+		$('#leftButton14').click(function(event){
+			console.log("点击了导出图片B31zuo图！");
+			var chart = $('#showDiagramLeft14').highcharts();
 			var curTime=getCurrentTime(1);
-			var pngName='本周新增“速度/加速度”加强与衰竭的行业'+curTime;
-
-			chartLeft.title.update({ text: '本周新增“速度/加速度”加强的行业'+dataObj.date});
-			chartLeft.exporting.update({ enabled: false,scale: 1,sourceWidth: 500,sourceHeight: 450});			
-			var svgLeft = chartLeft.getSVG().replace(/</g, '\n<').replace(/>/g, '>'); 
+			var pngName='本周新增“速度/加速度”加强的行业'+curTime;
 			
+			chart.title.update({ text: '本周新增“速度/加速度”加强的行业'+dataObj.date});
+			chart.exporting.update({ enabled: false,scale: 1,sourceWidth: 500,sourceHeight: 450});
 			
-			chartRight.title.update({ text: '本周新增“速度/加速度”衰竭的行业'+dataObj.date});
-			chartRight.exporting.update({ enabled: false,scale: 1,sourceWidth: 500,sourceHeight: 450});			
-			var svgRight = chartRight.getSVG().replace(/</g, '\n<').replace(/>/g, '>'); 
-			var imageLeft = new Image();
-			imageLeft.crossOrigin = 'anonymous';
-			imageLeft.src = 'data:image/svg+xml;base64,' + window.btoa(unescape(encodeURIComponent(svgLeft)));
-			var imageRight = new Image();
-			imageRight.crossOrigin = 'anonymous';
-			imageRight.src = 'data:image/svg+xml;base64,' + window.btoa(unescape(encodeURIComponent(svgRight))); 
-			var canvas = document.createElement('canvas');  
-			canvas.width = 1000;  
-		    canvas.height = 450; 			 
-			var context = canvas.getContext('2d');  
-			imageLeft.onload=function(){
-				context.drawImage(imageLeft, 0, 0);				
-			};
-			imageRight.onload=function(){
-				context.drawImage(imageRight, 500, 0);
-				var a = document.createElement("a"); 
-					a.href = canvas.toDataURL('image/png');
-					a.download = pngName+".png"; 
-					a.click(); 
-					a = null;				
-			};
-			chartLeft.title.update({ text: '加强'+dataObj.date});
-			chartRight.title.update({ text: '衰竭'+dataObj.date});
+			chart.exportChartLocal({
+				type:'image/png',
+				filename: pngName
+			});
+			chart.title.update({ text: '加强'+dataObj.date});
 		});
+
+		$('#rightButton14').click(function(event){
+			console.log("点击了导出图片B31you图！");
+			var chart = $('#showDiagramRight14').highcharts();
+			var curTime=getCurrentTime(1);
+			var pngName='本周新增“速度/加速度”衰竭的行业'+curTime;
+			
+			chart.title.update({ text: '本周新增“速度/加速度”衰竭的行业'+dataObj.date});
+			chart.exporting.update({ enabled: false,scale: 1,sourceWidth: 500,sourceHeight: 450});
+			
+			chart.exportChartLocal({
+				type:'image/png',
+				filename: pngName
+			});
+			chart.title.update({ text: '衰竭'+dataObj.date});
+		});
+
+		// $('#rightButton14').click(function(event){
+		// 	console.log("点击了导出图片B31两个图！");
+		// 	var chartLeft = $('#showDiagramLeft14').highcharts();
+		// 	var chartRight = $('#showDiagramRight14').highcharts();
+		// 	var curTime=getCurrentTime(1);
+		// 	var pngName='本周新增“速度/加速度”加强与衰竭的行业'+curTime;
+
+		// 	chartLeft.title.update({ text: '本周新增“速度/加速度”加强的行业'+dataObj.date});
+		// 	chartLeft.exporting.update({ enabled: false,scale: 1,sourceWidth: 500,sourceHeight: 450});			
+		// 	var svgLeft = chartLeft.getSVG().replace(/</g, '\n<').replace(/>/g, '>'); 
+			
+			
+		// 	chartRight.title.update({ text: '本周新增“速度/加速度”衰竭的行业'+dataObj.date});
+		// 	chartRight.exporting.update({ enabled: false,scale: 1,sourceWidth: 500,sourceHeight: 450});			
+		// 	var svgRight = chartRight.getSVG().replace(/</g, '\n<').replace(/>/g, '>'); 
+		// 	var imageLeft = new Image();
+		// 	imageLeft.crossOrigin = 'anonymous';
+		// 	imageLeft.src = 'data:image/svg+xml;base64,' + window.btoa(unescape(encodeURIComponent(svgLeft)));
+		// 	var imageRight = new Image();
+		// 	imageRight.crossOrigin = 'anonymous';
+		// 	imageRight.src = 'data:image/svg+xml;base64,' + window.btoa(unescape(encodeURIComponent(svgRight))); 
+		// 	var canvas = document.createElement('canvas');  
+		// 	canvas.width = 1000;  
+		//     canvas.height = 450; 			 
+		// 	var context = canvas.getContext('2d');  
+		// 	imageLeft.onload=function(){
+		// 		context.drawImage(imageLeft, 0, 0);				
+		// 	};
+		// 	imageRight.onload=function(){
+		// 		context.drawImage(imageRight, 500, 0);
+		// 		var a = document.createElement("a"); 
+		// 			a.href = canvas.toDataURL('image/png');
+		// 			a.download = pngName+".png"; 
+		// 			a.click(); 
+		// 			a = null;				
+		// 	};
+		// 	chartLeft.title.update({ text: '加强'+dataObj.date});
+		// 	chartRight.title.update({ text: '衰竭'+dataObj.date});
+		// });
 
 
 		
@@ -3159,7 +3456,12 @@ function drawChart_B33(key,selectedVal,selectedText){
 		                enable: true,
 		                radius: 4,
 		                symbol: 'circle',
-		            }
+		            },
+		            states:{
+						hover:{
+							lineWidthPlus:0
+						}
+					}
 		        }
 		    },
 		    series: [{
@@ -3183,23 +3485,39 @@ $('#diagramDiv16').find('.spanExportButton').click(function(event){
 	// var svg = chart.getSVG().replace(/</g, '\n<').replace(/>/g, '>'); 
 	// svgToPng(svg,800,600,pngName);
 
-	var newNodeTop = document.createElement("div");
-    newNodeTop.innerHTML = pngName;
-    newNodeTop.style.font = '微软雅黑 Regular';
-    newNodeTop.style.fontSize = '18px';
-    newNodeTop.style.textAlign = "center";
-	$("#showDiagram16").prepend(newNodeTop);
+	if (!!window.ActiveXObject || "ActiveXObject" in window)
+	{
+		// chart.legend.update(GlobalPNGLegend);		
+		// var svg = chart.getSVG().replace(/</g, '\n<').replace(/>/g, '>'); 	
+		chart.title.update({ text: '指定行业“速度/加速度”的历史变化路径'});		
+		var pngName='指定行业“速度/加速度”的历史变化路径'+curTime;
+		chart.exportChartLocal({
+			type:'image/png',
+			filename: pngName
+		});
+		chart.title.update({ text: ''});
 
-	html2canvas(document.getElementById("showDiagram16")).then(function(canvas) { 
-	    var imgUri = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream"); // 获取生成的图片的url 　
-	    var saveLink = document.createElement( 'a');
-	    saveLink.href =imgUri;
-	    // console.log("imgUri-----"+imgUri);
-	    saveLink.download = pngName+'.png';
-	    saveLink.click();
-	    newNodeTop.remove();
 
-    });
+	}else{
+		var newNodeTop = document.createElement("div");
+	    newNodeTop.innerHTML = '指定行业“速度/加速度”的历史变化路径';
+	    newNodeTop.style.font = '微软雅黑 Regular';
+	    newNodeTop.style.fontSize = '18px';
+	    newNodeTop.style.textAlign = "center";
+		$("#showDiagram16").prepend(newNodeTop);
+
+		html2canvas(document.getElementById("showDiagram16")).then(function(canvas) { 
+		    var imgUri = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream"); // 获取生成的图片的url 　
+		    var saveLink = document.createElement( 'a');
+		    saveLink.href =imgUri;
+		    // console.log("imgUri-----"+imgUri);
+		    saveLink.download = pngName+'.png';
+		    saveLink.click();
+		    newNodeTop.remove();
+	    });
+	}
+
+	
 	// chart.title.update({ text: ''});
 
 });
@@ -3251,6 +3569,20 @@ function drawChart_B41(key,selectedVal,selectedText){
 		            color: 'gray',
 		            fontWeight: 'bold',
 		            fontSize:13
+		        },
+				buttonTheme: { 
+		            style: {
+		                fontSize:13, 
+						
+		            },
+					states:{
+						select:{
+							fill:'#349BE0',
+							style: {
+								color:'white', 
+							},
+						}
+					},
 		        },
 			},
 			navigator: {
@@ -3615,60 +3947,6 @@ function drawSmallDiagram(selectedVal,selectedText,lastDate){
 
 				//在div中创建图表
 				var chart = Highcharts.chart('showDiagram7Small', {
-					/*chart: {
-							type: 'column'
-					},
-					credits: {
-						enabled: false
-					},
-					title: {
-							text: selectedText +' '+lastDate+' '+'PE分布',
-					},
-					exporting:{	
-					    enabled: false,
-					    scale: 1,
-					    sourceWidth: 500,
-		        		sourceHeight: 200	
-					},
-	
-					xAxis: {
-						type: 'category',
-						labels: {
-							rotation: -45,  // 设置轴标签旋转角度
-							style:{
-								// "color": "black", 
-								// "cursor": "pointer", 
-								"fontSize": "10px", 
-							},
-							
-						}
-					},
-					yAxis: {
-							min: 0,
-							lineWidth:1
-							// title: {
-							// 		// text: '人口 (百万)'
-							// }
-					},
-					legend: {
-							enabled: false
-					},
-					tooltip: {
-							pointFormat: 'PE频率: <b>{point.y:.1f}</b>'
-					},
-					series: [{
-						name: 'PE频率',
-						data: finalResult,
-						dataLabels: {
-							enabled: true,
-							rotation: -90,
-							color: '#FFFFFF',
-							align: 'right',
-							format: '{point.y:.1f}', // :.1f 为保留 1 位小数
-							y: 10
-						}
-					}]*/
-					
 					chart: {
 						type: 'column'
 					},
@@ -3690,7 +3968,7 @@ function drawSmallDiagram(selectedVal,selectedText,lastDate){
 				        tickInterval: dataObj.data_interval
 				    },
 				    title: {
-						text: selectedText +' '+lastDate+' '+'PE分布',
+						text: selectedText + lastDate + 'PE分布',
 					},
 					exporting:{
 						enabled: false,
@@ -3724,56 +4002,6 @@ function drawSmallDiagram(selectedVal,selectedText,lastDate){
 
 			//在div中创建图表
 			var chart = Highcharts.chart('showDiagram7Small', {
-				/*chart: {
-						type: 'column'
-				},
-				credits: {
-					enabled: false
-				},
-				title: {
-						text: selectedText +' '+lastDate+' '+'PE分布',
-				},
-				exporting:{
-					enabled: false,
-				    scale: 1,
-				    sourceWidth: 500,
-	        		sourceHeight: 200	
-				},
-				xAxis: {
-					type: 'category',
-					labels: {
-						rotation: -45,  // 设置轴标签旋转角度
-						style:{
-							// "color": "black", 
-							// "cursor": "pointer", 
-							"fontSize": "10px", 
-						},
-					}
-				},
-				yAxis: {
-						min: 0,
-						// title: {
-						// 		// text: '人口 (百万)'
-						// }
-				},
-				legend: {
-						enabled: false
-				},
-				tooltip: {
-						pointFormat: 'PE频率: <b>{point.y:.1f}</b>'
-				},
-				series: [{
-					name: 'PE频率',
-					data: finalResult,
-					dataLabels: {
-						enabled: true,
-						rotation: -90,
-						color: '#FFFFFF',
-						align: 'right',
-						format: '{point.y:.1f}', // :.1f 为保留 1 位小数
-						y: 10
-					}
-				}]*/
 				chart: {
 					type: 'column'
 				},
@@ -4069,7 +4297,8 @@ $(".table-input .input-date").val(getCurrentTime(4));
 
 // $(".table-input .start-date").val(getFormatTimeWithLine());
 
-
+$(".all-table-input .input-date").datepicker(pickOptionInInput); 
+$(".all-table-input .input-date").val(getCurrentTime(4)); 
 
 
 
@@ -4082,20 +4311,20 @@ $(".table-input .input-date").val(getCurrentTime(4));
 		let ariaExpanded= this.getAttribute('aria-expanded');
 		let img = $(this).find('.right-img-three').get(0);
 		let nextSbl = this.nextElementSibling;
-		let id= this.getAttribute('id').replace('diagramThree','');	
+//		let id= this.getAttribute('id').replace('diagramThree','');	
 		if (img){
 			if (ariaExpanded == 'false'){
-				let menuThreeCheck = $("#menuThreeCheck"+id);
-				menuThreeCheck.attr('checked',true);
-				menuThreeCheck.prop("checked","checked");
+//				let menuThreeCheck = $("#menuThreeCheck"+id);
+//				menuThreeCheck.attr('checked',true);
+//				menuThreeCheck.prop("checked","checked");
 
 				this.setAttribute('aria-expanded','true'); 		
 				img.style.animation = "arrowRotateDown 0.25s 1 forwards ease-in";
 			}else{
 
-				let menuThreeCheck = $("#menuThreeCheck"+id);
-				menuThreeCheck.attr('checked',false);
-				menuThreeCheck.removeAttr("checked");
+//				let menuThreeCheck = $("#menuThreeCheck"+id);
+//				menuThreeCheck.attr('checked',false);
+//				menuThreeCheck.removeAttr("checked");
 
 				this.setAttribute('aria-expanded','false');
 				img.style.animation = "arrowRotateUp 0.25s forwards ease-out";
@@ -4212,7 +4441,7 @@ $(".table-input .input-date").val(getCurrentTime(4));
 				menuThreeCheck.attr('checked',true);
 			}
 
-
+/*
 			let diagramThree = $("#diagramThree"+j);
 			let img = diagramThree.find('.right-img-three').get(0);
 			let ariaExpanded= diagramThree.attr('aria-expanded');
@@ -4237,7 +4466,7 @@ $(".table-input .input-date").val(getCurrentTime(4));
 				nextSbl.setAttribute('aria-hidden','true');
 				nextSbl.style.maxHeight = '0px';
 				nextSbl.style.transition = "max-height 0.25s ease";
-			}	
+			}*/	
 			// 需要遍历同级的元素，来确定上一级标题是否被选中
 			let menuLTwoS  = $(this).parent().parent().find('.MenuLThree');
 			let menuLTwoInputS = menuLTwoS.find('input');
@@ -4275,7 +4504,7 @@ $(".table-input .input-date").val(getCurrentTime(4));
 		}
 		// 展开和折叠，选到对应的位置。过滤出包含menuThreeCheck。默认选中的折叠相反。因为默认扩展，假如是第一次点击，有默认扩展，就执行上面的。第一次分开，后面都不分开。
 		// 当子集全部默认选中；当子集部分默认选中（部分默认选中，可以分别根据2个长度）
-		
+/*		
 		let inputs = menuLOne.find('input').not('.menuTwoCheck,.menuOneCheck')  ;
 		// inputs = Array.from(inputs); 
 		let idIndex = [];
@@ -4351,7 +4580,7 @@ $(".table-input .input-date").val(getCurrentTime(4));
 				expandBig($("#menuThreeCheck"+idIndex[i]),idIndex[i]);	
 			} 
 		}
-
+*/
 		if($(this).attr('class','menuTwoCheck')){
 			// 需要遍历同级的元素，来确定上一级标题是否被选中
 			let MenuLOne  = $(this).parent().parent().parent();
@@ -4370,6 +4599,10 @@ $(".table-input .input-date").val(getCurrentTime(4));
 		
     });
 	let isExpanded = false;
+
+	// $(".right-img-one").get(0).style.animation = "arrowRotateUp 0.25s forwards ease-out";
+	$(".right-img-one").css('animation','arrowRotateDown 0.25s 1 forwards ease-in'); 
+
 	$(".DiagramTitleOne").click(function(e){
 		if (e && e.stopPropagation) {
     		e.stopPropagation();
@@ -4377,17 +4610,30 @@ $(".table-input .input-date").val(getCurrentTime(4));
 		    window.event.cancelBubble = true;
 		}
 
-
+		let rightImgOne= $(this).find('.right-img-one');
 		let img = $(this).find('.right-img-one').get(0);
+		let ariaExpanded= $(this).find('.right-img-one').attr('aria-expanded');
+	
 		if (img){
-			if (isExpanded == false){
-				isExpanded = true;
+			if (ariaExpanded == 'false'){
+				rightImgOne.attr('aria-expanded',true);
 				img.style.animation = "arrowRotateDown 0.25s 1 forwards ease-in";
 			}else{
-				isExpanded = false;
+				rightImgOne.attr('aria-expanded',false);
 				img.style.animation = "arrowRotateUp 0.25s forwards ease-out";
 			}
 		}
+
+		// let img = $(this).find('.right-img-one').get(0);
+		// if (img){
+		// 	if (isExpanded == false){
+		// 		isExpanded = true;
+		// 		img.style.animation = "arrowRotateDown 0.25s 1 forwards ease-in";
+		// 	}else{
+		// 		isExpanded = false;
+		// 		img.style.animation = "arrowRotateUp 0.25s forwards ease-out";
+		// 	}
+		// }
 		$(this).find('.DiagramTitleTwo').slideToggle(500);
 
     });
@@ -4438,7 +4684,11 @@ $(".table-input .input-date").val(getCurrentTime(4));
 			if ("NO_ENABLE" == data) {
 				alert("没有点评权限，请联系管理员。");
 			} else {
-				getCommentTable(key);
+				if (key == "0000") {
+					getAllComment();
+				} else {
+					getCommentTable(key);
+				}
 				console.log( "Data " + data );
 			}
 		})
@@ -4468,21 +4718,23 @@ $(".table-input .input-date").val(getCurrentTime(4));
 			'endDate':endDate
 		}
 
+		
 		$.ajax({
 			method: "get",
-			url: 'weekly/review?indicatorId='+key,
+			url: 'weekly/review?indicatorId='+key + '&randomNum=' + new Date().getTime(),
 			data: data
 		})
 		.done(function( data ) {
-			getTable(key,data);
-			
+			if (key == "0000") {
+				initAllComment(data);
+			} else {
+				getTable(key,data);
+			}
 			console.log( "Data " + data );
 		})
 		.fail(function( jqXHR, textStatus ) {
 			console.log( "Request failed: " + textStatus );
 		});
-		
-		
 	});
 
 	
@@ -4499,29 +4751,57 @@ function getFormatTime(){
 }
 $('.table-head-title th').click(function(){	
 	var idNum = $(this).attr('id').replace('column','');
-	var model = '';
+	var model = ''; // 选择的模块
 	
 	if (isBenchmark){
 		model = 'base';
 	}else{
 		model = 'index';
 	}
-	var globalDataURL='weekly/IndicatorQuery?indicatorId=1022&model='+model+'&column='+idNum;
+	
+	var order = $(this).children('span').attr('class'); // 排序方式
+	if ("arrow" == order){
+		$(this).children('span').attr("class", "arrow asc");
+		order = "asc";
+	} else if ("arrow asc" == order) {
+		$(this).children('span').attr("class", "arrow desc");
+		order = "desc";
+	} else if ("arrow desc" == order) {
+		$(this).children('span').attr("class", "arrow");
+		order = "";
+	}
+	
+	// 把其它兄弟元素设置为无序
+	$(this).siblings().children('span').attr("class", "arrow");
+		
+	var globalDataURL='weekly/IndicatorQuery?indicatorId=1022&column='+idNum+'&order='+order;
 	console.log(globalDataURL);	
 	var dataObj= undefined;
 	var dataBase = undefined;
 	$.getJSON(globalDataURL,function (dataYH) {			
 		if (onlineOrLocal) {
 			var dataObj=dataYH.obj;
-			dataBase = dataObj.data_base; 
+			if (isBenchmark) {
+				dataBase = dataObj.data_base;
+			} else {
+				dataBase = dataObj.data_index;
+			}
+			 
 			dataObjForB23 = dataObj;
+			dataObjForB23Hide = dataObj;
 		}else{
 			var jsonObject =$.parseJSON(dataYH);
 			var dataObj=jsonObject.obj;	
-			dataBase = dataObj.data_base; 
+			if (isBenchmark) {
+				dataBase = dataObj.data_base;
+			} else {
+				dataBase = dataObj.data_index;
+			}
 			dataObjForB23 = dataObj;
+			dataObjForB23Hide = dataObj;
 		}
 		getB23Table(dataBase);
+		getB23TableHide(dataBase);
 	});
 });
 
@@ -4642,3 +4922,47 @@ getSelectedData('0001','.selected-index');
 getSelectedData('0002','.selected-citic-index');
 
 
+/**
+ * Mark:获取全部评论
+ */
+function getAllComment(){
+	let globalDataURL = '';
+	if (onlineOrLocal) {
+		globalDataURL='../lib/commentAll.json';
+	}else{
+		globalDataURL='weekly/review?indicatorId=0000&randomNum=' + new Date().getTime();
+	}
+	
+	var data = {};
+	$.getJSON(globalDataURL,function (data) {
+		initAllComment(data);
+	});
+}
+
+function initAllComment(data) {
+	$('.all-comment-container').empty();
+	let dataObj = [];
+	if (onlineOrLocal) {
+		dataObj=data.ret; 
+	}else{
+		let jsonObject =$.parseJSON(data);
+		dataObj=jsonObject.ret;			
+	}
+
+	var html = '';
+	if (dataObj.length >= 1) {
+		for (let m = 0; m < dataObj.length; m++) {
+			
+			for (let i = 0; i < dataObj[m].length; i++) {		
+				html = '<div class="comment-section"><div class="comment-title"><span>'+dataObj[m][2]+'</span><span>'+dataObj[m][0]+'</span></div><div class="comment-content">'+dataObj[m][1].replace(/\n/g,"</br>")+'</div></div>';			
+			}
+			html = $(html);
+			$('.all-comment-container').append(html);
+		}
+	} else {
+		html = '<div class="comment-section"><div class="comment-content"><span>无点评数据</span></div></div>';
+		$('.all-comment-container').append($(html));
+	}
+}
+
+getAllComment();
